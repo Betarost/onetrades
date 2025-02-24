@@ -17,15 +17,18 @@ import (
 )
 
 const (
-	KeyTypeHmac    = "HMAC"
-	KeyTypeRsa     = "RSA"
-	KeyTypeEd25519 = "ED25519"
+	KeyTypeHmac       = "HMAC"
+	KeyTypeHmacBase64 = "HMACBase64"
+	KeyTypeRsa        = "RSA"
+	KeyTypeEd25519    = "ED25519"
 )
 
 func SignFunc(keyType string) (func(string, string) (*string, error), error) {
 	switch {
 	case keyType == KeyTypeHmac:
 		return Hmac, nil
+	case keyType == KeyTypeHmacBase64:
+		return HmacBase64, nil
 	case keyType == KeyTypeRsa:
 		return Rsa, nil
 	case keyType == KeyTypeEd25519:
@@ -43,6 +46,16 @@ func Hmac(secretKey string, data string) (*string, error) {
 		return nil, err
 	}
 	encodeData := fmt.Sprintf("%x", (mac.Sum(nil)))
+	return &encodeData, nil
+}
+
+func HmacBase64(secretKey string, data string) (*string, error) {
+	mac := hmac.New(sha256.New, []byte(secretKey))
+	_, err := mac.Write([]byte(data))
+	if err != nil {
+		return nil, err
+	}
+	encodeData := base64.StdEncoding.EncodeToString(mac.Sum(nil))
 	return &encodeData, nil
 }
 

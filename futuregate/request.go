@@ -1,20 +1,22 @@
-package futurebingx
+package futuregate
 
 import (
 	"bytes"
+	"crypto/sha512"
+	"encoding/hex"
 	"fmt"
 	"net/http"
-	"net/url"
+	"time"
 
 	"github.com/Betarost/onetrades/utils"
 )
 
 func CreateFullURL(r *utils.Request) error {
 	fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
-	r.Timestamp = utils.CurrentTimestamp() - r.TimeOffset
-	if r.SecType == utils.SecTypeSigned {
-		r.SetParam("timestamp", r.Timestamp)
-	}
+	r.Timestamp = time.Now().Unix() - r.TimeOffset
+	// if r.SecType == utils.SecTypeSigned {
+	// 	r.SetParam("timestamp", r.Timestamp)
+	// }
 	queryString := r.Query.Encode()
 	if queryString != "" {
 		fullURL = fmt.Sprintf("%s?%s", fullURL, queryString)
@@ -42,7 +44,9 @@ func CreateSign(r *utils.Request) error {
 		if err != nil {
 			return err
 		}
-		raw := r.QueryString
+		h := sha512.New()
+		hashedPayload := hex.EncodeToString(h.Sum(nil))
+		raw := fmt.Sprintf("%s\n%s\n%s\n%s\n%d", r.Method, r.Endpoint, r.QueryString, hashedPayload, r.Timestamp)
 
 		sign, err := sf(r.TmpSig, raw)
 		if err != nil {
@@ -60,19 +64,13 @@ func CreateHeaders(r *utils.Request) error {
 		header = r.Header.Clone()
 	}
 
+	header.Set("Accept", "application/json")
 	header.Set("Content-Type", "application/json")
 	if r.SecType == utils.SecTypeSigned {
-		fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
-		v := url.Values{}
-		v.Set("signature", r.Sign)
-		if r.QueryString == "" {
-			r.QueryString = v.Encode()
-		} else {
-			r.QueryString = fmt.Sprintf("%s&%s", r.QueryString, v.Encode())
-		}
-		fullURL = fmt.Sprintf("%s?%s", fullURL, r.QueryString)
-		r.FullURL = fullURL
-		header.Set("X-BX-APIKEY", r.TmpApi)
+
+		header.Set("KEY", r.TmpApi)
+		header.Set("SIGN", r.Sign)
+		header.Set("Timestamp", fmt.Sprintf("%d", r.Timestamp))
 	}
 	r.TmpApi = ""
 	r.Header = header

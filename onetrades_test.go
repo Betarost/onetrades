@@ -39,9 +39,39 @@ func TestOnetrades(t *testing.T) {
 	// t.Logf("Results: %+v  %v", res, err)
 
 	//=====================BINGX GET BALANCE======================-=====
-	bingxKey := viper.GetString("BINGX_API")
-	bingxSecret := viper.GetString("BINGX_SECRET")
-	client := NewFutureBingxClient(bingxKey, bingxSecret)
+	// bingxKey := viper.GetString("BINGX_API")
+	// bingxSecret := viper.GetString("BINGX_SECRET")
+	// client := NewFutureBingxClient(bingxKey, bingxSecret)
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+
+	//=====================GATE GET BALANCE======================-=====
+	gateKey := viper.GetString("GATE_API")
+	gateSecret := viper.GetString("GATE_SECRET")
+	client := NewFutureGateClient(gateKey, gateSecret)
 	res, err := client.NewGetAccountBalance().Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
+
+	//=====================BITGET GET BALANCE======================-=====
+	// bitgetKey := viper.GetString("BITGET_API")
+	// bitgetSecret := viper.GetString("BITGET_SECRET")
+	// bitgetMemo := viper.GetString("BITGET_MEMO")
+	// client := NewFutureBitgetClient(bitgetKey, bitgetSecret, bitgetMemo)
+	// client.Debug = true
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+
+	//=====================HUOBI GET BALANCE======================-=====
+	// bingxKey := viper.GetString("BINGX_API")
+	// bingxSecret := viper.GetString("BINGX_SECRET")
+	// client := NewFutureBingxClient(bingxKey, bingxSecret)
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+
+	//=====================OKX GET BALANCE======================-=====
+	// bingxKey := viper.GetString("BINGX_API")
+	// bingxSecret := viper.GetString("BINGX_SECRET")
+	// client := NewFutureBingxClient(bingxKey, bingxSecret)
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 }
