@@ -18,8 +18,3 @@ func (e APIError) Error() string {
 func (e APIError) IsValid() bool {
 	return e.Message == "OK" && e.Code == 0
 }
-
-func IsAPIError(e error) bool {
-	_, ok := e.(*APIError)
-	return ok
-}

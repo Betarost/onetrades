@@ -24,9 +24,17 @@ func TestOnetrades(t *testing.T) {
 	// t.Logf("Results: %+v  %v", res, err)
 
 	//=====================BYBIT GET BALANCE======================-=====
-	bybitKey := viper.GetString("BYBIT_API")
-	bybitSecret := viper.GetString("BYBIT_SECRET")
-	client := NewFutureBybitClient(bybitKey, bybitSecret)
+	// bybitKey := viper.GetString("BYBIT_API")
+	// bybitSecret := viper.GetString("BYBIT_SECRET")
+	// client := NewFutureBybitClient(bybitKey, bybitSecret)
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+
+	//=====================BYBIT GET BALANCE======================-=====
+	mexcKey := viper.GetString("MEX_API")
+	mexcSecret := viper.GetString("MEX_SECRET")
+	mexcMemo := viper.GetString("MEX_MEMO")
+	client := NewFutureMexcClient(mexcKey, mexcSecret, mexcMemo)
 	res, err := client.NewGetAccountBalance().Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 }

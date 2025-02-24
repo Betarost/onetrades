@@ -38,6 +38,7 @@ type Request struct {
 	FullURL     string
 	TmpSig      string
 	TmpApi      string
+	TmpMemo     string
 }
 
 type RequestOption func(*Request) error
