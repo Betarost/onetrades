@@ -1,0 +1,27 @@
+package main
+
+import (
+	"context"
+	"log"
+
+	onetrades "github.com/Betarost/onetrades/test"
+	"github.com/spf13/viper"
+)
+
+func main() {
+	viper.SetConfigFile(".env")
+	viper.AutomaticEnv()
+
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalln("Error ReadInConfig", err)
+	}
+
+	binanceKey := viper.GetString("BINANCE_API")
+	binanceSecret := viper.GetString("BINANCE_SECRET")
+
+	client := onetrades.NewFutureBinanceClient(binanceKey, binanceSecret)
+	// client.Debug = true
+	res, err := client.NewGetAccountBalance().Do(context.Background())
+	log.Println("=ee195b=", err)
+	log.Printf("=b4c5ef= %+v", res)
+}
