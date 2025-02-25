@@ -16,12 +16,17 @@ func TestOnetrades(t *testing.T) {
 		log.Fatalln("Error ReadInConfig", err)
 	}
 
-	//=====================BINANCE GET BALANCE==========================
-	// binanceKey := viper.GetString("BINANCE_API")
-	// binanceSecret := viper.GetString("BINANCE_SECRET")
-	// client := onetrades.NewFutureBinanceClient(binanceKey, binanceSecret)
+	//==========================BINANCE==========================
+	binanceKey := viper.GetString("BINANCE_API")
+	binanceSecret := viper.GetString("BINANCE_SECRET")
+	client := NewFutureBinanceClient(binanceKey, binanceSecret)
+	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET Position
+	res, err := client.NewGetPositions().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
+	//======================END BINANCE==========================
 
 	//=====================BYBIT GET BALANCE======================-=====
 	// bybitKey := viper.GetString("BYBIT_API")
@@ -46,11 +51,11 @@ func TestOnetrades(t *testing.T) {
 	// t.Logf("Results: %+v  %v", res, err)
 
 	//=====================GATE GET BALANCE======================-=====
-	gateKey := viper.GetString("GATE_API")
-	gateSecret := viper.GetString("GATE_SECRET")
-	client := NewFutureGateClient(gateKey, gateSecret)
-	res, err := client.NewGetAccountBalance().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// gateKey := viper.GetString("GATE_API")
+	// gateSecret := viper.GetString("GATE_SECRET")
+	// client := NewFutureGateClient(gateKey, gateSecret)
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 
 	//=====================BITGET GET BALANCE======================-=====
 	// bitgetKey := viper.GetString("BITGET_API")

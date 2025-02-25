@@ -7,3 +7,15 @@ type AccountBalance struct {
 	CrossWalletBalance float64 `json:"crossWalletBalance" bson:"crossWalletBalance"`
 	UnrealizedProfit   float64 `json:"unrealizedProfit" bson:"unrealizedProfit"`
 }
+
+type Position struct {
+	Symbol           string  `json:"symbol" bson:"symbol"`
+	PositionSide     string  `json:"positionSide" bson:"positionSide"`
+	PositionAmt      float64 `json:"positionAmt" bson:"positionAmt"`
+	EntryPrice       float64 `json:"entryPrice" bson:"entryPrice"`
+	MarkPrice        float64 `json:"markPrice" bson:"markPrice"`
+	UnRealizedProfit float64 `json:"unRealizedProfit" bson:"unRealizedProfit"`
+	Notional         float64 `json:"notional" bson:"notional"`
+	InitialMargin    float64 `json:"initialMargin" bson:"initialMargin"`
+	UpdateTime       int64   `json:"updateTime" bson:"updateTime"`
+}
