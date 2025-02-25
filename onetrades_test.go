@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"testing"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -70,7 +71,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET OrdersHistory
-	res, err := client.NewGetOrdersHistory().Do(context.Background())
+	startime := time.Now().UnixMilli() - (60 * 60 * 1000)
+	res, err := client.NewGetOrdersHistory().StartTime(startime).Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 	//======================END BINGX==========================
 

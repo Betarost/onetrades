@@ -59,6 +59,34 @@ func (s *GetOrdersHistory) Do(ctx context.Context, opts ...utils.RequestOption) 
 		SecType:    utils.SecTypeSigned,
 	}
 
+	m := utils.Params{}
+
+	if s.symbol != nil {
+		m["symbol"] = *s.symbol
+	}
+
+	if s.currency != nil {
+		m["currency"] = *s.currency
+	}
+
+	if s.orderId != nil {
+		m["orderId"] = *s.orderId
+	}
+
+	if s.startTime != nil {
+		m["startTime"] = *s.startTime
+	}
+
+	if s.endTime != nil {
+		m["endTime"] = *s.endTime
+	}
+
+	if s.limit != nil {
+		m["limit"] = *s.limit
+	}
+
+	r.SetParams(m)
+
 	data, _, err := s.c.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
