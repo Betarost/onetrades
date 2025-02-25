@@ -1,6 +1,8 @@
 package futurebingx
 
 import (
+	"fmt"
+
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
@@ -28,6 +30,25 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 			UnRealizedProfit: utils.StringToFloat(item.UnrealizedProfit),
 			Notional:         utils.StringToFloat(item.PositionValue),
 			UpdateTime:       item.UpdateTime,
+		})
+	}
+	return res
+}
+
+func ConvertOrdersHistory(answ []OrdersHistory) (res []entity.OrdersHistory) {
+	for _, item := range answ {
+		res = append(res, entity.OrdersHistory{
+			Symbol:       item.Symbol,
+			OrderID:      fmt.Sprintf("%d", item.OrderID),
+			Side:         item.Side,
+			PositionSide: item.PositionSide,
+			Price:        utils.StringToFloat(item.Price),
+			OrigQty:      utils.StringToFloat(item.OrigQty),
+			AvgPrice:     utils.StringToFloat(item.AvgPrice),
+			Type:         item.Type,
+			Status:       item.Status,
+			Time:         item.Time,
+			UpdateTime:   item.UpdateTime,
 		})
 	}
 	return res

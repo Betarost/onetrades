@@ -107,3 +107,7 @@ func (c *Client) NewGetAccountBalance() *GetAccountBalance {
 func (c *Client) NewGetPositions() *GetPositions {
 	return &GetPositions{c: c}
 }
+
+func (c *Client) NewGetOrdersHistory() *GetOrdersHistory {
+	return &GetOrdersHistory{c: c}
+}
