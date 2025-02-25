@@ -103,3 +103,7 @@ func NewClient(apiKey, secretKey string) *Client {
 func (c *Client) NewGetAccountBalance() *GetAccountBalance {
 	return &GetAccountBalance{c: c}
 }
+
+func (c *Client) NewGetPositions() *GetPositions {
+	return &GetPositions{c: c}
+}

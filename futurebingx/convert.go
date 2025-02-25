@@ -16,3 +16,19 @@ func ConvertAccountBalance(answ []Balance) (res []entity.AccountBalance) {
 	}
 	return res
 }
+
+func ConvertPositions(answ []Position) (res []entity.Position) {
+	for _, item := range answ {
+		res = append(res, entity.Position{
+			Symbol:           item.Symbol,
+			PositionSide:     item.PositionSide,
+			PositionAmt:      utils.StringToFloat(item.PositionAmt),
+			EntryPrice:       utils.StringToFloat(item.AvgPrice),
+			MarkPrice:        utils.StringToFloat(item.MarkPrice),
+			UnRealizedProfit: utils.StringToFloat(item.UnrealizedProfit),
+			Notional:         utils.StringToFloat(item.PositionValue),
+			UpdateTime:       item.UpdateTime,
+		})
+	}
+	return res
+}
