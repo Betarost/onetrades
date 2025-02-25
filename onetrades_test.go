@@ -52,7 +52,10 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET ContractInfo
-	res, err := client.NewGetContractInfo().Symbol("DOGE_USDT").Do(context.Background())
+	// res, err := client.NewGetContractInfo().Symbol("DOGE_USDT").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET ContractInfo
+	res, err := client.NewGetFairPrice().Symbol("DOGE_USDT").Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 	//======================END MEXC==========================
 
