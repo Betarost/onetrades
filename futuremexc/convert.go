@@ -39,3 +39,9 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 	}
 	return res
 }
+
+func ConvertContractInfo(answ ContractInfo) (res entity.ContractInfo) {
+	res.Symbol = answ.Symbol
+	res.ContractSize = answ.ContractSize
+	return res
+}

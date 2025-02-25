@@ -41,28 +41,31 @@ func TestOnetrades(t *testing.T) {
 	//======================END BYBIT==========================
 
 	//==========================MEXC==========================
-	// mexcKey := viper.GetString("MEX_API")
-	// mexcSecret := viper.GetString("MEX_SECRET")
-	// mexcMemo := viper.GetString("MEX_MEMO")
-	// client := NewFutureMexcClient(mexcKey, mexcSecret, mexcMemo)
+	mexcKey := viper.GetString("MEX_API")
+	mexcSecret := viper.GetString("MEX_SECRET")
+	mexcMemo := viper.GetString("MEX_MEMO")
+	client := NewFutureMexcClient(mexcKey, mexcSecret, mexcMemo)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET ContractInfo
+	res, err := client.NewGetContractInfo().Symbol("DOGE_USDT").Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================END MEXC==========================
 
 	//==========================BINGX==========================
-	bingxKey := viper.GetString("BINGX_API")
-	bingxSecret := viper.GetString("BINGX_SECRET")
-	client := NewFutureBingxClient(bingxKey, bingxSecret)
+	// bingxKey := viper.GetString("BINGX_API")
+	// bingxSecret := viper.GetString("BINGX_SECRET")
+	// client := NewFutureBingxClient(bingxKey, bingxSecret)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
-	res, err := client.NewGetPositions().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetPositions().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================END BINGX==========================
 
 	//=====================GATE GET BALANCE======================-=====

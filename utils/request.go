@@ -18,7 +18,7 @@ const (
 	SecTypeSigned
 )
 
-type params map[string]interface{}
+type Params map[string]interface{}
 
 type Request struct {
 	Method      string
@@ -51,7 +51,7 @@ func (r *Request) SetParam(key string, value interface{}) *Request {
 	return r
 }
 
-func (r *Request) SetParams(m params) *Request {
+func (r *Request) SetParams(m Params) *Request {
 	for k, v := range m {
 		r.SetParam(k, v)
 	}
@@ -66,7 +66,7 @@ func (r *Request) SetFormParam(key string, value interface{}) *Request {
 	return r
 }
 
-func (r *Request) SetFormParams(m params) *Request {
+func (r *Request) SetFormParams(m Params) *Request {
 	for k, v := range m {
 		r.SetFormParam(k, v)
 	}
