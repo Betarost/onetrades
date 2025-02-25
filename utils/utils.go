@@ -14,3 +14,8 @@ func StringToFloat(num string) float64 {
 	newNum, _ := strconv.ParseFloat(strings.Replace(num, ",", ".", -1), 64)
 	return newNum
 }
+
+func StringToInt64(num string) int64 {
+	newNum, _ := strconv.ParseInt(num, 10, 64)
+	return newNum
+}
