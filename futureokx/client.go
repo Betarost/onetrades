@@ -47,6 +47,7 @@ func (c *Client) callAPI(ctx context.Context, r *utils.Request, opts ...utils.Re
 	c.debug("Body %s\n", r.BodyString)
 	c.debug("Sign %s\n", r.Sign)
 	c.debug("Headers %+v\n", r.Header)
+
 	req, err := http.NewRequest(r.Method, r.FullURL, r.Body)
 	if err != nil {
 		return []byte{}, &http.Header{}, err
@@ -108,4 +109,8 @@ func (c *Client) NewGetAccountBalance() *GetAccountBalance {
 
 func (c *Client) NewGetPositions() *GetPositions {
 	return &GetPositions{c: c}
+}
+
+func (c *Client) NewSetAccountMode() *SetAccountMode {
+	return &SetAccountMode{c: c}
 }

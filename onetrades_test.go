@@ -84,7 +84,10 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
-	res, err := client.NewGetPositions().Do(context.Background())
+	// res, err := client.NewGetPositions().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================= SET AccountMode
+	res, err := client.NewSetAccountMode().Mode("2").Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 

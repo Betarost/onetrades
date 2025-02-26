@@ -3,11 +3,63 @@ package futureokx
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
+
+// ===================SetAccountMode==================
+type SetAccountMode struct {
+	c    *Client
+	mode *string
+}
+
+func (s *SetAccountMode) Mode(mode string) *SetAccountMode {
+	s.mode = &mode
+	return s
+}
+
+func (s *SetAccountMode) Do(ctx context.Context, opts ...utils.RequestOption) (res bool, err error) {
+	r := &utils.Request{
+		Method:     http.MethodPost,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/account/set-account-level",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{}
+
+	if s.mode != nil {
+		m["acctLv"] = *s.mode
+	}
+	r.SetFormParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return false, err
+	}
+
+	var answ struct {
+		Result []AccountMode `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return false, err
+	}
+
+	if len(answ.Result) == 0 {
+		return false, errors.New("Zero Answer")
+	}
+	return true, nil
+}
+
+type AccountMode struct {
+	AcctLv string `json:"acctLv"`
+}
 
 //===================GetAccountBalance==================
 

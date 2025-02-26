@@ -2,8 +2,10 @@ package futureokx
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Betarost/onetrades/utils"
@@ -22,9 +24,18 @@ func CreateFullURL(r *utils.Request) error {
 
 func CreateBody(r *utils.Request) error {
 	body := &bytes.Buffer{}
-	bodyString := r.Form.Encode()
+	j, err := json.Marshal(r.Form)
+	if err != nil {
+		return err
+	}
+	bodyString := string(j)
+	if bodyString == "{}" {
+		bodyString = ""
+	} else {
+		bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
+		bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+	}
 	if bodyString != "" {
-		r.Header.Set("Content-Type", "application/json")
 		body = bytes.NewBufferString(bodyString)
 	}
 	r.BodyString = bodyString
