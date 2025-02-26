@@ -14,3 +14,8 @@ type OrdersHistory struct {
 	UpdateTime   int64   `json:"updateTime" bson:"updateTime"`
 	Hex          string  `json:"hex" bson:"hex"`
 }
+
+type OrderList struct {
+	Symbol  string `json:"symbol" bson:"symbol"`
+	OrderID string `json:"orderId" bson:"orderId"`
+}

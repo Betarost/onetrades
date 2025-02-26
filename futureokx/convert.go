@@ -60,3 +60,13 @@ func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 	}
 	return res
 }
+
+func ConvertOrderList(answ []OrderList) (res []entity.OrderList) {
+	for _, item := range answ {
+		res = append(res, entity.OrderList{
+			Symbol:  item.InstId,
+			OrderID: item.OrdId,
+		})
+	}
+	return res
+}

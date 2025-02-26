@@ -18,11 +18,11 @@ type TradePlaceOrder struct {
 	positionSide *entity.PositionSideType
 	side         *entity.SideType
 	orderType    *entity.OrderType
-	size         *float64
+	size         *string
 	price        *string
 }
 
-func (s *TradePlaceOrder) Size(size float64) *TradePlaceOrder {
+func (s *TradePlaceOrder) Size(size string) *TradePlaceOrder {
 	s.size = &size
 	return s
 }
@@ -122,4 +122,76 @@ type PlaceOrder struct {
 	Ts      string `json:"ts"`
 	SCode   string `json:"sCode"`
 	SMsg    string `json:"sMsg"`
+}
+
+// ==============GetOrderList=================
+type GetOrderList struct {
+	c         *Client
+	symbol    *string
+	orderType *entity.OrderType
+	limit     *int
+}
+
+func (s *GetOrderList) Symbol(symbol string) *GetOrderList {
+	s.symbol = &symbol
+	return s
+}
+
+func (s *GetOrderList) OrderType(orderType entity.OrderType) *GetOrderList {
+	s.orderType = &orderType
+	return s
+}
+
+func (s *GetOrderList) Limit(limit int) *GetOrderList {
+	s.limit = &limit
+	return s
+}
+
+func (s *GetOrderList) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.OrderList, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/trade/orders-pending",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{
+		"instType": "SWAP",
+	}
+
+	if s.symbol != nil {
+		m["instId"] = *s.symbol
+	}
+
+	if s.limit != nil {
+		m["limit"] = *s.limit
+	}
+
+	if s.orderType != nil {
+		m["ordType"] = strings.ToLower(string(*s.orderType))
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []OrderList `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	return ConvertOrderList(answ.Result), nil
+}
+
+type OrderList struct {
+	InstId string `json:"instId"`
+	OrdId  string `json:"ordId"`
 }
