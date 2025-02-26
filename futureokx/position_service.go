@@ -3,11 +3,67 @@ package futureokx
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
+
+// ==============SetPositionMode=================
+type SetPositionMode struct {
+	c    *Client
+	mode *entity.PositionModeType
+}
+
+func (s *SetPositionMode) Mode(mode entity.PositionModeType) *SetPositionMode {
+	s.mode = &mode
+	return s
+}
+
+func (s *SetPositionMode) Do(ctx context.Context, opts ...utils.RequestOption) (res bool, err error) {
+	r := &utils.Request{
+		Method:     http.MethodPost,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/account/set-position-mode",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{}
+
+	if s.mode != nil {
+		if *s.mode == entity.PositionModeTypeHedge {
+			m["posMode"] = "long_short_mode"
+		} else if *s.mode == entity.PositionModeTypeOneWay {
+			m["posMode"] = "net_mode"
+		}
+	}
+	r.SetFormParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return false, err
+	}
+
+	var answ struct {
+		Result []AccountMode `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return false, err
+	}
+
+	if len(answ.Result) == 0 {
+		return false, errors.New("Zero Answer")
+	}
+	return true, nil
+}
+
+type PositionMode struct {
+	PosMode string `json:"posMode"`
+}
 
 // ==============GetPositions=================
 type GetPositions struct {

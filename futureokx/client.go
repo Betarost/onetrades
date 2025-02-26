@@ -114,3 +114,7 @@ func (c *Client) NewGetPositions() *GetPositions {
 func (c *Client) NewSetAccountMode() *SetAccountMode {
 	return &SetAccountMode{c: c}
 }
+
+func (c *Client) NewSetPositionMode() *SetPositionMode {
+	return &SetPositionMode{c: c}
+}
