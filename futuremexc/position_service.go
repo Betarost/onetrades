@@ -46,5 +46,6 @@ type Position struct {
 	PositionType int     `json:"positionType" bson:"positionType"`
 	HoldAvgPrice float64 `json:"holdAvgPrice" bson:"holdAvgPrice"`
 	Oim          float64 `json:"oim" bson:"oim"`
+	Realised     float64 `json:"realised" bson:"realised"`
 	UpdateTime   int64   `json:"updateTime" bson:"updateTime"`
 }

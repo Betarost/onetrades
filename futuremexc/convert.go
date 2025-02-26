@@ -27,14 +27,14 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 		}
 
 		res = append(res, entity.Position{
-			Symbol:        item.Symbol,
-			PositionSide:  positionSide,
-			PositionAmt:   item.HoldVol,
-			EntryPrice:    item.HoldAvgPrice,
-			InitialMargin: item.Oim,
-			// UnRealizedProfit: utils.StringToFloat(item.UnrealisedPnl),
-			Notional:   item.HoldVol * item.HoldAvgPrice,
-			UpdateTime: item.UpdateTime,
+			Symbol:         item.Symbol,
+			PositionSide:   positionSide,
+			PositionAmt:    item.HoldVol,
+			EntryPrice:     item.HoldAvgPrice,
+			InitialMargin:  item.Oim,
+			RealizedProfit: item.Realised,
+			Notional:       item.HoldVol * item.HoldAvgPrice,
+			UpdateTime:     item.UpdateTime,
 		})
 	}
 	return res
