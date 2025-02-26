@@ -126,3 +126,7 @@ func (c *Client) NewSetPositionMode() *SetPositionMode {
 func (c *Client) NewSetLeverage() *SetLeverage {
 	return &SetLeverage{c: c}
 }
+
+func (c *Client) NewGetMarkPrice() *GetMarkPrice {
+	return &GetMarkPrice{c: c}
+}
