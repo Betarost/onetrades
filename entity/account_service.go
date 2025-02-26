@@ -15,6 +15,7 @@ type Position struct {
 	EntryPrice       float64 `json:"entryPrice" bson:"entryPrice"`
 	MarkPrice        float64 `json:"markPrice" bson:"markPrice"`
 	UnRealizedProfit float64 `json:"unRealizedProfit" bson:"unRealizedProfit"`
+	RealizedProfit   float64 `json:"realizedProfit" bson:"realizedProfit"`
 	Notional         float64 `json:"notional" bson:"notional"`
 	InitialMargin    float64 `json:"initialMargin" bson:"initialMargin"`
 	UpdateTime       int64   `json:"updateTime" bson:"updateTime"`

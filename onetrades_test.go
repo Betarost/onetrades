@@ -81,15 +81,11 @@ func TestOnetrades(t *testing.T) {
 	okxMemo := viper.GetString("OKX_MEMO")
 	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET Balance
-	res, err := client.NewGetAccountBalance().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
-	// res, err := client.NewGetPositions().Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
-	//======================= GET OrdersHistory
-	// startime := time.Now().Add(time.Hour * (-5)).UnixMilli()
-	// res, err := client.NewGetOrdersHistory().StartTime(startime).Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
+	res, err := client.NewGetPositions().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 
 	//=====================GATE GET BALANCE======================-=====
