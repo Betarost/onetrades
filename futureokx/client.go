@@ -111,6 +111,10 @@ func (c *Client) NewGetPositions() *GetPositions {
 	return &GetPositions{c: c}
 }
 
+func (c *Client) NewGetContractsInfo() *GetContractsInfo {
+	return &GetContractsInfo{c: c}
+}
+
 func (c *Client) NewSetAccountMode() *SetAccountMode {
 	return &SetAccountMode{c: c}
 }

@@ -93,7 +93,10 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= SET Leverage
-	res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage(50).Do(context.Background())
+	// res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage(50).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET ContractsInfo
+	res, err := client.NewGetContractsInfo().Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 

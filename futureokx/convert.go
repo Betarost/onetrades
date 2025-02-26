@@ -48,3 +48,15 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 	}
 	return res
 }
+
+func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
+	if len(answ) == 0 {
+		return res
+	}
+	for _, item := range answ {
+		res = append(res, entity.ContractInfo{
+			Symbol: item.InstId,
+		})
+	}
+	return res
+}
