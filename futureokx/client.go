@@ -118,3 +118,7 @@ func (c *Client) NewSetAccountMode() *SetAccountMode {
 func (c *Client) NewSetPositionMode() *SetPositionMode {
 	return &SetPositionMode{c: c}
 }
+
+func (c *Client) NewSetLeverage() *SetLeverage {
+	return &SetLeverage{c: c}
+}

@@ -4,11 +4,77 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
+
+// ==============SetLeverage=================
+type SetLeverage struct {
+	c        *Client
+	symbol   *string
+	leverage *int
+}
+
+func (s *SetLeverage) Symbol(symbol string) *SetLeverage {
+	s.symbol = &symbol
+	return s
+}
+
+func (s *SetLeverage) Leverage(leverage int) *SetLeverage {
+	s.leverage = &leverage
+	return s
+}
+
+func (s *SetLeverage) Do(ctx context.Context, opts ...utils.RequestOption) (res bool, err error) {
+	r := &utils.Request{
+		Method:     http.MethodPost,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/account/set-leverage",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{
+		"mgnMode": "cross",
+	}
+
+	if s.symbol != nil {
+		m["instId"] = *s.symbol
+	}
+
+	if s.leverage != nil {
+		m["lever"] = fmt.Sprintf("%d", *s.leverage)
+	}
+	r.SetFormParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return false, err
+	}
+
+	var answ struct {
+		Result []SetLeverageAnswer `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return false, err
+	}
+
+	if len(answ.Result) == 0 {
+		return false, errors.New("Zero Answer")
+	}
+	return true, nil
+}
+
+type SetLeverageAnswer struct {
+	MgnMode string `json:"mgnMode"`
+	InstId  string `json:"instId"`
+	PosSide string `json:"posSide"`
+}
 
 // ==============SetPositionMode=================
 type SetPositionMode struct {
@@ -47,7 +113,7 @@ func (s *SetPositionMode) Do(ctx context.Context, opts ...utils.RequestOption) (
 	}
 
 	var answ struct {
-		Result []AccountMode `json:"data"`
+		Result []PositionMode `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)

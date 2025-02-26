@@ -5,7 +5,6 @@ import (
 	"log"
 	"testing"
 
-	"github.com/Betarost/onetrades/entity"
 	"github.com/spf13/viper"
 )
 
@@ -91,7 +90,10 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewSetAccountMode().Mode("2").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= SET PositionMode
-	res, err := client.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(context.Background())
+	// res, err := client.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================= SET Leverage
+	res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage(50).Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 
