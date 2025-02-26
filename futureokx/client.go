@@ -48,6 +48,8 @@ func (c *Client) callAPI(ctx context.Context, r *utils.Request, opts ...utils.Re
 	c.debug("Sign %s\n", r.Sign)
 	c.debug("Headers %+v\n", r.Header)
 
+	// return []byte{}, &http.Header{}, err
+
 	req, err := http.NewRequest(r.Method, r.FullURL, r.Body)
 	if err != nil {
 		return []byte{}, &http.Header{}, err
@@ -137,4 +139,8 @@ func (c *Client) NewTradePlaceOrder() *TradePlaceOrder {
 
 func (c *Client) NewGetOrderList() *GetOrderList {
 	return &GetOrderList{c: c}
+}
+
+func (c *Client) NewTradeCancelOrders() *TradeCancelOrders {
+	return &TradeCancelOrders{c: c}
 }

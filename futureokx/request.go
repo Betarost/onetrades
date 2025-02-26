@@ -32,8 +32,13 @@ func CreateBody(r *utils.Request) error {
 	if bodyString == "{}" {
 		bodyString = ""
 	} else {
-		bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
-		bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+
+		if r.Form.Get("is_batch") != "" {
+			bodyString = r.Form.Get("is_batch")
+		} else {
+			bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
+			bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+		}
 	}
 	if bodyString != "" {
 		body = bytes.NewBufferString(bodyString)
