@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"testing"
-	"time"
 
 	"github.com/spf13/viper"
 )
@@ -61,9 +60,9 @@ func TestOnetrades(t *testing.T) {
 	//======================END MEXC==========================
 
 	//==========================BINGX==========================
-	bingxKey := viper.GetString("BINGX_API")
-	bingxSecret := viper.GetString("BINGX_SECRET")
-	client := NewFutureBingxClient(bingxKey, bingxSecret)
+	// bingxKey := viper.GetString("BINGX_API")
+	// bingxSecret := viper.GetString("BINGX_SECRET")
+	// client := NewFutureBingxClient(bingxKey, bingxSecret)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -71,10 +70,27 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET OrdersHistory
-	startime := time.Now().UnixMilli() - (60 * 60 * 1000)
-	res, err := client.NewGetOrdersHistory().StartTime(startime).Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// startime := time.Now().Add(time.Hour * (-5)).UnixMilli()
+	// res, err := client.NewGetOrdersHistory().StartTime(startime).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================END BINGX==========================
+
+	//==========================OKX==========================
+	okxKey := viper.GetString("OKX_API")
+	okxSecret := viper.GetString("OKX_SECRET")
+	okxMemo := viper.GetString("OKX_MEMO")
+	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	//======================= GET Balance
+	res, err := client.NewGetAccountBalance().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
+	//======================= GET Position
+	// res, err := client.NewGetPositions().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET OrdersHistory
+	// startime := time.Now().Add(time.Hour * (-5)).UnixMilli()
+	// res, err := client.NewGetOrdersHistory().StartTime(startime).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================END OKX==========================
 
 	//=====================GATE GET BALANCE======================-=====
 	// gateKey := viper.GetString("GATE_API")
@@ -99,10 +115,4 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 
-	//=====================OKX GET BALANCE======================-=====
-	// bingxKey := viper.GetString("BINGX_API")
-	// bingxSecret := viper.GetString("BINGX_SECRET")
-	// client := NewFutureBingxClient(bingxKey, bingxSecret)
-	// res, err := client.NewGetAccountBalance().Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
 }
