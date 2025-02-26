@@ -130,3 +130,7 @@ func (c *Client) NewSetLeverage() *SetLeverage {
 func (c *Client) NewGetMarkPrice() *GetMarkPrice {
 	return &GetMarkPrice{c: c}
 }
+
+func (c *Client) NewTradePlaceOrder() *TradePlaceOrder {
+	return &TradePlaceOrder{c: c}
+}
