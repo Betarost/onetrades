@@ -18,11 +18,11 @@ type TradePlaceOrder struct {
 	positionSide *entity.PositionSideType
 	side         *entity.SideType
 	orderType    *entity.OrderType
-	size         *string
+	size         *float64
 	price        *string
 }
 
-func (s *TradePlaceOrder) Size(size string) *TradePlaceOrder {
+func (s *TradePlaceOrder) Size(size float64) *TradePlaceOrder {
 	s.size = &size
 	return s
 }
