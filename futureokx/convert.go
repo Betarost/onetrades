@@ -55,7 +55,8 @@ func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 	}
 	for _, item := range answ {
 		res = append(res, entity.ContractInfo{
-			Symbol: item.InstId,
+			Symbol:      item.InstId,
+			MaxLeverage: utils.StringToInt(item.Lever),
 		})
 	}
 	return res

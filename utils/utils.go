@@ -19,3 +19,8 @@ func StringToInt64(num string) int64 {
 	newNum, _ := strconv.ParseInt(num, 10, 64)
 	return newNum
 }
+
+func StringToInt(num string) int {
+	newNum, _ := strconv.ParseInt(num, 10, 0)
+	return int(newNum)
+}

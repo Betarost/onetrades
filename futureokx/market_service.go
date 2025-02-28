@@ -70,7 +70,13 @@ type MarkPrice struct {
 
 // ==============GetContractsInfo=================
 type GetContractsInfo struct {
-	c *Client
+	c      *Client
+	symbol *string
+}
+
+func (s *GetContractsInfo) Symbol(symbol string) *GetContractsInfo {
+	s.symbol = &symbol
+	return s
 }
 
 func (s *GetContractsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.ContractInfo, err error) {
@@ -85,6 +91,11 @@ func (s *GetContractsInfo) Do(ctx context.Context, opts ...utils.RequestOption) 
 	m := utils.Params{
 		"instType": "SWAP",
 	}
+
+	if s.symbol != nil {
+		m["instId"] = *s.symbol
+	}
+
 	r.SetParams(m)
 
 	data, _, err := s.c.callAPI(ctx, r, opts...)
@@ -109,4 +120,5 @@ type ContractsInfo struct {
 	CtMult string `json:"ctMult"`
 	TickSz string `json:"tickSz"`
 	LotSz  string `json:"lotSz"`
+	Lever  string `json:"lever"`
 }
