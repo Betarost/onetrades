@@ -1,7 +1,6 @@
 package onetrades
 
 import (
-	"context"
 	"log"
 	"testing"
 
@@ -76,10 +75,10 @@ func TestOnetrades(t *testing.T) {
 	//======================END BINGX==========================
 
 	//==========================OKX==========================
-	okxKey := viper.GetString("OKX_API")
-	okxSecret := viper.GetString("OKX_SECRET")
-	okxMemo := viper.GetString("OKX_MEMO")
-	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	// okxKey := viper.GetString("OKX_API")
+	// okxSecret := viper.GetString("OKX_SECRET")
+	// okxMemo := viper.GetString("OKX_MEMO")
+	// client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -99,8 +98,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetContractsInfo().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET ContractsInfo One Symbol
-	res, err := client.NewGetContractsInfo().Symbol("DOGE-USDT-SWAP").Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetContractsInfo().Symbol("DOGE-USDT-SWAP").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET MarkPrice
 	// res, err := client.NewGetMarkPrice().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

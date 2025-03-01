@@ -35,6 +35,7 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 			EntryPrice:       utils.StringToFloat(item.AvgPrice),
 			MarkPrice:        utils.StringToFloat(item.MarkPrice),
 			UnRealizedProfit: utils.StringToFloat(item.UnrealisedPnl),
+			RealizedProfit:   utils.StringToFloat(item.CurRealisedPnl),
 			Notional:         utils.StringToFloat(item.PositionValue),
 			UpdateTime:       utils.StringToInt64(item.UpdatedTime),
 		})

@@ -53,6 +53,7 @@ type Position struct {
 	PositionValue   string `json:"positionValue" bson:"positionValue"`
 	MarkPrice       string `json:"markPrice" bson:"markPrice"`
 	UnrealisedPnl   string `json:"unrealisedPnl" bson:"unrealisedPnl"`
+	CurRealisedPnl  string `json:"curRealisedPnl" bson:"curRealisedPnl"`
 	PositionBalance string `json:"positionBalance" bson:"positionBalance"`
 	UpdatedTime     string `json:"updatedTime" bson:"updatedTime"`
 }
