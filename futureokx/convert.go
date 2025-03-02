@@ -64,9 +64,26 @@ func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 
 func ConvertOrderList(answ []OrderList) (res []entity.OrderList) {
 	for _, item := range answ {
+		positionSide := "LONG"
+		if item.PosSide == "net" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PosSide)
+		}
+
 		res = append(res, entity.OrderList{
-			Symbol:  item.InstId,
-			OrderID: item.OrdId,
+			Symbol:       item.InstId,
+			OrderID:      item.OrdId,
+			PositionSide: positionSide,
+			Side:         item.Side,
+			PositionAmt:  utils.StringToFloat(item.Sz),
+			Price:        utils.StringToFloat(item.Px),
+			Notional:     utils.StringToFloat(item.Sz) * utils.StringToFloat(item.Px),
+			Type:         strings.ToUpper(item.OrdType),
+			Status:       item.State,
+			UpdateTime:   utils.StringToInt64(item.UTime),
 		})
 	}
 	return res

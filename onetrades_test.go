@@ -1,9 +1,11 @@
 package onetrades
 
 import (
+	"context"
 	"log"
 	"testing"
 
+	"github.com/Betarost/onetrades/entity"
 	"github.com/spf13/viper"
 )
 
@@ -75,10 +77,10 @@ func TestOnetrades(t *testing.T) {
 	//======================END BINGX==========================
 
 	//==========================OKX==========================
-	// okxKey := viper.GetString("OKX_API")
-	// okxSecret := viper.GetString("OKX_SECRET")
-	// okxMemo := viper.GetString("OKX_MEMO")
-	// client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	okxKey := viper.GetString("OKX_API")
+	okxSecret := viper.GetString("OKX_SECRET")
+	okxMemo := viper.GetString("OKX_MEMO")
+	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -108,7 +110,8 @@ func TestOnetrades(t *testing.T) {
 	// t.Logf("Results: %+v  %v", res, err)
 	//=======================Get OrderList
 	// res, err := client.NewGetOrderList().Symbol("DOGE-USDT-SWAP").OrderType(entity.OrderTypeLimit).Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
+	res, err := client.NewGetOrderList().OrderType(entity.OrderTypeLimit).Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//=======================Get CancelOrders
 	// res, err := client.NewTradeCancelOrders().Symbol("DOGE-USDT-SWAP").OrderIDs([]string{"2284238701511041024", "2284179927031078912"}).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

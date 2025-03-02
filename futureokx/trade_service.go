@@ -278,6 +278,13 @@ func (s *GetOrderList) Do(ctx context.Context, opts ...utils.RequestOption) (res
 }
 
 type OrderList struct {
-	InstId string `json:"instId"`
-	OrdId  string `json:"ordId"`
+	InstId  string `json:"instId"`
+	OrdId   string `json:"ordId"`
+	Px      string `json:"px"`
+	Sz      string `json:"sz"`
+	PosSide string `json:"posSide"`
+	OrdType string `json:"ordType"`
+	Side    string `json:"side"`
+	State   string `json:"state"`
+	UTime   string `json:"uTime"`
 }
