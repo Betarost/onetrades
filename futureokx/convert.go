@@ -88,3 +88,11 @@ func ConvertOrderList(answ []OrderList) (res []entity.OrderList) {
 	}
 	return res
 }
+
+func ConvertWsMarkPrice(answ PublicMarkPrice) (res entity.WsPublicMarkPriceEvent) {
+	return entity.WsPublicMarkPriceEvent{
+		Symbol: answ.InstId,
+		Price:  utils.StringToFloat(answ.MarkPx),
+		Time:   utils.StringToInt64(answ.Ts),
+	}
+}

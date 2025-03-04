@@ -4,12 +4,14 @@ var (
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
 	MexcFutureApiMainUrl    = "https://futures.mexc.com"
+	BingxFutureApiMainUrl   = "https://open-api.bingx.com"
+	GateFutureApiMainUrl    = "https://api.gateio.ws"
+	BitgetFutureApiMainUrl  = "https://api.bitget.com"
+	OKXFutureApiMainUrl     = "https://www.okx.com"
+	HuobiFutureApiMainUrl   = "https://api.hbdm.com"
 
-	BingxFutureApiMainUrl  = "https://open-api.bingx.com"
-	GateFutureApiMainUrl   = "https://api.gateio.ws"
-	BitgetFutureApiMainUrl = "https://api.bitget.com"
-	OKXFutureApiMainUrl    = "https://www.okx.com"
-	HuobiFutureApiMainUrl  = "https://api.hbdm.com"
+	OKXFutureWsPublicUrl  = "wss://ws.okx.com:8443/ws/v5/public"
+	OKXFutureWsPrivateUrl = "wss://ws.okx.com:8443/ws/v5/private"
 )
 
 func GetApiEndpoint(trade string) string {
@@ -30,6 +32,24 @@ func GetApiEndpoint(trade string) string {
 		return OKXFutureApiMainUrl
 	case "HUOBI":
 		return HuobiFutureApiMainUrl
+	default:
+		return ""
+	}
+}
+
+func GetWsPublicEndpoint(trade string) string {
+	switch trade {
+	case "OKX":
+		return OKXFutureWsPublicUrl
+	default:
+		return ""
+	}
+}
+
+func GetWsPrivateEndpoint(trade string) string {
+	switch trade {
+	case "OKX":
+		return OKXFutureWsPrivateUrl
 	default:
 		return ""
 	}

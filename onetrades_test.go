@@ -1,8 +1,9 @@
 package onetrades
 
 import (
-	"context"
 	"log"
+	"os"
+	"os/signal"
 	"testing"
 
 	"github.com/Betarost/onetrades/entity"
@@ -110,11 +111,21 @@ func TestOnetrades(t *testing.T) {
 	// t.Logf("Results: %+v  %v", res, err)
 	//=======================Get OrderList
 	// res, err := client.NewGetOrderList().Symbol("DOGE-USDT-SWAP").OrderType(entity.OrderTypeLimit).Do(context.Background())
-	res, err := client.NewGetOrderList().OrderType(entity.OrderTypeLimit).Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetOrderList().OrderType(entity.OrderTypeLimit).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//=======================Get CancelOrders
 	// res, err := client.NewTradeCancelOrders().Symbol("DOGE-USDT-SWAP").OrderIDs([]string{"2284238701511041024", "2284179927031078912"}).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	//=======================WebSocket MarkPrice
+	ws := client.NewWebSocketPublicClient()
+	wsPublicMarkPriceHandler := func(event *entity.WsPublicMarkPriceEvent) {
+		log.Printf("=wsPublicMarkPriceHandler= %+v", event)
+	}
+
+	errHandler := func(err error) {
+		log.Printf("wsPublicMarkPriceHandler Error: %s", err.Error())
+	}
+	ws.NewPublicMarkPrice("DOGE-USDT-SWAP", wsPublicMarkPriceHandler, errHandler)
 	//======================END OKX==========================
 
 	//=====================GATE GET BALANCE======================-=====
@@ -139,5 +150,13 @@ func TestOnetrades(t *testing.T) {
 	// client := NewFutureBingxClient(bingxKey, bingxSecret)
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+
+	//===========Not Exit
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	for {
+		<-c
+		return
+	}
 
 }

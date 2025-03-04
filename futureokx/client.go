@@ -25,6 +25,8 @@ type Client struct {
 	Debug      bool
 	Logger     *log.Logger
 	TimeOffset int64
+	WsPublic   *Ws
+	WsPrivate  *Ws
 }
 
 func (c *Client) debug(format string, v ...interface{}) {
@@ -143,4 +145,36 @@ func (c *Client) NewGetOrderList() *GetOrderList {
 
 func (c *Client) NewTradeCancelOrders() *TradeCancelOrders {
 	return &TradeCancelOrders{c: c}
+}
+
+func (c *Client) NewWebSocketPublicClient() *Ws {
+	ws := &Ws{
+		apiKey:     c.apiKey,
+		secretKey:  c.secretKey,
+		memo:       c.memo,
+		KeyType:    c.KeyType,
+		Debug:      c.Debug,
+		Logger:     c.Logger,
+		BaseURL:    utils.GetWsPublicEndpoint(TradeName),
+		mapsEvents: []MapsHandler{},
+	}
+	ws.newConnect(ws.BaseURL)
+	c.WsPublic = ws
+	return ws
+}
+
+func (c *Client) NewWebSocketPrivateClient() *Ws {
+	ws := &Ws{
+		apiKey:     c.apiKey,
+		secretKey:  c.secretKey,
+		memo:       c.memo,
+		KeyType:    c.KeyType,
+		Debug:      c.Debug,
+		Logger:     c.Logger,
+		BaseURL:    utils.GetWsPrivateEndpoint(TradeName),
+		mapsEvents: []MapsHandler{},
+	}
+	ws.newConnect(ws.BaseURL)
+	c.WsPrivate = ws
+	return ws
 }
