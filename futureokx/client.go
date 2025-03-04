@@ -149,10 +149,6 @@ func (c *Client) NewTradeCancelOrders() *TradeCancelOrders {
 
 func (c *Client) NewWebSocketPublicClient() *Ws {
 	ws := &Ws{
-		apiKey:     c.apiKey,
-		secretKey:  c.secretKey,
-		memo:       c.memo,
-		KeyType:    c.KeyType,
 		Debug:      c.Debug,
 		Logger:     c.Logger,
 		BaseURL:    utils.GetWsPublicEndpoint(TradeName),

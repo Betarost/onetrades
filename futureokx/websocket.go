@@ -2,14 +2,16 @@ package futureokx
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 
+	"github.com/Betarost/onetrades/utils"
 	"github.com/gorilla/websocket"
 )
 
 var (
-	WebsocketTimeout   = time.Second * 60
+	WebsocketTimeout   = time.Second * 25
 	WebsocketKeepalive = true
 )
 
@@ -47,6 +49,26 @@ type WsEvent struct {
 	InstId  string `json:"instId"`
 }
 
+type ArgsLogin struct {
+	ApiKey     string `json:"apiKey"`
+	Passphrase string `json:"passphrase"`
+	Timestamp  string `json:"timestamp"`
+	Sign       string `json:"sign"`
+}
+
+func (w *Ws) signature(time int64) (sig string) {
+	sf, err := utils.SignFunc(utils.KeyTypeHmacBase64)
+	if err != nil {
+		return sig
+	}
+	raw := fmt.Sprintf("%dGET/users/self/verify", time)
+	sign, err := sf(w.secretKey, raw)
+	if err != nil {
+		return sig
+	}
+	return *sign
+}
+
 func (w *Ws) newConnect(endpoint string) error {
 	dialer := websocket.Dialer{
 		HandshakeTimeout:  45 * time.Second,
@@ -78,16 +100,13 @@ func (w *Ws) newConnect(endpoint string) error {
 			_, message, err := c.ReadMessage()
 			if err != nil {
 				if !silent {
-					mess := WsEventMessage{}
-					json.Unmarshal(message, &mess)
 					for _, item := range w.mapsEvents {
-						if item.Channel == mess.Arg.Channel {
-							item.ErrHandler(err)
-						}
+						item.ErrHandler(err)
 					}
 				}
 				return
 			}
+			// log.Println("=917bb7=", string(message))
 			mess := WsEventMessage{}
 			json.Unmarshal(message, &mess)
 			if mess.Event == "" {
@@ -99,6 +118,30 @@ func (w *Ws) newConnect(endpoint string) error {
 			}
 		}
 	}()
+
+	if w.apiKey != "" {
+		timestamp := time.Now().Unix()
+		sig := w.signature(timestamp)
+		args := []ArgsLogin{
+			{
+				ApiKey:     w.apiKey,
+				Passphrase: w.memo,
+				Timestamp:  fmt.Sprintf("%d", timestamp),
+				Sign:       sig,
+			},
+		}
+		mess := struct {
+			Op   string      `json:"op"`
+			Args []ArgsLogin `json:"args"`
+		}{
+			Op:   "login",
+			Args: args,
+		}
+
+		if w.c != nil {
+			w.c.WriteJSON(mess)
+		}
+	}
 	return nil
 }
 
@@ -106,6 +149,7 @@ func (w *Ws) keepAlive(c *websocket.Conn, timeout time.Duration) {
 	ticker := time.NewTicker(timeout)
 	c.SetPongHandler(func(msg string) error {
 		if err := c.WriteMessage(websocket.PongMessage, []byte{}); err != nil {
+			log.Println("=keepAlive WriteMessage err=", err)
 			return err
 		}
 		return nil
@@ -114,13 +158,10 @@ func (w *Ws) keepAlive(c *websocket.Conn, timeout time.Duration) {
 		defer ticker.Stop()
 		for {
 			if c == nil {
-				log.Println("=bc159f=", 2)
-
 				return
 			}
 			<-ticker.C
 			if c == nil {
-				log.Println("=bc159f=", 1)
 				return
 			}
 			if err := c.WriteMessage(websocket.PingMessage, []byte{}); err != nil {

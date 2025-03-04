@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"testing"
+	"time"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/spf13/viper"
@@ -116,16 +117,36 @@ func TestOnetrades(t *testing.T) {
 	//=======================Get CancelOrders
 	// res, err := client.NewTradeCancelOrders().Symbol("DOGE-USDT-SWAP").OrderIDs([]string{"2284238701511041024", "2284179927031078912"}).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
-	//=======================WebSocket MarkPrice
-	ws := client.NewWebSocketPublicClient()
-	wsPublicMarkPriceHandler := func(event *entity.WsPublicMarkPriceEvent) {
-		log.Printf("=wsPublicMarkPriceHandler= %+v", event)
+	// //=======================WebSocket Public
+	// ws := client.NewWebSocketPublicClient()
+	// //=======================MarkPrice
+	// wsPublicMarkPriceHandler := func(event *entity.WsPublicMarkPriceEvent) {
+	// 	log.Printf("=wsPublicMarkPriceHandler= %+v", event)
+	// }
+	// errHandler := func(err error) {
+	// 	log.Printf("wsPublicMarkPriceHandler Error: %s", err.Error())
+	// }
+	// ws.NewPublicMarkPrice("DOGE-USDT-SWAP", wsPublicMarkPriceHandler, errHandler)
+	//=======================WebSocket Private
+	ws := client.NewWebSocketPrivateClient()
+	// //=======================Orders
+	wsPrivateOrdersHandler := func(event *entity.WsPrivateOrdersEvent) {
+		log.Printf("=wsPrivateOrdersHandler= %+v", event)
 	}
-
 	errHandler := func(err error) {
-		log.Printf("wsPublicMarkPriceHandler Error: %s", err.Error())
+		log.Printf("wsPrivateOrdersHandler Error: %s", err.Error())
 	}
-	ws.NewPublicMarkPrice("DOGE-USDT-SWAP", wsPublicMarkPriceHandler, errHandler)
+	time.Sleep(1 * time.Second)
+	ws.NewPrivateOrders(wsPrivateOrdersHandler, errHandler)
+	// // //=======================Positions
+	// wsPrivatePositionsHandler := func(event *entity.WsPrivatePositionsEvent) {
+	// 	log.Printf("=wsPrivatePositionsHandler= %+v", event)
+	// }
+	// errHandler := func(err error) {
+	// 	log.Printf("wsPrivatePositionsHandler Error: %s", err.Error())
+	// }
+	// time.Sleep(1 * time.Second)
+	// ws.NewPrivatePositions("DOGE-USDT-SWAP", wsPrivatePositionsHandler, errHandler)
 	//======================END OKX==========================
 
 	//=====================GATE GET BALANCE======================-=====
