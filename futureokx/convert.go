@@ -120,3 +120,29 @@ func ConvertWsPrivateOrders(answ PrivateOrders) (res entity.WsPrivateOrdersEvent
 		UpdateTime:   utils.StringToInt64(answ.UTime),
 	}
 }
+
+func ConvertWsPrivatePositions(answ PrivatePositions) (res entity.WsPrivatePositionsEvent) {
+
+	positionSide := "LONG"
+	if answ.PosSide == "net" {
+		if utils.StringToFloat(answ.Pos) < 0 {
+			positionSide = "SHORT"
+		}
+	} else {
+		positionSide = strings.ToUpper(answ.PosSide)
+	}
+
+	res = entity.WsPrivatePositionsEvent{
+		Symbol:           answ.InstID,
+		PositionSide:     positionSide,
+		PositionAmt:      utils.StringToFloat(answ.Pos),
+		EntryPrice:       utils.StringToFloat(answ.AvgPx),
+		MarkPrice:        utils.StringToFloat(answ.MarkPx),
+		InitialMargin:    utils.StringToFloat(answ.Imr),
+		UnRealizedProfit: utils.StringToFloat(answ.Upl),
+		RealizedProfit:   utils.StringToFloat(answ.RealizedPnl),
+		Notional:         utils.StringToFloat(answ.NotionalUsd),
+		UpdateTime:       utils.StringToInt64(answ.UTime),
+	}
+	return res
+}

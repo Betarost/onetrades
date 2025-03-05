@@ -122,20 +122,19 @@ func (w *Ws) newConnect(endpoint string) error {
 	if w.apiKey != "" {
 		timestamp := time.Now().Unix()
 		sig := w.signature(timestamp)
-		args := []ArgsLogin{
-			{
-				ApiKey:     w.apiKey,
-				Passphrase: w.memo,
-				Timestamp:  fmt.Sprintf("%d", timestamp),
-				Sign:       sig,
-			},
-		}
 		mess := struct {
 			Op   string      `json:"op"`
 			Args []ArgsLogin `json:"args"`
 		}{
-			Op:   "login",
-			Args: args,
+			Op: "login",
+			Args: []ArgsLogin{
+				{
+					ApiKey:     w.apiKey,
+					Passphrase: w.memo,
+					Timestamp:  fmt.Sprintf("%d", timestamp),
+					Sign:       sig,
+				},
+			},
 		}
 
 		if w.c != nil {

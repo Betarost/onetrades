@@ -85,40 +85,64 @@ func (w *Ws) NewPrivateOrders(handler entity.WsHandlerPrivateOrders, errHandler 
 type ArgsPrivatePositions struct {
 	Channel  string `json:"channel"`
 	InstType string `json:"instType"`
-	// InstId   string `json:"instId"`
 }
 
-func (w *Ws) NewPrivatePositions(symbol string, handler entity.WsHandlerPrivatePositions, errHandler ErrHandler) error {
+type PrivatePositions struct {
+	InstID      string `json:"instId"`
+	PosId       string `json:"posId"`
+	PosSide     string `json:"posSide"`
+	Ccy         string `json:"ccy"`
+	Pos         string `json:"pos"`
+	AvailPos    string `json:"availPos,omitempty"`
+	NotionalUsd string `json:"notionalUsd"`
+	AvgPx       string `json:"avgPx"`
+	BePx        string `json:"bePx"`
+	Fee         string `json:"fee"`
+	FundingFee  string `json:"fundingFee"`
+	Imr         string `json:"imr,omitempty"`
+	Last        string `json:"last"`
+	MarkPx      string `json:"markPx,omitempty"`
+	Lever       string `json:"lever"`
+	Pnl         string `json:"pnl"`
+	RealizedPnl string `json:"realizedPnl"`
+	Upl         string `json:"upl"`
+	CTime       string `json:"cTime"`
+	UTime       string `json:"uTime"`
+}
+
+type AnswPrivatePositions struct {
+	Arg  ArgsSymbol         `json:"arg"`
+	Data []PrivatePositions `json:"data"`
+}
+
+func (w *Ws) NewPrivatePositions(handler entity.WsHandlerPrivatePositions, errHandler ErrHandler) error {
 
 	channel := "positions"
-	// h := func(message []byte) {
-	// 	mess := AnswPublicMarkPrice{}
-	// 	json.Unmarshal(message, &mess)
-	// 	for _, item := range mess.Data {
-	// 		d := ConvertWsMarkPrice(item)
-	// 		handler(&d)
-	// 	}
-	// }
-	// w.mapsEvents = append(w.mapsEvents, MapsHandler{
-	// 	Channel:    channel,
-	// 	WsHandler:  h,
-	// 	ErrHandler: errHandler,
-	// })
-
-	args := []ArgsPrivatePositions{
-		{
-			Channel:  channel,
-			InstType: "SWAP",
-			// InstId:   symbol,
-		},
+	h := func(message []byte) {
+		mess := AnswPrivatePositions{}
+		json.Unmarshal(message, &mess)
+		for _, item := range mess.Data {
+			d := ConvertWsPrivatePositions(item)
+			handler(&d)
+		}
 	}
+	w.mapsEvents = append(w.mapsEvents, MapsHandler{
+		Channel:    channel,
+		WsHandler:  h,
+		ErrHandler: errHandler,
+	})
 
 	mess := struct {
 		Op   string                 `json:"op"`
 		Args []ArgsPrivatePositions `json:"args"`
 	}{
-		Op:   "subscribe",
-		Args: args,
+		Op: "subscribe",
+		Args: []ArgsPrivatePositions{
+			{
+				Channel:  channel,
+				InstType: "SWAP",
+			},
+		},
 	}
 
 	if w.c != nil {
