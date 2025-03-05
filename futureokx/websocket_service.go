@@ -24,7 +24,7 @@ type PrivateOrders struct {
 	OrdType     string `json:"ordType"`
 	Side        string `json:"side"`
 	PosSide     string `json:"posSide"`
-	State       string `json:"state"` // live filled
+	State       string `json:"state"` // live filled canceled
 	Lever       string `json:"lever"`
 	CTime       string `json:"cTime"`
 	UTime       string `json:"uTime"`
