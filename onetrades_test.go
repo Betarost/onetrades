@@ -141,31 +141,43 @@ func TestOnetrades(t *testing.T) {
 	// time.Sleep(1 * time.Second)
 	// ws.NewPrivateOrders(wsPrivateOrdersHandler, errHandler)
 	//======================= PlaceOrders
-
+	// time.Sleep(1 * time.Second)
+	// data := []map[string]string{
+	// 	{
+	// 		"instId":  "DOGE-USDT-SWAP",
+	// 		"tdMode":  "cross",
+	// 		"clOrdId": "BLONG",
+	// 		"side":    "buy",
+	// 		"posSide": "long",
+	// 		"ordType": "limit",
+	// 		"sz":      "0.01",
+	// 		"px":      "0.20123",
+	// 	},
+	// 	{
+	// 		"instId":  "DOGE-USDT-SWAP",
+	// 		"tdMode":  "cross",
+	// 		"clOrdId": "SSHORT",
+	// 		"side":    "sell",
+	// 		"posSide": "short",
+	// 		"ordType": "limit",
+	// 		"sz":      "0.01",
+	// 		"px":      "0.21123",
+	// 	},
+	// }
+	// ws.NewPrivatePlaceOrders(data)
+	//======================= CancelOrders
 	time.Sleep(1 * time.Second)
 	data := []map[string]string{
 		{
 			"instId":  "DOGE-USDT-SWAP",
-			"tdMode":  "cross",
 			"clOrdId": "BLONG",
-			"side":    "buy",
-			"posSide": "long",
-			"ordType": "limit",
-			"sz":      "0.01",
-			"px":      "0.20123",
 		},
 		{
 			"instId":  "DOGE-USDT-SWAP",
-			"tdMode":  "cross",
 			"clOrdId": "SSHORT",
-			"side":    "sell",
-			"posSide": "short",
-			"ordType": "limit",
-			"sz":      "0.01",
-			"px":      "0.21123",
 		},
 	}
-	ws.NewPrivatePlaceOrders(data)
+	ws.NewPrivateCancelOrders(data)
 	//=======================Positions
 	// wsPrivatePositionsHandler := func(event *entity.WsPrivatePositionsEvent) {
 	// 	log.Printf("=wsPrivatePositionsHandler= %+v", event)
