@@ -2,9 +2,33 @@ package futureokx
 
 import (
 	"encoding/json"
+	"fmt"
+	"time"
 
 	"github.com/Betarost/onetrades/entity"
 )
+
+// ==============PrivatePlaceOrders=================
+
+func (w *Ws) NewPrivatePlaceOrders(data []map[string]string) error {
+
+	channel := "batch-orders"
+
+	mess := struct {
+		Id   string              `json:"id"`
+		Op   string              `json:"op"`
+		Args []map[string]string `json:"args"`
+	}{
+		Id:   fmt.Sprintf("%d", time.Now().Unix()),
+		Op:   channel,
+		Args: data,
+	}
+
+	if w.c != nil {
+		w.c.WriteJSON(mess)
+	}
+	return nil
+}
 
 // ==============PrivateOrders=================
 type ArgsPrivateOrders struct {

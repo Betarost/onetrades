@@ -106,7 +106,7 @@ func (w *Ws) newConnect(endpoint string) error {
 				}
 				return
 			}
-			// log.Println("=917bb7=", string(message))
+			log.Println("=917bb7=", string(message))
 			mess := WsEventMessage{}
 			json.Unmarshal(message, &mess)
 			if mess.Event == "" {
