@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/Betarost/onetrades/utils"
@@ -13,6 +14,7 @@ import (
 var (
 	WebsocketTimeout   = time.Second * 25
 	WebsocketKeepalive = true
+	wsWrite            = sync.Mutex{}
 )
 
 type WsHandler func(message []byte)
@@ -138,9 +140,7 @@ func (w *Ws) newConnect(endpoint string) error {
 			},
 		}
 
-		if w.c != nil {
-			w.c.WriteJSON(mess)
-		}
+		w.sendMessage(mess)
 	}
 	return nil
 }
@@ -169,4 +169,12 @@ func (w *Ws) keepAlive(c *websocket.Conn, timeout time.Duration) {
 			}
 		}
 	}()
+}
+
+func (w *Ws) sendMessage(mess interface{}) {
+	wsWrite.Lock()
+	if w.c != nil {
+		w.c.WriteJSON(mess)
+	}
+	wsWrite.Unlock()
 }

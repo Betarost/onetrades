@@ -24,9 +24,7 @@ func (w *Ws) NewPrivateCancelOrders(data []map[string]string) error {
 		Args: data,
 	}
 
-	if w.c != nil {
-		w.c.WriteJSON(mess)
-	}
+	w.sendMessage(mess)
 	return nil
 }
 
@@ -46,9 +44,7 @@ func (w *Ws) NewPrivatePlaceOrders(data []map[string]string) error {
 		Args: data,
 	}
 
-	if w.c != nil {
-		w.c.WriteJSON(mess)
-	}
+	w.sendMessage(mess)
 	return nil
 }
 
@@ -121,9 +117,7 @@ func (w *Ws) NewPrivateOrders(handler entity.WsHandlerPrivateOrders, errHandler 
 		},
 	}
 
-	if w.c != nil {
-		w.c.WriteJSON(mess)
-	}
+	w.sendMessage(mess)
 	return nil
 }
 
@@ -191,9 +185,7 @@ func (w *Ws) NewPrivatePositions(handler entity.WsHandlerPrivatePositions, errHa
 		},
 	}
 
-	if w.c != nil {
-		w.c.WriteJSON(mess)
-	}
+	w.sendMessage(mess)
 	return nil
 }
 
@@ -248,8 +240,6 @@ func (w *Ws) NewPublicMarkPrice(symbols []string, handler entity.WsHandlerMarkPr
 		Args: args,
 	}
 
-	if w.c != nil {
-		w.c.WriteJSON(mess)
-	}
+	w.sendMessage(mess)
 	return nil
 }
