@@ -107,6 +107,34 @@ func NewClient(apiKey, secretKey, memo string) *Client {
 	}
 }
 
+func (c *Client) NewWebSocketPublicClient() *Ws {
+	ws := &Ws{
+		Debug:      c.Debug,
+		Logger:     c.Logger,
+		BaseURL:    utils.GetWsPublicEndpoint(TradeName),
+		mapsEvents: []MapsHandler{},
+	}
+	ws.newConnect(ws.BaseURL)
+	c.WsPublic = ws
+	return ws
+}
+
+func (c *Client) NewWebSocketPrivateClient() *Ws {
+	ws := &Ws{
+		apiKey:     c.apiKey,
+		secretKey:  c.secretKey,
+		memo:       c.memo,
+		KeyType:    c.KeyType,
+		Debug:      c.Debug,
+		Logger:     c.Logger,
+		BaseURL:    utils.GetWsPrivateEndpoint(TradeName),
+		mapsEvents: []MapsHandler{},
+	}
+	ws.newConnect(ws.BaseURL)
+	c.WsPrivate = ws
+	return ws
+}
+
 func (c *Client) NewGetAccountBalance() *GetAccountBalance {
 	return &GetAccountBalance{c: c}
 }
@@ -147,30 +175,6 @@ func (c *Client) NewTradeCancelOrders() *TradeCancelOrders {
 	return &TradeCancelOrders{c: c}
 }
 
-func (c *Client) NewWebSocketPublicClient() *Ws {
-	ws := &Ws{
-		Debug:      c.Debug,
-		Logger:     c.Logger,
-		BaseURL:    utils.GetWsPublicEndpoint(TradeName),
-		mapsEvents: []MapsHandler{},
-	}
-	ws.newConnect(ws.BaseURL)
-	c.WsPublic = ws
-	return ws
-}
-
-func (c *Client) NewWebSocketPrivateClient() *Ws {
-	ws := &Ws{
-		apiKey:     c.apiKey,
-		secretKey:  c.secretKey,
-		memo:       c.memo,
-		KeyType:    c.KeyType,
-		Debug:      c.Debug,
-		Logger:     c.Logger,
-		BaseURL:    utils.GetWsPrivateEndpoint(TradeName),
-		mapsEvents: []MapsHandler{},
-	}
-	ws.newConnect(ws.BaseURL)
-	c.WsPrivate = ws
-	return ws
+func (c *Client) NewGetKline() *GetKline {
+	return &GetKline{c: c}
 }

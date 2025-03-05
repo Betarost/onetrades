@@ -1,11 +1,11 @@
 package onetrades
 
 import (
+	"context"
 	"log"
 	"os"
 	"os/signal"
 	"testing"
-	"time"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/spf13/viper"
@@ -107,6 +107,9 @@ func TestOnetrades(t *testing.T) {
 	//======================= GET MarkPrice
 	// res, err := client.NewGetMarkPrice().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET Kline
+	res, err := client.NewGetKline().Symbol("DOGE-USDT-SWAP").TimeFrame(entity.TimeFrameType5m).Limit(13).Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//=======================Trade PlaceOrder
 	// res, err := client.NewTradePlaceOrder().Symbol("DOGE-USDT-SWAP").PositionSide(entity.PositionSideTypeLong).Side(entity.SideTypeBuy).Size("0.1").Price("0.19876").OrderType(entity.OrderTypeLimit).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -128,7 +131,7 @@ func TestOnetrades(t *testing.T) {
 	// }
 	// ws.NewPublicMarkPrice([]string{"DOGE-USDT-SWAP", "TON-USDT-SWAP"}, wsPublicMarkPriceHandler, errHandler)
 	//=======================WebSocket Private
-	ws := client.NewWebSocketPrivateClient()
+	// ws := client.NewWebSocketPrivateClient()
 	//=======================Orders
 	// wsPrivateOrdersHandler := func(event *entity.WsPrivateOrdersEvent) {
 	// 	log.Printf("=wsPrivateOrdersHandler= %+v", event)
@@ -139,14 +142,14 @@ func TestOnetrades(t *testing.T) {
 	// time.Sleep(1 * time.Second)
 	// ws.NewPrivateOrders(wsPrivateOrdersHandler, errHandler)
 	//=======================Positions
-	wsPrivatePositionsHandler := func(event *entity.WsPrivatePositionsEvent) {
-		log.Printf("=wsPrivatePositionsHandler= %+v", event)
-	}
-	errHandler := func(err error) {
-		log.Printf("wsPrivatePositionsHandler Error: %s", err.Error())
-	}
-	time.Sleep(1 * time.Second)
-	ws.NewPrivatePositions(wsPrivatePositionsHandler, errHandler)
+	// wsPrivatePositionsHandler := func(event *entity.WsPrivatePositionsEvent) {
+	// 	log.Printf("=wsPrivatePositionsHandler= %+v", event)
+	// }
+	// errHandler := func(err error) {
+	// 	log.Printf("wsPrivatePositionsHandler Error: %s", err.Error())
+	// }
+	// time.Sleep(1 * time.Second)
+	// ws.NewPrivatePositions(wsPrivatePositionsHandler, errHandler)
 	//======================END OKX==========================
 
 	//=====================GATE GET BALANCE======================-=====

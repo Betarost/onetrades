@@ -10,6 +10,75 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+// ==============GetKline=================
+type GetKline struct {
+	c         *Client
+	symbol    *string
+	timeFrame *entity.TimeFrameType
+	limit     *int
+}
+
+func (s *GetKline) Symbol(symbol string) *GetKline {
+	s.symbol = &symbol
+	return s
+}
+
+func (s *GetKline) TimeFrame(timeFrame entity.TimeFrameType) *GetKline {
+	s.timeFrame = &timeFrame
+	return s
+}
+
+func (s *GetKline) Limit(limit int) *GetKline {
+	s.limit = &limit
+	return s
+}
+
+func (s *GetKline) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Kline, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/market/mark-price-candles",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeNone,
+	}
+
+	m := utils.Params{}
+
+	if s.symbol != nil {
+		m["instId"] = *s.symbol
+	}
+
+	if s.timeFrame != nil {
+		m["bar"] = *s.timeFrame
+	}
+
+	if s.limit != nil {
+		m["limit"] = *s.limit
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result [][]string `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+
+	return ConvertKline(answ.Result), nil
+}
+
 // ==============GetMarkPrice=================
 type GetMarkPrice struct {
 	c      *Client

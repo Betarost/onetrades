@@ -62,6 +62,29 @@ func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 	return res
 }
 
+func ConvertKline(answ [][]string) (res []entity.Kline) {
+	if len(answ) == 0 {
+		return res
+	}
+	for _, item := range answ {
+		if len(item) >= 6 {
+			complete := true
+			if item[5] == "0" {
+				complete = false
+			}
+			res = append(res, entity.Kline{
+				Time:         utils.StringToInt64(item[0]),
+				OpenPrice:    utils.StringToFloat(item[1]),
+				HighestPrice: utils.StringToFloat(item[2]),
+				LowestPrice:  utils.StringToFloat(item[3]),
+				ClosePrice:   utils.StringToFloat(item[4]),
+				Complete:     complete,
+			})
+		}
+	}
+	return res
+}
+
 func ConvertOrderList(answ []OrderList) (res []entity.OrderList) {
 	for _, item := range answ {
 		positionSide := "LONG"
