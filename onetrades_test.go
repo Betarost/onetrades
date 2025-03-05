@@ -5,7 +5,6 @@ import (
 	"os"
 	"os/signal"
 	"testing"
-	"time"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/spf13/viper"
@@ -118,26 +117,26 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewTradeCancelOrders().Symbol("DOGE-USDT-SWAP").OrderIDs([]string{"2284238701511041024", "2284179927031078912"}).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	// //=======================WebSocket Public
-	// ws := client.NewWebSocketPublicClient()
+	ws := client.NewWebSocketPublicClient()
 	// //=======================MarkPrice
-	// wsPublicMarkPriceHandler := func(event *entity.WsPublicMarkPriceEvent) {
-	// 	log.Printf("=wsPublicMarkPriceHandler= %+v", event)
-	// }
-	// errHandler := func(err error) {
-	// 	log.Printf("wsPublicMarkPriceHandler Error: %s", err.Error())
-	// }
-	// ws.NewPublicMarkPrice("DOGE-USDT-SWAP", wsPublicMarkPriceHandler, errHandler)
-	//=======================WebSocket Private
-	ws := client.NewWebSocketPrivateClient()
-	// //=======================Orders
-	wsPrivateOrdersHandler := func(event *entity.WsPrivateOrdersEvent) {
-		log.Printf("=wsPrivateOrdersHandler= %+v", event)
+	wsPublicMarkPriceHandler := func(event *entity.WsPublicMarkPriceEvent) {
+		log.Printf("=wsPublicMarkPriceHandler= %+v", event)
 	}
 	errHandler := func(err error) {
-		log.Printf("wsPrivateOrdersHandler Error: %s", err.Error())
+		log.Printf("wsPublicMarkPriceHandler Error: %s", err.Error())
 	}
-	time.Sleep(1 * time.Second)
-	ws.NewPrivateOrders(wsPrivateOrdersHandler, errHandler)
+	ws.NewPublicMarkPrice([]string{"DOGE-USDT-SWAP", "TON-USDT-SWAP"}, wsPublicMarkPriceHandler, errHandler)
+	//=======================WebSocket Private
+	// ws := client.NewWebSocketPrivateClient()
+	// // //=======================Orders
+	// wsPrivateOrdersHandler := func(event *entity.WsPrivateOrdersEvent) {
+	// 	log.Printf("=wsPrivateOrdersHandler= %+v", event)
+	// }
+	// errHandler := func(err error) {
+	// 	log.Printf("wsPrivateOrdersHandler Error: %s", err.Error())
+	// }
+	// time.Sleep(1 * time.Second)
+	// ws.NewPrivateOrders(wsPrivateOrdersHandler, errHandler)
 	// // //=======================Positions
 	// wsPrivatePositionsHandler := func(event *entity.WsPrivatePositionsEvent) {
 	// 	log.Printf("=wsPrivatePositionsHandler= %+v", event)

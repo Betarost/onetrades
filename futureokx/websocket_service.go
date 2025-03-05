@@ -145,7 +145,7 @@ type AnswPublicMarkPrice struct {
 	Data []PublicMarkPrice `json:"data"`
 }
 
-func (w *Ws) NewPublicMarkPrice(symbol string, handler entity.WsHandlerMarkPrice, errHandler ErrHandler) error {
+func (w *Ws) NewPublicMarkPrice(symbols []string, handler entity.WsHandlerMarkPrice, errHandler ErrHandler) error {
 
 	channel := "mark-price"
 	h := func(message []byte) {
@@ -161,12 +161,13 @@ func (w *Ws) NewPublicMarkPrice(symbol string, handler entity.WsHandlerMarkPrice
 		WsHandler:  h,
 		ErrHandler: errHandler,
 	})
+	args := []ArgsSymbol{}
+	for _, item := range symbols {
+		args = append(args, ArgsSymbol{
 
-	args := []ArgsSymbol{
-		{
 			Channel: channel,
-			InstId:  symbol,
-		},
+			InstId:  item,
+		})
 	}
 
 	mess := struct {
