@@ -113,7 +113,7 @@ func (w *Ws) newConnect(endpoint string) error {
 			if mess.Event == "" {
 				for _, item := range w.mapsEvents {
 					if item.Channel == mess.Arg.Channel {
-						item.WsHandler(message)
+						go item.WsHandler(message)
 					}
 				}
 			}

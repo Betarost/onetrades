@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/signal"
 	"testing"
+	"time"
 
 	"github.com/spf13/viper"
 )
@@ -77,10 +78,10 @@ func TestOnetrades(t *testing.T) {
 	//======================END BINGX==========================
 
 	//==========================OKX==========================
-	// okxKey := viper.GetString("OKX_API")
-	// okxSecret := viper.GetString("OKX_SECRET")
-	// okxMemo := viper.GetString("OKX_MEMO")
-	// client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	okxKey := viper.GetString("OKX_API")
+	okxSecret := viper.GetString("OKX_SECRET")
+	okxMemo := viper.GetString("OKX_MEMO")
+	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -129,7 +130,7 @@ func TestOnetrades(t *testing.T) {
 	// }
 	// ws.NewPublicMarkPrice([]string{"DOGE-USDT-SWAP", "TON-USDT-SWAP"}, wsPublicMarkPriceHandler, errHandler)
 	//=======================WebSocket Private
-	// ws := client.NewWebSocketPrivateClient()
+	ws := client.NewWebSocketPrivateClient()
 	//=======================Orders
 	// wsPrivateOrdersHandler := func(event *entity.WsPrivateOrdersEvent) {
 	// 	log.Printf("=wsPrivateOrdersHandler= %+v", event)
@@ -165,18 +166,18 @@ func TestOnetrades(t *testing.T) {
 	// }
 	// ws.NewPrivatePlaceOrders(data)
 	//======================= CancelOrders
-	// time.Sleep(1 * time.Second)
-	// data := []map[string]string{
-	// 	{
-	// 		"instId":  "DOGE-USDT-SWAP",
-	// 		"clOrdId": "BLONG",
-	// 	},
-	// 	{
-	// 		"instId":  "DOGE-USDT-SWAP",
-	// 		"clOrdId": "SSHORT",
-	// 	},
-	// }
-	// ws.NewPrivateCancelOrders(data)
+	time.Sleep(1 * time.Second)
+	data := []map[string]string{
+		{
+			"instId":  "DOGE-USDT-SWAP",
+			"clOrdId": "BLONG",
+		},
+		{
+			"instId":  "DOGE-USDT-SWAP",
+			"clOrdId": "SSHORT",
+		},
+	}
+	ws.NewPrivateCancelOrders(data)
 	//=======================Positions
 	// wsPrivatePositionsHandler := func(event *entity.WsPrivatePositionsEvent) {
 	// 	log.Printf("=wsPrivatePositionsHandler= %+v", event)
