@@ -1,6 +1,7 @@
 package onetrades
 
 import (
+	"context"
 	"log"
 	"os"
 	"os/signal"
@@ -18,12 +19,12 @@ func TestOnetrades(t *testing.T) {
 	}
 
 	//==========================BINANCE==========================
-	// binanceKey := viper.GetString("BINANCE_API")
-	// binanceSecret := viper.GetString("BINANCE_SECRET")
-	// client := NewFutureBinanceClient(binanceKey, binanceSecret)
+	binanceKey := viper.GetString("BINANCE_API")
+	binanceSecret := viper.GetString("BINANCE_SECRET")
+	client := NewFutureBinanceClient(binanceKey, binanceSecret)
 	//======================= GET Balance
-	// res, err := client.NewGetAccountBalance().Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
+	res, err := client.NewGetAccountBalance().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

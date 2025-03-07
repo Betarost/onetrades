@@ -19,4 +19,7 @@ type Position struct {
 	Notional         float64 `json:"notional" bson:"notional"`
 	InitialMargin    float64 `json:"initialMargin" bson:"initialMargin"`
 	UpdateTime       int64   `json:"updateTime" bson:"updateTime"`
+
+	MarginRatio      string `json:"marginRatio" bson:"marginRatio"`
+	AutoDeleveraging string `json:"autoDeleveraging" bson:"autoDeleveraging"`
 }

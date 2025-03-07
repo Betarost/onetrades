@@ -44,6 +44,9 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 			RealizedProfit:   utils.StringToFloat(item.RealizedPnl),
 			Notional:         utils.StringToFloat(item.NotionalUsd),
 			UpdateTime:       utils.StringToInt64(item.UTime),
+
+			MarginRatio:      item.MgnRatio,
+			AutoDeleveraging: item.ADL,
 		})
 	}
 	return res
