@@ -5,8 +5,15 @@ type PositionSideType string
 type SideType string
 type OrderType string
 type TimeFrameType string
+type PositionStatusType string
 
 const (
+	PositionStatusTypeClosePartially       PositionStatusType = "CLOSE_PARTIALLY"
+	PositionStatusTypeCloseAll             PositionStatusType = "CLOSE_ALL"
+	PositionStatusTypeLiquidation          PositionStatusType = "LIQUIDATION"
+	PositionStatusTypeLiquidationPartially PositionStatusType = "LIQUIDATION_PARTIALLY"
+	PositionStatusTypeAdl                  PositionStatusType = "ADL"
+
 	PositionModeTypeOneWay PositionModeType = "ONE_WAY"
 	PositionModeTypeHedge  PositionModeType = "HEDGE"
 

@@ -11,6 +11,91 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+// ==============GetHistoryPositions=================
+
+type GetHistoryPositions struct {
+	c      *Client
+	after  *string
+	before *string
+}
+
+func (s *GetHistoryPositions) After(after string) *GetHistoryPositions {
+	s.after = &after
+	return s
+}
+
+func (s *GetHistoryPositions) Before(before string) *GetHistoryPositions {
+	s.before = &before
+	return s
+}
+
+func (s *GetHistoryPositions) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.HistoryPosition, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/account/positions-history",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{
+		"instType": "SWAP",
+	}
+
+	if s.after != nil {
+		m["after"] = *s.after
+	}
+
+	if s.before != nil {
+		m["before"] = *s.before
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []HistoryPosition `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	return ConvertHistoryPositions(answ.Result), nil
+}
+
+type HistoryPosition struct {
+	PosID         string `json:"posId"`
+	InstType      string `json:"instType"`
+	InstID        string `json:"instId"`
+	MgnMode       string `json:"mgnMode"`
+	Type          string `json:"type"`
+	OpenAvgPx     string `json:"openAvgPx"`
+	CloseAvgPx    string `json:"closeAvgPx"`
+	OpenMaxPos    string `json:"openMaxPos"`
+	CloseTotalPos string `json:"closeTotalPos"`
+	RealizedPnl   string `json:"realizedPnl"`
+	PnlRatio      string `json:"pnlRatio"`
+	Fee           string `json:"fee"`
+	FundingFee    string `json:"fundingFee"`
+	LiqPenalty    string `json:"liqPenalty"`
+	Pnl           string `json:"pnl"`
+	PosSide       string `json:"posSide"`
+	Lever         string `json:"lever"`
+	Direction     string `json:"direction"`
+	TriggerPx     string `json:"triggerPx"`
+	Ccy           string `json:"ccy"`
+	Uly           string `json:"uly"`
+
+	CTime string `json:"cTime"`
+	UTime string `json:"uTime"`
+}
+
 // ==============SetLeverage=================
 type SetLeverage struct {
 	c        *Client

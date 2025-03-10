@@ -12,6 +12,7 @@ type Position struct {
 	Symbol           string  `json:"symbol" bson:"symbol"`
 	PositionSide     string  `json:"positionSide" bson:"positionSide"`
 	PositionAmt      float64 `json:"positionAmt" bson:"positionAmt"`
+	PositionID       string  `json:"positionID"`
 	EntryPrice       float64 `json:"entryPrice" bson:"entryPrice"`
 	MarkPrice        float64 `json:"markPrice" bson:"markPrice"`
 	UnRealizedProfit float64 `json:"unRealizedProfit" bson:"unRealizedProfit"`
@@ -22,4 +23,25 @@ type Position struct {
 
 	MarginRatio      string `json:"marginRatio" bson:"marginRatio"`
 	AutoDeleveraging string `json:"autoDeleveraging" bson:"autoDeleveraging"`
+}
+
+type HistoryPosition struct {
+	PositionID            string             `json:"positionID"`
+	Symbol                string             `json:"symbol" bson:"symbol"`
+	Status                PositionStatusType `json:"status" bson:"status"`
+	PositionSide          string             `json:"positionSide" bson:"positionSide"`
+	AvgOpenPrice          float64            `json:"avgOpenPrice" bson:"avgOpenPrice"`
+	AvgClosePrice         float64            `json:"avgClosePrice" bson:"avgClosePrice"`
+	PositionOpenAmt       float64            `json:"positionOpenAmt" bson:"positionOpenAmt"`
+	PositionCloseAmt      float64            `json:"positionCloseAmt" bson:"positionCloseAmt"`
+	PositionOpenNotional  float64            `json:"positionOpenNotional" bson:"positionOpenNotional"`
+	PositionCloseNotional float64            `json:"positionCloseNotional" bson:"positionCloseNotional"`
+	RealizedProfit        float64            `json:"realizedProfit" bson:"realizedProfit"`
+	Pnl                   float64            `json:"pnl" bson:"pnl"`
+	PnlRatio              float64            `json:"pnlRatio" bson:"pnlRatio"`
+	Fee                   float64            `json:"fee" bson:"fee"`
+	FundingFee            float64            `json:"fundingFee" bson:"fundingFee"`
+	LiqPenalty            float64            `json:"liqPenalty" bson:"liqPenalty"`
+	CreateTime            int64              `json:"createTime" bson:"createTime"`
+	UpdateTime            int64              `json:"updateTime" bson:"updateTime"`
 }

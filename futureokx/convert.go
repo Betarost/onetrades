@@ -52,6 +52,43 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 	return res
 }
 
+func ConvertHistoryPositions(answ []HistoryPosition) (res []entity.HistoryPosition) {
+	for _, item := range answ {
+
+		status := entity.PositionStatusTypeCloseAll
+		switch item.Type {
+		case "1":
+			status = entity.PositionStatusTypeClosePartially
+		case "3":
+			status = entity.PositionStatusTypeLiquidation
+		case "4":
+			status = entity.PositionStatusTypeLiquidationPartially
+		case "5":
+			status = entity.PositionStatusTypeAdl
+		}
+
+		res = append(res, entity.HistoryPosition{
+			PositionID:       item.PosID,
+			Symbol:           item.InstID,
+			Status:           status, //entity
+			PositionSide:     strings.ToUpper(item.Direction),
+			AvgOpenPrice:     utils.StringToFloat(item.OpenAvgPx),
+			AvgClosePrice:    utils.StringToFloat(item.CloseAvgPx),
+			PositionOpenAmt:  utils.StringToFloat(item.OpenMaxPos),
+			PositionCloseAmt: utils.StringToFloat(item.CloseTotalPos),
+			RealizedProfit:   utils.StringToFloat(item.RealizedPnl),
+			Pnl:              utils.StringToFloat(item.Pnl),
+			PnlRatio:         utils.StringToFloat(item.PnlRatio),
+			Fee:              utils.StringToFloat(item.Fee),
+			FundingFee:       utils.StringToFloat(item.FundingFee),
+			LiqPenalty:       utils.StringToFloat(item.LiqPenalty),
+			CreateTime:       utils.StringToInt64(item.CTime),
+			UpdateTime:       utils.StringToInt64(item.UTime),
+		})
+	}
+	return res
+}
+
 func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 	if len(answ) == 0 {
 		return res

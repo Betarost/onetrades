@@ -143,6 +143,10 @@ func (c *Client) NewGetPositions() *GetPositions {
 	return &GetPositions{c: c}
 }
 
+func (c *Client) NewGetHistoryPositions() *GetHistoryPositions {
+	return &GetHistoryPositions{c: c}
+}
+
 func (c *Client) NewGetContractsInfo() *GetContractsInfo {
 	return &GetContractsInfo{c: c}
 }
