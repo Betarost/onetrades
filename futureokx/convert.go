@@ -89,6 +89,30 @@ func ConvertHistoryPositions(answ []HistoryPosition) (res []entity.HistoryPositi
 	return res
 }
 
+func ConvertHistoryOrders(answ []HistoryOrder) (res []entity.OrdersHistory) {
+	for _, item := range answ {
+		res = append(res, entity.OrdersHistory{
+			Symbol:        item.InstID,
+			OrderID:       item.OrdId,
+			ClientOrderID: item.ClOrdId,
+			Side:          strings.ToUpper(item.Side),
+			PositionSide:  strings.ToUpper(item.PosSide),
+			Category:      strings.ToUpper(item.Category),
+			Price:         utils.StringToFloat(item.Px),
+			FillPrice:     utils.StringToFloat(item.AvgPx),
+			Size:          utils.StringToFloat(item.Sz),
+			FillSize:      utils.StringToFloat(item.AccFillSz),
+			Type:          strings.ToUpper(item.OrdType),
+			Status:        strings.ToUpper(item.State), //entity
+			Pnl:           utils.StringToFloat(item.Pnl),
+			Fee:           utils.StringToFloat(item.Fee),
+			CreateTime:    utils.StringToInt64(item.CTime),
+			UpdateTime:    utils.StringToInt64(item.UTime),
+		})
+	}
+	return res
+}
+
 func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 	if len(answ) == 0 {
 		return res

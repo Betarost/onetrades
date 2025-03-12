@@ -11,6 +11,89 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+// ==============TradeHistoryOrder=================
+
+type TradeHistoryOrder struct {
+	c      *Client
+	after  *string
+	before *string
+}
+
+func (s *TradeHistoryOrder) After(after string) *TradeHistoryOrder {
+	s.after = &after
+	return s
+}
+
+func (s *TradeHistoryOrder) Before(before string) *TradeHistoryOrder {
+	s.before = &before
+	return s
+}
+
+func (s *TradeHistoryOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.OrdersHistory, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/trade/orders-history",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{
+		"instType": "SWAP",
+		"state":    "filled",
+	}
+
+	if s.after != nil {
+		m["after"] = *s.after
+	}
+
+	if s.before != nil {
+		m["before"] = *s.before
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []HistoryOrder `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	return ConvertHistoryOrders(answ.Result), nil
+}
+
+type HistoryOrder struct {
+	InstType  string `json:"instType"`
+	InstID    string `json:"instId"`
+	Ccy       string `json:"ccy"`
+	OrdId     string `json:"ordId"`
+	ClOrdId   string `json:"clOrdId"`
+	Tag       string `json:"tag"`
+	Px        string `json:"px"`
+	Sz        string `json:"sz"`
+	OrdType   string `json:"ordType"`
+	Side      string `json:"side"`
+	PosSide   string `json:"posSide"`
+	TdMode    string `json:"tdMode"`
+	AccFillSz string `json:"accFillSz"`
+	AvgPx     string `json:"avgPx"`
+	State     string `json:"state"`
+	Lever     string `json:"lever"`
+	Fee       string `json:"fee"`
+	Pnl       string `json:"pnl"`
+	Category  string `json:"category"`
+	CTime     string `json:"cTime"`
+	UTime     string `json:"uTime"`
+}
+
 // ==============TradeCancelOrders=================
 
 type TradeCancelOrders struct {

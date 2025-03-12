@@ -91,6 +91,9 @@ func TestOnetrades(t *testing.T) {
 	//======================= GET HistoryPositions
 	// res, err := client.NewGetHistoryPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	// ======================= GET TradeHistoryOrder
+	res, err := client.NewGetTradeHistoryOrder().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================= SET AccountMode
 	// res, err := client.NewSetAccountMode().Mode("2").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -101,8 +104,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage(50).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET ContractsInfo
-	res, err := client.NewGetContractsInfo().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetContractsInfo().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET ContractsInfo One Symbol
 	// res, err := client.NewGetContractsInfo().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

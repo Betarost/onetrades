@@ -43,12 +43,12 @@ func ConvertOrdersHistory(answ []OrdersHistory) (res []entity.OrdersHistory) {
 			Side:         item.Side,
 			PositionSide: item.PositionSide,
 			Price:        utils.StringToFloat(item.Price),
-			OrigQty:      utils.StringToFloat(item.OrigQty),
-			AvgPrice:     utils.StringToFloat(item.AvgPrice),
-			Type:         item.Type,
-			Status:       item.Status,
-			Time:         item.Time,
-			UpdateTime:   item.UpdateTime,
+			// OrigQty:      utils.StringToFloat(item.OrigQty),
+			// AvgPrice: utils.StringToFloat(item.AvgPrice),
+			Type: item.Type,
+			// Status:       item.Status,
+			// Time:       item.Time,
+			UpdateTime: item.UpdateTime,
 		})
 	}
 	return res
