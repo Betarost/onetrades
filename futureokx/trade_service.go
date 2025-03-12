@@ -17,6 +17,8 @@ type TradeHistoryOrder struct {
 	c      *Client
 	after  *string
 	before *string
+	begin  *string
+	end    *string
 }
 
 func (s *TradeHistoryOrder) After(after string) *TradeHistoryOrder {
@@ -26,6 +28,16 @@ func (s *TradeHistoryOrder) After(after string) *TradeHistoryOrder {
 
 func (s *TradeHistoryOrder) Before(before string) *TradeHistoryOrder {
 	s.before = &before
+	return s
+}
+
+func (s *TradeHistoryOrder) Begin(begin string) *TradeHistoryOrder {
+	s.begin = &begin
+	return s
+}
+
+func (s *TradeHistoryOrder) End(end string) *TradeHistoryOrder {
+	s.end = &end
 	return s
 }
 
@@ -49,6 +61,14 @@ func (s *TradeHistoryOrder) Do(ctx context.Context, opts ...utils.RequestOption)
 
 	if s.before != nil {
 		m["before"] = *s.before
+	}
+
+	if s.begin != nil {
+		m["begin"] = *s.begin
+	}
+
+	if s.end != nil {
+		m["end"] = *s.end
 	}
 
 	r.SetParams(m)
