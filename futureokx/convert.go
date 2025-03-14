@@ -13,8 +13,9 @@ func ConvertAccountBalance(answ []Balance) (res []entity.AccountBalance) {
 	}
 	for _, item := range answ[0].Details {
 		res = append(res, entity.AccountBalance{
-			Asset:            item.Ccy,
-			Balance:          utils.StringToFloat(item.Eq),
+			Asset: item.Ccy,
+			// Balance:          utils.StringToFloat(item.Eq),
+			Balance:          utils.StringToFloat(item.CashBal),
 			AvailableBalance: utils.StringToFloat(item.AvailBal),
 			UnrealizedProfit: utils.StringToFloat(item.Upl),
 		})
