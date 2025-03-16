@@ -120,9 +120,15 @@ func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 	}
 	for _, item := range answ {
 		res = append(res, entity.ContractInfo{
-			Symbol:       item.InstId,
-			ContractSize: utils.StringToFloat(item.CtVal),
-			MaxLeverage:  utils.StringToInt(item.Lever),
+			Symbol:             item.InstId,
+			ContractSize:       utils.StringToFloat(item.CtVal),
+			ContractMultiplier: utils.StringToFloat(item.CtMult),
+			StepContractSize:   utils.StringToFloat(item.LotSz),
+			MinContractSize:    utils.StringToFloat(item.MinSz),
+			StepTickPrice:      utils.StringToFloat(item.TickSz),
+			MaxLeverage:        utils.StringToInt(item.Lever),
+			State:              strings.ToUpper(item.State),
+			Type:               strings.ToUpper(item.RuleType),
 		})
 	}
 	return res

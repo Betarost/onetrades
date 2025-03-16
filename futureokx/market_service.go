@@ -171,7 +171,6 @@ func (s *GetContractsInfo) Do(ctx context.Context, opts ...utils.RequestOption) 
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []ContractsInfo `json:"data"`
 	}
@@ -184,10 +183,14 @@ func (s *GetContractsInfo) Do(ctx context.Context, opts ...utils.RequestOption) 
 }
 
 type ContractsInfo struct {
-	InstId string `json:"instId"`
-	CtVal  string `json:"ctVal"`
-	CtMult string `json:"ctMult"`
-	TickSz string `json:"tickSz"`
-	LotSz  string `json:"lotSz"`
-	Lever  string `json:"lever"`
+	InstId   string `json:"instId"`
+	CtVal    string `json:"ctVal"`
+	CtMult   string `json:"ctMult"`
+	CtValCcy string `json:"ctValCcy"`
+	TickSz   string `json:"tickSz"`
+	LotSz    string `json:"lotSz"`
+	MinSz    string `json:"minSz"`
+	Lever    string `json:"lever"`
+	State    string `json:"state"`
+	RuleType string `json:"ruleType"`
 }
