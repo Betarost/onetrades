@@ -79,6 +79,47 @@ func (s *GetKline) Do(ctx context.Context, opts ...utils.RequestOption) (res []e
 	return ConvertKline(answ.Result), nil
 }
 
+// ==============GetMarkPrices=================
+type GetMarkPrices struct {
+	c *Client
+}
+
+func (s *GetMarkPrices) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.MarkPrice, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/public/mark-price",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeNone,
+	}
+
+	m := utils.Params{
+		"instType": "SWAP",
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []MarkPrice `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+
+	return ConvertMarkPrices(answ.Result), nil
+}
+
 // ==============GetMarkPrice=================
 type GetMarkPrice struct {
 	c      *Client

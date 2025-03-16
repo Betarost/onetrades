@@ -134,6 +134,19 @@ func ConvertContractsInfo(answ []ContractsInfo) (res []entity.ContractInfo) {
 	return res
 }
 
+func ConvertMarkPrices(answ []MarkPrice) (res []entity.MarkPrice) {
+	if len(answ) == 0 {
+		return res
+	}
+	for _, item := range answ {
+		res = append(res, entity.MarkPrice{
+			Symbol: item.InstId,
+			Price:  utils.StringToFloat(item.MarkPx),
+		})
+	}
+	return res
+}
+
 func ConvertKline(answ [][]string) (res []entity.Kline) {
 	if len(answ) == 0 {
 		return res

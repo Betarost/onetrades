@@ -171,6 +171,10 @@ func (c *Client) NewGetMarkPrice() *GetMarkPrice {
 	return &GetMarkPrice{c: c}
 }
 
+func (c *Client) NewGetMarkPrices() *GetMarkPrices {
+	return &GetMarkPrices{c: c}
+}
+
 func (c *Client) NewTradePlaceOrder() *TradePlaceOrder {
 	return &TradePlaceOrder{c: c}
 }

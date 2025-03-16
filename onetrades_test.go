@@ -104,11 +104,14 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage(50).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET ContractsInfo
-	res, err := client.NewGetContractsInfo().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetContractsInfo().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET ContractsInfo One Symbol
 	// res, err := client.NewGetContractsInfo().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	// ======================= GET MarkPrices
+	res, err := client.NewGetMarkPrices().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET MarkPrice
 	// res, err := client.NewGetMarkPrice().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

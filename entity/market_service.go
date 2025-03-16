@@ -20,3 +20,8 @@ type Kline struct {
 	Time         int64   `json:"time" bson:"time"`
 	Complete     bool    `json:"complete" bson:"complete"`
 }
+
+type MarkPrice struct {
+	Symbol string  `json:"symbol" bson:"symbol"`
+	Price  float64 `json:"price" bson:"price"`
+}
