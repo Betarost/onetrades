@@ -1,6 +1,8 @@
 package futurebybit
 
 import (
+	"strings"
+
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
@@ -38,6 +40,35 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 			RealizedProfit:   utils.StringToFloat(item.CurRealisedPnl),
 			Notional:         utils.StringToFloat(item.PositionValue),
 			UpdateTime:       utils.StringToInt64(item.UpdatedTime),
+		})
+	}
+	return res
+}
+
+func ConvertHistoryOrders(answ []HistoryOrder) (res []entity.OrdersHistory) {
+	for _, item := range answ {
+		posSide := "LONG"
+		if strings.ToUpper(item.Side) == "BUY" {
+			posSide = "SHORT"
+		}
+		res = append(res, entity.OrdersHistory{
+			Symbol:  item.Symbol,
+			OrderID: item.OrderId,
+			// ClientOrderID: item.ClOrdId,
+			Side:         strings.ToUpper(item.Side),
+			PositionSide: posSide,
+			Category:     strings.ToUpper(item.ExecType),
+			Price:        utils.StringToFloat(item.AvgEntryPrice),
+			FillPrice:    utils.StringToFloat(item.AvgExitPrice),
+			Size:         utils.StringToFloat(item.Qty),
+			Notional:     utils.StringToFloat(item.CumEntryValue),
+			FillSize:     utils.StringToFloat(item.ClosedSize),
+			Type:         strings.ToUpper(item.OrderType),
+			// Status:        strings.ToUpper(item.State), //entity
+			Pnl: utils.StringToFloat(item.ClosedPnl),
+			// Fee:           utils.StringToFloat(item.Fee),
+			CreateTime: utils.StringToInt64(item.CreatedTime),
+			UpdateTime: utils.StringToInt64(item.UpdatedTime),
 		})
 	}
 	return res

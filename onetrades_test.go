@@ -28,18 +28,26 @@ func TestOnetrades(t *testing.T) {
 	//======================= GET Position
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	// ======================= GET GetDownloadIdHistoryOrder GetDownloadLinkHistoryOrder
+	// res, err := client.NewGetDownloadIdHistoryOrder().Begin(1741109298000).End(1742282098000).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetDownloadLinkHistoryOrder().DownloadId("954279024084131840").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================END BINANCE==========================
 
 	//==========================BYBIT==========================
-	// bybitKey := viper.GetString("BYBIT_API")
-	// bybitSecret := viper.GetString("BYBIT_SECRET")
-	// client := NewFutureBybitClient(bybitKey, bybitSecret)
+	bybitKey := viper.GetString("BYBIT_API")
+	bybitSecret := viper.GetString("BYBIT_SECRET")
+	client := NewFutureBybitClient(bybitKey, bybitSecret)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	// ======================= GET TradeHistoryOrder
+	res, err := client.NewGetTradeHistoryOrder().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================END BYBIT==========================
 
 	//==========================MEXC==========================
@@ -78,10 +86,10 @@ func TestOnetrades(t *testing.T) {
 	//======================END BINGX==========================
 
 	//==========================OKX==========================
-	okxKey := viper.GetString("OKX_API")
-	okxSecret := viper.GetString("OKX_SECRET")
-	okxMemo := viper.GetString("OKX_MEMO")
-	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	// okxKey := viper.GetString("OKX_API")
+	// okxSecret := viper.GetString("OKX_SECRET")
+	// okxMemo := viper.GetString("OKX_MEMO")
+	// client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -110,8 +118,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetContractsInfo().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET MarkPrices
-	res, err := client.NewGetMarkPrices().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetMarkPrices().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET MarkPrice
 	// res, err := client.NewGetMarkPrice().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
