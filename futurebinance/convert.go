@@ -1,6 +1,9 @@
 package futurebinance
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
@@ -30,6 +33,36 @@ func ConvertPositions(answ []Position) (res []entity.Position) {
 			Notional:         utils.StringToFloat(item.Notional),
 			InitialMargin:    utils.StringToFloat(item.InitialMargin),
 			UpdateTime:       item.UpdateTime,
+		})
+	}
+	return res
+}
+
+func ConvertHistoryOrders(answ []HistoryOrder) (res []entity.OrdersHistory) {
+	for _, item := range answ {
+
+		t := "LIMIT"
+		if item.Buyer {
+			t = "MARKET"
+		}
+		res = append(res, entity.OrdersHistory{
+			Symbol:  item.Symbol,
+			OrderID: fmt.Sprintf("%d", item.Id),
+			// ClientOrderID: item.ClOrdId,
+			Side:         strings.ToUpper(item.Side),
+			PositionSide: strings.ToUpper(item.PositionSide),
+			// Category:     strings.ToUpper(item.Category),
+			Price:     utils.StringToFloat(item.Price),
+			FillPrice: utils.StringToFloat(item.Price),
+			Size:      utils.StringToFloat(item.Qty),
+			FillSize:  utils.StringToFloat(item.Qty),
+			Notional:  utils.StringToFloat(item.QuoteQty),
+			Type:      t,
+			// Status:       strings.ToUpper(item.State), //entity
+			Pnl:        utils.StringToFloat(item.RealizedPnl),
+			Fee:        0 - utils.StringToFloat(item.Commission),
+			CreateTime: item.Time,
+			UpdateTime: item.Time,
 		})
 	}
 	return res

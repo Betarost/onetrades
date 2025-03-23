@@ -121,3 +121,15 @@ func (c *Client) NewGetAccountBalance() *GetAccountBalance {
 func (c *Client) NewGetPositions() *GetPositions {
 	return &GetPositions{c: c}
 }
+
+func (c *Client) NewGetDownloadIdHistoryOrder() *GetDownloadIdHistoryOrder {
+	return &GetDownloadIdHistoryOrder{c: c}
+}
+
+func (c *Client) NewGetDownloadLinkHistoryOrder() *GetDownloadLinkHistoryOrder {
+	return &GetDownloadLinkHistoryOrder{c: c}
+}
+
+func (c *Client) NewGetTradeHistoryOrder() *TradeHistoryOrder {
+	return &TradeHistoryOrder{c: c}
+}

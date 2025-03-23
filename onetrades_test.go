@@ -19,15 +19,18 @@ func TestOnetrades(t *testing.T) {
 	}
 
 	//==========================BINANCE==========================
-	// binanceKey := viper.GetString("BINANCE_API")
-	// binanceSecret := viper.GetString("BINANCE_SECRET")
-	// client := NewFutureBinanceClient(binanceKey, binanceSecret)
+	binanceKey := viper.GetString("BINANCE_API")
+	binanceSecret := viper.GetString("BINANCE_SECRET")
+	client := NewFutureBinanceClient(binanceKey, binanceSecret)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
+	// ======================= GET TradeHistoryOrder
+	res, err := client.NewGetTradeHistoryOrder().Symbol("BTCUSDT").Limit(1000).Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET GetDownloadIdHistoryOrder GetDownloadLinkHistoryOrder
 	// res, err := client.NewGetDownloadIdHistoryOrder().Begin(1741109298000).End(1742282098000).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -36,9 +39,9 @@ func TestOnetrades(t *testing.T) {
 	//======================END BINANCE==========================
 
 	//==========================BYBIT==========================
-	bybitKey := viper.GetString("BYBIT_API")
-	bybitSecret := viper.GetString("BYBIT_SECRET")
-	client := NewFutureBybitClient(bybitKey, bybitSecret)
+	// bybitKey := viper.GetString("BYBIT_API")
+	// bybitSecret := viper.GetString("BYBIT_SECRET")
+	// client := NewFutureBybitClient(bybitKey, bybitSecret)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -46,8 +49,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET TradeHistoryOrder
-	res, err := client.NewGetTradeHistoryOrder().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetTradeHistoryOrder().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================END BYBIT==========================
 
 	//==========================MEXC==========================
