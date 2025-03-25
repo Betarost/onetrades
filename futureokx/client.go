@@ -139,6 +139,10 @@ func (c *Client) NewGetAccountBalance() *GetAccountBalance {
 	return &GetAccountBalance{c: c}
 }
 
+func (c *Client) NewGetAccountInfo() *GetAccountInfo {
+	return &GetAccountInfo{c: c}
+}
+
 func (c *Client) NewGetPositions() *GetPositions {
 	return &GetPositions{c: c}
 }

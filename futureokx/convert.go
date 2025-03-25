@@ -7,6 +7,32 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+func ConvertAccountInfo(answ AccountInfo) (res entity.AccountInfo) {
+
+	res.UID = answ.UID
+	res.MainUID = answ.MainUID
+	res.Label = answ.Label
+	res.Level = answ.Level
+
+	if answ.UID == answ.MainUID {
+		res.IsMain = true
+	}
+
+	if strings.Contains(answ.Perm, "read") {
+		res.CanRead = true
+	}
+
+	if strings.Contains(answ.Perm, "trade") {
+		res.CanTrade = true
+	}
+
+	if answ.PosMode == "long_short_mode" {
+		res.HedgeMode = true
+	}
+
+	return res
+}
+
 func ConvertAccountBalance(answ []Balance) (res []entity.AccountBalance) {
 	if len(answ) == 0 {
 		return res

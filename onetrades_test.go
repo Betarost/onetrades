@@ -19,9 +19,9 @@ func TestOnetrades(t *testing.T) {
 	}
 
 	//==========================BINANCE==========================
-	binanceKey := viper.GetString("BINANCE_API")
-	binanceSecret := viper.GetString("BINANCE_SECRET")
-	client := NewFutureBinanceClient(binanceKey, binanceSecret)
+	// binanceKey := viper.GetString("BINANCE_API")
+	// binanceSecret := viper.GetString("BINANCE_SECRET")
+	// client := NewFutureBinanceClient(binanceKey, binanceSecret)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -29,8 +29,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET TradeHistoryOrder
-	res, err := client.NewGetTradeHistoryOrder().Symbol("BTCUSDT").Limit(1000).Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetTradeHistoryOrder().Symbol("BTCUSDT").Limit(1000).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET GetDownloadIdHistoryOrder GetDownloadLinkHistoryOrder
 	// res, err := client.NewGetDownloadIdHistoryOrder().Begin(1741109298000).End(1742282098000).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -89,10 +89,13 @@ func TestOnetrades(t *testing.T) {
 	//======================END BINGX==========================
 
 	//==========================OKX==========================
-	// okxKey := viper.GetString("OKX_API")
-	// okxSecret := viper.GetString("OKX_SECRET")
-	// okxMemo := viper.GetString("OKX_MEMO")
-	// client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	okxKey := viper.GetString("OKX_API")
+	okxSecret := viper.GetString("OKX_SECRET")
+	okxMemo := viper.GetString("OKX_MEMO")
+	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	//======================= GET AccountInfo
+	res, err := client.NewGetAccountInfo().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

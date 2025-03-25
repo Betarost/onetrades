@@ -10,6 +10,65 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+// ===================GetAccountInfo==================
+type GetAccountInfo struct {
+	c *Client
+}
+
+func (s *GetAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInfo, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/account/config",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []AccountInfo `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+	return ConvertAccountInfo(answ.Result[0]), nil
+}
+
+type AccountInfo struct {
+	UID                 string `json:"uid"`
+	MainUID             string `json:"mainUid"`
+	AcctLv              string `json:"acctLv"`
+	AcctStpMode         string `json:"acctStpMode"`
+	PosMode             string `json:"posMode"`
+	AutoLoan            bool   `json:"autoLoan"`
+	GreeksType          string `json:"greeksType"`
+	Level               string `json:"level"`
+	LevelTmp            string `json:"levelTmp"`
+	CtIsoMode           string `json:"ctIsoMode"`
+	MgnIsoMode          string `json:"mgnIsoMode"`
+	RoleType            string `json:"roleType"`
+	SpotRoleType        string `json:"spotRoleType"`
+	OpAuth              string `json:"opAuth"`
+	KycLv               string `json:"kycLv"`
+	Label               string `json:"label"`
+	Ip                  string `json:"ip"`
+	Perm                string `json:"perm"`
+	LiquidationGear     string `json:"liquidationGear"`
+	EnableSpotBorrow    bool   `json:"enableSpotBorrow"`
+	SpotBorrowAutoRepay bool   `json:"spotBorrowAutoRepay"`
+	Type                string `json:"type"`
+}
+
 // ===================SetAccountMode==================
 type SetAccountMode struct {
 	c    *Client

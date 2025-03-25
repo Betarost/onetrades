@@ -1,5 +1,16 @@
 package entity
 
+type AccountInfo struct {
+	UID       string `json:"uid" bson:"uid"`
+	MainUID   string `json:"mainUID" bson:"mainUID"`
+	IsMain    bool   `json:"isMain" bson:"isMain"`
+	Label     string `json:"label" bson:"label"`
+	Level     string `json:"level" bson:"level"`
+	CanRead   bool   `json:"canRead" bson:"canRead"`
+	CanTrade  bool   `json:"canTrade" bson:"canTrade"`
+	HedgeMode bool   `json:"hedgeMode" bson:"hedgeMode"`
+}
+
 type AccountBalance struct {
 	Asset              string  `json:"asset" bson:"asset"`
 	Balance            float64 `json:"balance" bson:"balance"`
