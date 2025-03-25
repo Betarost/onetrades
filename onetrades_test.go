@@ -99,8 +99,11 @@ func TestOnetrades(t *testing.T) {
 	//======================= GET AccountInfo
 	// res, err := client.NewGetAccountInfo().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
-	//======================= GET AccountInfo
-	res, err := client.NewGetSubAccountsLists().Do(context.Background())
+	//======================= GET SubAccountsLists
+	// res, err := client.NewGetSubAccountsLists().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET SubAccountBalance
+	res, err := client.NewGetSubAccountBalance().SubID("Betarost").Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())

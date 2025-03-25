@@ -3,13 +3,67 @@ package futureokx
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ===================GetSubAccountInfo==================
+// ===================GetSubAccountBalance==================
+type GetSubAccountBalance struct {
+	c     *Client
+	subID *string
+}
+
+func (s *GetSubAccountBalance) SubID(subID string) *GetSubAccountBalance {
+	s.subID = &subID
+	return s
+}
+
+func (s *GetSubAccountBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.SubAccountBalance, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/account/subaccount/balances",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{}
+	if s.subID != nil {
+		m["subAcct"] = *s.subID
+	}
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []SubAccountBalance `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+
+	return ConvertSubAccountBalance(answ.Result[0]), nil
+}
+
+type SubAccountBalance struct {
+	TotalEq string `json:"totalEq"`
+	Upl     string `json:"upl"`
+	UTime   string `json:"uTime"`
+}
+
+// ===================GetSubAccountsLists==================
 type GetSubAccountsLists struct {
 	c *Client
 }
