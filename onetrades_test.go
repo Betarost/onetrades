@@ -97,8 +97,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetAccountValuation().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET AccountInfo
-	// res, err := client.NewGetAccountInfo().Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
+	res, err := client.NewGetAccountInfo().Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================= GET SubAccountsLists
 	// res, err := client.NewGetSubAccountsLists().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -106,8 +106,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetSubAccountBalance().SubID("Betarost").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET SubAccountFundingBalance
-	res, err := client.NewGetSubAccountFundingBalance().SubID("Betarost").Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetSubAccountFundingBalance().SubID("Betarost").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Balance
 	// res, err := client.NewGetAccountBalance().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -41,8 +40,6 @@ func (s *GetSubAccountFundingBalance) Do(ctx context.Context, opts ...utils.Requ
 	if err != nil {
 		return res, err
 	}
-
-	log.Println("=79bd79=", string(data))
 
 	var answ struct {
 		Result []SubAccountFundingBalance `json:"data"`
