@@ -7,6 +7,17 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+func ConvertAccountValuation(answ AccountValuation) (res entity.AccountValuation) {
+
+	res.ClassicBalance = utils.StringToFloat(answ.Details.Classic)
+	res.EarnBalance = utils.StringToFloat(answ.Details.Earn)
+	res.FundingBalance = utils.StringToFloat(answ.Details.Funding)
+	res.TradingBalance = utils.StringToFloat(answ.Details.Trading)
+	res.TotalBalance = utils.StringToFloat(answ.TotalBal)
+	res.UpdateTime = utils.StringToInt64(answ.Ts)
+	return res
+}
+
 func ConvertAccountInfo(answ AccountInfo) (res entity.AccountInfo) {
 
 	res.UID = answ.UID

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -189,4 +190,58 @@ type BalanceDetails struct {
 	StgyEq        string `json:"stgyEq"`
 	IsoUpl        string `json:"isoUpl,omitempty"`
 	UTime         string `json:"uTime"`
+}
+
+//===================GetAccountValuation==================
+
+type GetAccountValuation struct {
+	c *Client
+}
+
+func (s *GetAccountValuation) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountValuation, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/asset/asset-valuation",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{"ccy": "USDT"}
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	log.Println("=bdadbb=", string(data))
+
+	var answ struct {
+		Result []AccountValuation `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+	return ConvertAccountValuation(answ.Result[0]), nil
+
+}
+
+type AccountValuation struct {
+	TotalBal string                  `json:"totalBal"`
+	Details  AccountValuationDetails `json:"details,omitempty"`
+	Ts       string                  `json:"ts"`
+}
+
+type AccountValuationDetails struct {
+	Classic string `json:"classic"`
+	Earn    string `json:"earn"`
+	Funding string `json:"funding"`
+	Trading string `json:"trading,omitempty"`
 }

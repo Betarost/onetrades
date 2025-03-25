@@ -11,6 +11,15 @@ type AccountInfo struct {
 	HedgeMode bool   `json:"hedgeMode" bson:"hedgeMode"`
 }
 
+type AccountValuation struct {
+	ClassicBalance float64 `json:"classicBalance" bson:"classicBalance"`
+	EarnBalance    float64 `json:"earnBalance" bson:"earnBalance"`
+	FundingBalance float64 `json:"fundingBalance" bson:"fundingBalance"`
+	TradingBalance float64 `json:"tradingBalance" bson:"tradingBalance"`
+	TotalBalance   float64 `json:"totalBalance" bson:"totalBalance"`
+	UpdateTime     int64   `json:"updateTime" bson:"updateTime"`
+}
+
 type AccountBalance struct {
 	Asset              string  `json:"asset" bson:"asset"`
 	Balance            float64 `json:"balance" bson:"balance"`
