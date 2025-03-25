@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -214,8 +213,6 @@ func (s *GetAccountValuation) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-
-	log.Println("=bdadbb=", string(data))
 
 	var answ struct {
 		Result []AccountValuation `json:"data"`
