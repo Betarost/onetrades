@@ -151,6 +151,10 @@ func (c *Client) NewGetSubAccountBalance() *GetSubAccountBalance {
 	return &GetSubAccountBalance{c: c}
 }
 
+func (c *Client) NewGetSubAccountFundingBalance() *GetSubAccountFundingBalance {
+	return &GetSubAccountFundingBalance{c: c}
+}
+
 func (c *Client) NewGetAccountInfo() *GetAccountInfo {
 	return &GetAccountInfo{c: c}
 }

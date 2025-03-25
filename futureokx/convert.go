@@ -18,6 +18,14 @@ func ConvertAccountValuation(answ AccountValuation) (res entity.AccountValuation
 	return res
 }
 
+func ConvertSubAccountFundingBalance(answ SubAccountFundingBalance) (res entity.SubAccountFundingBalance) {
+	res.Asset = answ.Ccy
+	res.Balance = utils.StringToFloat(answ.Bal)
+	res.AvailableBalance = utils.StringToFloat(answ.AvailBal)
+	res.FrozenBalance = utils.StringToFloat(answ.FrozenBal)
+	return res
+}
+
 func ConvertSubAccountBalance(answ SubAccountBalance) (res entity.SubAccountBalance) {
 	res.EquityBalance = utils.StringToFloat(answ.TotalEq)
 	res.UnrealizedProfit = utils.StringToFloat(answ.Upl)
