@@ -42,6 +42,7 @@ func ConvertAccountBalance(answ []Balance) (res []entity.AccountBalance) {
 			Asset: item.Ccy,
 			// Balance:          utils.StringToFloat(item.Eq),
 			Balance:          utils.StringToFloat(item.CashBal),
+			EquityBalance:    utils.StringToFloat(item.Eq),
 			AvailableBalance: utils.StringToFloat(item.AvailBal),
 			UnrealizedProfit: utils.StringToFloat(item.Upl),
 		})
