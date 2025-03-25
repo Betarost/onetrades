@@ -143,6 +143,10 @@ func (c *Client) NewGetAccountValuation() *GetAccountValuation {
 	return &GetAccountValuation{c: c}
 }
 
+func (c *Client) NewGetSubAccountsLists() *GetSubAccountsLists {
+	return &GetSubAccountsLists{c: c}
+}
+
 func (c *Client) NewGetAccountInfo() *GetAccountInfo {
 	return &GetAccountInfo{c: c}
 }

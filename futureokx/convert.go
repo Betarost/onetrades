@@ -18,6 +18,38 @@ func ConvertAccountValuation(answ AccountValuation) (res entity.AccountValuation
 	return res
 }
 
+func ConvertSubAccountInfo(answ []SubAccountsLists) (res []entity.AccountInfo) {
+	if len(answ) == 0 {
+		return res
+	}
+	for _, item := range answ {
+		canTrade := true
+		canTransfer := true
+		level := item.Type
+		if item.Type == "1" {
+			level = "Standard sub-account"
+		}
+		for _, i := range item.FrozenFunc {
+			if i == "trading" {
+				canTrade = false
+			} else if i == "transfer" {
+				canTransfer = false
+			}
+		}
+		res = append(res, entity.AccountInfo{
+			UID:         item.UID,
+			Name:        item.SubAcct,
+			Label:       item.Label,
+			Level:       level,
+			CanRead:     true,
+			CanTrade:    canTrade,
+			CanTransfer: canTransfer,
+			HedgeMode:   true,
+		})
+	}
+	return res
+}
+
 func ConvertAccountInfo(answ AccountInfo) (res entity.AccountInfo) {
 
 	res.UID = answ.UID
