@@ -3,6 +3,7 @@ package entity
 type AccountInfo struct {
 	UID       string `json:"uid" bson:"uid"`
 	MainUID   string `json:"mainUID" bson:"mainUID"`
+	Name      string `json:"name" bson:"name"`
 	IsMain    bool   `json:"isMain" bson:"isMain"`
 	Label     string `json:"label" bson:"label"`
 	Level     string `json:"level" bson:"level"`
