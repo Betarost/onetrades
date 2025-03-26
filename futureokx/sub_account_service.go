@@ -4,11 +4,112 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
+
+// ===================FundsTransfer==================
+type FundsTransfer struct {
+	c      *Client
+	subID  *string
+	amount *string
+	way    *string // 1:master-sub	2:sub-master
+	from   *string // 6: Funding account	18: Trading account
+	to     *string // 6: Funding account	18: Trading account
+}
+
+func (s *FundsTransfer) Amount(amount string) *FundsTransfer {
+	s.amount = &amount
+	return s
+}
+
+func (s *FundsTransfer) Way(way string) *FundsTransfer {
+	s.way = &way
+	return s
+}
+
+func (s *FundsTransfer) From(from string) *FundsTransfer {
+	s.from = &from
+	return s
+}
+
+func (s *FundsTransfer) To(to string) *FundsTransfer {
+	s.to = &to
+	return s
+}
+
+func (s *FundsTransfer) SubID(subID string) *FundsTransfer {
+	s.subID = &subID
+	return s
+}
+
+func (s *FundsTransfer) Do(ctx context.Context, opts ...utils.RequestOption) (res bool, err error) {
+	r := &utils.Request{
+		Method:     http.MethodPost,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/asset/transfer",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{
+		"ccy": "USDT",
+	}
+
+	if s.amount != nil {
+		m["amt"] = *s.amount
+	}
+
+	if s.way != nil {
+		m["type"] = *s.way
+	}
+
+	if s.from != nil {
+		m["from"] = *s.from
+	}
+
+	if s.to != nil {
+		m["to"] = *s.to
+	}
+
+	if s.subID != nil {
+		m["subAcct"] = *s.subID
+	}
+
+	r.SetFormParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return false, err
+	}
+
+	log.Println("=0e8b9b=", string(data))
+
+	var answ struct {
+		Result []TransferAnswer `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return false, err
+	}
+
+	if len(answ.Result) == 0 {
+		return false, errors.New("Zero Answer")
+	}
+
+	if answ.Result[0].TransId == "" {
+		return false, errors.New("Empty Answer")
+	}
+	return true, nil
+}
+
+type TransferAnswer struct {
+	TransId string `json:"transId"`
+}
 
 // ===================GetSubAccountFundingBalance==================
 type GetSubAccountFundingBalance struct {
