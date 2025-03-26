@@ -11,3 +11,12 @@ type SubAccountFundingBalance struct {
 	FrozenBalance    float64 `json:"frozenBalance" bson:"frozenBalance"`
 	AvailableBalance float64 `json:"availableBalance" bson:"availableBalance"`
 }
+
+type TransferHistory struct {
+	Asset      string  `json:"asset" bson:"asset"`
+	SubID      string  `json:"subID" bson:"subID"`
+	BillID     string  `json:"billID" bson:"billID"`
+	Amount     float64 `json:"amount" bson:"amount"`
+	Type       string  `json:"type" bson:"type"`
+	CreateTime int64   `json:"createTime" bson:"createTime"`
+}

@@ -4,12 +4,78 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
+
+// ==============GetTransferHistory=================
+
+type GetTransferHistory struct {
+	c      *Client
+	after  *string
+	before *string
+}
+
+func (s *GetTransferHistory) After(after string) *GetTransferHistory {
+	s.after = &after
+	return s
+}
+
+func (s *GetTransferHistory) Before(before string) *GetTransferHistory {
+	s.before = &before
+	return s
+}
+
+func (s *GetTransferHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.TransferHistory, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/asset/subaccount/bills",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeSigned,
+	}
+
+	m := utils.Params{
+		"ccy": "USDT",
+	}
+
+	if s.after != nil {
+		m["after"] = *s.after
+	}
+
+	if s.before != nil {
+		m["before"] = *s.before
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []TransferHistory `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	return ConvertTransferHistory(answ.Result), nil
+}
+
+type TransferHistory struct {
+	BillId  string `json:"billId"`
+	Ccy     string `json:"ccy"`
+	Amt     string `json:"amt"`
+	Type    string `json:"type"`
+	SubAcct string `json:"subAcct"`
+	Ts      string `json:"ts"`
+}
 
 // ===================FundsTransfer==================
 type FundsTransfer struct {
@@ -85,8 +151,6 @@ func (s *FundsTransfer) Do(ctx context.Context, opts ...utils.RequestOption) (re
 	if err != nil {
 		return false, err
 	}
-
-	log.Println("=0e8b9b=", string(data))
 
 	var answ struct {
 		Result []TransferAnswer `json:"data"`

@@ -159,6 +159,10 @@ func (c *Client) NewFundsTransfer() *FundsTransfer {
 	return &FundsTransfer{c: c}
 }
 
+func (c *Client) NewGetTransferHistory() *GetTransferHistory {
+	return &GetTransferHistory{c: c}
+}
+
 func (c *Client) NewGetAccountInfo() *GetAccountInfo {
 	return &GetAccountInfo{c: c}
 }

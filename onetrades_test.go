@@ -93,9 +93,12 @@ func TestOnetrades(t *testing.T) {
 	okxSecret := viper.GetString("OKX_SECRET")
 	okxMemo := viper.GetString("OKX_MEMO")
 	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
-	//======================= GET FundsTransfer
-	res, err := client.NewFundsTransfer().Way("2").Amount("0.05").From("6").To("6").SubID("Betarost").Do(context.Background())
+	//======================= GET TransferHistory
+	res, err := client.NewGetTransferHistory().Before("1741006810000").Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
+	//======================= FundsTransfer
+	// res, err := client.NewFundsTransfer().Way("2").Amount("0.05").From("6").To("6").SubID("Betarost").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET AccountValuation
 	// res, err := client.NewGetAccountValuation().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)

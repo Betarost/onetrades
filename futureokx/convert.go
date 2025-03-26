@@ -7,6 +7,24 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+func ConvertTransferHistory(answ []TransferHistory) (res []entity.TransferHistory) {
+	for _, item := range answ {
+		t := "TO"
+		if item.Type == "1" {
+			t = "FROM"
+		}
+		res = append(res, entity.TransferHistory{
+			Asset:      item.Ccy,
+			SubID:      item.SubAcct,
+			BillID:     item.BillId,
+			Amount:     utils.StringToFloat(item.Amt),
+			Type:       t,
+			CreateTime: utils.StringToInt64(item.Ts),
+		})
+	}
+	return res
+}
+
 func ConvertAccountValuation(answ AccountValuation) (res entity.AccountValuation) {
 
 	res.ClassicBalance = utils.StringToFloat(answ.Details.Classic)
