@@ -7,6 +7,24 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+func ConvertTickers(answ []Ticker) (res []entity.Ticker) {
+	if len(answ) == 0 {
+		return res
+	}
+	for _, item := range answ {
+		res = append(res, entity.Ticker{
+			Symbol:        item.InstId,
+			Open24hPrice:  utils.StringToFloat(item.Open24h),
+			LastPrice:     utils.StringToFloat(item.Last),
+			Volume24hCoin: utils.StringToFloat(item.VolCcy24h),
+			Volume24hUSDT: utils.StringToFloat(item.VolCcy24h) * utils.StringToFloat(item.Last),
+			Change24h:     (utils.StringToFloat(item.Last) - utils.StringToFloat(item.Open24h)) / utils.StringToFloat(item.Open24h) * 100,
+			Time:          utils.StringToInt64(item.Ts),
+		})
+	}
+	return res
+}
+
 func ConvertTransferHistory(answ []TransferHistory) (res []entity.TransferHistory) {
 	for _, item := range answ {
 		t := "TO"

@@ -25,3 +25,13 @@ type MarkPrice struct {
 	Symbol string  `json:"symbol" bson:"symbol"`
 	Price  float64 `json:"price" bson:"price"`
 }
+
+type Ticker struct {
+	Symbol        string  `json:"symbol" bson:"symbol"`
+	Open24hPrice  float64 `json:"open24hPrice" bson:"open24hPrice"`
+	LastPrice     float64 `json:"lastPrice" bson:"lastPrice"`
+	Volume24hCoin float64 `json:"volume24hCoin" bson:"volume24hCoin"`
+	Volume24hUSDT float64 `json:"volume24hUSDT" bson:"volume24hUSDT"`
+	Change24h     float64 `json:"change24h" bson:"change24h"`
+	Time          int64   `json:"time" bson:"time"`
+}

@@ -10,6 +10,56 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+// ==============GetTickers=================
+type GetTickers struct {
+	c *Client
+}
+
+func (s *GetTickers) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Ticker, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/market/tickers",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeNone,
+	}
+
+	m := utils.Params{
+		"instType": "SWAP",
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []Ticker `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+
+	return ConvertTickers(answ.Result), nil
+}
+
+type Ticker struct {
+	InstId    string `json:"instId"`
+	InstType  string `json:"instType"`
+	Last      string `json:"last"`
+	Open24h   string `json:"open24h"`
+	VolCcy24h string `json:"volCcy24h"`
+	Ts        string `json:"ts"`
+}
+
 // ==============GetKline=================
 type GetKline struct {
 	c         *Client

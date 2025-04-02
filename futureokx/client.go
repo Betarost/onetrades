@@ -218,3 +218,7 @@ func (c *Client) NewTradeCancelOrders() *TradeCancelOrders {
 func (c *Client) NewGetKline() *GetKline {
 	return &GetKline{c: c}
 }
+
+func (c *Client) NewGetTickers() *GetTickers {
+	return &GetTickers{c: c}
+}
