@@ -18,8 +18,9 @@ func ConvertTickers(answ []Ticker) (res []entity.Ticker) {
 			LastPrice:     utils.StringToFloat(item.Last),
 			Volume24hCoin: utils.StringToFloat(item.VolCcy24h),
 			Volume24hUSDT: utils.StringToFloat(item.VolCcy24h) * utils.StringToFloat(item.Last),
-			Change24h:     (utils.StringToFloat(item.Last) - utils.StringToFloat(item.Open24h)) / utils.StringToFloat(item.Open24h) * 100,
-			Time:          utils.StringToInt64(item.Ts),
+			// Change24h:     (utils.StringToFloat(item.Last) - utils.StringToFloat(item.Open24h)) / utils.StringToFloat(item.Open24h) * 100,
+			Change24h: (utils.StringToFloat(item.Last) - utils.StringToFloat(item.SodUtc0)) / utils.StringToFloat(item.SodUtc0) * 100,
+			Time:      utils.StringToInt64(item.Ts),
 		})
 	}
 	return res

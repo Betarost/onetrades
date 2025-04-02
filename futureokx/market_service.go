@@ -57,6 +57,8 @@ type Ticker struct {
 	Last      string `json:"last"`
 	Open24h   string `json:"open24h"`
 	VolCcy24h string `json:"volCcy24h"`
+	SodUtc0   string `json:"sodUtc0"`
+	SodUtc8   string `json:"sodUtc8"`
 	Ts        string `json:"ts"`
 }
 
