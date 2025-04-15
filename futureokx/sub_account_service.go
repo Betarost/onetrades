@@ -85,10 +85,16 @@ type FundsTransfer struct {
 	way    *string // 1:master-sub	2:sub-master
 	from   *string // 6: Funding account	18: Trading account
 	to     *string // 6: Funding account	18: Trading account
+	tag    *string
 }
 
 func (s *FundsTransfer) Amount(amount string) *FundsTransfer {
 	s.amount = &amount
+	return s
+}
+
+func (s *FundsTransfer) Tag(tag string) *FundsTransfer {
+	s.tag = &tag
 	return s
 }
 
@@ -131,6 +137,10 @@ func (s *FundsTransfer) Do(ctx context.Context, opts ...utils.RequestOption) (re
 
 	if s.way != nil {
 		m["type"] = *s.way
+	}
+
+	if s.tag != nil {
+		m["clientId"] = *s.tag
 	}
 
 	if s.from != nil {

@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"testing"
 
+	"github.com/Betarost/onetrades/entity"
 	"github.com/spf13/viper"
 )
 
@@ -49,7 +50,7 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET TradeHistoryOrder
-	// res, err := client.NewGetTradeHistoryOrder().Do(context.Background())
+	// res, err := client.NewGetTradeHistoryOrder().Begin("1740787140000").End("1741391940000").Limit(100).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================END BYBIT==========================
 
@@ -94,8 +95,8 @@ func TestOnetrades(t *testing.T) {
 	okxMemo := viper.GetString("OKX_MEMO")
 	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET Tickers
-	res, err := client.NewGetTickers().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetTickers().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET TransferHistory
 	// res, err := client.NewGetTransferHistory().Before("1741006810000").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -151,8 +152,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetMarkPrice().Symbol("DOGE-USDT-SWAP").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Kline
-	// res, err := client.NewGetKline().Symbol("DOGE-USDT-SWAP").TimeFrame(entity.TimeFrameType5m).Limit(13).Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
+	res, err := client.NewGetKline().Symbol("DOGE-USDT-SWAP").TimeFrame(entity.TimeFrameType5m).Limit(13).Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//=======================Trade PlaceOrder
 	// res, err := client.NewTradePlaceOrder().Symbol("DOGE-USDT-SWAP").PositionSide(entity.PositionSideTypeLong).Side(entity.SideTypeBuy).Size("0.1").Price("0.19876").OrderType(entity.OrderTypeLimit).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
