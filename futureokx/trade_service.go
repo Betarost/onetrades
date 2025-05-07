@@ -209,10 +209,16 @@ type TradePlaceOrder struct {
 	orderType    *entity.OrderType
 	size         *string
 	price        *string
+	isolated     *bool
 }
 
 func (s *TradePlaceOrder) Size(size string) *TradePlaceOrder {
 	s.size = &size
+	return s
+}
+
+func (s *TradePlaceOrder) Isolated(isolated bool) *TradePlaceOrder {
+	s.isolated = &isolated
 	return s
 }
 
@@ -256,6 +262,10 @@ func (s *TradePlaceOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 
 	if s.size != nil {
 		m["sz"] = *s.size
+	}
+
+	if s.isolated != nil && *s.isolated {
+		m["tdMode"] = "isolated"
 	}
 
 	if s.price != nil {

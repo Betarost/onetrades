@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"testing"
 
-	"github.com/Betarost/onetrades/entity"
 	"github.com/spf13/viper"
 )
 
@@ -149,11 +148,11 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetMarkPrices().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET MarkPrice
-	// res, err := client.NewGetMarkPrice().Symbol("DOGE-USDT-SWAP").Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
-	//======================= GET Kline
-	res, err := client.NewGetKline().Symbol("DOGE-USDT-SWAP").TimeFrame(entity.TimeFrameType5m).Limit(13).Do(context.Background())
+	res, err := client.NewGetMarkPrice().Symbol("BTC-USDT-SWAP").Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
+	//======================= GET Kline
+	// res, err := client.NewGetKline().Symbol("DOGE-USDT-SWAP").TimeFrame(entity.TimeFrameType5m).Limit(13).Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//=======================Trade PlaceOrder
 	// res, err := client.NewTradePlaceOrder().Symbol("DOGE-USDT-SWAP").PositionSide(entity.PositionSideTypeLong).Side(entity.SideTypeBuy).Size("0.1").Price("0.19876").OrderType(entity.OrderTypeLimit).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
