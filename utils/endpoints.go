@@ -37,6 +37,15 @@ func GetApiEndpoint(trade string) string {
 	}
 }
 
+func GetApiEndpointOption(trade string) string {
+	switch trade {
+	case "OKX":
+		return OKXFutureApiMainUrl
+	default:
+		return ""
+	}
+}
+
 func GetWsPublicEndpoint(trade string) string {
 	switch trade {
 	case "OKX":

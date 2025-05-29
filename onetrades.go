@@ -8,6 +8,7 @@ import (
 	"github.com/Betarost/onetrades/futuregate"
 	"github.com/Betarost/onetrades/futuremexc"
 	"github.com/Betarost/onetrades/futureokx"
+	"github.com/Betarost/onetrades/optionokx"
 )
 
 func NewFutureBinanceClient(apiKey, secretKey string) *futurebinance.Client {
@@ -36,4 +37,8 @@ func NewFutureBitgetClient(apiKey, secretKey, memo string) *futurebitget.Client 
 
 func NewFutureOKXClient(apiKey, secretKey, memo string) *futureokx.Client {
 	return futureokx.NewClient(apiKey, secretKey, memo)
+}
+
+func NewOptionOKXClient(apiKey, secretKey, memo string) *optionokx.Client {
+	return optionokx.NewClient(apiKey, secretKey, memo)
 }

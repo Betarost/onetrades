@@ -18,6 +18,35 @@ func TestOnetrades(t *testing.T) {
 		log.Fatalln("Error ReadInConfig", err)
 	}
 
+	//===========================================================
+	//======================OPTION==============================
+	//===========================================================
+
+	//==========================OKX==========================
+	okxKey := viper.GetString("OKX_API")
+	okxSecret := viper.GetString("OKX_SECRET")
+	okxMemo := viper.GetString("OKX_MEMO")
+	client := NewOptionOKXClient(okxKey, okxSecret, okxMemo)
+	//======================= GET ContractsInfo
+	// res, err := client.NewGetContractsInfo().Do(context.Background())
+	// t.Logf("Results: %d  %v", len(res), err)
+	// // t.Logf("Results: %+v  %v", res, err)
+
+	// for _, item := range res {
+	// 	log.Println(item.Symbol, "State:", item.State, "Type:", item.Type, "Strike:", item.Strike, "ExpTime:", utils.TimestampMilliToDateFormat(item.ExpTime, "2006-01-02 15:04:05"))
+	// }
+	// ======================= GET MarketData
+	res, err := client.NewGetMarketData().ExpTime("250601").Do(context.Background())
+	t.Logf("Results: %d  %v", len(res), err)
+	for _, item := range res {
+		log.Println(item.Symbol, "Type:", item.Type, "Strike:", item.Strike, "Delta:", item.Delta, "Gamma:", item.Gamma, "Vega:", item.Vega, "Theta:", item.Theta, "DeltaBS:", item.DeltaBS, "GammaBS:", item.GammaBS, "VegaBS:", item.VegaBS, "ThetaBS:", item.ThetaBS, "Leverage:", item.Leverage, "MarkVol:", item.MarkVol, "BidVol:", item.BidVol, "AskVol:", item.AskVol, "RealVol:", item.RealVol, "VolLv:", item.VolLv, "FwdPx:", item.FwdPx)
+	}
+	//======================END OKX==========================
+
+	//===========================================================
+	//======================FUTURES==============================
+	//===========================================================
+
 	//==========================BINANCE==========================
 	// binanceKey := viper.GetString("BINANCE_API")
 	// binanceSecret := viper.GetString("BINANCE_SECRET")
@@ -89,10 +118,10 @@ func TestOnetrades(t *testing.T) {
 	//======================END BINGX==========================
 
 	//==========================OKX==========================
-	okxKey := viper.GetString("OKX_API")
-	okxSecret := viper.GetString("OKX_SECRET")
-	okxMemo := viper.GetString("OKX_MEMO")
-	client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
+	// okxKey := viper.GetString("OKX_API")
+	// okxSecret := viper.GetString("OKX_SECRET")
+	// okxMemo := viper.GetString("OKX_MEMO")
+	// client := NewFutureOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET Tickers
 	// res, err := client.NewGetTickers().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -148,13 +177,13 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetMarkPrices().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	// ======================= GET MarkPrice
-	res, err := client.NewGetMarkPrice().Symbol("BTC-USDT-SWAP").Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetMarkPrice().Symbol("BTC-USDT-SWAP").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Kline
 	// res, err := client.NewGetKline().Symbol("DOGE-USDT-SWAP").TimeFrame(entity.TimeFrameType5m).Limit(13).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//=======================Trade PlaceOrder
-	// res, err := client.NewTradePlaceOrder().Symbol("DOGE-USDT-SWAP").PositionSide(entity.PositionSideTypeLong).Side(entity.SideTypeBuy).Size("0.1").Price("0.19876").OrderType(entity.OrderTypeLimit).Do(context.Background())
+	// res, err := client.NewTradePlaceOrder().Symbol("BTC-USDT-SWAP").PositionSide(entity.PositionSideTypeLong).Side(entity.SideTypeBuy).Size("0.1").Price("0.19876").OrderType(entity.OrderTypeLimit).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//=======================Get OrderList
 	// res, err := client.NewGetOrderList().Symbol("DOGE-USDT-SWAP").OrderType(entity.OrderTypeLimit).Do(context.Background())
