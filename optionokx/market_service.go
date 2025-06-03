@@ -136,3 +136,58 @@ type MarketData struct {
 	FwdPx    string `json:"fwdPx"`
 	Ts       string `json:"ts"`
 }
+
+// ==============GetOrderBook=================
+type GetOrderBook struct {
+	c      *Client
+	symbol *string
+}
+
+func (s *GetOrderBook) Symbol(symbol string) *GetOrderBook {
+	s.symbol = &symbol
+	return s
+}
+
+func (s *GetOrderBook) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.OrderBook_Option, err error) {
+	r := &utils.Request{
+		Method:     http.MethodGet,
+		BaseURL:    s.c.BaseURL,
+		Endpoint:   "/api/v5/market/books",
+		TimeOffset: s.c.TimeOffset,
+		SecType:    utils.SecTypeNone,
+	}
+
+	m := utils.Params{}
+
+	if s.symbol != nil {
+		m["instId"] = *s.symbol
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.c.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []OrderBook `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+
+	return ConvertOrderBook(answ.Result), nil
+}
+
+type OrderBook struct {
+	Asks [][]string `json:"asks"`
+	Bids [][]string `json:"bids"`
+	Ts   string     `json:"ts"`
+}

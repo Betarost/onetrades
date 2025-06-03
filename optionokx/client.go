@@ -112,3 +112,7 @@ func (c *Client) NewGetContractsInfo() *GetContractsInfo {
 func (c *Client) NewGetMarketData() *GetMarketData {
 	return &GetMarketData{c: c}
 }
+
+func (c *Client) NewGetOrderBook() *GetOrderBook {
+	return &GetOrderBook{c: c}
+}

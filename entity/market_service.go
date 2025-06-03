@@ -63,6 +63,17 @@ type MarketData_Option struct {
 	UpdateTime int64   `json:"updateTime" bson:"updateTime"`
 }
 
+type AsksBids_Option struct {
+	Price     float64 `json:"price" bson:"price"`
+	Qty       float64 `json:"qty" bson:"qty"`
+	NumOrders float64 `json:"numOrders" bson:"numOrders"`
+}
+type OrderBook_Option struct {
+	Asks       []AsksBids_Option `json:"asks" bson:"asks"`
+	Bids       []AsksBids_Option `json:"bids" bson:"bids"`
+	UpdateTime int64             `json:"updateTime" bson:"updateTime"`
+}
+
 type Ticker struct {
 	Symbol        string  `json:"symbol" bson:"symbol"`
 	Open24hPrice  float64 `json:"open24hPrice" bson:"open24hPrice"`

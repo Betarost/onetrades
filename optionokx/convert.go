@@ -66,3 +66,35 @@ func ConvertMarketData(answ []MarketData) (res []entity.MarketData_Option) {
 	}
 	return res
 }
+
+func ConvertOrderBook(answ []OrderBook) (res entity.OrderBook_Option) {
+	if len(answ) == 0 {
+		return res
+	}
+
+	book := answ[0]
+	res.UpdateTime = utils.StringToInt64(book.Ts)
+	for _, item := range book.Asks {
+		if len(item) != 4 {
+			continue
+		}
+		res.Asks = append(res.Asks, entity.AsksBids_Option{
+			Price:     utils.StringToFloat(item[0]),
+			Qty:       utils.StringToFloat(item[1]),
+			NumOrders: utils.StringToFloat(item[3]),
+		})
+	}
+
+	for _, item := range book.Bids {
+		if len(item) != 4 {
+			continue
+		}
+		res.Bids = append(res.Asks, entity.AsksBids_Option{
+			Price:     utils.StringToFloat(item[0]),
+			Qty:       utils.StringToFloat(item[1]),
+			NumOrders: utils.StringToFloat(item[3]),
+		})
+	}
+
+	return res
+}

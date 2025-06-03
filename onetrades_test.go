@@ -30,17 +30,12 @@ func TestOnetrades(t *testing.T) {
 	//======================= GET ContractsInfo
 	// res, err := client.NewGetContractsInfo().Do(context.Background())
 	// t.Logf("Results: %d  %v", len(res), err)
-	// // t.Logf("Results: %+v  %v", res, err)
-
-	// for _, item := range res {
-	// 	log.Println(item.Symbol, "State:", item.State, "Type:", item.Type, "Strike:", item.Strike, "ExpTime:", utils.TimestampMilliToDateFormat(item.ExpTime, "2006-01-02 15:04:05"))
-	// }
 	// ======================= GET MarketData
-	res, err := client.NewGetMarketData().ExpTime("250601").Do(context.Background())
-	t.Logf("Results: %d  %v", len(res), err)
-	for _, item := range res {
-		log.Println(item.Symbol, "Type:", item.Type, "Strike:", item.Strike, "Delta:", item.Delta, "Gamma:", item.Gamma, "Vega:", item.Vega, "Theta:", item.Theta, "DeltaBS:", item.DeltaBS, "GammaBS:", item.GammaBS, "VegaBS:", item.VegaBS, "ThetaBS:", item.ThetaBS, "Leverage:", item.Leverage, "MarkVol:", item.MarkVol, "BidVol:", item.BidVol, "AskVol:", item.AskVol, "RealVol:", item.RealVol, "VolLv:", item.VolLv, "FwdPx:", item.FwdPx)
-	}
+	// res, err := client.NewGetMarketData().ExpTime("250725").Do(context.Background())
+	// t.Logf("Results: %d  %v", len(res), err)
+	// ======================= GET OrderBook
+	res, err := client.NewGetOrderBook().Symbol("BTC-USD-250926-110000-C").Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 
 	//===========================================================
