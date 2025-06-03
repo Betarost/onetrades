@@ -28,14 +28,14 @@ func TestOnetrades(t *testing.T) {
 	okxMemo := viper.GetString("OKX_MEMO")
 	client := NewOptionOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET ContractsInfo
-	// res, err := client.NewGetContractsInfo().Do(context.Background())
-	// t.Logf("Results: %d  %v", len(res), err)
+	res, err := client.NewGetContractsInfo().Symbol("BTC-USD-250627-105000-C").Do(context.Background())
+	t.Logf("Results: %d  %v %+v", len(res), err, res)
 	// ======================= GET MarketData
 	// res, err := client.NewGetMarketData().ExpTime("250725").Do(context.Background())
 	// t.Logf("Results: %d  %v", len(res), err)
 	// ======================= GET OrderBook
-	res, err := client.NewGetOrderBook().Symbol("BTC-USD-250926-110000-C").Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetOrderBook().Symbol("BTC-USD-250926-110000-C").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 
 	//===========================================================

@@ -12,8 +12,13 @@ import (
 
 // ==============GetContractsInfo=================
 type GetContractsInfo struct {
-	c *Client
-	// symbol *string
+	c      *Client
+	symbol *string
+}
+
+func (s *GetContractsInfo) Symbol(symbol string) *GetContractsInfo {
+	s.symbol = &symbol
+	return s
 }
 
 func (s *GetContractsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.ContractInfo_Option, err error) {
@@ -28,6 +33,10 @@ func (s *GetContractsInfo) Do(ctx context.Context, opts ...utils.RequestOption) 
 	m := utils.Params{
 		"instType": "OPTION",
 		"uly":      "BTC-USD",
+	}
+
+	if s.symbol != nil {
+		m["instId"] = *s.symbol
 	}
 
 	r.SetParams(m)
