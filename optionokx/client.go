@@ -120,3 +120,7 @@ func (c *Client) NewGetOrderBook() *GetOrderBook {
 func (c *Client) NewTradePlaceOrder() *TradePlaceOrder {
 	return &TradePlaceOrder{c: c}
 }
+
+func (c *Client) NewGetPositions() *GetPositions {
+	return &GetPositions{c: c}
+}
