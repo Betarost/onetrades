@@ -34,8 +34,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetMarketData().ExpTime("250725").Do(context.Background())
 	// t.Logf("Results: %d  %v", len(res), err)
 	// ======================= GET OrderBook
-	// res, err := client.NewGetOrderBook().Symbol("BTC-USD-250926-110000-C").Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
+	res, err := client.NewGetOrderBook().Symbol("BTC-USD-250926-110000-C").Do(context.Background())
+	t.Logf("Results: %+v  %v", res, err)
 	//=======================Trade PlaceOrder
 	// res, err := client.NewTradePlaceOrder().Symbol("BTC-USD-250627-105000-C").Side(entity.SideTypeBuy).Size("1").Price("0.0455").OrderType(entity.OrderTypeLimit).Isolated(true).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
@@ -43,8 +43,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetPositions().Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Balance
-	res, err := client.NewGetAccountBalance().Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetAccountBalance().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 
 	//===========================================================

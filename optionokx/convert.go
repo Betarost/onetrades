@@ -89,7 +89,7 @@ func ConvertOrderBook(answ []OrderBook) (res entity.OrderBook_Option) {
 		if len(item) != 4 {
 			continue
 		}
-		res.Bids = append(res.Asks, entity.AsksBids_Option{
+		res.Bids = append(res.Bids, entity.AsksBids_Option{
 			Price:     utils.StringToFloat(item[0]),
 			Qty:       utils.StringToFloat(item[1]),
 			NumOrders: utils.StringToFloat(item[3]),
