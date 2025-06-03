@@ -105,6 +105,10 @@ func NewClient(apiKey, secretKey, memo string) *Client {
 	}
 }
 
+func (c *Client) NewGetAccountBalance() *GetAccountBalance {
+	return &GetAccountBalance{c: c}
+}
+
 func (c *Client) NewGetContractsInfo() *GetContractsInfo {
 	return &GetContractsInfo{c: c}
 }

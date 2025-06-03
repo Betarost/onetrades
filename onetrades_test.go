@@ -40,7 +40,10 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewTradePlaceOrder().Symbol("BTC-USD-250627-105000-C").Side(entity.SideTypeBuy).Size("1").Price("0.0455").OrderType(entity.OrderTypeLimit).Isolated(true).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================= GET Position
-	res, err := client.NewGetPositions().Do(context.Background())
+	// res, err := client.NewGetPositions().Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
+	//======================= GET Balance
+	res, err := client.NewGetAccountBalance().Do(context.Background())
 	t.Logf("Results: %+v  %v", res, err)
 	//======================END OKX==========================
 
