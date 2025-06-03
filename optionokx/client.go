@@ -116,3 +116,7 @@ func (c *Client) NewGetMarketData() *GetMarketData {
 func (c *Client) NewGetOrderBook() *GetOrderBook {
 	return &GetOrderBook{c: c}
 }
+
+func (c *Client) NewTradePlaceOrder() *TradePlaceOrder {
+	return &TradePlaceOrder{c: c}
+}
