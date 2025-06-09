@@ -301,6 +301,7 @@ type placeOrder struct {
 	price         *string
 	orderType     *entity.OrderType
 	clientOrderID *string
+	positionSide  *entity.PositionSideType
 }
 
 func (s *placeOrder) Symbol(symbol string) *placeOrder {
@@ -330,6 +331,11 @@ func (s *placeOrder) OrderType(orderType entity.OrderType) *placeOrder {
 
 func (s *placeOrder) ClientOrderID(clientOrderID string) *placeOrder {
 	s.clientOrderID = &clientOrderID
+	return s
+}
+
+func (s *placeOrder) PositionSide(positionSide entity.PositionSideType) *placeOrder {
+	s.positionSide = &positionSide
 	return s
 }
 
@@ -368,6 +374,9 @@ func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 		m["clOrdId"] = *s.clientOrderID
 	}
 
+	if s.positionSide != nil {
+		m["posSide"] = strings.ToLower(string(*s.positionSide))
+	}
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
