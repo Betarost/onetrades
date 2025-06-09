@@ -44,10 +44,15 @@ func TestOnetrades(t *testing.T) {
 	// log.Println("=Error=", err)
 	// log.Printf("=res= %+v", res)
 
-	//=======================Get OrderList
-	res, err := client.NewGetOrderList().Do(context.Background())
+	//=======================Get InstrumentsInfo
+	res, err := client.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
+
+	//=======================Get OrderList
+	// res, err := client.NewGetOrderList().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
 
 	//=======================Trade PlaceOrder
 	// res, err := client.NewplaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).Do(context.Background())

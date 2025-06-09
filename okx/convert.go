@@ -77,6 +77,28 @@ func ConvertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAcco
 	return out
 }
 
+func ConvertInstrumentsInfo(in []instrumentsInfo) (out []entity.InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out = append(out, entity.InstrumentsInfo{
+			Symbol:             item.InstId,
+			ContractSize:       item.CtVal,
+			ContractMultiplier: item.CtMult,
+			StepContractSize:   item.LotSz,
+			MinContractSize:    item.MinSz,
+			StepTickPrice:      item.TickSz,
+			MaxLeverage:        item.Lever,
+			State:              strings.ToUpper(item.State),
+			InstType:           item.InstType,
+			Base:               item.BaseCcy,
+			Quote:              item.QuoteCcy,
+		})
+	}
+	return out
+}
+
 func ConvertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 	for _, item := range answ {
 		positionSide := "LONG"
