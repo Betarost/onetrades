@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"testing"
 
+	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/okx"
 	"github.com/spf13/viper"
 )
@@ -81,7 +82,12 @@ func TestOnetrades(t *testing.T) {
 	okxMemo := viper.GetString("OKX_MEMO")
 	client := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
 	//=======================Get InstrumentsInfo
-	res, err := client.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(context.Background())
+	// res, err := client.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//======================= SET PositionMode
+	res, err := client.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
 

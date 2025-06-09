@@ -116,3 +116,7 @@ func NewFuturesClient(apiKey, secretKey, memo string) *futuresClient {
 func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewSetPositionMode() *setPositionMode {
+	return &setPositionMode{callAPI: c.callAPI}
+}

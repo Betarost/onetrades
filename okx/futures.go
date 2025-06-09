@@ -3,6 +3,7 @@ package okx
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -67,4 +68,58 @@ type futures_instrumentsInfo struct {
 	Lever    string `json:"lever"`
 	State    string `json:"state"`
 	RuleType string `json:"ruleType"`
+}
+
+// ==============SetPositionMode=================
+type setPositionMode struct {
+	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+
+	mode *entity.PositionModeType
+}
+
+func (s *setPositionMode) Mode(mode entity.PositionModeType) *setPositionMode {
+	s.mode = &mode
+	return s
+}
+
+func (s *setPositionMode) Do(ctx context.Context, opts ...utils.RequestOption) (res bool, err error) {
+	r := &utils.Request{
+		Method:   http.MethodPost,
+		Endpoint: "/api/v5/account/set-position-mode",
+		SecType:  utils.SecTypeSigned,
+	}
+
+	m := utils.Params{}
+
+	if s.mode != nil {
+		if *s.mode == entity.PositionModeTypeHedge {
+			m["posMode"] = "long_short_mode"
+		} else if *s.mode == entity.PositionModeTypeOneWay {
+			m["posMode"] = "net_mode"
+		}
+	}
+	r.SetFormParams(m)
+
+	data, _, err := s.callAPI(ctx, r, opts...)
+	if err != nil {
+		return false, err
+	}
+
+	var answ struct {
+		Result []positionMode `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return false, err
+	}
+
+	if len(answ.Result) == 0 {
+		return false, errors.New("Zero Answer")
+	}
+	return true, nil
+}
+
+type positionMode struct {
+	PosMode string `json:"posMode"`
 }
