@@ -68,6 +68,6 @@ type OrdersPendingList struct {
 
 type PlaceOrder struct {
 	OrderID       string `json:"orderId" bson:"orderId"`
-	ClientOrderID string `json:"clientOrderID"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
 	Ts            int64  `json:"ts" bson:"ts"`
 }

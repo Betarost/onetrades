@@ -36,3 +36,22 @@ type Futures_Positions struct {
 	AutoDeleveraging string `json:"autoDeleveraging" bson:"autoDeleveraging"`
 	UpdateTime       int64  `json:"updateTime" bson:"updateTime"`
 }
+
+type Futures_OrdersList struct {
+	Symbol        string `json:"symbol" bson:"symbol"`
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	Side          string `json:"side" bson:"side"`
+	PositionSide  string `json:"positionSide" bson:"positionSide"`
+	PositionAmt   string `json:"positionAmt" bson:"positionAmt"`
+	Price         string `json:"price" bson:"price"`
+	TpPrice       string `json:"tpPrice" bson:"tpPrice"`
+	SlPrice       string `json:"slPrice" bson:"slPrice"`
+	Leverage      string `json:"leverage" bson:"leverage"`
+	Type          string `json:"type" bson:"type"`
+	TradeMode     string `json:"tradeMode" bson:"tradeMode"`
+	InstType      string `json:"instType" bson:"instType"`
+	Status        string `json:"status" bson:"status"`
+	CreateTime    int64  `json:"createTime" bson:"createTime"`
+	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+}

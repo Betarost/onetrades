@@ -191,6 +191,45 @@ func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 	return res
 }
 
+func futures_convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {
+	for _, item := range answ {
+		positionSide := "LONG"
+		if item.PosSide == "net" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PosSide)
+		}
+
+		tp := ""
+		sl := ""
+		if len(item.AttachAlgoOrds) > 0 {
+			tp = item.AttachAlgoOrds[0].TpOrdPx
+			sl = item.AttachAlgoOrds[0].SlTriggerPx
+		}
+		res = append(res, entity.Futures_OrdersList{
+			Symbol:        item.InstId,
+			OrderID:       item.OrdId,
+			ClientOrderID: item.ClOrdId,
+			PositionSide:  positionSide,
+			Side:          item.Side,
+			PositionAmt:   item.Sz,
+			Price:         item.Px,
+			TpPrice:       tp,
+			SlPrice:       sl,
+			Type:          strings.ToUpper(item.OrdType),
+			TradeMode:     item.TdMode,
+			InstType:      item.InstType,
+			Leverage:      item.Lever,
+			Status:        item.State,
+			CreateTime:    utils.StringToInt64(item.CTime),
+			UpdateTime:    utils.StringToInt64(item.UTime),
+		})
+	}
+	return res
+}
+
 func convertPlaceOrder(in []placeOrder_Response) (out []entity.PlaceOrder) {
 	if len(in) == 0 {
 		return out

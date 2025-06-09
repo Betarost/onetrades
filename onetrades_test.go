@@ -94,10 +94,14 @@ func TestOnetrades(t *testing.T) {
 	// log.Println("=Error=", err)
 	// log.Printf("=res= %+v", res)
 	//======================= GET Position
-	res, err := client.NewGetPositions().Do(context.Background())
+	// res, err := client.NewGetPositions().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//=======================Get OrderList
+	res, err := client.NewGetOrderList().Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
-
 	//======================END OKX==========================
 
 	//===========================================================
