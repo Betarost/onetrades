@@ -175,17 +175,38 @@ func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 			positionSide = strings.ToUpper(item.PosSide)
 		}
 
+		tp := ""
+		sl := ""
+		if len(item.AttachAlgoOrds) > 0 {
+			if item.AttachAlgoOrds[0].TpOrdPx != "-1" && item.AttachAlgoOrds[0].TpOrdPx != "" {
+				tp = item.AttachAlgoOrds[0].TpOrdPx
+			} else if item.AttachAlgoOrds[0].TpTriggerPx != "-1" && item.AttachAlgoOrds[0].TpTriggerPx != "" {
+				tp = item.AttachAlgoOrds[0].TpTriggerPx
+			}
+
+			if item.AttachAlgoOrds[0].SlOrdPx != "-1" && item.AttachAlgoOrds[0].SlOrdPx != "" {
+				sl = item.AttachAlgoOrds[0].SlOrdPx
+			} else if item.AttachAlgoOrds[0].SlTriggerPx != "-1" && item.AttachAlgoOrds[0].SlTriggerPx != "" {
+				sl = item.AttachAlgoOrds[0].SlTriggerPx
+			}
+		}
 		res = append(res, entity.OrdersPendingList{
-			Symbol:       item.InstId,
-			OrderID:      item.OrdId,
-			PositionSide: positionSide,
-			Side:         item.Side,
-			PositionAmt:  utils.StringToFloat(item.Sz),
-			Price:        utils.StringToFloat(item.Px),
-			Notional:     utils.StringToFloat(item.Sz) * utils.StringToFloat(item.Px),
-			Type:         strings.ToUpper(item.OrdType),
-			Status:       item.State,
-			UpdateTime:   utils.StringToInt64(item.UTime),
+			Symbol:        item.InstId,
+			OrderID:       item.OrdId,
+			ClientOrderID: item.ClOrdId,
+			PositionSide:  positionSide,
+			Side:          item.Side,
+			PositionAmt:   item.Sz,
+			Price:         item.Px,
+			TpPrice:       tp,
+			SlPrice:       sl,
+			Type:          strings.ToUpper(item.OrdType),
+			TradeMode:     item.TdMode,
+			InstType:      item.InstType,
+			Leverage:      item.Lever,
+			Status:        item.State,
+			CreateTime:    utils.StringToInt64(item.CTime),
+			UpdateTime:    utils.StringToInt64(item.UTime),
 		})
 	}
 	return res
@@ -205,8 +226,17 @@ func futures_convertOrderList(answ []futures_orderList) (res []entity.Futures_Or
 		tp := ""
 		sl := ""
 		if len(item.AttachAlgoOrds) > 0 {
-			tp = item.AttachAlgoOrds[0].TpOrdPx
-			sl = item.AttachAlgoOrds[0].SlTriggerPx
+			if item.AttachAlgoOrds[0].TpOrdPx != "-1" && item.AttachAlgoOrds[0].TpOrdPx != "" {
+				tp = item.AttachAlgoOrds[0].TpOrdPx
+			} else if item.AttachAlgoOrds[0].TpTriggerPx != "-1" && item.AttachAlgoOrds[0].TpTriggerPx != "" {
+				tp = item.AttachAlgoOrds[0].TpTriggerPx
+			}
+
+			if item.AttachAlgoOrds[0].SlOrdPx != "-1" && item.AttachAlgoOrds[0].SlOrdPx != "" {
+				sl = item.AttachAlgoOrds[0].SlOrdPx
+			} else if item.AttachAlgoOrds[0].SlTriggerPx != "-1" && item.AttachAlgoOrds[0].SlTriggerPx != "" {
+				sl = item.AttachAlgoOrds[0].SlTriggerPx
+			}
 		}
 		res = append(res, entity.Futures_OrdersList{
 			Symbol:        item.InstId,

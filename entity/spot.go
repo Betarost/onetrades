@@ -52,18 +52,22 @@ type InstrumentsInfo struct {
 }
 
 type OrdersPendingList struct {
-	Symbol       string  `json:"symbol" bson:"symbol"`
-	OrderID      string  `json:"orderId" bson:"orderId"`
-	Side         string  `json:"side" bson:"side"`
-	PositionSide string  `json:"positionSide" bson:"positionSide"`
-	PositionAmt  float64 `json:"positionAmt" bson:"positionAmt"`
-	Price        float64 `json:"price" bson:"price"`
-	Notional     float64 `json:"notional" bson:"notional"`
-	Type         string  `json:"type" bson:"type"`
-	TradeMode    string  `json:"tradeMode" bson:"tradeMode"`
-	Status       string  `json:"status" bson:"status"`
-	Time         int64   `json:"time" bson:"time"`
-	UpdateTime   int64   `json:"updateTime" bson:"updateTime"`
+	Symbol        string `json:"symbol" bson:"symbol"`
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	Side          string `json:"side" bson:"side"`
+	PositionSide  string `json:"positionSide" bson:"positionSide"`
+	PositionAmt   string `json:"positionAmt" bson:"positionAmt"`
+	Price         string `json:"price" bson:"price"`
+	TpPrice       string `json:"tpPrice" bson:"tpPrice"`
+	SlPrice       string `json:"slPrice" bson:"slPrice"`
+	Leverage      string `json:"leverage" bson:"leverage"`
+	Type          string `json:"type" bson:"type"`
+	TradeMode     string `json:"tradeMode" bson:"tradeMode"`
+	InstType      string `json:"instType" bson:"instType"`
+	Status        string `json:"status" bson:"status"`
+	CreateTime    int64  `json:"createTime" bson:"createTime"`
+	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 }
 
 type PlaceOrder struct {

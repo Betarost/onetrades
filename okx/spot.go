@@ -455,7 +455,6 @@ func (s *getOrderList) Do(ctx context.Context, opts ...utils.RequestOption) (res
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []orderList `json:"data"`
 	}
@@ -469,14 +468,27 @@ func (s *getOrderList) Do(ctx context.Context, opts ...utils.RequestOption) (res
 }
 
 type orderList struct {
-	InstId  string `json:"instId"`
-	OrdId   string `json:"ordId"`
-	Px      string `json:"px"`
-	Sz      string `json:"sz"`
-	PosSide string `json:"posSide"`
-	OrdType string `json:"ordType"`
-	TdMode  string `json:"tdMode"`
-	Side    string `json:"side"`
-	State   string `json:"state"`
-	UTime   string `json:"uTime"`
+	InstId         string                     `json:"instId"`
+	OrdId          string                     `json:"ordId"`
+	ClOrdId        string                     `json:"clOrdId"`
+	Px             string                     `json:"px"`
+	Sz             string                     `json:"sz"`
+	AttachAlgoOrds []orderList_attachAlgoOrds `json:"AttachAlgoOrds"`
+	PosSide        string                     `json:"posSide"`
+	OrdType        string                     `json:"ordType"`
+	TdMode         string                     `json:"tdMode"`
+	InstType       string                     `json:"instType"`
+	Lever          string                     `json:"lever"`
+	Side           string                     `json:"side"`
+	State          string                     `json:"state"`
+	UTime          string                     `json:"uTime"`
+	CTime          string                     `json:"cTime"`
+}
+
+type orderList_attachAlgoOrds struct {
+	AttachAlgoId string `json:"attachAlgoId"`
+	SlOrdPx      string `json:"slOrdPx"`
+	SlTriggerPx  string `json:"slTriggerPx"`
+	TpOrdPx      string `json:"tpOrdPx"`
+	TpTriggerPx  string `json:"tpTriggerPx"`
 }
