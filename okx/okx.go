@@ -73,6 +73,10 @@ func (c *spotClient) NewMultiCancelOrders() *multiCancelOrders {
 	return &multiCancelOrders{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewAmendOrder() *amendOrder {
+	return &amendOrder{callAPI: c.callAPI}
+}
+
 func (c *spotClient) NewPlaceOrder() *placeOrder {
 	return &placeOrder{callAPI: c.callAPI}
 }

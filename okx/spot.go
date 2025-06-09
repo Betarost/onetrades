@@ -11,6 +11,88 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+// ==============AmendOrder=================
+
+type amendOrder struct {
+	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+
+	symbol   *string
+	orderID  *string
+	newSize  *string
+	newPrice *string
+}
+
+func (s *amendOrder) Symbol(symbol string) *amendOrder {
+	s.symbol = &symbol
+	return s
+}
+
+func (s *amendOrder) OrderID(orderID string) *amendOrder {
+	s.orderID = &orderID
+	return s
+}
+
+func (s *amendOrder) NewSize(newSize string) *amendOrder {
+	s.newSize = &newSize
+	return s
+}
+
+func (s *amendOrder) NewPrice(newPrice string) *amendOrder {
+	s.newPrice = &newPrice
+	return s
+}
+
+func (s *amendOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
+	r := &utils.Request{
+		Method:   http.MethodPost,
+		Endpoint: "/api/v5/trade/amend-order",
+		SecType:  utils.SecTypeSigned,
+	}
+
+	m := utils.Params{}
+
+	if s.symbol != nil {
+		m["instId"] = *s.symbol
+	}
+
+	if s.orderID != nil {
+		m["ordId"] = *s.orderID
+	}
+
+	if s.newSize != nil {
+		m["newSz"] = *s.newSize
+	}
+
+	if s.newPrice != nil {
+		m["newPx"] = *s.newPrice
+	}
+
+	r.SetFormParams(m)
+
+	data, _, err := s.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result []placeOrder_Response `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+
+	if answ.Result[0].SCode != "0" {
+		return res, errors.New(answ.Result[0].SMsg)
+	}
+	return ConvertPlaceOrder(answ.Result), nil
+}
+
 // ==============TradeCancelOrders=================
 
 type cancelOrder struct {
@@ -142,15 +224,6 @@ func (s *multiCancelOrders) Do(ctx context.Context, opts ...utils.RequestOption)
 		return res, errors.New(answ.Result[0].SMsg)
 	}
 	return ConvertPlaceOrder(answ.Result), nil
-}
-
-type CancelOrders struct {
-	ClOrdId string `json:"clOrdId"`
-	OrdId   string `json:"ordId"`
-	Tag     string `json:"tag"`
-	Ts      string `json:"ts"`
-	SCode   string `json:"sCode"`
-	SMsg    string `json:"sMsg"`
 }
 
 type OrdersIDs struct {
