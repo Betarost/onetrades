@@ -65,6 +65,14 @@ func (c *spotClient) NewGetOrderList() *getOrderList {
 	return &getOrderList{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewCancelOrder() *cancelOrder {
+	return &cancelOrder{callAPI: c.callAPI}
+}
+
+func (c *spotClient) NewMultiCancelOrders() *multiCancelOrders {
+	return &multiCancelOrders{callAPI: c.callAPI}
+}
+
 func (c *spotClient) NewPlaceOrder() *placeOrder {
 	return &placeOrder{callAPI: c.callAPI}
 }

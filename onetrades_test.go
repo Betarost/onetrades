@@ -45,14 +45,24 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//=======================Get InstrumentsInfo
-	res, err := client.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(context.Background())
-	log.Println("=Error=", err)
-	log.Printf("=res= %+v", res)
+	// res, err := client.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
 
 	//=======================Get OrderList
 	// res, err := client.NewGetOrderList().Do(context.Background())
 	// log.Println("=Error=", err)
 	// log.Printf("=res= %+v", res)
+
+	//=======================Cancel Order
+	// res, err := client.NewCancelOrder().Symbol("TRX-USDT").OrderID("2581988433413267456").Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//=======================MultiCancelOrders
+	res, err := client.NewMultiCancelOrders().Symbol("TRX-USDT").OrderIDs([]string{"2582956581687910400", "2582956136789696512"}).Do(context.Background())
+	log.Println("=Error=", err)
+	log.Printf("=res= %+v", res)
 
 	//=======================Trade PlaceOrder
 	// res, err := client.NewplaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).Do(context.Background())
