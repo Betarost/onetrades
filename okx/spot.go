@@ -302,6 +302,12 @@ type placeOrder struct {
 	orderType     *entity.OrderType
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
+	tradeMode     *entity.MarginModeType
+}
+
+func (s *placeOrder) TradeMode(tradeMode entity.MarginModeType) *placeOrder {
+	s.tradeMode = &tradeMode
+	return s
 }
 
 func (s *placeOrder) Symbol(symbol string) *placeOrder {
@@ -348,6 +354,14 @@ func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 
 	m := utils.Params{
 		"tdMode": "cash",
+	}
+
+	if s.tradeMode != nil {
+		if *s.tradeMode == entity.MarginModeTypeCross {
+			m["tdMode"] = "cross"
+		} else if *s.tradeMode == entity.MarginModeTypeIsolated {
+			m["tdMode"] = "isolated"
+		}
 	}
 
 	if s.symbol != nil {

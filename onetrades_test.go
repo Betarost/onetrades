@@ -115,7 +115,7 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//======================= PlaceOrder
-	res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).Do(context.Background())
+	res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).TradeMode(entity.MarginModeTypeCross).Do(context.Background())
 	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
