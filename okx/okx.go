@@ -13,6 +13,8 @@ var (
 	tradeName_Futures = "OKX"
 )
 
+// ===============FUTURES=================
+
 type spotClient struct {
 	apiKey     string
 	secretKey  string
@@ -23,8 +25,6 @@ type spotClient struct {
 	Debug      bool
 	logger     *log.Logger
 	TimeOffset int64
-	// WsPublic   *Ws
-	// WsPrivate  *Ws
 }
 
 func (c *spotClient) debug(format string, v ...interface{}) {
@@ -79,4 +79,40 @@ func (c *spotClient) NewAmendOrder() *amendOrder {
 
 func (c *spotClient) NewPlaceOrder() *placeOrder {
 	return &placeOrder{callAPI: c.callAPI}
+}
+
+// ===============FUTURES=================
+
+type futuresClient struct {
+	apiKey     string
+	secretKey  string
+	memo       string
+	keyType    string
+	BaseURL    string
+	UserAgent  string
+	Debug      bool
+	logger     *log.Logger
+	TimeOffset int64
+}
+
+func (c *futuresClient) debug(format string, v ...interface{}) {
+	if c.Debug {
+		c.logger.Printf(format, v...)
+	}
+}
+
+func NewFuturesClient(apiKey, secretKey, memo string) *futuresClient {
+	return &futuresClient{
+		apiKey:    apiKey,
+		secretKey: secretKey,
+		memo:      memo,
+		keyType:   utils.KeyTypeHmac,
+		BaseURL:   utils.GetApiEndpoint(tradeName_Futures),
+		UserAgent: "Onetrades/golang",
+		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
+	}
+}
+
+func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
+	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
