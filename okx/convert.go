@@ -134,6 +134,36 @@ func futures_convertSetLeverage(in []setLeverageAnswer) (out entity.Futures_Leve
 	return out
 }
 
+func futures_convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
+	for _, item := range answ {
+		positionSide := "LONG"
+		if item.PosSide == "net" {
+			if utils.StringToFloat(item.Pos) < 0 {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PosSide)
+		}
+
+		res = append(res, entity.Futures_Positions{
+			Symbol:           item.InstID,
+			PositionSide:     positionSide,
+			PositionID:       item.PosID,
+			PositionAmt:      item.Pos,
+			EntryPrice:       item.AvgPx,
+			MarkPrice:        item.MarkPx,
+			InitialMargin:    item.Imr,
+			UnRealizedProfit: item.Upl,
+			RealizedProfit:   item.RealizedPnl,
+			Notional:         item.NotionalUsd,
+			MarginRatio:      item.MgnRatio,
+			AutoDeleveraging: item.ADL,
+			UpdateTime:       utils.StringToInt64(item.UTime),
+		})
+	}
+	return res
+}
+
 func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 	for _, item := range answ {
 		positionSide := "LONG"

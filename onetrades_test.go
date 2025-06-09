@@ -7,7 +7,6 @@ import (
 	"os/signal"
 	"testing"
 
-	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/okx"
 	"github.com/spf13/viper"
 )
@@ -91,7 +90,11 @@ func TestOnetrades(t *testing.T) {
 	// log.Println("=Error=", err)
 	// log.Printf("=res= %+v", res)
 	//======================= SET Leverage
-	res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage("20").MarginMode(entity.MarginModeTypeIsolated).PositionSide(entity.PositionSideTypeLong).Do(context.Background())
+	// res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage("20").MarginMode(entity.MarginModeTypeIsolated).PositionSide(entity.PositionSideTypeLong).Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+	//======================= GET Position
+	res, err := client.NewGetPositions().Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
 

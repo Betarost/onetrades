@@ -20,3 +20,19 @@ type Futures_Leverage struct {
 	MarginMode   string `json:"marginMode" bson:"marginMode"`
 	PositionSide string `json:"positionSide" bson:"positionSide"`
 }
+
+type Futures_Positions struct {
+	Symbol           string `json:"symbol" bson:"symbol"`
+	PositionSide     string `json:"positionSide" bson:"positionSide"`
+	PositionAmt      string `json:"positionAmt" bson:"positionAmt"`
+	PositionID       string `json:"positionID"`
+	EntryPrice       string `json:"entryPrice" bson:"entryPrice"`
+	MarkPrice        string `json:"markPrice" bson:"markPrice"`
+	UnRealizedProfit string `json:"unRealizedProfit" bson:"unRealizedProfit"`
+	RealizedProfit   string `json:"realizedProfit" bson:"realizedProfit"`
+	Notional         string `json:"notional" bson:"notional"`
+	InitialMargin    string `json:"initialMargin" bson:"initialMargin"`
+	MarginRatio      string `json:"marginRatio" bson:"marginRatio"`
+	AutoDeleveraging string `json:"autoDeleveraging" bson:"autoDeleveraging"`
+	UpdateTime       int64  `json:"updateTime" bson:"updateTime"`
+}
