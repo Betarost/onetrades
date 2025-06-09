@@ -52,6 +52,7 @@ type Futures_OrdersList struct {
 	TradeMode     string `json:"tradeMode" bson:"tradeMode"`
 	InstType      string `json:"instType" bson:"instType"`
 	Status        string `json:"status" bson:"status"`
+	IsTpLimit     bool   `json:"isTpLimit" bson:"isTpLimit"`
 	CreateTime    int64  `json:"createTime" bson:"createTime"`
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 }

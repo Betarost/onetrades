@@ -333,7 +333,6 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []futures_orderList `json:"data"`
 	}
@@ -360,6 +359,7 @@ type futures_orderList struct {
 	Lever          string                             `json:"lever"`
 	Side           string                             `json:"side"`
 	State          string                             `json:"state"`
+	IsTpLimit      string                             `json:"isTpLimit"`
 	UTime          string                             `json:"uTime"`
 	CTime          string                             `json:"cTime"`
 }

@@ -1,6 +1,7 @@
 package okx
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/Betarost/onetrades/entity"
@@ -190,6 +191,7 @@ func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 				sl = item.AttachAlgoOrds[0].SlTriggerPx
 			}
 		}
+		b, _ := strconv.ParseBool(item.IsTpLimit)
 		res = append(res, entity.OrdersPendingList{
 			Symbol:        item.InstId,
 			OrderID:       item.OrdId,
@@ -205,6 +207,7 @@ func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 			InstType:      item.InstType,
 			Leverage:      item.Lever,
 			Status:        item.State,
+			IsTpLimit:     b,
 			CreateTime:    utils.StringToInt64(item.CTime),
 			UpdateTime:    utils.StringToInt64(item.UTime),
 		})
@@ -238,6 +241,7 @@ func futures_convertOrderList(answ []futures_orderList) (res []entity.Futures_Or
 				sl = item.AttachAlgoOrds[0].SlTriggerPx
 			}
 		}
+		b, _ := strconv.ParseBool(item.IsTpLimit)
 		res = append(res, entity.Futures_OrdersList{
 			Symbol:        item.InstId,
 			OrderID:       item.OrdId,
@@ -253,6 +257,7 @@ func futures_convertOrderList(answ []futures_orderList) (res []entity.Futures_Or
 			InstType:      item.InstType,
 			Leverage:      item.Lever,
 			Status:        item.State,
+			IsTpLimit:     b,
 			CreateTime:    utils.StringToInt64(item.CTime),
 			UpdateTime:    utils.StringToInt64(item.UTime),
 		})

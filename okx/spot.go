@@ -481,6 +481,7 @@ type orderList struct {
 	Lever          string                     `json:"lever"`
 	Side           string                     `json:"side"`
 	State          string                     `json:"state"`
+	IsTpLimit      string                     `json:"isTpLimit"`
 	UTime          string                     `json:"uTime"`
 	CTime          string                     `json:"cTime"`
 }
