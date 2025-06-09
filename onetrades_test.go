@@ -99,9 +99,15 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//=======================Get OrderList
-	res, err := client.NewGetOrderList().Do(context.Background())
+	// res, err := client.NewGetOrderList().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//=======================Cancel Order
+	res, err := client.NewCancelOrder().Symbol("BTC-USDT-SWAP").OrderID("2583772267918123008").Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
+
 	//======================END OKX==========================
 
 	//===========================================================

@@ -132,3 +132,7 @@ func (c *futuresClient) NewGetPositions() *getPositions {
 func (c *futuresClient) NewGetOrderList() *futures_getOrderList {
 	return &futures_getOrderList{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewCancelOrder() *cancelOrder {
+	return &cancelOrder{callAPI: c.callAPI}
+}
