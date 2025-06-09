@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"testing"
 
+	"github.com/Betarost/onetrades/okx"
 	"github.com/spf13/viper"
 )
 
@@ -19,14 +20,55 @@ func TestOnetrades(t *testing.T) {
 	}
 
 	//===========================================================
+	//======================NEW==============================
+	//===========================================================
+
+	//==========================OKX SPOT==========================
+	okxKey := viper.GetString("OKX_API")
+	okxSecret := viper.GetString("OKX_SECRET")
+	okxMemo := viper.GetString("OKX_MEMO")
+	client := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
+
+	//======================= GET AccountInfo
+	// res, err := client.NewGetAccountInfo().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//======================= GET Trading Balance
+	// res, err := client.NewGetTradingAccountBalance().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//======================= GET Funding Balance
+	// res, err := client.NewGetFundingAccountBalance().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//=======================Get OrderList
+	res, err := client.NewGetOrderList().Do(context.Background())
+	log.Println("=Error=", err)
+	log.Printf("=res= %+v", res)
+
+	//=======================Trade PlaceOrder
+	// res, err := client.NewplaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).Do(context.Background())
+	// res, err := client.NewplaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+	//======================END OKX==========================
+
+	//===========================================================
+	//======================END NEW==============================
+	//===========================================================
+
+	//===========================================================
 	//======================OPTION==============================
 	//===========================================================
 
 	//==========================OKX==========================
-	okxKey := viper.GetString("OKX_API")
-	okxSecret := viper.GetString("OKX_SECRET")
-	okxMemo := viper.GetString("OKX_MEMO")
-	client := NewOptionOKXClient(okxKey, okxSecret, okxMemo)
+	// okxKey := viper.GetString("OKX_API")
+	// okxSecret := viper.GetString("OKX_SECRET")
+	// okxMemo := viper.GetString("OKX_MEMO")
+	// client := NewOptionOKXClient(okxKey, okxSecret, okxMemo)
 	//======================= GET ContractsInfo
 	// res, err := client.NewGetContractsInfo().Symbol("BTC-USD-250627-105000-C").Do(context.Background())
 	// t.Logf("Results: %d  %v %+v", len(res), err, res)
@@ -34,8 +76,8 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetMarketData().ExpTime("250725").Do(context.Background())
 	// t.Logf("Results: %d  %v", len(res), err)
 	// ======================= GET OrderBook
-	res, err := client.NewGetOrderBook().Symbol("BTC-USD-250926-110000-C").Do(context.Background())
-	t.Logf("Results: %+v  %v", res, err)
+	// res, err := client.NewGetOrderBook().Symbol("BTC-USD-250926-110000-C").Do(context.Background())
+	// t.Logf("Results: %+v  %v", res, err)
 	//=======================Trade PlaceOrder
 	// res, err := client.NewTradePlaceOrder().Symbol("BTC-USD-250627-105000-C").Side(entity.SideTypeBuy).Size("1").Price("0.0455").OrderType(entity.OrderTypeLimit).Isolated(true).Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
