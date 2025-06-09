@@ -87,7 +87,11 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//======================= SET PositionMode
-	res, err := client.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(context.Background())
+	// res, err := client.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+	//======================= SET Leverage
+	res, err := client.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage("20").MarginMode(entity.MarginModeTypeIsolated).PositionSide(entity.PositionSideTypeLong).Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
 

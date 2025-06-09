@@ -120,3 +120,7 @@ func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 func (c *futuresClient) NewSetPositionMode() *setPositionMode {
 	return &setPositionMode{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewSetLeverage() *setLeverage {
+	return &setLeverage{callAPI: c.callAPI}
+}

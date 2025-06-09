@@ -121,6 +121,19 @@ func futures_convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.
 	return out
 }
 
+func futures_convertSetLeverage(in []setLeverageAnswer) (out entity.Futures_Leverage) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out.Symbol = item.InstId
+		out.Leverage = item.Lever
+		out.MarginMode = item.MgnMode
+		out.PositionSide = item.PosSide
+	}
+	return out
+}
+
 func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 	for _, item := range answ {
 		positionSide := "LONG"

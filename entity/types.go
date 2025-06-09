@@ -6,6 +6,7 @@ type SideType string
 type OrderType string
 type TimeFrameType string
 type PositionStatusType string
+type MarginModeType string
 
 const (
 	PositionStatusTypeClosePartially       PositionStatusType = "CLOSE_PARTIALLY"
@@ -16,6 +17,9 @@ const (
 
 	PositionModeTypeOneWay PositionModeType = "ONE_WAY"
 	PositionModeTypeHedge  PositionModeType = "HEDGE"
+
+	MarginModeTypeCross    MarginModeType = "cross"
+	MarginModeTypeIsolated MarginModeType = "isolated"
 
 	PositionSideTypeLong  PositionSideType = "LONG"
 	PositionSideTypeShort PositionSideType = "SHORT"

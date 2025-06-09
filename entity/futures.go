@@ -13,3 +13,10 @@ type Futures_InstrumentsInfo struct {
 	ContractSize       string `json:"contractSize" bson:"contractSize"`
 	ContractMultiplier string `json:"contractMultiplier" bson:"contractMultiplier"`
 }
+
+type Futures_Leverage struct {
+	Symbol       string `json:"symbol" bson:"symbol"`
+	Leverage     string `json:"leverage" bson:"leverage"`
+	MarginMode   string `json:"marginMode" bson:"marginMode"`
+	PositionSide string `json:"positionSide" bson:"positionSide"`
+}
