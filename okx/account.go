@@ -39,7 +39,7 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if len(answ.Result) == 0 {
 		return res, errors.New("Zero Answer")
 	}
-	return ConvertAccountInfo(answ.Result[0]), nil
+	return convertAccountInfo(answ.Result[0]), nil
 }
 
 type accountInfo struct {
@@ -92,7 +92,7 @@ func (s *getTradingAccountBalance) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
-	return ConvertTradingAccountBalance(answ.Result), nil
+	return convertTradingAccountBalance(answ.Result), nil
 }
 
 type tradingBalance struct {
@@ -162,7 +162,7 @@ func (s *getFundingAccountBalance) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
-	return ConvertFundingAccountBalance(answ.Result), nil
+	return convertFundingAccountBalance(answ.Result), nil
 }
 
 type fundingBalance struct {

@@ -80,7 +80,6 @@ func TestOnetrades(t *testing.T) {
 	okxSecret := viper.GetString("OKX_SECRET")
 	okxMemo := viper.GetString("OKX_MEMO")
 	client := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
-
 	//=======================Get InstrumentsInfo
 	res, err := client.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(context.Background())
 	log.Println("=Error=", err)

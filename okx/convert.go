@@ -7,7 +7,7 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-func ConvertAccountInfo(in accountInfo) (out entity.AccountInformation) {
+func convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 
 	out.UID = in.UID
 	out.Label = in.Label
@@ -32,7 +32,7 @@ func ConvertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 	return out
 }
 
-func ConvertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
+func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
 	if len(in) == 0 {
 		return out
 	}
@@ -60,7 +60,7 @@ func ConvertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAcco
 	return out
 }
 
-func ConvertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAccountBalance) {
+func convertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAccountBalance) {
 	if len(in) == 0 {
 		return out
 	}
@@ -77,7 +77,7 @@ func ConvertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAcco
 	return out
 }
 
-func ConvertInstrumentsInfo(in []instrumentsInfo) (out []entity.InstrumentsInfo) {
+func convertInstrumentsInfo(in []instrumentsInfo) (out []entity.InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
 	}
@@ -99,7 +99,29 @@ func ConvertInstrumentsInfo(in []instrumentsInfo) (out []entity.InstrumentsInfo)
 	return out
 }
 
-func ConvertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
+func futures_convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out = append(out, entity.Futures_InstrumentsInfo{
+			Symbol:             item.InstId,
+			ContractSize:       item.CtVal,
+			ContractMultiplier: item.CtMult,
+			StepContractSize:   item.LotSz,
+			MinContractSize:    item.MinSz,
+			StepTickPrice:      item.TickSz,
+			MaxLeverage:        item.Lever,
+			State:              strings.ToUpper(item.State),
+			InstType:           item.InstType,
+			Base:               item.BaseCcy,
+			Quote:              item.QuoteCcy,
+		})
+	}
+	return out
+}
+
+func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 	for _, item := range answ {
 		positionSide := "LONG"
 		if item.PosSide == "net" {
@@ -126,7 +148,7 @@ func ConvertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
 	return res
 }
 
-func ConvertPlaceOrder(in []placeOrder_Response) (out []entity.PlaceOrder) {
+func convertPlaceOrder(in []placeOrder_Response) (out []entity.PlaceOrder) {
 	if len(in) == 0 {
 		return out
 	}

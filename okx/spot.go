@@ -90,7 +90,7 @@ func (s *amendOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 	if answ.Result[0].SCode != "0" {
 		return res, errors.New(answ.Result[0].SMsg)
 	}
-	return ConvertPlaceOrder(answ.Result), nil
+	return convertPlaceOrder(answ.Result), nil
 }
 
 // ==============TradeCancelOrders=================
@@ -152,7 +152,7 @@ func (s *cancelOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res 
 	if answ.Result[0].SCode != "0" {
 		return res, errors.New(answ.Result[0].SMsg)
 	}
-	return ConvertPlaceOrder(answ.Result), nil
+	return convertPlaceOrder(answ.Result), nil
 }
 
 // ==============multiCancelOrders=================
@@ -186,9 +186,9 @@ func (s *multiCancelOrders) Do(ctx context.Context, opts ...utils.RequestOption)
 	}
 
 	if s.symbol != nil && s.orderIDs != nil {
-		orderIDs := []OrdersIDs{}
+		orderIDs := []ordersIDs{}
 		for _, item := range *s.orderIDs {
-			orderIDs = append(orderIDs, OrdersIDs{
+			orderIDs = append(orderIDs, ordersIDs{
 				InstId: *s.symbol,
 				OrdId:  item,
 			})
@@ -223,10 +223,10 @@ func (s *multiCancelOrders) Do(ctx context.Context, opts ...utils.RequestOption)
 	if answ.Result[0].SCode != "0" {
 		return res, errors.New(answ.Result[0].SMsg)
 	}
-	return ConvertPlaceOrder(answ.Result), nil
+	return convertPlaceOrder(answ.Result), nil
 }
 
-type OrdersIDs struct {
+type ordersIDs struct {
 	InstId string `json:"instId"`
 	OrdId  string `json:"ordId"`
 }
@@ -272,7 +272,7 @@ func (s *getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-	return ConvertInstrumentsInfo(answ.Result), nil
+	return convertInstrumentsInfo(answ.Result), nil
 }
 
 type instrumentsInfo struct {
@@ -391,7 +391,7 @@ func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 	if answ.Result[0].SCode != "0" {
 		return res, errors.New(answ.Result[0].SMsg)
 	}
-	return ConvertPlaceOrder(answ.Result), nil
+	return convertPlaceOrder(answ.Result), nil
 }
 
 type placeOrder_Response struct {
@@ -465,7 +465,7 @@ func (s *getOrderList) Do(ctx context.Context, opts ...utils.RequestOption) (res
 		return res, err
 	}
 
-	return ConvertOrderList(answ.Result), nil
+	return convertOrderList(answ.Result), nil
 }
 
 type orderList struct {

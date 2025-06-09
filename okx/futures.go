@@ -21,7 +21,7 @@ func (s *futures_getInstrumentsInfo) Symbol(symbol string) *futures_getInstrumen
 	return s
 }
 
-func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
+func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v5/public/instruments",
@@ -43,12 +43,28 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 		return res, err
 	}
 	var answ struct {
-		Result []instrumentsInfo `json:"data"`
+		Result []futures_instrumentsInfo `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
 	}
-	return ConvertInstrumentsInfo(answ.Result), nil
+	return futures_convertInstrumentsInfo(answ.Result), nil
+}
+
+type futures_instrumentsInfo struct {
+	InstId   string `json:"instId"`
+	InstType string `json:"instType"`
+	CtVal    string `json:"ctVal"`
+	CtMult   string `json:"ctMult"`
+	BaseCcy  string `json:"baseCcy"`
+	QuoteCcy string `json:"quoteCcy"`
+	CtValCcy string `json:"ctValCcy"`
+	TickSz   string `json:"tickSz"`
+	LotSz    string `json:"lotSz"`
+	MinSz    string `json:"minSz"`
+	Lever    string `json:"lever"`
+	State    string `json:"state"`
+	RuleType string `json:"ruleType"`
 }
