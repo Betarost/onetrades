@@ -303,10 +303,22 @@ type placeOrder struct {
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
 	tradeMode     *entity.MarginModeType
+	tpPrice       *string
+	slPrice       *string
 }
 
 func (s *placeOrder) TradeMode(tradeMode entity.MarginModeType) *placeOrder {
 	s.tradeMode = &tradeMode
+	return s
+}
+
+func (s *placeOrder) SlPrice(slPrice string) *placeOrder {
+	s.slPrice = &slPrice
+	return s
+}
+
+func (s *placeOrder) TpPrice(tpPrice string) *placeOrder {
+	s.tpPrice = &tpPrice
 	return s
 }
 
@@ -391,6 +403,26 @@ func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 	if s.positionSide != nil {
 		m["posSide"] = strings.ToLower(string(*s.positionSide))
 	}
+
+	if s.tpPrice != nil || s.slPrice != nil {
+		attachAlgoOrds := []orderList_attachAlgoOrds{{}}
+		if s.tpPrice != nil {
+			attachAlgoOrds[0].TpTriggerPx = *s.tpPrice
+			attachAlgoOrds[0].TpOrdPx = "-1"
+		}
+
+		if s.slPrice != nil {
+			attachAlgoOrds[0].SlTriggerPx = *s.slPrice
+			attachAlgoOrds[0].SlOrdPx = "-1"
+		}
+		j, err := json.Marshal(attachAlgoOrds)
+		if err != nil {
+			return res, err
+		}
+
+		m["attachAlgoOrds"] = string(j)
+	}
+
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)

@@ -25,10 +25,10 @@ func TestOnetrades(t *testing.T) {
 	//===========================================================
 
 	//==========================OKX SPOT==========================
-	// okxKey := viper.GetString("OKX_API")
-	// okxSecret := viper.GetString("OKX_SECRET")
-	// okxMemo := viper.GetString("OKX_MEMO")
-	// client := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
+	okxKey := viper.GetString("OKX_API")
+	okxSecret := viper.GetString("OKX_SECRET")
+	okxMemo := viper.GetString("OKX_MEMO")
+	client := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
 
 	//======================= GET AccountInfo
 	// res, err := client.NewGetAccountInfo().Do(context.Background())
@@ -71,16 +71,17 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//======================= PlaceOrder
-	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).Do(context.Background())
-	// // res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
-	// log.Println("=Error=", err)
-	// log.Printf("=res= %+v", res)
+	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28730").Do(context.Background())
+	res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28730").TpPrice("0.28670").SlPrice("0.28850").Do(context.Background())
+	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
+	log.Println("=Error=", err)
+	log.Printf("=res= %+v", res)
 
 	//==========================OKX FUTURES==========================
-	okxKey := viper.GetString("OKX_API")
-	okxSecret := viper.GetString("OKX_SECRET")
-	okxMemo := viper.GetString("OKX_MEMO")
-	client := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
+	// okxKey := viper.GetString("OKX_API")
+	// okxSecret := viper.GetString("OKX_SECRET")
+	// okxMemo := viper.GetString("OKX_MEMO")
+	// client := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
 	//=======================Get InstrumentsInfo
 	// res, err := client.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(context.Background())
 	// log.Println("=Error=", err)
@@ -115,10 +116,10 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//======================= PlaceOrder
-	res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).TradeMode(entity.MarginModeTypeCross).Do(context.Background())
-	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
-	log.Println("=Error=", err)
-	log.Printf("=res= %+v", res)
+	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).TradeMode(entity.MarginModeTypeCross).Do(context.Background())
+	// // res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
 
 	//======================END OKX==========================
 

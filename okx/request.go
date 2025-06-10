@@ -184,8 +184,15 @@ func createBody(r *utils.Request) error {
 		} else {
 			bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
 			bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+
+			if r.Form.Get("attachAlgoOrds") != "" {
+				bodyString = strings.Replace(bodyString, "\"[", "[", -1)
+				bodyString = strings.Replace(bodyString, "]\"", "]", -1)
+				bodyString = strings.Replace(bodyString, `\"`, `"`, -1)
+			}
 		}
 	}
+
 	if bodyString != "" {
 		body = bytes.NewBufferString(bodyString)
 	}
