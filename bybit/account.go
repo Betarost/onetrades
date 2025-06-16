@@ -92,6 +92,11 @@ func (s *getTradingAccountBalance) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
+
+	if answ.RetCode != 0 {
+		return res, errors.New(answ.RetMsg)
+	}
+
 	return convertTradingAccountBalance(answ.Result.List), nil
 }
 
@@ -143,6 +148,11 @@ func (s *getFundingAccountBalance) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
+
+	if answ.RetCode != 0 {
+		return res, errors.New(answ.RetMsg)
+	}
+
 	return convertFundingAccountBalance(answ.Result.Balance), nil
 }
 

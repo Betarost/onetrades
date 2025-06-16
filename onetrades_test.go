@@ -39,10 +39,15 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//======================= GET Funding Balance
-	res, err := client.NewGetFundingAccountBalance().Do(context.Background())
+	// res, err := client.NewGetFundingAccountBalance().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//=======================Get InstrumentsInfo
+	res, err := client.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
-
+	log.Println("=len=", len(res))
 	//======================END Bybit==========================
 
 	//==========================OKX SPOT==========================
