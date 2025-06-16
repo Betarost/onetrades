@@ -47,8 +47,6 @@ func (c *spotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	c.debug("Sign %s\n", r.Sign)
 	c.debug("Headers %+v\n", r.Header)
 
-	// return []byte{}, &http.Header{}, err
-
 	req, err := http.NewRequest(r.Method, r.FullURL, r.Body)
 	if err != nil {
 		return []byte{}, &http.Header{}, err

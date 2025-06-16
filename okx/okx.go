@@ -13,7 +13,7 @@ var (
 	tradeName_Futures = "OKX"
 )
 
-// ===============FUTURES=================
+// ===============SPOT=================
 
 type spotClient struct {
 	apiKey     string

@@ -7,8 +7,7 @@ import (
 	"os/signal"
 	"testing"
 
-	"github.com/Betarost/onetrades/entity"
-	"github.com/Betarost/onetrades/okx"
+	"github.com/Betarost/onetrades/bybit"
 	"github.com/spf13/viper"
 )
 
@@ -24,11 +23,23 @@ func TestOnetrades(t *testing.T) {
 	//======================NEW==============================
 	//===========================================================
 
+	//==========================BYBIT==========================
+	//==========================Bybit SPOT==========================
+	bybitKey := viper.GetString("BYBIT_API")
+	bybitSecret := viper.GetString("BYBIT_SECRET")
+	client := bybit.NewSpotClient(bybitKey, bybitSecret)
+	//======================= GET AccountInfo
+	res, err := client.NewGetAccountInfo().Do(context.Background())
+	log.Println("=Error=", err)
+	log.Printf("=res= %+v", res)
+
+	//======================END Bybit==========================
+
 	//==========================OKX SPOT==========================
-	okxKey := viper.GetString("OKX_API")
-	okxSecret := viper.GetString("OKX_SECRET")
-	okxMemo := viper.GetString("OKX_MEMO")
-	client := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
+	// okxKey := viper.GetString("OKX_API")
+	// okxSecret := viper.GetString("OKX_SECRET")
+	// okxMemo := viper.GetString("OKX_MEMO")
+	// client := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
 
 	//======================= GET AccountInfo
 	// res, err := client.NewGetAccountInfo().Do(context.Background())
@@ -72,10 +83,10 @@ func TestOnetrades(t *testing.T) {
 
 	//======================= PlaceOrder
 	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28730").Do(context.Background())
-	res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28730").TpPrice("0.28670").SlPrice("0.28850").Do(context.Background())
-	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
-	log.Println("=Error=", err)
-	log.Printf("=res= %+v", res)
+	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28730").TpPrice("0.28670").SlPrice("0.28850").Do(context.Background())
+	// // res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
 
 	//==========================OKX FUTURES==========================
 	// okxKey := viper.GetString("OKX_API")
@@ -116,7 +127,7 @@ func TestOnetrades(t *testing.T) {
 	// log.Printf("=res= %+v", res)
 
 	//======================= PlaceOrder
-	// res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeMarket).TradeMode(entity.MarginModeTypeCross).Do(context.Background())
+	// res, err := client.NewPlaceOrder().Symbol("BTC-USDT-SWAP").PositionSide(entity.PositionSideTypeShort).Side(entity.SideTypeSell).Size("0.01").OrderType(entity.OrderTypeLimit).Price("109850").TpPrice("109500").TradeMode(entity.MarginModeTypeCross).Do(context.Background())
 	// // res, err := client.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).Size("1").OrderType(entity.OrderTypeLimit).Price("0.28510").Do(context.Background())
 	// log.Println("=Error=", err)
 	// log.Printf("=res= %+v", res)
@@ -179,21 +190,6 @@ func TestOnetrades(t *testing.T) {
 	// res, err := client.NewGetDownloadLinkHistoryOrder().DownloadId("954279024084131840").Do(context.Background())
 	// t.Logf("Results: %+v  %v", res, err)
 	//======================END BINANCE==========================
-
-	//==========================BYBIT==========================
-	// bybitKey := viper.GetString("BYBIT_API")
-	// bybitSecret := viper.GetString("BYBIT_SECRET")
-	// client := NewFutureBybitClient(bybitKey, bybitSecret)
-	//======================= GET Balance
-	// res, err := client.NewGetAccountBalance().Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
-	//======================= GET Position
-	// res, err := client.NewGetPositions().Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
-	// ======================= GET TradeHistoryOrder
-	// res, err := client.NewGetTradeHistoryOrder().Begin("1740787140000").End("1741391940000").Limit(100).Do(context.Background())
-	// t.Logf("Results: %+v  %v", res, err)
-	//======================END BYBIT==========================
 
 	//==========================MEXC==========================
 	// mexcKey := viper.GetString("MEX_API")
