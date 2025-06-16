@@ -3,6 +3,7 @@ package bybit
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Betarost/onetrades/entity"
 )
@@ -37,6 +38,50 @@ func convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 			out.CanTransfer = true
 			break
 		}
+	}
+
+	return out
+}
+
+func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		r := entity.TradingAccountBalance{
+			TotalEquity:      item.TotalEquity,
+			AvailableEquity:  item.TotalAvailableBalance,
+			UnrealizedProfit: item.TotalPerpUPL,
+			UpdateTime:       time.Now().UnixMilli(),
+		}
+		for _, i := range item.Coin {
+			r.Assets = append(r.Assets, entity.TradingAccountBalanceDetails{
+				Asset:            i.Coin,
+				Balance:          i.WalletBalance,
+				EquityBalance:    i.Equity,
+				AvailableBalance: i.AvailableToWithdraw,
+				AvailableEquity:  i.AvailableToWithdraw,
+				UnrealizedProfit: i.UnrealisedPnl,
+			})
+		}
+		out = append(out, r)
+	}
+
+	return out
+}
+
+func convertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAccountBalance) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		out = append(out, entity.FundingAccountBalance{
+			Asset:            item.Coin,
+			Balance:          item.WalletBalance,
+			AvailableBalance: item.TransferBalance,
+		})
 	}
 
 	return out

@@ -47,3 +47,11 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
+
+func (c *spotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
+	return &getTradingAccountBalance{callAPI: c.callAPI}
+}
+
+func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
+	return &getFundingAccountBalance{callAPI: c.callAPI}
+}

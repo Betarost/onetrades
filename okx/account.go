@@ -137,7 +137,7 @@ type tradingBalanceDetails struct {
 	UTime         string `json:"uTime"`
 }
 
-//===================getTradigetFundingAccountBalancengAccountBalance==================
+//===================getFundingAccountBalance==================
 
 type getFundingAccountBalance struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)

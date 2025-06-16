@@ -29,7 +29,17 @@ func TestOnetrades(t *testing.T) {
 	bybitSecret := viper.GetString("BYBIT_SECRET")
 	client := bybit.NewSpotClient(bybitKey, bybitSecret)
 	//======================= GET AccountInfo
-	res, err := client.NewGetAccountInfo().Do(context.Background())
+	// res, err := client.NewGetAccountInfo().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//======================= GET Trading Balance
+	// res, err := client.NewGetTradingAccountBalance().Do(context.Background())
+	// log.Println("=Error=", err)
+	// log.Printf("=res= %+v", res)
+
+	//======================= GET Funding Balance
+	res, err := client.NewGetFundingAccountBalance().Do(context.Background())
 	log.Println("=Error=", err)
 	log.Printf("=res= %+v", res)
 

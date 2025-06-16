@@ -30,3 +30,7 @@ func TimestampMilliToDateFormat(stamp int64, format string) string {
 	hisNow := time.Date(tHisory.Year(), tHisory.Month(), tHisory.Day(), tHisory.Hour(), tHisory.Minute(), tHisory.Second(), 0, tHisory.Location())
 	return hisNow.Format(format)
 }
+
+func FloatToStringAll(num float64) string {
+	return strconv.FormatFloat(num, 'f', -1, 64)
+}
