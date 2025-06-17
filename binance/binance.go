@@ -1,4 +1,4 @@
-package bybit
+package binance
 
 import (
 	"fmt"
@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	tradeName_Spot    = "BYBIT"
-	tradeName_Futures = "BYBIT"
+	tradeName_Spot    = "BINANCE_SPOT"
+	tradeName_Futures = "BINANCE_FUTURES"
 )
 
 // ===============SPOT=================
@@ -37,30 +37,14 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Spot),
+		BaseURL:   utils.GetEndpoint(tradeName_Spot),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Spot), log.LstdFlags),
 	}
 }
 
-func (c *spotClient) NewGetInstrumentsInfo() *getInstrumentsInfo {
-	return &getInstrumentsInfo{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
-	return &getAccountInfo{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
-	return &getTradingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
-	return &getFundingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewPlaceOrder() *placeOrder {
-	return &placeOrder{callAPI: c.callAPI}
+func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
+	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
 // ===============FUTURES=================
@@ -87,7 +71,7 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Futures),
+		BaseURL:   utils.GetEndpoint(tradeName_Futures),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
 	}

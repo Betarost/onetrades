@@ -1,6 +1,10 @@
 package utils
 
 var (
+	Binance_spot    = "https://api.binance.com"
+	Binance_futures = "https://fapi.binance.com"
+
+	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
 	MexcFutureApiMainUrl    = "https://futures.mexc.com"
@@ -14,6 +18,16 @@ var (
 	OKXFutureWsPrivateUrl = "wss://ws.okx.com:8443/ws/v5/private"
 )
 
+func GetEndpoint(trade string) string {
+	switch trade {
+	case "BINANCE_SPOT":
+		return Binance_spot
+	case "BINANCE_FUTURES":
+		return Binance_futures
+	default:
+		return ""
+	}
+}
 func GetApiEndpoint(trade string) string {
 	switch trade {
 	case "BINANCE":

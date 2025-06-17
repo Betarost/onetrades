@@ -1,4 +1,4 @@
-package bybit
+package bingx
 
 import (
 	"fmt"
@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	tradeName_Spot    = "BYBIT"
-	tradeName_Futures = "BYBIT"
+	tradeName_Spot    = "BINGX"
+	tradeName_Futures = "BINGX"
 )
 
 // ===============SPOT=================
@@ -43,26 +43,6 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 	}
 }
 
-func (c *spotClient) NewGetInstrumentsInfo() *getInstrumentsInfo {
-	return &getInstrumentsInfo{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
-	return &getAccountInfo{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
-	return &getTradingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
-	return &getFundingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewPlaceOrder() *placeOrder {
-	return &placeOrder{callAPI: c.callAPI}
-}
-
 // ===============FUTURES=================
 
 type futuresClient struct {
@@ -91,8 +71,4 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
 	}
-}
-
-func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
-	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }

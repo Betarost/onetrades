@@ -109,3 +109,39 @@ func convertInstrumentsInfo(in []instrumentsInfo, instType string) (out []entity
 	}
 	return out
 }
+
+func futures_convertInstrumentsInfo(in []futures_instrumentsInfo, instType string) (out []entity.InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		if item.Status == "Trading" {
+			item.Status = "LIVE"
+		}
+		out = append(out, entity.InstrumentsInfo{
+			Symbol:           item.Symbol,
+			StepContractSize: item.LotSizeFilter.BasePrecision,
+			MinContractSize:  item.LotSizeFilter.MinOrderQty,
+			StepTickPrice:    item.PriceFilter.TickSize,
+			State:            item.Status,
+			InstType:         instType,
+			Base:             item.BaseCoin,
+			Quote:            item.QuoteCoin,
+		})
+	}
+	return out
+}
+func convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
+	// if len(in) == 0 {
+	// 	return out
+	// }
+	// for _, item := range in {
+	// 	out = append(out, entity.PlaceOrder{
+	// 		OrderID:       item.OrdId,
+	// 		ClientOrderID: item.ClOrdId,
+	// 		Ts:            utils.StringToInt64(item.Ts),
+	// 	})
+	// }
+	return out
+}

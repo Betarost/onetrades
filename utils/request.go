@@ -85,6 +85,7 @@ func (r *Request) validate() (err error) {
 
 func (r *Request) ParseRequest(opts ...RequestOption) (err error) {
 	err = r.validate()
+
 	if err != nil {
 		return err
 	}
