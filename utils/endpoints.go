@@ -3,6 +3,8 @@ package utils
 var (
 	Binance_spot    = "https://api.binance.com"
 	Binance_futures = "https://fapi.binance.com"
+	Bingx_spot      = "https://open-api.bingx.com"
+	Bingx_futures   = "https://open-api.bingx.com"
 
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
@@ -24,6 +26,10 @@ func GetEndpoint(trade string) string {
 		return Binance_spot
 	case "BINANCE_FUTURES":
 		return Binance_futures
+	case "BINGX_SPOT":
+		return Bingx_spot
+	case "BINGX_FUTURES":
+		return Bingx_futures
 	default:
 		return ""
 	}

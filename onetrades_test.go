@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"testing"
 
-	"github.com/Betarost/onetrades/binance"
+	"github.com/Betarost/onetrades/bingx"
 	"github.com/spf13/viper"
 )
 
@@ -24,10 +24,10 @@ func TestOnetrades(t *testing.T) {
 	}
 	ctx := context.Background()
 	//==========================KEYS==========================
-	binanceKey := viper.GetString("BINANCE_API")
-	binanceSecret := viper.GetString("BINANCE_SECRET")
-	// bingxKey := viper.GetString("BINGX_API")
-	// bingxSecret := viper.GetString("BINGX_SECRET")
+	// binanceKey := viper.GetString("BINANCE_API")
+	// binanceSecret := viper.GetString("BINANCE_SECRET")
+	bingxKey := viper.GetString("BINGX_API")
+	bingxSecret := viper.GetString("BINGX_SECRET")
 	// okxKey := viper.GetString("OKX_API")
 	// okxSecret := viper.GetString("OKX_SECRET")
 	// okxMemo := viper.GetString("OKX_MEMO")
@@ -40,8 +40,10 @@ func TestOnetrades(t *testing.T) {
 	// gateSecret := viper.GetString("GATE_SECRET")
 
 	//==========================CLIENTS==========================
-	binanceSpot := binance.NewSpotClient(binanceKey, binanceSecret)
-	binanceFutures := binance.NewFuturesClient(binanceKey, binanceSecret)
+	// binanceSpot := binance.NewSpotClient(binanceKey, binanceSecret)
+	// binanceFutures := binance.NewFuturesClient(binanceKey, binanceSecret)
+	bingxSpot := bingx.NewSpotClient(bingxKey, bingxSecret)
+	bingxFutures := bingx.NewFuturesClient(bingxKey, bingxSecret)
 	// okxSpot := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
 	// okxFutures := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
 	// bybitSpot := bybit.NewSpotClient(bybitKey, bybitSecret)
@@ -55,8 +57,10 @@ func TestOnetrades(t *testing.T) {
 	// binanceFutures.Debug = true
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
-	printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
+	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
+	printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(ctx))
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
