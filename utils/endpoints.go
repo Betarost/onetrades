@@ -9,7 +9,8 @@ var (
 	Bybit_futures   = "https://api.bybit.com"
 	Gateio_spot     = "https://api.gateio.ws/api/v4"
 	Gateio_futures  = "https://api.gateio.ws/api/v4"
-
+	Mexc_spot       = "https://api.mexc.com"
+	Mexc_futures    = "https://contract.mexc.com"
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
@@ -42,6 +43,10 @@ func GetEndpoint(trade string) string {
 		return Gateio_spot
 	case "GATEIO_FUTURES":
 		return Gateio_futures
+	case "MEXC_SPOT":
+		return Mexc_spot
+	case "MEXC_FUTURES":
+		return Mexc_futures
 	default:
 		return ""
 	}

@@ -90,7 +90,9 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
-	printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
+	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
+	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	printAnswers(mexcFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 
 	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(ctx))
