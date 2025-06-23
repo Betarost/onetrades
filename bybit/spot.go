@@ -13,18 +13,18 @@ import (
 )
 
 // ==============GetInstrumentsInfo=================
-type getInstrumentsInfo struct {
+type spot_getInstrumentsInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 
 	symbol *string
 }
 
-func (s *getInstrumentsInfo) Symbol(symbol string) *getInstrumentsInfo {
+func (s *spot_getInstrumentsInfo) Symbol(symbol string) *spot_getInstrumentsInfo {
 	s.symbol = &symbol
 	return s
 }
 
-func (s *getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
+func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/v5/market/instruments-info",
@@ -50,7 +50,7 @@ func (s *getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption
 		RetCode int64  `json:"retCode"`
 		RetMsg  string `json:"retMsg"`
 		Result  struct {
-			List []instrumentsInfo `json:"list"`
+			List []spot_instrumentsInfo `json:"list"`
 		} `json:"result"`
 		Time int64 `json:"time"`
 	}
@@ -66,7 +66,7 @@ func (s *getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption
 	return convertInstrumentsInfo(answ.Result.List, "SPOT"), nil
 }
 
-type instrumentsInfo struct {
+type spot_instrumentsInfo struct {
 	Symbol        string `json:"symbol"`
 	BaseCoin      string `json:"baseCoin"`
 	QuoteCoin     string `json:"quoteCoin"`
@@ -84,8 +84,8 @@ type instrumentsInfo struct {
 	} `json:"priceFilter"`
 }
 
-// ==============placeOrder=================
-type placeOrder struct {
+// ==============spot_placeOrder=================
+type spot_placeOrder struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 
 	symbol        *string
@@ -100,57 +100,57 @@ type placeOrder struct {
 	slPrice       *string
 }
 
-func (s *placeOrder) TradeMode(tradeMode entity.MarginModeType) *placeOrder {
+func (s *spot_placeOrder) TradeMode(tradeMode entity.MarginModeType) *spot_placeOrder {
 	s.tradeMode = &tradeMode
 	return s
 }
 
-func (s *placeOrder) SlPrice(slPrice string) *placeOrder {
+func (s *spot_placeOrder) SlPrice(slPrice string) *spot_placeOrder {
 	s.slPrice = &slPrice
 	return s
 }
 
-func (s *placeOrder) TpPrice(tpPrice string) *placeOrder {
+func (s *spot_placeOrder) TpPrice(tpPrice string) *spot_placeOrder {
 	s.tpPrice = &tpPrice
 	return s
 }
 
-func (s *placeOrder) Symbol(symbol string) *placeOrder {
+func (s *spot_placeOrder) Symbol(symbol string) *spot_placeOrder {
 	s.symbol = &symbol
 	return s
 }
 
-func (s *placeOrder) Side(side entity.SideType) *placeOrder {
+func (s *spot_placeOrder) Side(side entity.SideType) *spot_placeOrder {
 	s.side = &side
 	return s
 }
 
-func (s *placeOrder) Size(size string) *placeOrder {
+func (s *spot_placeOrder) Size(size string) *spot_placeOrder {
 	s.size = &size
 	return s
 }
 
-func (s *placeOrder) Price(price string) *placeOrder {
+func (s *spot_placeOrder) Price(price string) *spot_placeOrder {
 	s.price = &price
 	return s
 }
 
-func (s *placeOrder) OrderType(orderType entity.OrderType) *placeOrder {
+func (s *spot_placeOrder) OrderType(orderType entity.OrderType) *spot_placeOrder {
 	s.orderType = &orderType
 	return s
 }
 
-func (s *placeOrder) ClientOrderID(clientOrderID string) *placeOrder {
+func (s *spot_placeOrder) ClientOrderID(clientOrderID string) *spot_placeOrder {
 	s.clientOrderID = &clientOrderID
 	return s
 }
 
-func (s *placeOrder) PositionSide(positionSide entity.PositionSideType) *placeOrder {
+func (s *spot_placeOrder) PositionSide(positionSide entity.PositionSideType) *spot_placeOrder {
 	s.positionSide = &positionSide
 	return s
 }
 
-func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
+func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
 	r := &utils.Request{
 		Method:   http.MethodPost,
 		Endpoint: "/v5/order/create",
@@ -225,10 +225,10 @@ func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 	log.Println("=c2eced=", string(data))
 
 	var answ struct {
-		RetCode int64               `json:"retCode"`
-		RetMsg  string              `json:"retMsg"`
-		Result  placeOrder_Response `json:"result"`
-		Time    int64               `json:"time"`
+		RetCode int64                    `json:"retCode"`
+		RetMsg  string                   `json:"retMsg"`
+		Result  spot_placeOrder_Response `json:"result"`
+		Time    int64                    `json:"time"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -243,7 +243,7 @@ func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 	return convertPlaceOrder(answ.Result), nil
 }
 
-type placeOrder_Response struct {
+type spot_placeOrder_Response struct {
 	OrderId     string `json:"orderId"`
 	OrderLinkId string `json:"orderLinkId"`
 }

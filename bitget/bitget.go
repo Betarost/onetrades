@@ -18,6 +18,7 @@ var (
 type spotClient struct {
 	apiKey     string
 	secretKey  string
+	memo       string
 	keyType    string
 	BaseURL    string
 	UserAgent  string
@@ -32,10 +33,11 @@ func (c *spotClient) debug(format string, v ...interface{}) {
 	}
 }
 
-func NewSpotClient(apiKey, secretKey string) *spotClient {
+func NewSpotClient(apiKey, secretKey, memo string) *spotClient {
 	return &spotClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,
+		memo:      memo,
 		keyType:   utils.KeyTypeHmac,
 		BaseURL:   utils.GetApiEndpoint(tradeName_Spot),
 		UserAgent: "Onetrades/golang",
@@ -48,6 +50,7 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 type futuresClient struct {
 	apiKey     string
 	secretKey  string
+	memo       string
 	keyType    string
 	BaseURL    string
 	UserAgent  string
@@ -62,10 +65,11 @@ func (c *futuresClient) debug(format string, v ...interface{}) {
 	}
 }
 
-func NewFuturesClient(apiKey, secretKey string) *futuresClient {
+func NewFuturesClient(apiKey, secretKey, memo string) *futuresClient {
 	return &futuresClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,
+		memo:      memo,
 		keyType:   utils.KeyTypeHmac,
 		BaseURL:   utils.GetApiEndpoint(tradeName_Futures),
 		UserAgent: "Onetrades/golang",

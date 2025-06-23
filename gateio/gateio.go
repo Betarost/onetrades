@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	tradeName_Spot    = "GATEIO"
-	tradeName_Futures = "GATEIO"
+	tradeName_Spot    = "GATEIO_SPOT"
+	tradeName_Futures = "GATEIO_FUTURES"
 )
 
 // ===============SPOT=================
@@ -37,10 +37,14 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Spot),
+		BaseURL:   utils.GetEndpoint(tradeName_Spot),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Spot), log.LstdFlags),
 	}
+}
+
+func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
+	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
 // ===============FUTURES=================
@@ -67,8 +71,12 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Futures),
+		BaseURL:   utils.GetEndpoint(tradeName_Futures),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
 	}
+}
+
+func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
+	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }

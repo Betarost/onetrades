@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	tradeName_Spot    = "BYBIT"
-	tradeName_Futures = "BYBIT"
+	tradeName_Spot    = "BYBIT_SPOT"
+	tradeName_Futures = "BYBIT_FUTURES"
 )
 
 // ===============SPOT=================
@@ -37,30 +37,30 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Spot),
+		BaseURL:   utils.GetEndpoint(tradeName_Spot),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Spot), log.LstdFlags),
 	}
 }
 
-func (c *spotClient) NewGetInstrumentsInfo() *getInstrumentsInfo {
-	return &getInstrumentsInfo{callAPI: c.callAPI}
+func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
+	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
-	return &getAccountInfo{callAPI: c.callAPI}
+func (c *spotClient) NewGetAccountInfo() *spot_getAccountInfo {
+	return &spot_getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
-	return &getTradingAccountBalance{callAPI: c.callAPI}
+func (c *spotClient) NewGetTradingAccountBalance() *spot_getTradingAccountBalance {
+	return &spot_getTradingAccountBalance{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
-	return &getFundingAccountBalance{callAPI: c.callAPI}
+func (c *spotClient) NewGetFundingAccountBalance() *spot_getFundingAccountBalance {
+	return &spot_getFundingAccountBalance{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewPlaceOrder() *placeOrder {
-	return &placeOrder{callAPI: c.callAPI}
+func (c *spotClient) NewPlaceOrder() *spot_placeOrder {
+	return &spot_placeOrder{callAPI: c.callAPI}
 }
 
 // ===============FUTURES=================
@@ -87,7 +87,7 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Futures),
+		BaseURL:   utils.GetEndpoint(tradeName_Futures),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
 	}

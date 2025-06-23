@@ -11,11 +11,11 @@ import (
 )
 
 // ===================GetAccountInfo==================
-type getAccountInfo struct {
+type spot_getAccountInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 }
 
-func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
+func (s *spot_getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/v5/user/query-api",
@@ -61,11 +61,11 @@ type permAccountInfo struct {
 
 //===================getTradingAccountBalance==================
 
-type getTradingAccountBalance struct {
+type spot_getTradingAccountBalance struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 }
 
-func (s *getTradingAccountBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.TradingAccountBalance, err error) {
+func (s *spot_getTradingAccountBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.TradingAccountBalance, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/v5/account/wallet-balance",
@@ -117,11 +117,11 @@ type tradingBalanceDetails struct {
 
 //===================getFundingAccountBalance==================
 
-type getFundingAccountBalance struct {
+type spot_getFundingAccountBalance struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 }
 
-func (s *getFundingAccountBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.FundingAccountBalance, err error) {
+func (s *spot_getFundingAccountBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.FundingAccountBalance, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/v5/asset/transfer/query-account-coins-balance",

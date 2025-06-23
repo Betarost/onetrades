@@ -5,6 +5,10 @@ var (
 	Binance_futures = "https://fapi.binance.com"
 	Bingx_spot      = "https://open-api.bingx.com"
 	Bingx_futures   = "https://open-api.bingx.com"
+	Bybit_spot      = "https://api.bybit.com"
+	Bybit_futures   = "https://api.bybit.com"
+	Gateio_spot     = "https://api.gateio.ws/api/v4"
+	Gateio_futures  = "https://api.gateio.ws/api/v4"
 
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
@@ -30,6 +34,14 @@ func GetEndpoint(trade string) string {
 		return Bingx_spot
 	case "BINGX_FUTURES":
 		return Bingx_futures
+	case "BYBIT_SPOT":
+		return Bybit_spot
+	case "BYBIT_FUTURES":
+		return Bybit_futures
+	case "GATEIO_SPOT":
+		return Gateio_spot
+	case "GATEIO_FUTURES":
+		return Gateio_futures
 	default:
 		return ""
 	}
