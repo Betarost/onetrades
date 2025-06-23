@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	tradeName_Spot    = "OKX"
-	tradeName_Futures = "OKX"
+	tradeName_Spot    = "OKX_SPOT"
+	tradeName_Futures = "OKX_FUTURES"
 )
 
 // ===============SPOT=================
@@ -39,7 +39,7 @@ func NewSpotClient(apiKey, secretKey, memo string) *spotClient {
 		secretKey: secretKey,
 		memo:      memo,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Spot),
+		BaseURL:   utils.GetEndpoint(tradeName_Spot),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Spot), log.LstdFlags),
 	}
@@ -107,7 +107,7 @@ func NewFuturesClient(apiKey, secretKey, memo string) *futuresClient {
 		secretKey: secretKey,
 		memo:      memo,
 		keyType:   utils.KeyTypeHmac,
-		BaseURL:   utils.GetApiEndpoint(tradeName_Futures),
+		BaseURL:   utils.GetEndpoint(tradeName_Futures),
 		UserAgent: "Onetrades/golang",
 		logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
 	}

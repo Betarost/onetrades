@@ -13,6 +13,8 @@ var (
 	Mexc_futures    = "https://contract.mexc.com"
 	Bitget_spot     = "https://api.bitget.com"
 	Bitget_futures  = "https://api.bitget.com"
+	Okx_spot        = "https://www.okx.com"
+	Okx_futures     = "https://www.okx.com"
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
@@ -53,6 +55,10 @@ func GetEndpoint(trade string) string {
 		return Bitget_spot
 	case "BITGET_FUTURES":
 		return Bitget_futures
+	case "OKX_SPOT":
+		return Okx_spot
+	case "OKX_FUTURES":
+		return Okx_futures
 	default:
 		return ""
 	}
