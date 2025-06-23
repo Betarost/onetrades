@@ -12,6 +12,7 @@ import (
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bybit"
 	"github.com/Betarost/onetrades/gateio"
+	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
 	"github.com/Betarost/onetrades/okx"
 	"github.com/spf13/viper"
@@ -46,6 +47,8 @@ func TestOnetrades(t *testing.T) {
 	okxKey := viper.GetString("OKX_API")
 	okxSecret := viper.GetString("OKX_SECRET")
 	okxMemo := viper.GetString("OKX_MEMO")
+	huobiKey := viper.GetString("HUOBI_API")
+	huobiSecret := viper.GetString("HUOBI_SECRET")
 
 	//==========================CLIENTS==========================
 	binanceSpot := binance.NewSpotClient(binanceKey, binanceSecret)
@@ -62,8 +65,8 @@ func TestOnetrades(t *testing.T) {
 	bitgetFutures := bitget.NewFuturesClient(bitgetKey, bitgetSecret, bitgetMemo)
 	okxSpot := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
 	okxFutures := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
-	// huobiSpot := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
-	// huobiFutures := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
+	huobiSpot := huobi.NewSpotClient(huobiKey, huobiSecret)
+	huobiFutures := huobi.NewFuturesClient(huobiKey, huobiSecret)
 
 	binanceSpot.Debug = false
 	binanceFutures.Debug = false
@@ -79,11 +82,11 @@ func TestOnetrades(t *testing.T) {
 	bitgetFutures.Debug = false
 	okxSpot.Debug = false
 	okxFutures.Debug = false
-	// huobiSpot.Debug = false
-	// huobiFutures.Debug = false
+	huobiSpot.Debug = false
+	huobiFutures.Debug = false
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
-	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
 	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
@@ -95,8 +98,10 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(mexcFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
-	printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(ctx))
+	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(ctx))
+	// printAnswers(huobiSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
 	//===========Not Exit
 	c := make(chan os.Signal, 1)
