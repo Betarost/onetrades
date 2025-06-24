@@ -108,3 +108,11 @@ func (c *futuresClient) NewGetOrderList() *futures_getOrderList {
 func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
 	return &futures_placeOrder{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewAmendOrder() *futures_amendOrder {
+	return &futures_amendOrder{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewCancelOrder() *futures_cancelOrder {
+	return &futures_cancelOrder{callAPI: c.callAPI}
+}

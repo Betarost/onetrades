@@ -139,21 +139,23 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================AmendOrder
 	n = "AmendOrder"
+	printAnswers(gateioFutures.NewAmendOrder().OrderID("186336434877910305").NewSize("2").Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
 	// printAnswers(mexcSpot.NewCancelOrder().Symbol("MXUSDT").OrderID("C02__566124671469281280120").Do(ctx))
 	// printAnswers(bingxSpot.NewCancelOrder().Symbol("PEPE-USDT").OrderID("1937466392961777664").Do(ctx))
+	// printAnswers(gateioFutures.NewCancelOrder().OrderID("186336434877885773").Do(ctx))
 
 	//=======================OrderList
 	n = "OrderList"
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
-	printAnswers(gateioFutures.NewGetOrderList().Symbol("TRX_USDT").Do(ctx))
+	printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
 
 	//=======================GetPositions
 	n = "GetPositions"
-	printAnswers(gateioFutures.NewGetPositions().Do(ctx))
+	// printAnswers(gateioFutures.NewGetPositions().Do(ctx))
 	//=======================SetLeverage
 	n = "SetLeverage"
 
