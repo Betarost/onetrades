@@ -3,10 +3,12 @@ package gateio
 import (
 	"bytes"
 	"context"
+	"crypto/sha512"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
-	"net/url"
 
 	"github.com/Betarost/onetrades/utils"
 )
@@ -161,10 +163,7 @@ func (c *futuresClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 
 func createFullURL(r *utils.Request) error {
 	fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
-	r.Timestamp = utils.CurrentTimestamp() - r.TimeOffset
-	if r.SecType == utils.SecTypeSigned {
-		r.SetParam("timestamp", r.Timestamp)
-	}
+	r.Timestamp = utils.CurrentSecondsTimestamp() - r.TimeOffset
 	queryString := r.Query.Encode()
 	if queryString != "" {
 		fullURL = fmt.Sprintf("%s?%s", fullURL, queryString)
@@ -192,8 +191,10 @@ func createSign(r *utils.Request) error {
 		if err != nil {
 			return err
 		}
-		raw := r.QueryString
-
+		h := sha512.New()
+		hashedPayload := hex.EncodeToString(h.Sum([]byte("")))
+		raw := fmt.Sprintf("%s\n%s\n%s\n%s\n%d", r.Method, r.Endpoint, r.QueryString, hashedPayload, r.Timestamp)
+		log.Println("=raw=", raw)
 		sign, err := sf(r.TmpSig, raw)
 		if err != nil {
 			return err
@@ -212,17 +213,9 @@ func createHeaders(r *utils.Request) error {
 
 	header.Set("Content-Type", "application/json")
 	if r.SecType == utils.SecTypeSigned {
-		fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
-		v := url.Values{}
-		v.Set("signature", r.Sign)
-		if r.QueryString == "" {
-			r.QueryString = v.Encode()
-		} else {
-			r.QueryString = fmt.Sprintf("%s&%s", r.QueryString, v.Encode())
-		}
-		fullURL = fmt.Sprintf("%s?%s", fullURL, r.QueryString)
-		r.FullURL = fullURL
-		header.Set("X-BX-APIKEY", r.TmpApi)
+		header.Set("KEY", r.TmpApi)
+		header.Set("SIGN", r.Sign)
+		header.Set("Timestamp", fmt.Sprintf("%d", r.Timestamp))
 	}
 	r.TmpApi = ""
 	r.Header = header

@@ -47,6 +47,10 @@ func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
 	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
+	return &getAccountInfo{callAPI: c.callAPI}
+}
+
 // ===============FUTURES=================
 
 type futuresClient struct {
@@ -79,4 +83,8 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 
 func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
+	return &getAccountInfo{callAPI: c.callAPI}
 }

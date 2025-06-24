@@ -4,6 +4,34 @@ import (
 	"github.com/Betarost/onetrades/entity"
 )
 
+// ===============ACCOUNT=================
+type account_converts struct{}
+
+func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
+
+	out.UID = in.UID
+	// out.Label = in.Label
+	// out.IP = in.Ip
+	out.PermSpot = true
+
+	// if strings.Contains(in.Perm, "read") {
+	// 	out.CanRead = true
+	// }
+
+	// if strings.Contains(in.Perm, "trade") {
+	// 	out.CanTrade = true
+	// }
+
+	// if in.PosMode == "long_short_mode" {
+	// 	out.HedgeMode = true
+	// }
+
+	// if in.AcctLv != "1" {
+	// 	out.PermFutures = true
+	// }
+	return out
+}
+
 // ===============SPOT=================
 
 type spot_converts struct{}

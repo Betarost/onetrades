@@ -161,6 +161,9 @@ func (c *futuresClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 
 func createFullURL(r *utils.Request) error {
 	fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
+	if r.RecvWindow > 0 {
+		r.SetParam("recvWindow", r.RecvWindow)
+	}
 	r.Timestamp = utils.CurrentTimestamp() - r.TimeOffset
 	if r.SecType == utils.SecTypeSigned {
 		r.SetParam("timestamp", r.Timestamp)
@@ -178,7 +181,6 @@ func createBody(r *utils.Request) error {
 	body := &bytes.Buffer{}
 	bodyString := r.Form.Encode()
 	if bodyString != "" {
-		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		body = bytes.NewBufferString(bodyString)
 	}
 	r.BodyString = bodyString
@@ -192,8 +194,7 @@ func createSign(r *utils.Request) error {
 		if err != nil {
 			return err
 		}
-		raw := r.QueryString
-
+		raw := fmt.Sprintf("%s%s", r.QueryString, r.BodyString)
 		sign, err := sf(r.TmpSig, raw)
 		if err != nil {
 			return err
@@ -211,6 +212,16 @@ func createHeaders(r *utils.Request) error {
 	}
 
 	header.Set("Content-Type", "application/json")
+	header.Set("Request-Time", fmt.Sprintf("%d", r.Timestamp))
+	if r.SecType == utils.SecTypeSigned {
+		header.Set("X-MEXC-APIKEY", r.TmpApi)
+	}
+	r.TmpApi = ""
+	r.Header = header
+	return nil
+}
+
+func createReq(r *utils.Request) error {
 	if r.SecType == utils.SecTypeSigned {
 		fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
 		v := url.Values{}
@@ -222,13 +233,6 @@ func createHeaders(r *utils.Request) error {
 		}
 		fullURL = fmt.Sprintf("%s?%s", fullURL, r.QueryString)
 		r.FullURL = fullURL
-		header.Set("X-BX-APIKEY", r.TmpApi)
 	}
-	r.TmpApi = ""
-	r.Header = header
-	return nil
-}
-
-func createReq(r *utils.Request) error {
 	return nil
 }

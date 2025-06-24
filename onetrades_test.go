@@ -3,8 +3,6 @@ package onetrades
 import (
 	"context"
 	"log"
-	"os"
-	"os/signal"
 	"testing"
 
 	"github.com/Betarost/onetrades/binance"
@@ -84,9 +82,10 @@ func TestOnetrades(t *testing.T) {
 	okxFutures.Debug = false
 	huobiSpot.Debug = false
 	huobiFutures.Debug = false
+
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
-	printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
 	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
@@ -94,7 +93,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
-	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(mexcFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -103,12 +102,61 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
-	//===========Not Exit
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	for {
-		<-c
-		return
-	}
+	//=======================AccountInfo
+	n = "AccountInfo"
+	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
 
+	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
+	printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
+
+	//=======================FundingAccountBalance
+	n = "FundingAccountBalance"
+	// printAnswers(bingxSpot.NewGetFundingAccountBalance().Do(ctx))
+	// printAnswers(bingxFutures.NewGetFundingAccountBalance().Do(ctx))
+	// printAnswers(mexcSpot.NewGetFundingAccountBalance().Do(ctx))
+
+	//=======================TradingAccountBalance
+	n = "TradingAccountBalance"
+	// printAnswers(bingxSpot.NewGetTradingAccountBalance().Do(ctx))
+
+	//=======================GetBalance
+	n = "GetBalance"
+	printAnswers(mexcSpot.NewGetBalance().Do(ctx))
+
+	//=======================PlaceOrder
+	n = "PlaceOrder"
+	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("MXUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.5").Price("2.35").Do(ctx))
+
+	//=======================AmendOrder
+	n = "AmendOrder"
+
+	//=======================CancelOrder
+	n = "CancelOrder"
+	// printAnswers(mexcSpot.NewCancelOrder().Symbol("MXUSDT").OrderID("C02__566124671469281280120").Do(ctx))
+
+	//=======================OrderList
+	n = "OrderList"
+	printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
+	//=======================GetPositions
+	n = "GetPositions"
+
+	//=======================SetLeverage
+	n = "SetLeverage"
+
+	//=======================SetPositionMode
+	n = "SetPositionMode"
+
+	//===========Not Exit
+	// c := make(chan os.Signal, 1)
+	// signal.Notify(c, os.Interrupt)
+	// for {
+	// 	<-c
+	// 	return
+	// }
 }

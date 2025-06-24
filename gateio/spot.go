@@ -25,7 +25,7 @@ func (s *spot_getInstrumentsInfo) Symbol(symbol string) *spot_getInstrumentsInfo
 func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/spot/currency_pairs",
+		Endpoint: "/api/v4/spot/currency_pairs",
 		SecType:  utils.SecTypeNone,
 	}
 

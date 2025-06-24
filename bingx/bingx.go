@@ -47,6 +47,22 @@ func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
 	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
+	return &getAccountInfo{callAPI: c.callAPI}
+}
+
+func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
+	return &getFundingAccountBalance{callAPI: c.callAPI}
+}
+
+func (c *spotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
+	return &getTradingAccountBalance{callAPI: c.callAPI}
+}
+
+func (c *spotClient) NewPlaceOrder() *spot_placeOrder {
+	return &spot_placeOrder{callAPI: c.callAPI}
+}
+
 // ===============FUTURES=================
 
 type futuresClient struct {
@@ -80,3 +96,19 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
+	return &getAccountInfo{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
+	return &getFundingAccountBalance{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
+	return &getTradingAccountBalance{callAPI: c.callAPI}
+}
+
+// func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
+// 	return &futures_placeOrder{callAPI: c.callAPI}
+// }

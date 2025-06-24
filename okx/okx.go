@@ -45,6 +45,10 @@ func NewSpotClient(apiKey, secretKey, memo string) *spotClient {
 	}
 }
 
+func (c *spotClient) NewGetInstrumentsInfo() *getInstrumentsInfo {
+	return &getInstrumentsInfo{callAPI: c.callAPI}
+}
+
 func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
@@ -55,10 +59,6 @@ func (c *spotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
 
 func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
 	return &getFundingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetInstrumentsInfo() *getInstrumentsInfo {
-	return &getInstrumentsInfo{callAPI: c.callAPI}
 }
 
 func (c *spotClient) NewGetOrderList() *getOrderList {

@@ -33,7 +33,7 @@ func (s *futures_getInstrumentsInfo) Settle(settle string) *futures_getInstrumen
 func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/futures/{settle}/contracts",
+		Endpoint: "/api/v4/futures/{settle}/contracts",
 		SecType:  utils.SecTypeNone,
 	}
 

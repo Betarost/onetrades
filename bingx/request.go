@@ -39,7 +39,6 @@ func (c *spotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	err = r.ParseRequest(opts...)
 	if err != nil {
 		return []byte{}, &http.Header{}, err
-
 	}
 
 	c.debug("FullURL %s\n", r.FullURL)
@@ -77,17 +76,15 @@ func (c *spotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	c.debug("response body: %s\n", string(data))
 	c.debug("response status code: %d\n", res.StatusCode)
 
-	if res.StatusCode >= http.StatusBadRequest {
-		apiErr := new(aPIError)
-		e := json.Unmarshal(data, apiErr)
-		if e != nil {
-			c.debug("failed to unmarshal json: %s\n", e)
-		}
-		if !apiErr.IsValid() {
-			c.debug("Answer Not Walid: %+v\n", apiErr)
-			apiErr.Response = data
-			return nil, &res.Header, apiErr
-		}
+	apiErr := new(aPIError)
+	e := json.Unmarshal(data, apiErr)
+	if e != nil {
+		c.debug("failed to unmarshal json: %s\n", e)
+	}
+	if !apiErr.IsValid() {
+		c.debug("Answer Not Walid: %+v\n", apiErr)
+		apiErr.Response = data
+		return nil, &res.Header, apiErr
 	}
 	return data, &res.Header, nil
 }
@@ -142,17 +139,15 @@ func (c *futuresClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	c.debug("response body: %s\n", string(data))
 	c.debug("response status code: %d\n", res.StatusCode)
 
-	if res.StatusCode >= http.StatusBadRequest {
-		apiErr := new(aPIError)
-		e := json.Unmarshal(data, apiErr)
-		if e != nil {
-			c.debug("failed to unmarshal json: %s\n", e)
-		}
-		if !apiErr.IsValid() {
-			c.debug("Answer Not Walid: %+v\n", apiErr)
-			apiErr.Response = data
-			return nil, &res.Header, apiErr
-		}
+	apiErr := new(aPIError)
+	e := json.Unmarshal(data, apiErr)
+	if e != nil {
+		c.debug("failed to unmarshal json: %s\n", e)
+	}
+	if !apiErr.IsValid() {
+		c.debug("Answer Not Walid: %+v\n", apiErr)
+		apiErr.Response = data
+		return nil, &res.Header, apiErr
 	}
 	return data, &res.Header, nil
 }
@@ -178,7 +173,7 @@ func createBody(r *utils.Request) error {
 	body := &bytes.Buffer{}
 	bodyString := r.Form.Encode()
 	if bodyString != "" {
-		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		// r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		body = bytes.NewBufferString(bodyString)
 	}
 	r.BodyString = bodyString

@@ -76,3 +76,9 @@ type PlaceOrder struct {
 	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
 	Ts            int64  `json:"ts" bson:"ts"`
 }
+
+type AssetsBalance struct {
+	Asset   string `json:"asset" bson:"asset"`
+	Balance string `json:"balance" bson:"balance"`
+	Locked  string `json:"locked" bson:"locked"`
+}
