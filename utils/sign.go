@@ -8,6 +8,7 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/sha256"
+	"crypto/sha512"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/hex"
@@ -19,6 +20,7 @@ import (
 const (
 	KeyTypeHmac       = "HMAC"
 	KeyTypeHmacBase64 = "HMACBase64"
+	KeyTypeHmacHex512 = "KeyTypeHmacHex512"
 	KeyTypeRsa        = "RSA"
 	KeyTypeEd25519    = "ED25519"
 )
@@ -29,6 +31,8 @@ func SignFunc(keyType string) (func(string, string) (*string, error), error) {
 		return Hmac, nil
 	case keyType == KeyTypeHmacBase64:
 		return HmacBase64, nil
+	case keyType == KeyTypeHmacHex512:
+		return HmacHex512, nil
 	case keyType == KeyTypeRsa:
 		return Rsa, nil
 	case keyType == KeyTypeEd25519:
@@ -47,6 +51,17 @@ func Hmac(secretKey string, data string) (*string, error) {
 	}
 	encodeData := fmt.Sprintf("%x", (mac.Sum(nil)))
 	return &encodeData, nil
+}
+
+func HmacHex512(secretKey string, data string) (*string, error) {
+
+	mac := hmac.New(sha512.New, []byte(secretKey))
+	_, err := mac.Write([]byte(data))
+	if err != nil {
+		return nil, err
+	}
+	sign := hex.EncodeToString(mac.Sum(nil))
+	return &sign, nil
 }
 
 func HmacBase64(secretKey string, data string) (*string, error) {

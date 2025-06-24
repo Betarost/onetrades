@@ -1,6 +1,7 @@
 package gateio
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Betarost/onetrades/entity"
@@ -55,6 +56,20 @@ func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out [
 	return
 }
 
+func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBalance) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out = append(out, entity.AssetsBalance{
+			Asset:   item.Currency,
+			Balance: item.Available,
+			Locked:  item.Locked,
+		})
+	}
+	return out
+}
+
 // ===============FUTURES=================
 
 type futures_converts struct{}
@@ -76,4 +91,77 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 		out = append(out, rec)
 	}
 	return
+}
+
+func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
+
+	out = append(out, entity.PlaceOrder{
+		OrderID:       fmt.Sprintf("%d", in.ID),
+		ClientOrderID: in.Text,
+		Ts:            int64(in.Create_time),
+	})
+	return out
+}
+
+func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
+	for _, item := range answ {
+		positionSide := "LONG"
+		if item.Mode == "single" {
+			if item.Size < 0 {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.Mode)
+		}
+
+		res = append(res, entity.Futures_Positions{
+			Symbol:       item.Contract,
+			PositionSide: positionSide,
+			// PositionID:       item.PosID,
+			PositionAmt:      fmt.Sprintf("%d", item.Size),
+			EntryPrice:       item.Entry_price,
+			MarkPrice:        item.Mark_price,
+			InitialMargin:    item.Initial_margin,
+			UnRealizedProfit: item.Unrealised_pnl,
+			RealizedProfit:   item.Realised_pnl,
+			Notional:         item.Value,
+			MarginRatio:      item.Maintenance_rate,
+			UpdateTime:       item.Update_time,
+		})
+	}
+	return res
+}
+
+func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {
+	for _, item := range answ {
+		positionSide := "LONG"
+		// if item.PosSide == "net" {
+		// 	if strings.ToUpper(item.Side) == "SELL" {
+		// 		positionSide = "SHORT"
+		// 	}
+		// } else {
+		// 	positionSide = strings.ToUpper(item.PosSide)
+		// }
+
+		res = append(res, entity.Futures_OrdersList{
+			Symbol:        item.Contract,
+			OrderID:       fmt.Sprintf("%d", item.ID),
+			ClientOrderID: item.Text,
+			PositionSide:  positionSide,
+			// Side:          item.Side,
+			PositionAmt: fmt.Sprintf("%d", item.Size),
+			Price:       item.Price,
+			// TpPrice:       tp,
+			// SlPrice:       sl,
+			// Type:          strings.ToUpper(item.OrdType),
+			// TradeMode:     item.TdMode,
+			// InstType:      item.InstType,
+			// Leverage:      item.Lever,
+			// Status:        item.State,
+			// IsTpLimit:     b,
+			CreateTime: int64(item.Create_time),
+			UpdateTime: int64(item.Update_time),
+		})
+	}
+	return res
 }

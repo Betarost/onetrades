@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -26,7 +27,8 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v4/spot/currency_pairs",
-		SecType:  utils.SecTypeNone,
+
+		SecType: utils.SecTypeNone,
 	}
 
 	if s.symbol != nil {
@@ -70,4 +72,39 @@ type spot_instrumentsInfo struct {
 	Amount_precision int64  `json:"amount_precision"`
 	Precision        int64  `json:"precision"`
 	Trade_status     string `json:"trade_status"`
+}
+
+// ===================GetBalance==================
+type spot_getBalance struct {
+	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	convert spot_converts
+}
+
+func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.AssetsBalance, err error) {
+	r := &utils.Request{
+		Method:   http.MethodGet,
+		Endpoint: "/api/v4/spot/accounts",
+		SecType:  utils.SecTypeSigned,
+	}
+
+	data, _, err := s.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	log.Println("=4b440a=", string(data))
+	answ := []spot_Balance{}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	return s.convert.convertBalance(answ), nil
+}
+
+type spot_Balance struct {
+	Currency  string `json:"currency"`
+	Available string `json:"available"`
+	Locked    string `json:"locked"`
 }

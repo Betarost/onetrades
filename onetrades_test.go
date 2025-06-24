@@ -92,7 +92,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
-	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
+	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("TRX_USDT").Do(ctx))
 	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(mexcFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -128,11 +128,14 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetBalance
 	n = "GetBalance"
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
-
+	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
+	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("MXUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.5").Price("2.35").Do(ctx))
 	// printAnswers(bingxSpot.NewPlaceOrder().Symbol("PEPE-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("180000").Price("0.00001050").Do(ctx))
+	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").OrderType(entity.OrderTypeMarket).ClientOrderID("t-235k").Do(ctx))
+	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").Price("0.2687").OrderType(entity.OrderTypeLimit).ClientOrderID("t-235k2").Do(ctx))
 
 	//=======================AmendOrder
 	n = "AmendOrder"
@@ -140,21 +143,23 @@ func TestOnetrades(t *testing.T) {
 	//=======================CancelOrder
 	n = "CancelOrder"
 	// printAnswers(mexcSpot.NewCancelOrder().Symbol("MXUSDT").OrderID("C02__566124671469281280120").Do(ctx))
-	printAnswers(bingxSpot.NewCancelOrder().Symbol("PEPE-USDT").OrderID("1937466392961777664").Do(ctx))
+	// printAnswers(bingxSpot.NewCancelOrder().Symbol("PEPE-USDT").OrderID("1937466392961777664").Do(ctx))
 
 	//=======================OrderList
 	n = "OrderList"
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
-	printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
+	printAnswers(gateioFutures.NewGetOrderList().Symbol("TRX_USDT").Do(ctx))
 
 	//=======================GetPositions
 	n = "GetPositions"
-
+	printAnswers(gateioFutures.NewGetPositions().Do(ctx))
 	//=======================SetLeverage
 	n = "SetLeverage"
 
 	//=======================SetPositionMode
 	n = "SetPositionMode"
+	// printAnswers(gateioFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)

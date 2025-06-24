@@ -113,6 +113,18 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 	return
 }
 
+func (c *spot_converts) convertBalance(in spot_Balance) (out []entity.AssetsBalance) {
+
+	for _, item := range in.Balances {
+		out = append(out, entity.AssetsBalance{
+			Asset:   item.Asset,
+			Balance: item.Free,
+			Locked:  item.Locked,
+		})
+	}
+	return out
+}
+
 func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
 	out = append(out, entity.PlaceOrder{
 		OrderID:       fmt.Sprintf("%d", in.OrderId),

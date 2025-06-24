@@ -51,6 +51,10 @@ func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewGetBalance() *spot_getBalance {
+	return &spot_getBalance{callAPI: c.callAPI}
+}
+
 // ===============FUTURES=================
 
 type futuresClient struct {
@@ -87,4 +91,20 @@ func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 
 func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewSetPositionMode() *futures_setPositionMode {
+	return &futures_setPositionMode{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewGetPositions() *futures_getPositions {
+	return &futures_getPositions{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewGetOrderList() *futures_getOrderList {
+	return &futures_getOrderList{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
+	return &futures_placeOrder{callAPI: c.callAPI}
 }

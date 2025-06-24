@@ -18,8 +18,9 @@ type getAccountInfo struct {
 
 func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
 	r := &utils.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/api/v4/account/detail",
+		Method: http.MethodGet,
+		// Endpoint: "/api/v4/account/detail",
+		Endpoint: "/api/v4/spot/accounts",
 		SecType:  utils.SecTypeSigned,
 	}
 

@@ -7,8 +7,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
+	"strings"
 
 	"github.com/Betarost/onetrades/utils"
 )
@@ -175,9 +175,30 @@ func createFullURL(r *utils.Request) error {
 
 func createBody(r *utils.Request) error {
 	body := &bytes.Buffer{}
-	bodyString := r.Form.Encode()
+	j, err := json.Marshal(r.Form)
+	if err != nil {
+		return err
+	}
+	bodyString := string(j)
+	if bodyString == "{}" {
+		bodyString = ""
+	} else {
+
+		if r.Form.Get("is_batch") != "" {
+			bodyString = r.Form.Get("is_batch")
+		} else {
+			bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
+			bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+
+			if r.Form.Get("attachAlgoOrds") != "" {
+				bodyString = strings.Replace(bodyString, "\"[", "[", -1)
+				bodyString = strings.Replace(bodyString, "]\"", "]", -1)
+				bodyString = strings.Replace(bodyString, `\"`, `"`, -1)
+			}
+		}
+	}
+
 	if bodyString != "" {
-		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		body = bytes.NewBufferString(bodyString)
 	}
 	r.BodyString = bodyString
@@ -187,14 +208,16 @@ func createBody(r *utils.Request) error {
 
 func createSign(r *utils.Request) error {
 	if r.SecType == utils.SecTypeSigned {
-		sf, err := utils.SignFunc(utils.KeyTypeHmac)
+		sf, err := utils.SignFunc(utils.KeyTypeHmacHex512)
 		if err != nil {
 			return err
 		}
 		h := sha512.New()
-		hashedPayload := hex.EncodeToString(h.Sum([]byte("")))
+		if r.BodyString != "" {
+			h.Write([]byte(r.BodyString))
+		}
+		hashedPayload := hex.EncodeToString(h.Sum(nil))
 		raw := fmt.Sprintf("%s\n%s\n%s\n%s\n%d", r.Method, r.Endpoint, r.QueryString, hashedPayload, r.Timestamp)
-		log.Println("=raw=", raw)
 		sign, err := sf(r.TmpSig, raw)
 		if err != nil {
 			return err
@@ -211,7 +234,8 @@ func createHeaders(r *utils.Request) error {
 		header = r.Header.Clone()
 	}
 
-	header.Set("Content-Type", "application/json")
+	// header.Set("Accept", "application/json")
+	// header.Set("Content-Type", "application/json")
 	if r.SecType == utils.SecTypeSigned {
 		header.Set("KEY", r.TmpApi)
 		header.Set("SIGN", r.Sign)
