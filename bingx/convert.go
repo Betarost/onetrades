@@ -1,6 +1,10 @@
 package bingx
 
 import (
+	"fmt"
+	"strings"
+	"time"
+
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
@@ -107,6 +111,36 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 		out = append(out, rec)
 	}
 	return
+}
+
+func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
+	out = append(out, entity.PlaceOrder{
+		OrderID:       fmt.Sprintf("%d", in.OrderId),
+		ClientOrderID: in.ClientOrderID,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
+	return out
+}
+
+func (c *spot_converts) convertOrderList(in spot_orderList) (out []entity.OrdersPendingList) {
+	if len(in.Orders) == 0 {
+		return out
+	}
+	for _, item := range in.Orders {
+		out = append(out, entity.OrdersPendingList{
+			Symbol:        item.Symbol,
+			OrderID:       fmt.Sprintf("%d", item.OrderId),
+			ClientOrderID: item.ClientOrderId,
+			Side:          item.Side,
+			PositionAmt:   item.OrigQty,
+			Price:         item.Price,
+			Type:          strings.ToUpper(item.Type),
+			Status:        item.Status,
+			CreateTime:    item.Time,
+			UpdateTime:    item.UpdateTime,
+		})
+	}
+	return out
 }
 
 // ===============FUTURES=================

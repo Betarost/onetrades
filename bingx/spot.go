@@ -3,10 +3,8 @@ package bingx
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
@@ -78,19 +76,12 @@ type spot_placeOrder struct {
 	price         *string
 	orderType     *entity.OrderType
 	clientOrderID *string
-	positionSide  *entity.PositionSideType
-	tradeMode     *entity.MarginModeType
 	tpPrice       *string
 	slPrice       *string
 }
 
 func (s *spot_placeOrder) Symbol(symbol string) *spot_placeOrder {
 	s.symbol = &symbol
-	return s
-}
-
-func (s *spot_placeOrder) TradeMode(tradeMode entity.MarginModeType) *spot_placeOrder {
-	s.tradeMode = &tradeMode
 	return s
 }
 
@@ -129,11 +120,6 @@ func (s *spot_placeOrder) ClientOrderID(clientOrderID string) *spot_placeOrder {
 	return s
 }
 
-func (s *spot_placeOrder) PositionSide(positionSide entity.PositionSideType) *spot_placeOrder {
-	s.positionSide = &positionSide
-	return s
-}
-
 func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
 	r := &utils.Request{
 		Method:   http.MethodPost,
@@ -147,68 +133,35 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 		m["symbol"] = *s.symbol
 	}
 
-	if s.tradeMode != nil {
-		if *s.tradeMode == entity.MarginModeTypeCross {
-			m["tdMode"] = "cross"
-		} else if *s.tradeMode == entity.MarginModeTypeIsolated {
-			m["tdMode"] = "isolated"
-		}
-	}
-
 	if s.side != nil {
-		m["side"] = strings.ToLower(string(*s.side))
-	}
-
-	if s.size != nil {
-		m["sz"] = *s.size
-	}
-
-	if s.price != nil {
-		m["px"] = *s.price
+		m["side"] = string(*s.side)
 	}
 
 	if s.orderType != nil {
-		m["ordType"] = strings.ToLower(string(*s.orderType))
+		m["type"] = string(*s.orderType)
+	}
+
+	if s.size != nil {
+		m["quantity"] = *s.size
+	}
+
+	if s.price != nil {
+		m["price"] = *s.price
 	}
 
 	if s.clientOrderID != nil {
-		m["clOrdId"] = *s.clientOrderID
+		m["newClientOrderId"] = *s.clientOrderID
 	}
 
-	if s.positionSide != nil {
-		m["posSide"] = strings.ToLower(string(*s.positionSide))
-	}
-
-	// if s.tpPrice != nil || s.slPrice != nil {
-	// 	attachAlgoOrds := []orderList_attachAlgoOrds{{}}
-	// 	if s.tpPrice != nil {
-	// 		attachAlgoOrds[0].TpTriggerPx = *s.tpPrice
-	// 		attachAlgoOrds[0].TpOrdPx = "-1"
-	// 	}
-
-	// 	if s.slPrice != nil {
-	// 		attachAlgoOrds[0].SlTriggerPx = *s.slPrice
-	// 		attachAlgoOrds[0].SlOrdPx = "-1"
-	// 	}
-	// 	j, err := json.Marshal(attachAlgoOrds)
-	// 	if err != nil {
-	// 		return res, err
-	// 	}
-
-	// 	m["attachAlgoOrds"] = string(j)
-	// }
-
-	r.SetFormParams(m)
+	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
 
-	log.Println("=e0cd43=", string(data))
-
 	var answ struct {
-		Result []placeOrder_Response `json:"data"`
+		Result placeOrder_Response `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -216,22 +169,137 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 		return res, err
 	}
 
-	if len(answ.Result) == 0 {
-		return res, errors.New("Zero Answer")
-	}
-
-	if answ.Result[0].SCode != "0" {
-		return res, errors.New(answ.Result[0].SMsg)
-	}
-	return
-	// return convertPlaceOrder(answ.Result), nil
+	return s.convert.convertPlaceOrder(answ.Result), nil
 }
 
 type placeOrder_Response struct {
-	ClOrdId string `json:"clOrdId"`
-	OrdId   string `json:"ordId"`
-	Tag     string `json:"tag"`
-	Ts      string `json:"ts"`
-	SCode   string `json:"sCode"`
-	SMsg    string `json:"sMsg"`
+	Symbol        string `json:"symbol"`
+	OrderId       int64  `json:"orderId"`
+	Price         string `json:"price"`
+	OrigQty       string `json:"origQty"`
+	Type          string `json:"type"`
+	Side          string `json:"side"`
+	ClientOrderID string `json:"clientOrderID"`
+	StopPrice     string `json:"stopPrice"`
+	TransactTime  int64  `json:"transactTime"`
+}
+
+// ==============TradeCancelOrders=================
+
+type spot_cancelOrder struct {
+	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	convert spot_converts
+
+	symbol  *string
+	orderID *string
+}
+
+func (s *spot_cancelOrder) Symbol(symbol string) *spot_cancelOrder {
+	s.symbol = &symbol
+	return s
+}
+
+func (s *spot_cancelOrder) OrderID(orderID string) *spot_cancelOrder {
+	s.orderID = &orderID
+	return s
+}
+
+func (s *spot_cancelOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
+	r := &utils.Request{
+		Method:   http.MethodPost,
+		Endpoint: "/openApi/spot/v1/trade/cancel",
+		SecType:  utils.SecTypeSigned,
+	}
+
+	m := utils.Params{}
+
+	if s.symbol != nil {
+		m["symbol"] = *s.symbol
+	}
+
+	if s.orderID != nil {
+		m["orderId"] = *s.orderID
+	}
+
+	r.SetParams(m)
+
+	data, _, err := s.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	log.Println("=2700d4=", string(data))
+	var answ struct {
+		Result placeOrder_Response `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	return s.convert.convertPlaceOrder(answ.Result), nil
+}
+
+// ==============spot_getOrderList=================
+type spot_getOrderList struct {
+	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	convert spot_converts
+
+	symbol *string
+}
+
+func (s *spot_getOrderList) Symbol(symbol string) *spot_getOrderList {
+	s.symbol = &symbol
+	return s
+}
+
+func (s *spot_getOrderList) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.OrdersPendingList, err error) {
+	r := &utils.Request{
+		Method:   http.MethodGet,
+		Endpoint: "/openApi/spot/v1/trade/openOrders",
+		SecType:  utils.SecTypeSigned,
+	}
+
+	m := utils.Params{}
+	if s.symbol != nil {
+		m["symbol"] = *s.symbol
+	}
+	r.SetParams(m)
+
+	data, _, err := s.callAPI(ctx, r, opts...)
+	if err != nil {
+		return res, err
+	}
+
+	var answ struct {
+		Result spot_orderList `json:"data"`
+	}
+
+	err = json.Unmarshal(data, &answ)
+	if err != nil {
+		return res, err
+	}
+
+	return s.convert.convertOrderList(answ.Result), nil
+}
+
+type spot_orderList struct {
+	Orders []struct {
+		Symbol              string `json:"symbol"`
+		OrderId             int64  `json:"orderId"`
+		ClientOrderId       string `json:"clientOrderID"`
+		Price               string `json:"price"`
+		OrigQty             string `json:"origQty"`
+		ExecutedQty         string `json:"executedQty"`
+		CummulativeQuoteQty string `json:"cummulativeQuoteQty"`
+		Status              string `json:"status"`
+		Type                string `json:"type"`
+		Side                string `json:"side"`
+		StopPrice           string `json:"StopPrice"`
+		Time                int64  `json:"time"`
+		UpdateTime          int64  `json:"updateTime"`
+		IsWorking           bool   `json:"isWorking"`
+		OrigQuoteOrderQty   string `json:"origQuoteOrderQty"`
+	} `json:"orders"`
 }

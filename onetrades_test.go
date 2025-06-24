@@ -93,7 +93,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
-	printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
+	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(mexcFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -111,7 +111,7 @@ func TestOnetrades(t *testing.T) {
 
 	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
-	printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
 
@@ -127,11 +127,12 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================GetBalance
 	n = "GetBalance"
-	printAnswers(mexcSpot.NewGetBalance().Do(ctx))
+	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
 
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("MXUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.5").Price("2.35").Do(ctx))
+	// printAnswers(bingxSpot.NewPlaceOrder().Symbol("PEPE-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("180000").Price("0.00001050").Do(ctx))
 
 	//=======================AmendOrder
 	n = "AmendOrder"
@@ -139,10 +140,13 @@ func TestOnetrades(t *testing.T) {
 	//=======================CancelOrder
 	n = "CancelOrder"
 	// printAnswers(mexcSpot.NewCancelOrder().Symbol("MXUSDT").OrderID("C02__566124671469281280120").Do(ctx))
+	printAnswers(bingxSpot.NewCancelOrder().Symbol("PEPE-USDT").OrderID("1937466392961777664").Do(ctx))
 
 	//=======================OrderList
 	n = "OrderList"
-	printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
+	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
+	printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
+
 	//=======================GetPositions
 	n = "GetPositions"
 
