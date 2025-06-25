@@ -109,7 +109,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
 
-	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
+	printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
@@ -139,7 +139,7 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================AmendOrder
 	n = "AmendOrder"
-	printAnswers(gateioFutures.NewAmendOrder().OrderID("186336434877910305").NewSize("2").Do(ctx))
+	// printAnswers(gateioFutures.NewAmendOrder().OrderID("186336434877910305").NewSize("2").Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
@@ -151,7 +151,7 @@ func TestOnetrades(t *testing.T) {
 	n = "OrderList"
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
-	printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
+	// printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
 
 	//=======================GetPositions
 	n = "GetPositions"

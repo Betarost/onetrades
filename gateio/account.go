@@ -3,7 +3,6 @@ package gateio
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -18,9 +17,8 @@ type getAccountInfo struct {
 
 func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
 	r := &utils.Request{
-		Method: http.MethodGet,
-		// Endpoint: "/api/v4/account/detail",
-		Endpoint: "/api/v4/spot/accounts",
+		Method:   http.MethodGet,
+		Endpoint: "/api/v4/account/detail",
 		SecType:  utils.SecTypeSigned,
 	}
 
@@ -28,16 +26,11 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if err != nil {
 		return res, err
 	}
-
-	log.Println("=61fd61=", string(data))
-
 	answ := accountInfo{}
-
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
 	}
-
 	return s.convert.convertAccountInfo(answ), nil
 }
 
