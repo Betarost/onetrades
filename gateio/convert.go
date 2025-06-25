@@ -87,6 +87,31 @@ func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.
 	return out
 }
 
+func (c *spot_converts) convertOrderList(in []spot_orderList) (out []entity.Spot_OrdersList) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, i := range in {
+		for _, item := range i.Orders {
+
+			out = append(out, entity.Spot_OrdersList{
+				Symbol:        item.Currency_pair,
+				OrderID:       item.ID,
+				ClientOrderID: item.Text,
+				Side:          strings.ToUpper(item.Side),
+				Size:          item.Amount,
+				Price:         item.Price,
+				ExecutedSize:  item.Filled_amount,
+				Type:          strings.ToUpper(item.Type),
+				Status:        item.Status,
+				CreateTime:    item.Create_time,
+				UpdateTime:    item.Update_time,
+			})
+		}
+	}
+	return out
+}
+
 // ===============FUTURES=================
 
 type futures_converts struct{}

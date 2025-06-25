@@ -139,18 +139,19 @@ func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.
 	return out
 }
 
-func (c *spot_converts) convertOrderList(in spot_orderList) (out []entity.OrdersPendingList) {
+func (c *spot_converts) convertOrderList(in spot_orderList) (out []entity.Spot_OrdersList) {
 	if len(in.Orders) == 0 {
 		return out
 	}
 	for _, item := range in.Orders {
-		out = append(out, entity.OrdersPendingList{
+		out = append(out, entity.Spot_OrdersList{
 			Symbol:        item.Symbol,
 			OrderID:       fmt.Sprintf("%d", item.OrderId),
 			ClientOrderID: item.ClientOrderId,
 			Side:          item.Side,
-			PositionAmt:   item.OrigQty,
+			Size:          item.OrigQty,
 			Price:         item.Price,
+			ExecutedSize:  item.ExecutedQty,
 			Type:          strings.ToUpper(item.Type),
 			Status:        item.Status,
 			CreateTime:    item.Time,

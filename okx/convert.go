@@ -95,6 +95,25 @@ func (c *spot_converts) convertPlaceOrder(in []placeOrder_Response) (out []entit
 	return out
 }
 
+func (c *spot_converts) convertOrderList(answ []spot_orderList) (res []entity.Spot_OrdersList) {
+	for _, item := range answ {
+		res = append(res, entity.Spot_OrdersList{
+			Symbol:        item.InstId,
+			OrderID:       item.OrdId,
+			ClientOrderID: item.ClOrdId,
+			Size:          item.Sz,
+			ExecutedSize:  item.FillSz,
+			Side:          strings.ToUpper(item.Side),
+			Price:         item.Px,
+			Type:          strings.ToUpper(item.OrdType),
+			Status:        item.State,
+			CreateTime:    utils.StringToInt64(item.CTime),
+			UpdateTime:    utils.StringToInt64(item.UTime),
+		})
+	}
+	return res
+}
+
 // =======OLD
 
 func convertAccountInfo(in accountInfo) (out entity.AccountInformation) {

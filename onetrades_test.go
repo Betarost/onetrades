@@ -9,7 +9,6 @@ import (
 	"github.com/Betarost/onetrades/bingx"
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bybit"
-	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
@@ -144,7 +143,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("35").Do(ctx))
 	// printAnswers(gateioSpot.NewPlaceOrder().Symbol("DOGE_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("35").Price("0.15870").Do(ctx))
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
-	printAnswers(okxSpot.NewPlaceOrder().Symbol("DOGE-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
+	// printAnswers(okxSpot.NewPlaceOrder().Symbol("DOGE-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
 
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").OrderType(entity.OrderTypeMarket).ClientOrderID("t-235k").Do(ctx))
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").Price("0.2687").OrderType(entity.OrderTypeLimit).ClientOrderID("t-235k2").Do(ctx))
@@ -161,9 +160,13 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================OrderList
 	n = "OrderList"
+	printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
+	printAnswers(bybitSpot.NewGetOrderList().Do(ctx))
+	printAnswers(gateioSpot.NewGetOrderList().Do(ctx))
+	printAnswers(mexcSpot.NewGetOrderList().Symbol("DOGEUSDT").Do(ctx))
+	printAnswers(okxSpot.NewGetOrderList().Do(ctx))
+
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
-	// printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
-	// printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
 
 	//=======================GetPositions
 	n = "GetPositions"
