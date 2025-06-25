@@ -39,7 +39,6 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 	if err != nil {
 		return res, err
 	}
-	log.Println("=2b295c=", string(data))
 	answ := spot_instrumentsInfo{}
 
 	err = json.Unmarshal(data, &answ)
@@ -52,19 +51,14 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 
 type spot_instrumentsInfo struct {
 	Symbols []struct {
-		Symbol             string `json:"symbol"`
-		Status             string `json:"status"`
-		BaseAsset          string `json:"baseAsset"`
-		QuoteAsset         string `json:"quoteAsset"`
-		BaseAssetPrecision int64  `json:"baseAssetPrecision"`
-		QuotePrecision     int64  `json:"quotePrecision"`
-
-		// MinQty      float64 `json:"minQty"`
-		// MaxQty      float64 `json:"maxQty"`
-		// MinNotional float64 `json:"minNotional"`
-		// MaxNotional float64 `json:"maxNotional"`
-		// TickSize    float64 `json:"tickSize"`
-		// StepSize    float64 `json:"stepSize"`
+		Symbol               string `json:"symbol"`
+		Status               string `json:"status"`
+		BaseAsset            string `json:"baseAsset"`
+		QuoteAsset           string `json:"quoteAsset"`
+		BaseAssetPrecision   int64  `json:"baseAssetPrecision"`
+		QuotePrecision       int64  `json:"quotePrecision"`
+		BaseSizePrecision    string `json:"baseSizePrecision"`
+		QuoteAmountPrecision string `json:"quoteAmountPrecision"`
 	} `json:"symbols"`
 }
 

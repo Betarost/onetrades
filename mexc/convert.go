@@ -1,6 +1,7 @@
 package mexc
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -81,21 +82,25 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 	}
 	for _, item := range in.Symbols {
 		state := "OTHER"
-		// if item.Status == 1 {
-		// 	state = "LIVE"
-		// } else if item.Status == 0 {
-		// 	state = "OFF"
-		// } else if item.Status == 5 {
-		// 	state = "PRE-OPEN"
-		// } else if item.Status == 25 {
-		// 	state = "SUSPENDED"
-		// }
+		if item.Status == "1" {
+			state = "LIVE"
+		} else if item.Status == "3" {
+			state = "OFF"
+		} else if item.Status == "2" {
+			state = "SUSPENDED"
+		}
 		rec := entity.InstrumentsInfo{
-			Symbol: item.Symbol,
+			Symbol:      item.Symbol,
+			Base:        item.BaseAsset,
+			Quote:       item.QuoteAsset,
+			MinQty:      item.BaseSizePrecision,
+			MinNotional: item.QuoteAmountPrecision,
+			// PricePrecision: ,
+			SizePrecision: fmt.Sprintf("%d", item.BaseAssetPrecision),
 			// StepTickPrice:    utils.FloatToStringAll(item.TickSize),
-			// StepContractSize: utils.FloatToStringAll(item.StepSize),
-			// MinContractSize:  utils.FloatToStringAll(item.MinQty),
-			State: state,
+			StepContractSize: item.BaseSizePrecision,
+			MinContractSize:  item.BaseSizePrecision,
+			State:            state,
 		}
 		out = append(out, rec)
 	}
