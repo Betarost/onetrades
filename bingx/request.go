@@ -18,9 +18,6 @@ type aPIError struct {
 }
 
 func (e aPIError) Error() string {
-	if e.IsValid() {
-		return fmt.Sprintf("<APIError> code=%d, msg=%s", e.Code, e.Message)
-	}
 	return string(e.Response)
 }
 

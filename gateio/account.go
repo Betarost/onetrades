@@ -3,6 +3,7 @@ package gateio
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -26,6 +27,9 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if err != nil {
 		return res, err
 	}
+
+	log.Println("=a215eb=", string(data))
+
 	answ := accountInfo{}
 	err = json.Unmarshal(data, &answ)
 	if err != nil {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -38,6 +39,7 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 	if err != nil {
 		return res, err
 	}
+	log.Println("=570298=", string(data))
 
 	if s.symbol != nil {
 		answ := spot_instrumentsInfo{}

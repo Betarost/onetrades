@@ -38,24 +38,32 @@ type FundingAccountBalance struct {
 }
 
 type InstrumentsInfo struct {
-	Symbol         string `json:"symbol" bson:"symbol"`
-	Base           string `json:"base" bson:"base"`
-	Quote          string `json:"quote" bson:"quote"`
-	MinQty         string `json:"minQty" bson:"minQty"`
-	MinNotional    string `json:"minNotional" bson:"minNotional"`
-	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"`
-	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`
-
-	State string `json:"state" bson:"state"`
-
+	Symbol         string `json:"symbol" bson:"symbol"`                 // +
+	Base           string `json:"base" bson:"base"`                     // +
+	Quote          string `json:"quote" bson:"quote"`                   // +
+	MinQty         string `json:"minQty" bson:"minQty"`                 // + размер монеты минимальный
+	MinNotional    string `json:"minNotional" bson:"minNotional"`       // (не обязательный) размер в доларах минимальный
+	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"` // Отправляем если есть
+	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`   // Отправляем если есть
+	State          string `json:"state" bson:"state"`                   // enum  LIVE и другие
 	// InstType           string `json:"instType" bson:"instType"`
-	StepTickPrice    string `json:"stepTickPrice" bson:"stepTickPrice"`
-	StepContractSize string `json:"stepContractSize" bson:"stepContractSize"`
-	MinContractSize  string `json:"minContractSize" bson:"minContractSize"`
-
+	StepTickPrice      string `json:"stepTickPrice" bson:"stepTickPrice"`
+	StepContractSize   string `json:"stepContractSize" bson:"stepContractSize"`
+	MinContractSize    string `json:"minContractSize" bson:"minContractSize"`
 	MaxLeverage        string `json:"maxLeverage" bson:"maxLeverage"`
 	ContractSize       string `json:"contractSize" bson:"contractSize"`
 	ContractMultiplier string `json:"contractMultiplier" bson:"contractMultiplier"`
+}
+
+type Spot_InstrumentsInfo struct {
+	Symbol         string `json:"symbol" bson:"symbol"`                 // +
+	Base           string `json:"base" bson:"base"`                     // +
+	Quote          string `json:"quote" bson:"quote"`                   // +
+	MinQty         string `json:"minQty" bson:"minQty"`                 // + размер монеты минимальный
+	MinNotional    string `json:"minNotional" bson:"minNotional"`       // (не обязательный) размер в доларах минимальный
+	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"` // Отправляем если есть
+	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`   // Отправляем если есть
+	State          string `json:"state" bson:"state"`                   // enum  LIVE и другие
 }
 
 type OrdersPendingList struct {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"strings"
 
@@ -264,6 +265,7 @@ func (s *getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
+	log.Println("=2ddda8=", string(data))
 	var answ struct {
 		Result []instrumentsInfo `json:"data"`
 	}

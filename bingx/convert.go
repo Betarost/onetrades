@@ -86,7 +86,7 @@ func (c *account_converts) convertTradingAccountBalance(in []tradingBalance) (ou
 
 type spot_converts struct{}
 
-func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []entity.InstrumentsInfo) {
+func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []entity.Spot_InstrumentsInfo) {
 	if len(in.Symbols) == 0 {
 		return out
 	}
@@ -112,18 +112,15 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 		} else if item.Status == 25 {
 			state = "SUSPENDED"
 		}
-		rec := entity.InstrumentsInfo{
-			Symbol:           item.Symbol,
-			Base:             base,
-			Quote:            quote,
-			MinQty:           utils.FloatToStringAll(item.MinQty),
-			MinNotional:      utils.FloatToStringAll(item.MinNotional),
-			PricePrecision:   priceP,
-			SizePrecision:    sizeP,
-			StepTickPrice:    utils.FloatToStringAll(item.TickSize),
-			StepContractSize: utils.FloatToStringAll(item.StepSize),
-			MinContractSize:  utils.FloatToStringAll(item.MinQty),
-			State:            state,
+		rec := entity.Spot_InstrumentsInfo{
+			Symbol:         item.Symbol,
+			Base:           base,
+			Quote:          quote,
+			MinQty:         utils.FloatToStringAll(item.MinQty),
+			MinNotional:    utils.FloatToStringAll(item.MinNotional),
+			PricePrecision: priceP,
+			SizePrecision:  sizeP,
+			State:          state,
 		}
 		out = append(out, rec)
 	}
