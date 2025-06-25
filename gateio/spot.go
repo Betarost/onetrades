@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -92,7 +91,6 @@ func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (
 		return res, err
 	}
 
-	log.Println("=4b440a=", string(data))
 	answ := []spot_Balance{}
 
 	err = json.Unmarshal(data, &answ)

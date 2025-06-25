@@ -82,16 +82,16 @@ func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (
 	if err != nil {
 		return res, err
 	}
-
-	log.Println("=4b440a=", string(data))
-	answ := spot_Balance{}
+	var answ struct {
+		Result spot_Balance `json:"data"`
+	}
 
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
 	}
 
-	return s.convert.convertBalance(answ), nil
+	return s.convert.convertBalance(answ.Result), nil
 }
 
 type spot_Balance struct {

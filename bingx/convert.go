@@ -131,7 +131,6 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 }
 
 func (c *spot_converts) convertBalance(in spot_Balance) (out []entity.AssetsBalance) {
-
 	for _, item := range in.Balances {
 		out = append(out, entity.AssetsBalance{
 			Asset:   item.Asset,

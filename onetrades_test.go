@@ -127,9 +127,9 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================GetBalance
 	n = "GetBalance"
-	printAnswers(okxSpot.NewGetBalance().Do(ctx))
+	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
-	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
+	printAnswers(bingxSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
 	//=======================PlaceOrder
 	n = "PlaceOrder"
