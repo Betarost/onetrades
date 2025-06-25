@@ -43,6 +43,10 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 	}
 }
 
+func (c *spotClient) NewGetBalance() *spot_getBalance {
+	return &spot_getBalance{callAPI: c.callAPI}
+}
+
 func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
 	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }

@@ -12,6 +12,22 @@ import (
 
 type spot_converts struct{}
 
+func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBalance) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, i := range in {
+		for _, item := range i.Coin {
+			out = append(out, entity.AssetsBalance{
+				Asset:   item.Coin,
+				Balance: item.WalletBalance,
+				Locked:  item.Locked,
+			})
+		}
+	}
+	return out
+}
+
 func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []entity.InstrumentsInfo) {
 	// if len(in.Symbols) == 0 {
 	// 	return out
