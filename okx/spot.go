@@ -389,14 +389,14 @@ func (s *placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res [
 	return convertPlaceOrder(answ.Result), nil
 }
 
-type placeOrder_Response struct {
-	ClOrdId string `json:"clOrdId"`
-	OrdId   string `json:"ordId"`
-	Tag     string `json:"tag"`
-	Ts      string `json:"ts"`
-	SCode   string `json:"sCode"`
-	SMsg    string `json:"sMsg"`
-}
+// type placeOrder_Response struct {
+// 	ClOrdId string `json:"clOrdId"`
+// 	OrdId   string `json:"ordId"`
+// 	Tag     string `json:"tag"`
+// 	Ts      string `json:"ts"`
+// 	SCode   string `json:"sCode"`
+// 	SMsg    string `json:"sMsg"`
+// }
 
 // ==============getOrderList=================
 type getOrderList struct {

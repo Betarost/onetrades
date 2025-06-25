@@ -88,8 +88,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("DOGE_USDT").Do(ctx))
-	printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
-	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
+	printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("DOGE-USDT").Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
@@ -134,14 +134,16 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
-	printAnswers(mexcSpot.NewGetBalance().Do(ctx))
-	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
+	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
+	printAnswers(okxSpot.NewGetBalance().Do(ctx))
+
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	// printAnswers(bingxSpot.NewPlaceOrder().Symbol("PEPE-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("180000").Do(ctx))
 	// printAnswers(bybitSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("34").Do(ctx))
 	// printAnswers(gateioSpot.NewPlaceOrder().Symbol("DOGE_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("3").Do(ctx))
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("MXUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("0.5").ClientOrderID("77sd7").Do(ctx))
+	// printAnswers(okxSpot.NewPlaceOrder().Symbol("DOGE-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("10").ClientOrderID("77sd7").Do(ctx))
 
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").OrderType(entity.OrderTypeMarket).ClientOrderID("t-235k").Do(ctx))
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").Price("0.2687").OrderType(entity.OrderTypeLimit).ClientOrderID("t-235k2").Do(ctx))

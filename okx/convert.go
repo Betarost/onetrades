@@ -3,6 +3,7 @@ package okx
 import (
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
@@ -76,6 +77,20 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 				Locked:  item.FrozenBal,
 			})
 		}
+	}
+	return out
+}
+
+func (c *spot_converts) convertPlaceOrder(in []placeOrder_Response) (out []entity.PlaceOrder) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out = append(out, entity.PlaceOrder{
+			OrderID:       item.OrdId,
+			ClientOrderID: item.ClOrdId,
+			Ts:            time.Now().UTC().UnixMilli(),
+		})
 	}
 	return out
 }
