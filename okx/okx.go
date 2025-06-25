@@ -81,6 +81,10 @@ func (c *spotClient) NewPlaceOrder() *placeOrder {
 	return &placeOrder{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewGetBalance() *spot_getBalance {
+	return &spot_getBalance{callAPI: c.callAPI}
+}
+
 // ===============FUTURES=================
 
 type futuresClient struct {

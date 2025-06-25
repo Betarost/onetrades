@@ -8,6 +8,29 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
+// ===============SPOT=================
+
+type spot_converts struct{}
+
+func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBalance) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, i := range in {
+		for _, item := range i.Details {
+			out = append(out, entity.AssetsBalance{
+				Asset:   item.Ccy,
+				Balance: item.Eq,
+				Locked:  item.FrozenBal,
+			})
+		}
+	}
+	return out
+}
+
+// =======OLD
+
 func convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 
 	out.UID = in.UID
