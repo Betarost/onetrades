@@ -112,7 +112,7 @@ func (c *spot_converts) convertBalance(in spot_Balance) (out []entity.AssetsBala
 	for _, item := range in.Balances {
 		out = append(out, entity.AssetsBalance{
 			Asset:   item.Asset,
-			Balance: item.Free,
+			Balance: utils.FloatToStringAll(utils.StringToFloat(item.Free) + utils.StringToFloat(item.Locked)),
 			Locked:  item.Locked,
 		})
 	}
