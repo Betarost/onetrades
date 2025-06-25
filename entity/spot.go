@@ -61,7 +61,7 @@ type Spot_InstrumentsInfo struct {
 	Quote          string `json:"quote" bson:"quote"`
 	MinQty         string `json:"minQty" bson:"minQty"`
 	MinNotional    string `json:"minNotional" bson:"minNotional"`
-	PricePrecision string `json:"pricePrecision,omitempty" bson:"pricePrecision,omitempty"`
+	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"`
 	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`
 	State          string `json:"state" bson:"state"`
 }
