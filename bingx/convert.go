@@ -14,11 +14,20 @@ type account_converts struct{}
 
 func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 
-	out.UID = in.UID
-	// out.Label = in.Label
-	// out.IP = in.Ip
-	out.PermSpot = true
+	out.Label = in.Note
+	out.IP = strings.Join(in.IpAddresses, ",")
 
+	for _, item := range in.Permissions {
+		switch item {
+		case 1:
+			out.CanTrade = true
+			out.PermSpot = true
+		case 2:
+			out.CanRead = true
+		case 3:
+			out.PermFutures = true
+		}
+	}
 	// if strings.Contains(in.Perm, "read") {
 	// 	out.CanRead = true
 	// }

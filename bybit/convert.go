@@ -112,7 +112,7 @@ func convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 
 	for _, item := range in.Permissions.Wallet {
 		if item == "AccountTransfer" {
-			out.CanTransfer = true
+			// out.CanTransfer = true
 			break
 		}
 	}

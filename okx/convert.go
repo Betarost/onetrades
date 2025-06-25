@@ -70,7 +70,7 @@ func convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 	}
 
 	if in.PosMode == "long_short_mode" {
-		out.HedgeMode = true
+		// out.HedgeMode = true
 	}
 
 	if in.AcctLv != "1" {

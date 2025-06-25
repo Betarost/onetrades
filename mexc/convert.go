@@ -15,7 +15,7 @@ type account_converts struct{}
 func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
 	out.CanRead = true
 	out.CanTrade = in.СanTrade
-	out.CanTransfer = in.CanWithdraw
+	// out.CanTransfer = in.CanWithdraw
 
 	for _, item := range in.Permissions {
 		if item == "SPOT" {

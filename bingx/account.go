@@ -19,7 +19,7 @@ type getAccountInfo struct {
 func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/api/v3/account",
+		Endpoint: "/openApi/v1/account/apiPermissions",
 		SecType:  utils.SecTypeSigned,
 	}
 
@@ -27,7 +27,6 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if err != nil {
 		return res, err
 	}
-	log.Println("=a215eb=", string(data))
 	answ := accountInfo{}
 
 	err = json.Unmarshal(data, &answ)
@@ -39,11 +38,9 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 }
 
 type accountInfo struct {
-	UID         string   `json:"uid"`
-	CanTrade    bool     `json:"canTrade"`
-	CanWithdraw bool     `json:"canWithdraw"`
-	CanDeposit  bool     `json:"canDeposit"`
-	Permissions []string `json:"permissions"`
+	Note        string   `json:"note"`
+	Permissions []int64  `json:"permissions"`
+	IpAddresses []string `json:"ipAddresses"`
 }
 
 //===================getFundingAccountBalance==================

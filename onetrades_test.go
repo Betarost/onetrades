@@ -85,7 +85,7 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
-	printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -105,9 +105,10 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================AccountInfo
 	n = "AccountInfo"
+	printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
+
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
-	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
 
 	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
