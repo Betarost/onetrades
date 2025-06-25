@@ -51,8 +51,8 @@ func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
 	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetAccountInfo() *spot_getAccountInfo {
-	return &spot_getAccountInfo{callAPI: c.callAPI}
+func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
+	return &getAccountInfo{callAPI: c.callAPI}
 }
 
 func (c *spotClient) NewGetTradingAccountBalance() *spot_getTradingAccountBalance {

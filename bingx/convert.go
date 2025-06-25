@@ -13,10 +13,8 @@ import (
 type account_converts struct{}
 
 func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
-
 	out.Label = in.Note
 	out.IP = strings.Join(in.IpAddresses, ",")
-
 	for _, item := range in.Permissions {
 		switch item {
 		case 1:
@@ -28,21 +26,6 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 			out.PermFutures = true
 		}
 	}
-	// if strings.Contains(in.Perm, "read") {
-	// 	out.CanRead = true
-	// }
-
-	// if strings.Contains(in.Perm, "trade") {
-	// 	out.CanTrade = true
-	// }
-
-	// if in.PosMode == "long_short_mode" {
-	// 	out.HedgeMode = true
-	// }
-
-	// if in.AcctLv != "1" {
-	// 	out.PermFutures = true
-	// }
 	return out
 }
 

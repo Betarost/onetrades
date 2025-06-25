@@ -106,12 +106,13 @@ func TestOnetrades(t *testing.T) {
 	//=======================AccountInfo
 	n = "AccountInfo"
 	printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
+	printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
+	printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
 
-	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
