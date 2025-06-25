@@ -38,19 +38,24 @@ type FundingAccountBalance struct {
 }
 
 type InstrumentsInfo struct {
-	Symbol             string `json:"symbol" bson:"symbol"`
-	Base               string `json:"base" bson:"base"`
-	Quote              string `json:"quote" bson:"quote"`
-	InstType           string `json:"instType" bson:"instType"`
-	State              string `json:"state" bson:"state"`
+	Symbol         string `json:"symbol" bson:"symbol"`
+	Base           string `json:"base" bson:"base"`
+	Quote          string `json:"quote" bson:"quote"`
+	MinQty         string `json:"minQty" bson:"minQty"`
+	MinNotional    string `json:"minNotional" bson:"minNotional"`
+	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"`
+	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`
+
+	State string `json:"state" bson:"state"`
+
+	// InstType           string `json:"instType" bson:"instType"`
+	StepTickPrice    string `json:"stepTickPrice" bson:"stepTickPrice"`
+	StepContractSize string `json:"stepContractSize" bson:"stepContractSize"`
+	MinContractSize  string `json:"minContractSize" bson:"minContractSize"`
+
 	MaxLeverage        string `json:"maxLeverage" bson:"maxLeverage"`
-	StepTickPrice      string `json:"stepTickPrice" bson:"stepTickPrice"`
-	MinContractSize    string `json:"minContractSize" bson:"minContractSize"`
-	StepContractSize   string `json:"stepContractSize" bson:"stepContractSize"`
 	ContractSize       string `json:"contractSize" bson:"contractSize"`
 	ContractMultiplier string `json:"contractMultiplier" bson:"contractMultiplier"`
-	PricePrecision     string `json:"pricePrecision" bson:"pricePrecision"`
-	SizePrecision      string `json:"sizePrecision" bson:"sizePrecision"`
 }
 
 type OrdersPendingList struct {

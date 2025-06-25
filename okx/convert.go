@@ -92,9 +92,9 @@ func convertInstrumentsInfo(in []instrumentsInfo) (out []entity.InstrumentsInfo)
 			StepTickPrice:      item.TickSz,
 			MaxLeverage:        item.Lever,
 			State:              strings.ToUpper(item.State),
-			InstType:           item.InstType,
-			Base:               item.BaseCcy,
-			Quote:              item.QuoteCcy,
+			// InstType:           item.InstType,
+			Base:  item.BaseCcy,
+			Quote: item.QuoteCcy,
 		})
 	}
 	return out
@@ -114,9 +114,9 @@ func futures_convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.
 			StepTickPrice:      item.TickSz,
 			MaxLeverage:        item.Lever,
 			State:              strings.ToUpper(item.State),
-			InstType:           item.InstType,
-			Base:               item.BaseCcy,
-			Quote:              item.QuoteCcy,
+			// InstType:           item.InstType,
+			Base:  item.BaseCcy,
+			Quote: item.QuoteCcy,
 		})
 	}
 	return out

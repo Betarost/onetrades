@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -37,4 +38,13 @@ func TimestampMilliToDateFormat(stamp int64, format string) string {
 
 func FloatToStringAll(num float64) string {
 	return strconv.FormatFloat(num, 'f', -1, 64)
+}
+
+func GetPrecisionFromStr(s string) (pr string) {
+	pr = "0"
+	sp := strings.Split(s, ".")
+	if len(sp) > 1 {
+		pr = fmt.Sprintf("%d", len(sp[1]))
+	}
+	return pr
 }

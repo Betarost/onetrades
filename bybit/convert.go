@@ -162,9 +162,9 @@ func convertInstrumentsInfo(in []spot_instrumentsInfo, instType string) (out []e
 			MinContractSize:  item.LotSizeFilter.MinOrderQty,
 			StepTickPrice:    item.PriceFilter.TickSize,
 			State:            item.Status,
-			InstType:         instType,
-			Base:             item.BaseCoin,
-			Quote:            item.QuoteCoin,
+			// InstType:         instType,
+			Base:  item.BaseCoin,
+			Quote: item.QuoteCoin,
 		})
 	}
 	return out
@@ -185,9 +185,9 @@ func futures_convertInstrumentsInfo(in []futures_instrumentsInfo, instType strin
 			MinContractSize:  item.LotSizeFilter.MinOrderQty,
 			StepTickPrice:    item.PriceFilter.TickSize,
 			State:            item.Status,
-			InstType:         instType,
-			Base:             item.BaseCoin,
-			Quote:            item.QuoteCoin,
+			// InstType:         instType,
+			Base:  item.BaseCoin,
+			Quote: item.QuoteCoin,
 		})
 	}
 	return out

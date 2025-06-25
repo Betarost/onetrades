@@ -92,6 +92,17 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 	}
 	for _, item := range in.Symbols {
 		state := "OTHER"
+		base := ""
+		quote := ""
+
+		sp := strings.Split(item.Symbol, "-")
+		if len(sp) == 2 {
+			base = sp[0]
+			quote = sp[1]
+		}
+
+		priceP := utils.GetPrecisionFromStr(utils.FloatToStringAll(item.TickSize))
+		sizeP := utils.GetPrecisionFromStr(utils.FloatToStringAll(item.StepSize))
 		if item.Status == 1 {
 			state = "LIVE"
 		} else if item.Status == 0 {
@@ -103,6 +114,12 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 		}
 		rec := entity.InstrumentsInfo{
 			Symbol:           item.Symbol,
+			Base:             base,
+			Quote:            quote,
+			MinQty:           utils.FloatToStringAll(item.MinQty),
+			MinNotional:      utils.FloatToStringAll(item.MinNotional),
+			PricePrecision:   priceP,
+			SizePrecision:    sizeP,
 			StepTickPrice:    utils.FloatToStringAll(item.TickSize),
 			StepContractSize: utils.FloatToStringAll(item.StepSize),
 			MinContractSize:  utils.FloatToStringAll(item.MinQty),
