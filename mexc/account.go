@@ -3,7 +3,6 @@ package mexc
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -27,7 +26,6 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if err != nil {
 		return res, err
 	}
-	log.Println("=2ddda8=", string(data))
 
 	answ := accountInfo{}
 

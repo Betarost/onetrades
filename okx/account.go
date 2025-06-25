@@ -13,6 +13,7 @@ import (
 // ===================GetAccountInfo==================
 type getAccountInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	convert account_converts
 }
 
 func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
@@ -26,7 +27,6 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []accountInfo `json:"data"`
 	}
@@ -39,7 +39,7 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if len(answ.Result) == 0 {
 		return res, errors.New("Zero Answer")
 	}
-	return convertAccountInfo(answ.Result[0]), nil
+	return s.convert.convertAccountInfo(answ.Result[0]), nil
 }
 
 type accountInfo struct {
