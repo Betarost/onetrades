@@ -86,8 +86,8 @@ func TestOnetrades(t *testing.T) {
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
 	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
-	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
+	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
+	printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("DOGE_USDT").Do(ctx))
 	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
@@ -105,16 +105,15 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================AccountInfo
 	n = "AccountInfo"
-	printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
-	printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
-	printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
-	printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
-	printAnswers(okxSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(okxSpot.NewGetAccountInfo().Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
-
 	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
@@ -132,15 +131,18 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================GetBalance
 	n = "GetBalance"
-	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
-	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
-	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
-	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
+	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
+	printAnswers(gateioSpot.NewGetBalance().Do(ctx))
+	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
+	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
 	//=======================PlaceOrder
 	n = "PlaceOrder"
+	// printAnswers(bingxSpot.NewPlaceOrder().Symbol("PEPE-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("180000").Do(ctx))
+	// printAnswers(bybitSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("34").Do(ctx))
+	// printAnswers(gateioSpot.NewPlaceOrder().Symbol("DOGE_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("3").Do(ctx))
+
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("MXUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.5").Price("2.35").Do(ctx))
-	// printAnswers(bingxSpot.NewPlaceOrder().Symbol("PEPE-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("180000").Price("0.00001050").Do(ctx))
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").OrderType(entity.OrderTypeMarket).ClientOrderID("t-235k").Do(ctx))
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").Price("0.2687").OrderType(entity.OrderTypeLimit).ClientOrderID("t-235k2").Do(ctx))
 

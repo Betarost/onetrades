@@ -3,6 +3,7 @@ package gateio
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Betarost/onetrades/entity"
 )
@@ -73,6 +74,16 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 			Locked:  item.Locked,
 		})
 	}
+	return out
+}
+
+func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
+
+	out = append(out, entity.PlaceOrder{
+		OrderID:       in.ID,
+		ClientOrderID: in.Text,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
 	return out
 }
 

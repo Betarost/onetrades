@@ -27,7 +27,7 @@ func (e aPIError) Error() string {
 }
 
 func (e aPIError) IsValid() bool {
-	return e.Message == ""
+	return e.Message == "" && e.Code == ""
 }
 
 // ===============SPOT=================
@@ -37,7 +37,7 @@ func (c *spotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	r.TmpApi = c.apiKey
 	r.TmpSig = c.secretKey
 
-	opts = append(opts, createFullURL, createBody, createSign, createHeaders, createReq)
+	opts = append(opts, createFullURL, createBody, createSign, createHeadersSpot, createReq)
 	err = r.ParseRequest(opts...)
 	if err != nil {
 		return []byte{}, &http.Header{}, err
@@ -236,6 +236,24 @@ func createHeaders(r *utils.Request) error {
 
 	// header.Set("Accept", "application/json")
 	// header.Set("Content-Type", "application/json")
+	if r.SecType == utils.SecTypeSigned {
+		header.Set("KEY", r.TmpApi)
+		header.Set("SIGN", r.Sign)
+		header.Set("Timestamp", fmt.Sprintf("%d", r.Timestamp))
+	}
+	r.TmpApi = ""
+	r.Header = header
+	return nil
+}
+
+func createHeadersSpot(r *utils.Request) error {
+	header := http.Header{}
+	if r.Header != nil {
+		header = r.Header.Clone()
+	}
+
+	header.Set("Accept", "application/json")
+	header.Set("Content-Type", "application/json")
 	if r.SecType == utils.SecTypeSigned {
 		header.Set("KEY", r.TmpApi)
 		header.Set("SIGN", r.Sign)

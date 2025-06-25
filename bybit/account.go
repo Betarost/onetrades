@@ -71,9 +71,7 @@ func (s *spot_getTradingAccountBalance) Do(ctx context.Context, opts ...utils.Re
 	}
 
 	var answ struct {
-		RetCode int64  `json:"retCode"`
-		RetMsg  string `json:"retMsg"`
-		Result  struct {
+		Result struct {
 			List []tradingBalance `json:"list"`
 		} `json:"result"`
 		Time int64 `json:"time"`
@@ -82,10 +80,6 @@ func (s *spot_getTradingAccountBalance) Do(ctx context.Context, opts ...utils.Re
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
-	}
-
-	if answ.RetCode != 0 {
-		return res, errors.New(answ.RetMsg)
 	}
 
 	return convertTradingAccountBalance(answ.Result.List), nil

@@ -94,6 +94,16 @@ func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out [
 	return out
 }
 
+func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
+
+	out = append(out, entity.PlaceOrder{
+		OrderID:       in.OrderId,
+		ClientOrderID: in.OrderLinkId,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
+	return out
+}
+
 // ===============FUTURES=================
 
 type futures_converts struct{}
@@ -210,18 +220,5 @@ func futures_convertInstrumentsInfo(in []futures_instrumentsInfo, instType strin
 			Quote: item.QuoteCoin,
 		})
 	}
-	return out
-}
-func convertPlaceOrder(in spot_placeOrder_Response) (out []entity.PlaceOrder) {
-	// if len(in) == 0 {
-	// 	return out
-	// }
-	// for _, item := range in {
-	// 	out = append(out, entity.PlaceOrder{
-	// 		OrderID:       item.OrdId,
-	// 		ClientOrderID: item.ClOrdId,
-	// 		Ts:            utils.StringToInt64(item.Ts),
-	// 	})
-	// }
 	return out
 }
