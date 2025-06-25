@@ -35,6 +35,6 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 }
 
 type accountInfo struct {
-	User_id      string   `json:"user_id"`
+	User_id      int64    `json:"user_id"`
 	Ip_whitelist []string `json:"ip_whitelist"`
 }

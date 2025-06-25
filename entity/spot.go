@@ -49,6 +49,8 @@ type InstrumentsInfo struct {
 	StepContractSize   string `json:"stepContractSize" bson:"stepContractSize"`
 	ContractSize       string `json:"contractSize" bson:"contractSize"`
 	ContractMultiplier string `json:"contractMultiplier" bson:"contractMultiplier"`
+	PricePrecision     string `json:"pricePrecision" bson:"pricePrecision"`
+	SizePrecision      string `json:"sizePrecision" bson:"sizePrecision"`
 }
 
 type OrdersPendingList struct {
