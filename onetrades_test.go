@@ -85,14 +85,15 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
-	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 
 	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
-	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("TRX_USDT").Do(ctx))
 	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -124,11 +125,12 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================TradingAccountBalance
 	n = "TradingAccountBalance"
+	// printAnswers(bybitSpot.NewGetTradingAccountBalance().Do(ctx))
 	// printAnswers(bingxSpot.NewGetTradingAccountBalance().Do(ctx))
 
 	//=======================GetBalance
 	n = "GetBalance"
-	printAnswers(bybitSpot.NewGetBalance().Do(ctx))
+	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
