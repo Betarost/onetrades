@@ -95,6 +95,10 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 		m["side"] = strings.ToLower(string(*s.side))
 	}
 
+	if s.price != nil {
+		m["price"] = *s.price
+	}
+
 	if s.orderType != nil {
 		m["orderType"] = strings.ToLower(string(*s.orderType))
 		if *s.orderType == entity.OrderTypeMarket {
@@ -116,10 +120,6 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 	// 	} else if *s.tradeMode == entity.MarginModeTypeIsolated {
 	// 		m["tdMode"] = "isolated"
 	// 	}
-	// }
-
-	// if s.price != nil {
-	// 	m["px"] = *s.price
 	// }
 
 	// if s.positionSide != nil {
