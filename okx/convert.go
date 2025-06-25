@@ -12,6 +12,29 @@ import (
 
 type spot_converts struct{}
 
+func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.Spot_InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+
+		priceP := utils.GetPrecisionFromStr(item.TickSz)
+		sizeP := utils.GetPrecisionFromStr(item.LotSz)
+
+		out = append(out, entity.Spot_InstrumentsInfo{
+			Symbol: item.InstId,
+			Base:   item.BaseCcy,
+			Quote:  item.QuoteCcy,
+			MinQty: item.MinSz,
+			// MinNotional: item,
+			PricePrecision: priceP,
+			SizePrecision:  sizeP,
+			State:          strings.ToUpper(item.State),
+		})
+	}
+	return out
+}
+
 func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBalance) {
 	if len(in) == 0 {
 		return out
@@ -101,7 +124,7 @@ func convertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAcco
 	return out
 }
 
-func convertInstrumentsInfo(in []instrumentsInfo) (out []entity.InstrumentsInfo) {
+func convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
 	}

@@ -56,14 +56,14 @@ type InstrumentsInfo struct {
 }
 
 type Spot_InstrumentsInfo struct {
-	Symbol         string `json:"symbol" bson:"symbol"`                 // +
-	Base           string `json:"base" bson:"base"`                     // +
-	Quote          string `json:"quote" bson:"quote"`                   // +
-	MinQty         string `json:"minQty" bson:"minQty"`                 // + размер монеты минимальный
-	MinNotional    string `json:"minNotional" bson:"minNotional"`       // (не обязательный) размер в доларах минимальный
-	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"` // Отправляем если есть
-	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`   // Отправляем если есть
-	State          string `json:"state" bson:"state"`                   // enum  LIVE и другие
+	Symbol         string `json:"symbol" bson:"symbol"`
+	Base           string `json:"base" bson:"base"`
+	Quote          string `json:"quote" bson:"quote"`
+	MinQty         string `json:"minQty" bson:"minQty"`
+	MinNotional    string `json:"minNotional" bson:"minNotional"`
+	PricePrecision string `json:"pricePrecision,omitempty" bson:"pricePrecision,omitempty"`
+	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`
+	State          string `json:"state" bson:"state"`
 }
 
 type OrdersPendingList struct {
