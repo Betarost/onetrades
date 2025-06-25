@@ -118,9 +118,9 @@ func (c *spot_converts) convertBalance(in spot_Balance) (out []entity.AssetsBala
 
 func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
 	out = append(out, entity.PlaceOrder{
-		OrderID: in.OrderId,
-		// Ts:      in.TransactTime,
-		Ts: time.Now().UTC().UnixMilli(),
+		OrderID:       in.OrderId,
+		ClientOrderID: in.СlientOrderId,
+		Ts:            time.Now().UTC().UnixMilli(),
 	})
 	return out
 }
