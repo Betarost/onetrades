@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -22,7 +21,7 @@ func (s *spot_getInstrumentsInfo) Symbol(symbol string) *spot_getInstrumentsInfo
 	return s
 }
 
-func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
+func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Spot_InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v4/spot/currency_pairs",
@@ -38,7 +37,6 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 	if err != nil {
 		return res, err
 	}
-	log.Println("=570298=", string(data))
 
 	if s.symbol != nil {
 		answ := spot_instrumentsInfo{}

@@ -38,7 +38,7 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 
 type spot_converts struct{}
 
-func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.InstrumentsInfo) {
+func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.Spot_InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
 	}
@@ -47,15 +47,15 @@ func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out [
 			item.Trade_status = "LIVE"
 		}
 
-		rec := entity.InstrumentsInfo{
-			Symbol:           item.ID,
-			Base:             item.Base,
-			Quote:            item.Quote,
-			State:            item.Trade_status,
-			MinContractSize:  item.Min_base_amount,
-			StepContractSize: item.Min_base_amount,
-			PricePrecision:   fmt.Sprintf("%d", item.Precision),
-			SizePrecision:    fmt.Sprintf("%d", item.Amount_precision),
+		rec := entity.Spot_InstrumentsInfo{
+			Symbol:         item.ID,
+			Base:           item.Base,
+			Quote:          item.Quote,
+			State:          item.Trade_status,
+			MinQty:         item.Min_base_amount,
+			MinNotional:    item.Min_quote_amount,
+			PricePrecision: fmt.Sprintf("%d", item.Precision),
+			SizePrecision:  fmt.Sprintf("%d", item.Amount_precision),
 		}
 		out = append(out, rec)
 	}
