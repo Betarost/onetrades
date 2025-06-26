@@ -150,6 +150,12 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================AmendOrder
 	n = "AmendOrder"
+	// printAnswers(bingxSpot.NewAmendOrder().OrderID("186336434877910305").NewSize("2").Do(ctx))
+	// printAnswers(bybitSpot.NewAmendOrder().Symbol("DOGEUSDT").OrderID("1981265133053505280").NewPrice("0.15766").Do(ctx))
+	// printAnswers(gateioSpot.NewAmendOrder().Symbol("DOGE_USDT").OrderID("865644853947").NewSize("37").Do(ctx))
+	// printAnswers(mexcSpot.NewAmendOrder().Symbol("DOGEUSDT").OrderID("865644853947").NewSize("37").Do(ctx))
+	// printAnswers(okxSpot.NewAmendOrder().Symbol("DOGE-USDT").OrderID("2631421072347750400").NewPrice("0.15766").Do(ctx))
+
 	// printAnswers(gateioFutures.NewAmendOrder().OrderID("186336434877910305").NewSize("2").Do(ctx))
 
 	//=======================CancelOrder
@@ -158,17 +164,16 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1980932944252202752").Do(ctx))
 	// printAnswers(gateioSpot.NewCancelOrder().Symbol("DOGE_USDT").OrderID("865408051601").Do(ctx))
 	// printAnswers(mexcSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("C02__566648763716751360120").Do(ctx))
-	// printAnswers(mexcSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("C02__566648763716751360120").Do(ctx))
 	// printAnswers(okxSpot.NewCancelOrder().Symbol("DOGE-USDT").OrderID("2629979625991954432").Do(ctx))
 
 	// printAnswers(gateioFutures.NewCancelOrder().OrderID("186336434877885773").Do(ctx))
 
 	//=======================OrderList
 	n = "OrderList"
-	printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
-	printAnswers(bybitSpot.NewGetOrderList().Do(ctx))
-	printAnswers(gateioSpot.NewGetOrderList().Do(ctx))
-	printAnswers(mexcSpot.NewGetOrderList().Symbol("DOGEUSDT").Do(ctx))
+	// printAnswers(bingxSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(bybitSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(gateioSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(mexcSpot.NewGetOrderList().Symbol("DOGEUSDT").Do(ctx))
 	printAnswers(okxSpot.NewGetOrderList().Do(ctx))
 
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))

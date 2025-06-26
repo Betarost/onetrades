@@ -74,6 +74,11 @@ func (c *spotClient) NewGetOrderList() *spot_getOrderList {
 func (c *spotClient) NewCancelOrder() *spot_cancelOrder {
 	return &spot_cancelOrder{callAPI: c.callAPI}
 }
+
+func (c *spotClient) NewAmendOrder() *spot_amendOrder {
+	return &spot_amendOrder{callAPI: c.callAPI}
+}
+
 // ===============FUTURES=================
 
 type futuresClient struct {
