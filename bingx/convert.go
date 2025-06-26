@@ -165,27 +165,32 @@ func (c *spot_converts) convertOrderList(in spot_orderList) (out []entity.Spot_O
 
 type futures_converts struct{}
 
-func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.InstrumentsInfo) {
+func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
 	}
 	for _, item := range in {
 		state := "OTHER"
-		if item.Status == 1 {
+		switch item.Status {
+		case 1:
 			state = "LIVE"
-		} else if item.Status == 0 {
+		case 0:
 			state = "OFF"
-		} else if item.Status == 5 {
+		case 5:
 			state = "PRE-OPEN"
-		} else if item.Status == 25 {
+		case 25:
 			state = "SUSPENDED"
 		}
-		rec := entity.InstrumentsInfo{
-			Symbol:          item.Symbol,
-			MinContractSize: utils.FloatToStringAll(item.TradeMinQuantity),
-			State:           state,
-		}
-		out = append(out, rec)
+		out = append(out, entity.Futures_InstrumentsInfo{
+			Symbol:         item.Symbol,
+			Base:           item.Asset,
+			Quote:          item.Currency,
+			MinQty:         utils.FloatToStringAll(item.TradeMinQuantity),
+			MinNotional:    utils.FloatToStringAll(item.TradeMinUSDT),
+			PricePrecision: fmt.Sprintf("%d", item.PricePrecision),
+			SizePrecision:  fmt.Sprintf("%d", item.QuantityPrecision),
+			State:          state,
+		})
 	}
 	return
 }

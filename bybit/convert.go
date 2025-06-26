@@ -130,28 +130,28 @@ func (c *spot_converts) convertOrderList(in []spot_orderList) (out []entity.Spot
 
 type futures_converts struct{}
 
-func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.InstrumentsInfo) {
-	// if len(in) == 0 {
-	// 	return out
-	// }
-	// for _, item := range in {
-	// 	state := "OTHER"
-	// 	if item.Status == 1 {
-	// 		state = "LIVE"
-	// 	} else if item.Status == 0 {
-	// 		state = "OFF"
-	// 	} else if item.Status == 5 {
-	// 		state = "PRE-OPEN"
-	// 	} else if item.Status == 25 {
-	// 		state = "SUSPENDED"
-	// 	}
-	// 	rec := entity.InstrumentsInfo{
-	// 		Symbol:          item.Symbol,
-	// 		MinContractSize: utils.FloatToStringAll(item.TradeMinQuantity),
-	// 		State:           state,
-	// 	}
-	// 	out = append(out, rec)
-	// }
+func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		if item.Status == "Trading" {
+			item.Status = "LIVE"
+		}
+
+		rec := entity.Futures_InstrumentsInfo{
+			Symbol:         item.Symbol,
+			Base:           item.BaseCoin,
+			Quote:          item.QuoteCoin,
+			MinQty:         item.LotSizeFilter.MinOrderQty,
+			MinNotional:    item.LotSizeFilter.MinNotionalValue,
+			PricePrecision: item.PriceScale,
+			SizePrecision:  utils.GetPrecisionFromStr(item.LotSizeFilter.MinOrderQty),
+			MaxLeverage:    item.LeverageFilter.MaxLeverage,
+			State:          item.Status,
+		}
+		out = append(out, rec)
+	}
 	return
 }
 
@@ -196,51 +196,5 @@ func convertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAcco
 		})
 	}
 
-	return out
-}
-
-func convertInstrumentsInfo(in []spot_instrumentsInfo, instType string) (out []entity.InstrumentsInfo) {
-	if len(in) == 0 {
-		return out
-	}
-
-	for _, item := range in {
-		if item.Status == "Trading" {
-			item.Status = "LIVE"
-		}
-		out = append(out, entity.InstrumentsInfo{
-			Symbol:           item.Symbol,
-			StepContractSize: item.LotSizeFilter.BasePrecision,
-			MinContractSize:  item.LotSizeFilter.MinOrderQty,
-			StepTickPrice:    item.PriceFilter.TickSize,
-			State:            item.Status,
-			// InstType:         instType,
-			Base:  item.BaseCoin,
-			Quote: item.QuoteCoin,
-		})
-	}
-	return out
-}
-
-func futures_convertInstrumentsInfo(in []futures_instrumentsInfo, instType string) (out []entity.InstrumentsInfo) {
-	if len(in) == 0 {
-		return out
-	}
-
-	for _, item := range in {
-		if item.Status == "Trading" {
-			item.Status = "LIVE"
-		}
-		out = append(out, entity.InstrumentsInfo{
-			Symbol:           item.Symbol,
-			StepContractSize: item.LotSizeFilter.BasePrecision,
-			MinContractSize:  item.LotSizeFilter.MinOrderQty,
-			StepTickPrice:    item.PriceFilter.TickSize,
-			State:            item.Status,
-			// InstType:         instType,
-			Base:  item.BaseCoin,
-			Quote: item.QuoteCoin,
-		})
-	}
 	return out
 }

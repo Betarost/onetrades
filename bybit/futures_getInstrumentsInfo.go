@@ -3,16 +3,15 @@ package bybit
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ==============GetInstrumentsInfo=================
 type futures_getInstrumentsInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	convert futures_converts
 
 	symbol *string
 }
@@ -22,7 +21,7 @@ func (s *futures_getInstrumentsInfo) Symbol(symbol string) *futures_getInstrumen
 	return s
 }
 
-func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
+func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/v5/market/instruments-info",
@@ -45,12 +44,9 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 	}
 
 	var answ struct {
-		RetCode int64  `json:"retCode"`
-		RetMsg  string `json:"retMsg"`
-		Result  struct {
+		Result struct {
 			List []futures_instrumentsInfo `json:"list"`
 		} `json:"result"`
-		Time int64 `json:"time"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -58,10 +54,7 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 		return res, err
 	}
 
-	if answ.RetCode != 0 {
-		return res, errors.New(answ.RetMsg)
-	}
-	return futures_convertInstrumentsInfo(answ.Result.List, "FUTURES"), nil
+	return s.convert.convertInstrumentsInfo(answ.Result.List), nil
 }
 
 type futures_instrumentsInfo struct {
@@ -69,15 +62,17 @@ type futures_instrumentsInfo struct {
 	BaseCoin      string `json:"baseCoin"`
 	QuoteCoin     string `json:"quoteCoin"`
 	Status        string `json:"status"`
+	PriceScale    string `json:"priceScale"`
 	LotSizeFilter struct {
-		BasePrecision  string `json:"basePrecision"`
-		QuotePrecision string `json:"quotePrecision"`
-		MinOrderQty    string `json:"minOrderQty"`
-		MaxOrderQty    string `json:"maxOrderQty"`
-		MinOrderAmt    string `json:"minOrderAmt"`
-		MaxOrderAmt    string `json:"maxOrderAmt"`
+		MinOrderQty      string `json:"minOrderQty"`
+		MaxOrderQty      string `json:"maxOrderQty"`
+		MinNotionalValue string `json:"minNotionalValue"`
+		QtyStep          string `json:"qtyStep"`
 	} `json:"lotSizeFilter"`
 	PriceFilter struct {
 		TickSize string `json:"tickSize"`
 	} `json:"priceFilter"`
+	LeverageFilter struct {
+		MaxLeverage string `json:"maxLeverage"`
+	} `json:"leverageFilter"`
 }

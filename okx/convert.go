@@ -114,32 +114,33 @@ func (c *spot_converts) convertOrderList(answ []spot_orderList) (res []entity.Sp
 	return res
 }
 
-// =======OLD
+// ===============FUTURES=================
 
-func convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
+type futures_converts struct{}
 
-	out.UID = in.UID
-	out.Label = in.Label
-	out.IP = in.Ip
-	out.PermSpot = true
-
-	if strings.Contains(in.Perm, "read") {
-		out.CanRead = true
+func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
 	}
-
-	if strings.Contains(in.Perm, "trade") {
-		out.CanTrade = true
-	}
-
-	if in.PosMode == "long_short_mode" {
-		// out.HedgeMode = true
-	}
-
-	if in.AcctLv != "1" {
-		out.PermFutures = true
+	for _, item := range in {
+		out = append(out, entity.Futures_InstrumentsInfo{
+			Symbol:         item.InstId,
+			Base:           item.CtValCcy,
+			Quote:          item.SettleCcy,
+			MinQty:         item.MinSz,
+			PricePrecision: utils.GetPrecisionFromStr(item.TickSz),
+			SizePrecision:  utils.GetPrecisionFromStr(item.MinSz),
+			MaxLeverage:    item.Lever,
+			State:          strings.ToUpper(item.State),
+			IsSizeContract: true,
+			Multiplier:     item.CtMult,
+			ContractSize:   item.CtVal,
+		})
 	}
 	return out
 }
+
+// =======OLD
 
 func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
 	if len(in) == 0 {
@@ -192,28 +193,6 @@ func convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.Instruments
 	}
 	for _, item := range in {
 		out = append(out, entity.InstrumentsInfo{
-			Symbol:             item.InstId,
-			ContractSize:       item.CtVal,
-			ContractMultiplier: item.CtMult,
-			StepContractSize:   item.LotSz,
-			MinContractSize:    item.MinSz,
-			StepTickPrice:      item.TickSz,
-			MaxLeverage:        item.Lever,
-			State:              strings.ToUpper(item.State),
-			// InstType:           item.InstType,
-			Base:  item.BaseCcy,
-			Quote: item.QuoteCcy,
-		})
-	}
-	return out
-}
-
-func futures_convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
-	if len(in) == 0 {
-		return out
-	}
-	for _, item := range in {
-		out = append(out, entity.Futures_InstrumentsInfo{
 			Symbol:             item.InstId,
 			ContractSize:       item.CtVal,
 			ContractMultiplier: item.CtMult,

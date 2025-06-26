@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Betarost/onetrades/entity"
+	"github.com/Betarost/onetrades/utils"
 )
 
 // ===============ACCOUNT=================
@@ -116,19 +117,39 @@ func (c *spot_converts) convertOrderList(in []spot_orderList) (out []entity.Spot
 
 type futures_converts struct{}
 
-func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.InstrumentsInfo) {
+func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
 	}
 	for _, item := range in {
-		state := "OTHER"
-		if !item.In_delisting {
-			state = "LIVE"
+		if item.Status == "trading" {
+			item.Status = "LIVE"
 		}
-		rec := entity.InstrumentsInfo{
-			Symbol: item.Name,
-			// MinContractSize: utils.FloatToStringAll(item.TradeMinQuantity),
-			State: state,
+		if item.In_delisting {
+			item.Status = "OFF"
+		}
+
+		base := ""
+		quote := ""
+
+		sp := strings.Split(item.Name, "_")
+		if len(sp) == 2 {
+			base = sp[0]
+			quote = sp[1]
+		}
+
+		rec := entity.Futures_InstrumentsInfo{
+			Symbol:         item.Name,
+			Base:           base,
+			Quote:          quote,
+			MinQty:         fmt.Sprintf("%d", item.Order_size_min),
+			PricePrecision: utils.GetPrecisionFromStr(item.Mark_price_round),
+			SizePrecision:  "0",
+			MaxLeverage:    item.Leverage_max,
+			State:          item.Status,
+			IsSizeContract: true,
+			Multiplier:     item.Quanto_multiplier,
+			ContractSize:   item.Quanto_multiplier,
 		}
 		out = append(out, rec)
 	}

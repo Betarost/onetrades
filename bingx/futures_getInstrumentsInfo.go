@@ -9,7 +9,6 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ==============GetInstrumentsInfo=================
 type futures_getInstrumentsInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
@@ -22,7 +21,7 @@ func (s *futures_getInstrumentsInfo) Symbol(symbol string) *futures_getInstrumen
 	return s
 }
 
-func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
+func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/openApi/swap/v2/quote/contracts",
@@ -53,7 +52,13 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 }
 
 type futures_instrumentsInfo struct {
-	Symbol           string  `json:"symbol"`
-	Status           int64   `json:"status"`
-	TradeMinQuantity float64 `json:"tradeMinQuantity"`
+	Symbol            string  `json:"symbol"`
+	Size              string  `json:"size"`
+	QuantityPrecision int64   `json:"quantityPrecision"`
+	PricePrecision    int64   `json:"pricePrecision"`
+	Currency          string  `json:"currency"`
+	Asset             string  `json:"asset"`
+	Status            int64   `json:"status"`
+	TradeMinQuantity  float64 `json:"tradeMinQuantity"`
+	TradeMinUSDT      float64 `json:"tradeMinUSDT"`
 }

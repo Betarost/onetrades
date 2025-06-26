@@ -148,27 +148,34 @@ func (c *spot_converts) convertOrderList(answ []spot_orderList) (res []entity.Sp
 
 type futures_converts struct{}
 
-func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.InstrumentsInfo) {
+func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
 	}
-	for _, item := range in {
-		state := "OTHER"
-		if item.State == 1 {
-			state = "LIVE"
-		} else if item.State == 0 {
-			state = "OFF"
-		} else if item.State == 5 {
-			state = "PRE-OPEN"
-		} else if item.State == 25 {
-			state = "SUSPENDED"
-		}
-		rec := entity.InstrumentsInfo{
-			Symbol:          item.Symbol,
-			MinContractSize: utils.FloatToStringAll(item.TradeMinQuantity),
-			State:           state,
-		}
-		out = append(out, rec)
-	}
+	// for _, item := range in {
+	// 	// state := "OTHER"
+	// 	// if item.State == 1 {
+	// 	// 	state = "LIVE"
+	// 	// } else if item.State == 0 {
+	// 	// 	state = "OFF"
+	// 	// } else if item.State == 5 {
+	// 	// 	state = "PRE-OPEN"
+	// 	// } else if item.State == 25 {
+	// 	// 	state = "SUSPENDED"
+	// 	// }
+	// 	rec := entity.Futures_InstrumentsInfo{
+	// 		// Symbol:         item.Name,
+	// 		// 	Base:           base,
+	// 		// 	Quote:          quote,
+	// 		// 	MinQty:         fmt.Sprintf("%d", item.Order_size_min),
+	// 		// 	PricePrecision: utils.GetPrecisionFromStr(item.Mark_price_round),
+	// 		// 	SizePrecision:  "0",
+	// 		// 	MaxLeverage:    item.Leverage_max,
+	// 		// 	State:          item.Status,
+	// 		// 	IsSizeContract: true,
+	// 		// 	Multiplier:     item.Quanto_multiplier,
+	// 	}
+	// 	out = append(out, rec)
+	// }
 	return
 }
