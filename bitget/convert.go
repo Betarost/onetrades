@@ -4,27 +4,76 @@ import (
 	"github.com/Betarost/onetrades/entity"
 )
 
+// ===============ACCOUNT=================
+type account_converts struct{}
+
+func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
+
+	out.UID = in.UserId
+	out.IP = in.Ips
+
+	for _, item := range in.Authorities {
+		switch item {
+		case "coor":
+			out.PermFutures = true
+			out.CanRead = true
+		case "stor":
+			out.PermSpot = true
+			out.CanRead = true
+		case "coow":
+			out.PermFutures = true
+			out.CanTrade = true
+			out.CanRead = true
+		case "stow":
+			out.PermSpot = true
+			out.CanTrade = true
+			out.CanRead = true
+		}
+	}
+	return out
+}
+
 // ===============SPOT=================
 
 type spot_converts struct{}
 
-func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.InstrumentsInfo) {
+func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.Spot_InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
 	}
 	for _, item := range in {
-		state := "OTHER"
 
-		rec := entity.InstrumentsInfo{
+		if item.Status == "online" {
+			item.Status = "LIVE"
+		}
+
+		rec := entity.Spot_InstrumentsInfo{
 			Symbol: item.Symbol,
-			// StepTickPrice:    utils.FloatToStringAll(item.TickSize),
-			// StepContractSize: utils.FloatToStringAll(item.StepSize),
-			// MinContractSize:  utils.FloatToStringAll(item.MinQty),
-			State: state,
+			Base:   item.BaseCoin,
+			Quote:  item.QuoteCoin,
+			// MinQty:         utils.FloatToStringAll(item.MinQty),
+			MinNotional:    item.MinTradeUSDT,
+			PricePrecision: item.PricePrecision,
+			SizePrecision:  item.QuantityPrecision,
+			State:          item.Status,
 		}
 		out = append(out, rec)
 	}
 	return
+}
+
+func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBalance) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out = append(out, entity.AssetsBalance{
+			Asset:   item.Coin,
+			Balance: item.Available,
+			Locked:  item.Locked,
+		})
+	}
+	return out
 }
 
 // ===============FUTURES=================

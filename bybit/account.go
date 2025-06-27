@@ -74,7 +74,6 @@ func (s *spot_getTradingAccountBalance) Do(ctx context.Context, opts ...utils.Re
 		Result struct {
 			List []tradingBalance `json:"list"`
 		} `json:"result"`
-		Time int64 `json:"time"`
 	}
 
 	err = json.Unmarshal(data, &answ)

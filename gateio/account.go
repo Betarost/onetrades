@@ -9,7 +9,6 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ===================GetAccountInfo==================
 type getAccountInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert account_converts

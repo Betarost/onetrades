@@ -1,14 +1,14 @@
 package entity
 
 type AccountInformation struct {
-	UID      string `json:"uid" bson:"uid"`
-	Label    string `json:"label" bson:"label"`
-	IP       string `json:"ip" bson:"ip"`
-	CanRead  bool   `json:"canRead" bson:"canRead"`
-	CanTrade bool   `json:"canTrade" bson:"canTrade"`
-	// CanTransfer bool   `json:"canTransfer" bson:"canTransfer"`
-	PermSpot    bool `json:"permSpot" bson:"permSpot"`
-	PermFutures bool `json:"permFutures" bson:"permFutures"`
+	UID         string `json:"uid" bson:"uid"`
+	Label       string `json:"label" bson:"label"`
+	IP          string `json:"ip" bson:"ip"`
+	CanRead     bool   `json:"canRead" bson:"canRead"`
+	CanTrade    bool   `json:"canTrade" bson:"canTrade"`
+	CanTransfer bool   `json:"canTransfer" bson:"canTransfer"`
+	PermSpot    bool   `json:"permSpot" bson:"permSpot"`
+	PermFutures bool   `json:"permFutures" bson:"permFutures"`
 	// HedgeMode   bool   `json:"hedgeMode" bson:"hedgeMode"`
 }
 

@@ -125,6 +125,10 @@ func (c *futuresClient) NewGetTradingAccountBalance() *getTradingAccountBalance 
 	return &getTradingAccountBalance{callAPI: c.callAPI}
 }
 
+func (c *futuresClient) NewGetBalance() *futures_getBalance {
+	return &futures_getBalance{callAPI: c.callAPI}
+}
+
 // func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
 // 	return &futures_placeOrder{callAPI: c.callAPI}
 // }

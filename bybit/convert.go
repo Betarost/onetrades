@@ -39,7 +39,7 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 
 	for _, item := range in.Permissions.Wallet {
 		if item == "AccountTransfer" {
-			// out.CanTransfer = true
+			out.CanTransfer = true
 			break
 		}
 	}

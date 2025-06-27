@@ -9,36 +9,41 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-type getAccountInfo struct {
+type spot_getBalance struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
-	convert account_converts
+	convert spot_converts
 }
 
-func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
+func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.AssetsBalance, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/api/v2/spot/account/info",
+		Endpoint: "/api/v2/spot/account/assets",
 		SecType:  utils.SecTypeSigned,
 	}
+
+	m := utils.Params{}
+
+	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
-		Result accountInfo `json:"data"`
+		Result []spot_Balance `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
 	}
-	return s.convert.convertAccountInfo(answ.Result), nil
+
+	return s.convert.convertBalance(answ.Result), nil
 }
 
-type accountInfo struct {
-	UserId      string   `json:"userId"`
-	Ips         string   `json:"ips"`
-	Authorities []string `json:"authorities"`
+type spot_Balance struct {
+	Coin      string `json:"coin"`
+	Available string `json:"available"`
+	Frozen    string `json:"frozen"`
+	Locked    string `json:"locked"`
 }

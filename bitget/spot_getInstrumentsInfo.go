@@ -9,11 +9,11 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ==============GetInstrumentsInfo=================
 type spot_getInstrumentsInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert spot_converts
-	symbol  *string
+
+	symbol *string
 }
 
 func (s *spot_getInstrumentsInfo) Symbol(symbol string) *spot_getInstrumentsInfo {
@@ -21,7 +21,7 @@ func (s *spot_getInstrumentsInfo) Symbol(symbol string) *spot_getInstrumentsInfo
 	return s
 }
 
-func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
+func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Spot_InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v2/spot/public/symbols",
@@ -52,12 +52,13 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 }
 
 type spot_instrumentsInfo struct {
-	Symbol      string `json:"symbol"`
-	MinQty      string `json:"minQty"`
-	MaxQty      string `json:"maxQty"`
-	MinNotional string `json:"minNotional"`
-	MaxNotional string `json:"maxNotional"`
-	Status      string `json:"status"`
-	TickSize    string `json:"tickSize"`
-	StepSize    string `json:"stepSize"`
+	Symbol            string `json:"symbol"`
+	BaseCoin          string `json:"baseCoin"`
+	QuoteCoin         string `json:"quoteCoin"`
+	MinTradeUSDT      string `json:"minTradeUSDT"`
+	PricePrecision    string `json:"pricePrecision"`
+	QuantityPrecision string `json:"quantityPrecision"`
+	QuotePrecision    string `json:"quotePrecision"`
+	OrderQuantity     string `json:"orderQuantity"`
+	Status            string `json:"status"`
 }

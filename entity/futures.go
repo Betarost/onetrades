@@ -1,5 +1,11 @@
 package entity
 
+type FuturesBalance struct {
+	Asset   string `json:"asset" bson:"asset"`
+	Balance string `json:"balance" bson:"balance"`
+	Locked  string `json:"locked" bson:"locked"`
+}
+
 type Futures_InstrumentsInfo struct {
 	Symbol         string `json:"symbol" bson:"symbol"`
 	Base           string `json:"base" bson:"base"`
