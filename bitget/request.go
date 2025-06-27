@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/Betarost/onetrades/utils"
 )
@@ -175,9 +176,30 @@ func createFullURL(r *utils.Request) error {
 
 func createBody(r *utils.Request) error {
 	body := &bytes.Buffer{}
-	bodyString := r.Form.Encode()
+	j, err := json.Marshal(r.Form)
+	if err != nil {
+		return err
+	}
+	bodyString := string(j)
+	if bodyString == "{}" {
+		bodyString = ""
+	} else {
+
+		if r.Form.Get("is_batch") != "" {
+			bodyString = r.Form.Get("is_batch")
+		} else {
+			bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
+			bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+
+			if r.Form.Get("attachAlgoOrds") != "" {
+				bodyString = strings.Replace(bodyString, "\"[", "[", -1)
+				bodyString = strings.Replace(bodyString, "]\"", "]", -1)
+				bodyString = strings.Replace(bodyString, `\"`, `"`, -1)
+			}
+		}
+	}
+
 	if bodyString != "" {
-		// r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		body = bytes.NewBufferString(bodyString)
 	}
 	r.BodyString = bodyString

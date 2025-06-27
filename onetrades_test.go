@@ -153,7 +153,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("35").Do(ctx))
 	// printAnswers(gateioSpot.NewPlaceOrder().Symbol("DOGE_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("35").Price("0.15870").Do(ctx))
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
-	// printAnswers(bitgetSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
+	// printAnswers(bitgetSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("0.16250").Size("10").Do(ctx))
 	// printAnswers(okxSpot.NewPlaceOrder().Symbol("DOGE-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
 
 	//FUTURES

@@ -1,6 +1,8 @@
 package bitget
 
 import (
+	"time"
+
 	"github.com/Betarost/onetrades/entity"
 )
 
@@ -75,6 +77,38 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 	}
 	return out
 }
+
+func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
+
+	out = append(out, entity.PlaceOrder{
+		OrderID:       in.OrderId,
+		ClientOrderID: in.ClientOid,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
+	return out
+}
+
+// func (c *spot_converts) convertOrderList(in []spot_orderList) (out []entity.Spot_OrdersList) {
+// 	if len(in) == 0 {
+// 		return out
+// 	}
+// 	for _, item := range in {
+// 		out = append(out, entity.Spot_OrdersList{
+// 			Symbol:        item.Symbol,
+// 			OrderID:       item.OrderId,
+// 			ClientOrderID: item.OrderLinkId,
+// 			Side:          strings.ToUpper(item.Side),
+// 			Size:          item.Qty,
+// 			Price:         item.Price,
+// 			ExecutedSize:  item.CumExecQty,
+// 			Type:          strings.ToUpper(item.OrderType),
+// 			Status:        item.OrderStatus,
+// 			CreateTime:    utils.StringToInt64(item.CreatedTime),
+// 			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
+// 		})
+// 	}
+// 	return out
+// }
 
 // ===============FUTURES=================
 
