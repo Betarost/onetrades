@@ -140,7 +140,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
-	printAnswers(bitgetSpot.NewGetBalance().Do(ctx))
+	// printAnswers(bitgetSpot.NewGetBalance().Do(ctx))
 	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
@@ -179,6 +179,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1980932944252202752").Do(ctx))
 	// printAnswers(gateioSpot.NewCancelOrder().Symbol("DOGE_USDT").OrderID("865408051601").Do(ctx))
 	// printAnswers(mexcSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("C02__566648763716751360120").Do(ctx))
+	printAnswers(bitgetSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1322436121694060548").Do(ctx))
 	// printAnswers(okxSpot.NewCancelOrder().Symbol("DOGE-USDT").OrderID("2629979625991954432").Do(ctx))
 
 	//FUTURES
@@ -192,6 +193,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(gateioSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("DOGEUSDT").Do(ctx))
+	printAnswers(bitgetSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(okxSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
