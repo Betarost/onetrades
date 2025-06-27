@@ -90,8 +90,9 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("DOGE_USDT").Do(ctx))
 	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
-	printAnswers(bitgetSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("DOGE-USDT").Do(ctx))
+	// printAnswers(bitgetSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("DOGE-USDT").Do(ctx))
+	// printAnswers(huobiSpot.NewGetInstrumentsInfo().Do(ctx))
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
@@ -103,7 +104,6 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	// printAnswers(huobiSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
 	//=======================AccountInfo
@@ -112,8 +112,9 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
-	printAnswers(bitgetSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(bitgetSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(okxSpot.NewGetAccountInfo().Do(ctx))
+	printAnswers(huobiSpot.NewGetAccountInfo().Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
@@ -142,6 +143,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetSpot.NewGetBalance().Do(ctx))
 	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
+	// printAnswers(huobiSpot.NewGetBalance().UID("53799773").Do(ctx))
+	printAnswers(huobiSpot.NewGetBalance().UID("69069265").Do(ctx))
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
@@ -155,6 +158,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
 	// printAnswers(bitgetSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("0.16250").Size("10").Do(ctx))
 	// printAnswers(okxSpot.NewPlaceOrder().Symbol("DOGE-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
+	// printAnswers(huobiSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("100").Price("0.15666").UID("69069265").Do(ctx))
 
 	//FUTURES
 
@@ -179,8 +183,9 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1980932944252202752").Do(ctx))
 	// printAnswers(gateioSpot.NewCancelOrder().Symbol("DOGE_USDT").OrderID("865408051601").Do(ctx))
 	// printAnswers(mexcSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("C02__566648763716751360120").Do(ctx))
-	printAnswers(bitgetSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1322436121694060548").Do(ctx))
+	// printAnswers(bitgetSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1322436121694060548").Do(ctx))
 	// printAnswers(okxSpot.NewCancelOrder().Symbol("DOGE-USDT").OrderID("2629979625991954432").Do(ctx))
+	// printAnswers(huobiSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1367428516065452").Do(ctx))
 
 	//FUTURES
 
@@ -193,8 +198,9 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(gateioSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("DOGEUSDT").Do(ctx))
-	printAnswers(bitgetSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(bitgetSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(okxSpot.NewGetOrderList().Do(ctx))
+	printAnswers(huobiSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
 

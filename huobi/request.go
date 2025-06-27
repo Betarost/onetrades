@@ -7,13 +7,14 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
+	"time"
 
 	"github.com/Betarost/onetrades/utils"
 )
 
 type aPIError struct {
-	Code     int64  `json:"code"`
-	Message  string `json:"msg"`
+	Message  string `json:"status"`
 	Response []byte `json:"-"`
 }
 
@@ -22,7 +23,7 @@ func (e aPIError) Error() string {
 }
 
 func (e aPIError) IsValid() bool {
-	return e.Code == 0 && e.Message == ""
+	return e.Message == "ok"
 }
 
 // ===============SPOT=================
@@ -74,17 +75,15 @@ func (c *spotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	c.debug("response body: %s\n", string(data))
 	c.debug("response status code: %d\n", res.StatusCode)
 
-	if res.StatusCode >= http.StatusBadRequest {
-		apiErr := new(aPIError)
-		e := json.Unmarshal(data, apiErr)
-		if e != nil {
-			c.debug("failed to unmarshal json: %s\n", e)
-		}
-		if !apiErr.IsValid() {
-			c.debug("Answer Not Walid: %+v\n", apiErr)
-			apiErr.Response = data
-			return nil, &res.Header, apiErr
-		}
+	apiErr := new(aPIError)
+	e := json.Unmarshal(data, apiErr)
+	if e != nil {
+		c.debug("failed to unmarshal json: %s\n", e)
+	}
+	if !apiErr.IsValid() {
+		c.debug("Answer Not Walid: %+v\n", apiErr)
+		apiErr.Response = data
+		return nil, &res.Header, apiErr
 	}
 	return data, &res.Header, nil
 }
@@ -139,17 +138,15 @@ func (c *futuresClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	c.debug("response body: %s\n", string(data))
 	c.debug("response status code: %d\n", res.StatusCode)
 
-	if res.StatusCode >= http.StatusBadRequest {
-		apiErr := new(aPIError)
-		e := json.Unmarshal(data, apiErr)
-		if e != nil {
-			c.debug("failed to unmarshal json: %s\n", e)
-		}
-		if !apiErr.IsValid() {
-			c.debug("Answer Not Walid: %+v\n", apiErr)
-			apiErr.Response = data
-			return nil, &res.Header, apiErr
-		}
+	apiErr := new(aPIError)
+	e := json.Unmarshal(data, apiErr)
+	if e != nil {
+		c.debug("failed to unmarshal json: %s\n", e)
+	}
+	if !apiErr.IsValid() {
+		c.debug("Answer Not Walid: %+v\n", apiErr)
+		apiErr.Response = data
+		return nil, &res.Header, apiErr
 	}
 	return data, &res.Header, nil
 }
@@ -159,9 +156,9 @@ func (c *futuresClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 func createFullURL(r *utils.Request) error {
 	fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
 	r.Timestamp = utils.CurrentTimestamp() - r.TimeOffset
-	if r.SecType == utils.SecTypeSigned {
-		r.SetParam("timestamp", r.Timestamp)
-	}
+	// if r.SecType == utils.SecTypeSigned {
+	// 	r.SetParam("timestamp", r.Timestamp)
+	// }
 	queryString := r.Query.Encode()
 	if queryString != "" {
 		fullURL = fmt.Sprintf("%s?%s", fullURL, queryString)
@@ -173,9 +170,30 @@ func createFullURL(r *utils.Request) error {
 
 func createBody(r *utils.Request) error {
 	body := &bytes.Buffer{}
-	bodyString := r.Form.Encode()
+	j, err := json.Marshal(r.Form)
+	if err != nil {
+		return err
+	}
+	bodyString := string(j)
+	if bodyString == "{}" {
+		bodyString = ""
+	} else {
+
+		if r.Form.Get("is_batch") != "" {
+			bodyString = r.Form.Get("is_batch")
+		} else {
+			bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
+			bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+
+			if r.Form.Get("attachAlgoOrds") != "" {
+				bodyString = strings.Replace(bodyString, "\"[", "[", -1)
+				bodyString = strings.Replace(bodyString, "]\"", "]", -1)
+				bodyString = strings.Replace(bodyString, `\"`, `"`, -1)
+			}
+		}
+	}
+
 	if bodyString != "" {
-		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		body = bytes.NewBufferString(bodyString)
 	}
 	r.BodyString = bodyString
@@ -185,11 +203,19 @@ func createBody(r *utils.Request) error {
 
 func createSign(r *utils.Request) error {
 	if r.SecType == utils.SecTypeSigned {
-		sf, err := utils.SignFunc(utils.KeyTypeHmac)
+		sf, err := utils.SignFunc(utils.KeyTypeHmacBase64)
 		if err != nil {
 			return err
 		}
-		raw := r.QueryString
+		r.SetParam("AccessKeyId", r.TmpApi)
+		r.SetParam("SignatureMethod", "HmacSHA256")
+		r.SetParam("SignatureVersion", "2")
+		r.SetParam("Timestamp", time.UnixMilli(r.Timestamp).UTC().Format("2006-01-02T15:04:05"))
+
+		queryString := r.Query.Encode()
+		r.QueryString = queryString
+
+		raw := fmt.Sprintf("%s\napi.huobi.pro\n%s\n%s", r.Method, r.Endpoint, queryString)
 
 		sign, err := sf(r.TmpSig, raw)
 		if err != nil {
@@ -211,7 +237,7 @@ func createHeaders(r *utils.Request) error {
 	if r.SecType == utils.SecTypeSigned {
 		fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
 		v := url.Values{}
-		v.Set("signature", r.Sign)
+		v.Set("Signature", r.Sign)
 		if r.QueryString == "" {
 			r.QueryString = v.Encode()
 		} else {
@@ -219,7 +245,7 @@ func createHeaders(r *utils.Request) error {
 		}
 		fullURL = fmt.Sprintf("%s?%s", fullURL, r.QueryString)
 		r.FullURL = fullURL
-		header.Set("X-BX-APIKEY", r.TmpApi)
+		// header.Set("X-BX-APIKEY", r.TmpApi)
 	}
 	r.TmpApi = ""
 	r.Header = header

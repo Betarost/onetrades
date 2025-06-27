@@ -9,7 +9,6 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ==============GetInstrumentsInfo=================
 type spot_getInstrumentsInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert spot_converts
@@ -21,10 +20,10 @@ func (s *spot_getInstrumentsInfo) Symbol(symbol string) *spot_getInstrumentsInfo
 	return s
 }
 
-func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.InstrumentsInfo, err error) {
+func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Spot_InstrumentsInfo, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/v1/settings/common/symbols",
+		Endpoint: "/v2/settings/common/symbols",
 		SecType:  utils.SecTypeNone,
 	}
 
@@ -40,7 +39,7 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 	}
 
 	var answ struct {
-		Result spot_instrumentsInfo `json:"data"`
+		Result []spot_instrumentsInfo `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -52,14 +51,12 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 }
 
 type spot_instrumentsInfo struct {
-	Symbols []struct {
-		Symbol      string  `json:"symbol"`
-		MinQty      float64 `json:"minQty"`
-		MaxQty      float64 `json:"maxQty"`
-		MinNotional float64 `json:"minNotional"`
-		MaxNotional float64 `json:"maxNotional"`
-		Status      int64   `json:"status"`
-		TickSize    float64 `json:"tickSize"`
-		StepSize    float64 `json:"stepSize"`
-	} `json:"symbols"`
+	Symbol            string  `json:"sc"`
+	BaseCoin          string  `json:"bc"`
+	QuoteCoin         string  `json:"qc"`
+	MinTradeUSDT      string  `json:"minTradeUSDT"`
+	PricePrecision    float64 `json:"tpp"`
+	QuantityPrecision float64 `json:"tap"`
+	// OrderQuantity     string  `json:"orderQuantity"`
+	Status string `json:"state"`
 }
