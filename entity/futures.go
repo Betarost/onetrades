@@ -19,14 +19,6 @@ type Futures_InstrumentsInfo struct {
 	Multiplier     string `json:"multiplier" bson:"multiplier"`
 	ContractSize   string `json:"contractSize" bson:"contractSize"`
 	IsSizeContract bool   `json:"isSizeContract" bson:"isSizeContract"`
-
-	//==============
-	// MaxLeverage        string `json:"maxLeverage" bson:"maxLeverage"`
-	// StepTickPrice      string `json:"stepTickPrice" bson:"stepTickPrice"`
-	// MinContractSize    string `json:"minContractSize" bson:"minContractSize"`
-	// StepContractSize   string `json:"stepContractSize" bson:"stepContractSize"`
-	// ContractSize       string `json:"contractSize" bson:"contractSize"`
-	// ContractMultiplier string `json:"contractMultiplier" bson:"contractMultiplier"`
 }
 
 type Futures_Leverage struct {

@@ -91,19 +91,18 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("DOGE_USDT").Do(ctx))
 	// printAnswers(mexcSpot.NewGetInstrumentsInfo().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("DOGE-USDT").Do(ctx))
+	// printAnswers(okxSpot.NewGetInstrumentsInfo().Symbol("DOGE-USDT").Do(ctx))
 	// printAnswers(huobiSpot.NewGetInstrumentsInfo().Do(ctx))
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
-	// printAnswers(mexcFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
+	printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
-	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
 	//=======================AccountInfo
@@ -114,7 +113,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bitgetSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(okxSpot.NewGetAccountInfo().Do(ctx))
-	printAnswers(huobiSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(huobiSpot.NewGetAccountInfo().Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
@@ -144,7 +143,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetSpot.NewGetBalance().Do(ctx))
 	// printAnswers(okxSpot.NewGetBalance().Do(ctx))
 	// printAnswers(huobiSpot.NewGetBalance().UID("53799773").Do(ctx))
-	printAnswers(huobiSpot.NewGetBalance().UID("69069265").Do(ctx))
+	// printAnswers(huobiSpot.NewGetBalance().UID("69069265").Do(ctx))
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
@@ -200,7 +199,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(okxSpot.NewGetOrderList().Do(ctx))
-	printAnswers(huobiSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(huobiSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
 
