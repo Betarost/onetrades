@@ -9,6 +9,7 @@ import (
 	"github.com/Betarost/onetrades/bingx"
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bybit"
+	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
@@ -99,8 +100,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT-SWAP").Do(ctx))
-	printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("SAHARA-USDT-SWAP").Do(ctx))
+	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
@@ -146,7 +147,6 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
 	// printAnswers(okxFutures.NewGetBalance().Do(ctx))
-	// printAnswers(huobiFutures.NewGetBalance().Do(ctx))
 
 	//=======================PlaceOrder
 	n = "PlaceOrder"
@@ -209,13 +209,32 @@ func TestOnetrades(t *testing.T) {
 	n = "GetPositions"
 	//FUTURES
 	// printAnswers(gateioFutures.NewGetPositions().Do(ctx))
-	//=======================SetLeverage
-	n = "SetLeverage"
+
+	//=======================GetPositionMode
+	n = "GetPositionMode"
 	//FUTURES
+	// printAnswers(bingxFutures.NewGetPositionMode().Do(ctx))
+	// printAnswers(bybitFutures.NewGetPositionMode().Do(ctx)) //processing
+	// printAnswers(gateioFutures.NewGetPositionMode().Do(ctx))
+	// printAnswers(bitgetFutures.NewGetPositionMode().Symbol("BTCUSDT").Do(ctx))
+	printAnswers(okxFutures.NewGetPositionMode().Do(ctx))
+
 	//=======================SetPositionMode
 	n = "SetPositionMode"
 	//FUTURES
-	// printAnswers(gateioFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
+	// printAnswers(bingxFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
+	// printAnswers(bybitFutures.NewSetPositionMode().Symbol("DOGEUSDT").Mode(entity.PositionModeTypeHedge).Do(ctx))
+	// printAnswers(gateioFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
+	// printAnswers(bitgetFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
+	printAnswers(okxFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
+
+	//=======================GetLeverage
+	n = "GetLeverage"
+	//FUTURES
+
+	//=======================SetLeverage
+	n = "SetLeverage"
+	//FUTURES
 
 	//=======================FundingAccountBalance
 	n = "FundingAccountBalance"

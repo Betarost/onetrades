@@ -129,8 +129,12 @@ func (c *futuresClient) NewGetBalance() *futures_getBalance {
 	return &futures_getBalance{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewSetPositionMode() *setPositionMode {
-	return &setPositionMode{callAPI: c.callAPI}
+func (c *futuresClient) NewGetPositionMode() *futures_getPositionMode {
+	return &futures_getPositionMode{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewSetPositionMode() *futures_setPositionMode {
+	return &futures_setPositionMode{callAPI: c.callAPI}
 }
 
 func (c *futuresClient) NewSetLeverage() *setLeverage {

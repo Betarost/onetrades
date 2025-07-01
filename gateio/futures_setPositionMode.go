@@ -3,7 +3,6 @@ package gateio
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 
@@ -11,7 +10,6 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ==============SetPositionMode=================
 type futures_setPositionMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
@@ -30,7 +28,7 @@ func (s *futures_setPositionMode) Mode(mode entity.PositionModeType) *futures_se
 	return s
 }
 
-func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestOption) (res bool, err error) {
+func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_PositionsMode, err error) {
 	r := &utils.Request{
 		Method:   http.MethodPost,
 		Endpoint: "/api/v4/futures/{settle}/dual_mode",
@@ -48,9 +46,10 @@ func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 	r.Endpoint = strings.Replace(r.Endpoint, "{settle}", *s.settle, 1)
 
 	if s.mode != nil {
-		if *s.mode == entity.PositionModeTypeHedge {
+		switch *s.mode {
+		case entity.PositionModeTypeHedge:
 			m["dual_mode"] = true
-		} else if *s.mode == entity.PositionModeTypeOneWay {
+		case entity.PositionModeTypeOneWay:
 			m["dual_mode"] = false
 		}
 	}
@@ -58,20 +57,15 @@ func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
-		return false, err
+		return res, err
 	}
 
-	log.Println("=d6461a=", string(data))
-	answ := positionMode{}
+	answ := futures_positionMode{}
 
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
-		return false, err
+		return res, err
 	}
 
-	return true, nil
-}
-
-type positionMode struct {
-	In_dual_mode bool `json:"in_dual_mode"`
+	return entity.Futures_PositionsMode{HedgeMode: answ.In_dual_mode}, nil
 }

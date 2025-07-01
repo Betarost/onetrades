@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/Betarost/onetrades/utils"
 )
@@ -94,7 +95,7 @@ func (c *futuresClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	r.TmpApi = c.apiKey
 	r.TmpSig = c.secretKey
 
-	opts = append(opts, createFullURL, createBody, createSign, createHeaders, createReq)
+	opts = append(opts, createFullURL, createBody, createSign, createHeadersFutures, createReq)
 	err = r.ParseRequest(opts...)
 	if err != nil {
 		return []byte{}, &http.Header{}, err
@@ -177,6 +178,39 @@ func createBody(r *utils.Request) error {
 	return nil
 }
 
+func createBodyFutures(r *utils.Request) error {
+	body := &bytes.Buffer{}
+	j, err := json.Marshal(r.Form)
+	if err != nil {
+		return err
+	}
+	bodyString := string(j)
+	if bodyString == "{}" {
+		bodyString = ""
+	} else {
+
+		if r.Form.Get("is_batch") != "" {
+			bodyString = r.Form.Get("is_batch")
+		} else {
+			bodyString = strings.Replace(bodyString, "[\"", "\"", -1)
+			bodyString = strings.Replace(bodyString, "\"]", "\"", -1)
+
+			if r.Form.Get("attachAlgoOrds") != "" {
+				bodyString = strings.Replace(bodyString, "\"[", "[", -1)
+				bodyString = strings.Replace(bodyString, "]\"", "]", -1)
+				bodyString = strings.Replace(bodyString, `\"`, `"`, -1)
+			}
+		}
+	}
+
+	if bodyString != "" {
+		body = bytes.NewBufferString(bodyString)
+	}
+	r.BodyString = bodyString
+	r.Body = body
+	return nil
+}
+
 func createSign(r *utils.Request) error {
 	if r.SecType == utils.SecTypeSigned {
 		sf, err := utils.SignFunc(utils.KeyTypeHmac)
@@ -202,6 +236,31 @@ func createHeaders(r *utils.Request) error {
 	}
 
 	header.Set("Content-Type", "application/json")
+	if r.SecType == utils.SecTypeSigned {
+		fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
+		v := url.Values{}
+		v.Set("signature", r.Sign)
+		if r.QueryString == "" {
+			r.QueryString = v.Encode()
+		} else {
+			r.QueryString = fmt.Sprintf("%s&%s", r.QueryString, v.Encode())
+		}
+		fullURL = fmt.Sprintf("%s?%s", fullURL, r.QueryString)
+		r.FullURL = fullURL
+		header.Set("X-BX-APIKEY", r.TmpApi)
+	}
+	r.TmpApi = ""
+	r.Header = header
+	return nil
+}
+
+func createHeadersFutures(r *utils.Request) error {
+	header := http.Header{}
+	if r.Header != nil {
+		header = r.Header.Clone()
+	}
+
+	header.Set("Content-Type", "application/x-www-form-urlencoded")
 	if r.SecType == utils.SecTypeSigned {
 		fullURL := fmt.Sprintf("%s%s", r.BaseURL, r.Endpoint)
 		v := url.Values{}

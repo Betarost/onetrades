@@ -8,6 +8,10 @@ type FuturesBalance struct {
 	UnrealizedProfit string `json:"unrealizedProfit" bson:"unrealizedProfit"`
 }
 
+type Futures_PositionsMode struct {
+	HedgeMode bool `json:"hedgeMode" bson:"hedgeMode"`
+}
+
 type Futures_InstrumentsInfo struct {
 	Symbol         string `json:"symbol" bson:"symbol"`
 	Base           string `json:"base" bson:"base"`
