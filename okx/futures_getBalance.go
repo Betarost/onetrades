@@ -1,4 +1,4 @@
-package bingx
+package okx
 
 import (
 	"context"
@@ -17,7 +17,7 @@ type futures_getBalance struct {
 func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.FuturesBalance, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/openApi/swap/v3/user/balance",
+		Endpoint: "/api/v5/account/balance",
 		SecType:  utils.SecTypeSigned,
 	}
 
@@ -34,15 +34,15 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-
 	return s.convert.convertBalance(answ.Result), nil
 }
 
 type futures_Balance struct {
-	Asset            string `json:"asset"`
-	Balance          string `json:"balance"`
-	Equity           string `json:"equity"`
-	UnrealizedProfit string `json:"unrealizedProfit"`
-	RealisedProfit   string `json:"realisedProfit"`
-	AvailableMargin  string `json:"availableMargin"`
+	Details []struct {
+		Ccy      string `json:"ccy"`
+		CashBal  string `json:"cashBal"`
+		AvailBal string `json:"availBal"`
+		AvailEq  string `json:"availEq,omitempty"`
+		Upl      string `json:"upl,omitempty"`
+	} `json:"details"`
 }

@@ -167,3 +167,15 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 	}
 	return
 }
+
+func (c *futures_converts) convertBalance(in futures_Balance) (out []entity.FuturesBalance) {
+
+	out = append(out, entity.FuturesBalance{
+		Asset:   in.Currency,
+		Balance: in.Total,
+		// Equity:  in.Equity,
+		Available:        in.Available,
+		UnrealizedProfit: in.Unrealised_pnl,
+	})
+	return out
+}

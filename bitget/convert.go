@@ -141,3 +141,33 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 	}
 	return
 }
+
+func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.FuturesBalance) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		out = append(out, entity.FuturesBalance{
+			Asset:            item.MarginCoin,
+			Balance:          item.AccountEquity,
+			Equity:           item.AccountEquity,
+			Available:        item.Available,
+			UnrealizedProfit: item.UnrealizedPL,
+		})
+
+		// if len(i.AssetList) == 0 {
+		// 	continue
+		// }
+		// for _, item := range i.AssetList {
+		// out = append(out, entity.FuturesBalance{
+		// 	Asset:   item.Coin,
+		// 	Balance: item.Balance,
+		// 	// Equity:           item.AccountEquity,
+		// 	Available:        item.Available,
+		// 	UnrealizedProfit: i.UnrealizedPL,
+		// })
+		// }
+	}
+	return out
+}

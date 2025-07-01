@@ -1,4 +1,4 @@
-package bingx
+package bitget
 
 import (
 	"context"
@@ -17,9 +17,13 @@ type futures_getBalance struct {
 func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.FuturesBalance, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/openApi/swap/v3/user/balance",
+		Endpoint: "/api/v2/mix/account/accounts",
 		SecType:  utils.SecTypeSigned,
 	}
+
+	m := utils.Params{"productType": "USDT-FUTURES"}
+
+	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
@@ -39,10 +43,14 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 }
 
 type futures_Balance struct {
-	Asset            string `json:"asset"`
-	Balance          string `json:"balance"`
-	Equity           string `json:"equity"`
-	UnrealizedProfit string `json:"unrealizedProfit"`
-	RealisedProfit   string `json:"realisedProfit"`
-	AvailableMargin  string `json:"availableMargin"`
+	MarginCoin string `json:"marginCoin"`
+	// Balance    string `json:"balance"`
+	Available     string `json:"available"`
+	AccountEquity string `json:"accountEquity"`
+	UnrealizedPL  string `json:"unrealizedPL"`
+	AssetList     []struct {
+		Coin      string `json:"coin"`
+		Balance   string `json:"balance"`
+		Available string `json:"available"`
+	} `json:"assetList"`
 }

@@ -155,6 +155,25 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 	return
 }
 
+func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.FuturesBalance) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, i := range in {
+		for _, item := range i.Coin {
+			out = append(out, entity.FuturesBalance{
+				Asset:   item.Coin,
+				Balance: item.WalletBalance,
+				Equity:  item.Equity,
+				// AvailableMargin:  item.AvailableToWithdraw,
+				UnrealizedProfit: item.UnrealisedPnl,
+			})
+		}
+	}
+	return out
+}
+
+// ======================OLD
 func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
 	if len(in) == 0 {
 		return out

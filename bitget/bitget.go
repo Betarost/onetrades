@@ -104,3 +104,11 @@ func NewFuturesClient(apiKey, secretKey, memo string) *futuresClient {
 func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
+	return &getAccountInfo{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewGetBalance() *futures_getBalance {
+	return &futures_getBalance{callAPI: c.callAPI}
+}

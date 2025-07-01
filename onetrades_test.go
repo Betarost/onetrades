@@ -108,6 +108,7 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================AccountInfo
 	n = "AccountInfo"
+	//SPOT
 	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
@@ -116,23 +117,16 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(huobiSpot.NewGetAccountInfo().Do(ctx))
 
+	//FUTURES
+	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(bybitFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(bitgetFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(okxFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(huobiFutures.NewGetAccountInfo().Do(ctx))
+
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
-	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
-	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
-	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
-	// printAnswers(mexcFutures.NewGetAccountInfo().Do(ctx))
-
-	//=======================FundingAccountBalance
-	n = "FundingAccountBalance"
-	// printAnswers(bingxSpot.NewGetFundingAccountBalance().Do(ctx))
-	// printAnswers(bingxFutures.NewGetFundingAccountBalance().Do(ctx))
-	// printAnswers(mexcSpot.NewGetFundingAccountBalance().Do(ctx))
-
-	//=======================TradingAccountBalance
-	n = "TradingAccountBalance"
-	// printAnswers(bybitSpot.NewGetTradingAccountBalance().Do(ctx))
-	// printAnswers(bingxSpot.NewGetTradingAccountBalance().Do(ctx))
 
 	//=======================GetBalance
 	n = "GetBalance"
@@ -148,6 +142,11 @@ func TestOnetrades(t *testing.T) {
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
+	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
+	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
+	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
+	// printAnswers(okxFutures.NewGetBalance().Do(ctx))
+	// printAnswers(huobiFutures.NewGetBalance().Do(ctx))
 
 	//=======================PlaceOrder
 	n = "PlaceOrder"
@@ -217,6 +216,17 @@ func TestOnetrades(t *testing.T) {
 	n = "SetPositionMode"
 	//FUTURES
 	// printAnswers(gateioFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
+
+	//=======================FundingAccountBalance
+	n = "FundingAccountBalance"
+	// printAnswers(bingxSpot.NewGetFundingAccountBalance().Do(ctx))
+	// printAnswers(bingxFutures.NewGetFundingAccountBalance().Do(ctx))
+	// printAnswers(mexcSpot.NewGetFundingAccountBalance().Do(ctx))
+
+	//=======================TradingAccountBalance
+	n = "TradingAccountBalance"
+	// printAnswers(bybitSpot.NewGetTradingAccountBalance().Do(ctx))
+	// printAnswers(bingxSpot.NewGetTradingAccountBalance().Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)

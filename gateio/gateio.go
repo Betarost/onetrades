@@ -109,6 +109,10 @@ func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
+func (c *futuresClient) NewGetBalance() *futures_getBalance {
+	return &futures_getBalance{callAPI: c.callAPI}
+}
+
 func (c *futuresClient) NewSetPositionMode() *futures_setPositionMode {
 	return &futures_setPositionMode{callAPI: c.callAPI}
 }

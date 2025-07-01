@@ -140,6 +140,25 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 	return out
 }
 
+func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.FuturesBalance) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, i := range in {
+		for _, item := range i.Details {
+			out = append(out, entity.FuturesBalance{
+				Asset:            item.Ccy,
+				Balance:          item.CashBal,
+				Equity:           item.AvailEq,
+				Available:        item.AvailBal,
+				UnrealizedProfit: item.Upl,
+			})
+		}
+	}
+	return out
+}
+
 // =======OLD
 
 func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
