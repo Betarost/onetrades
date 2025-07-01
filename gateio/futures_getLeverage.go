@@ -55,5 +55,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 
 type futures_leverage struct {
 	Currency_pair string `json:"currency_pair"`
+	Сontract      string `json:"contract"`
 	Leverage      string `json:"leverage"`
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -57,7 +56,7 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-	log.Println("=f64408=", string(data))
+
 	var answ struct {
 		Result []futures_leverage `json:"data"`
 	}

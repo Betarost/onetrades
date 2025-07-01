@@ -23,6 +23,7 @@ const (
 
 	PositionSideTypeLong  PositionSideType = "LONG"
 	PositionSideTypeShort PositionSideType = "SHORT"
+	PositionSideTypeBoth  PositionSideType = "BOTH"
 
 	SideTypeBuy  SideType = "BUY"
 	SideTypeSell SideType = "SELL"

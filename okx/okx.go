@@ -141,8 +141,8 @@ func (c *futuresClient) NewGetLeverage() *futures_getLeverage {
 	return &futures_getLeverage{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewSetLeverage() *setLeverage {
-	return &setLeverage{callAPI: c.callAPI}
+func (c *futuresClient) NewSetLeverage() *futures_setLeverage {
+	return &futures_setLeverage{callAPI: c.callAPI}
 }
 
 func (c *futuresClient) NewGetPositions() *getPositions {

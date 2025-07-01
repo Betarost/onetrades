@@ -240,17 +240,11 @@ func TestOnetrades(t *testing.T) {
 	//=======================SetLeverage
 	n = "SetLeverage"
 	//FUTURES
-
-	//=======================FundingAccountBalance
-	n = "FundingAccountBalance"
-	// printAnswers(bingxSpot.NewGetFundingAccountBalance().Do(ctx))
-	// printAnswers(bingxFutures.NewGetFundingAccountBalance().Do(ctx))
-	// printAnswers(mexcSpot.NewGetFundingAccountBalance().Do(ctx))
-
-	//=======================TradingAccountBalance
-	n = "TradingAccountBalance"
-	// printAnswers(bybitSpot.NewGetTradingAccountBalance().Do(ctx))
-	// printAnswers(bingxSpot.NewGetTradingAccountBalance().Do(ctx))
+	// printAnswers(bingxFutures.NewSetLeverage().Symbol("BTC-USDT").Leverage("50").PositionSide(entity.PositionSideTypeLong).Do(ctx))
+	// printAnswers(bybitFutures.NewSetLeverage().Symbol("BTCUSDT").Leverage("20").Do(ctx))
+	// printAnswers(gateioFutures.NewSetLeverage().Symbol("BTC_USDT").Leverage("25").Do(ctx))
+	// printAnswers(bitgetFutures.NewSetLeverage().Symbol("DOGEUSDT").Leverage("25").PositionSide(entity.PositionSideTypeLong).Do(ctx))
+	// printAnswers(okxFutures.NewSetLeverage().Symbol("DOGE-USDT-SWAP").Leverage("25").PositionSide(entity.PositionSideTypeLong).MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)

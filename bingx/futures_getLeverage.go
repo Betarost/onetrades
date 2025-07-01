@@ -55,4 +55,5 @@ type futures_leverage struct {
 	LongLeverage     int    `json:"longLeverage"`
 	MaxLongLeverage  int    `json:"maxLongLeverage"`
 	MaxShortLeverage int    `json:"maxShortLeverage"`
+	Leverage         int    `json:"leverage"`
 }

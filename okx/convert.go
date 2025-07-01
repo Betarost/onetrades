@@ -213,41 +213,6 @@ func convertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAcco
 	return out
 }
 
-func convertInstrumentsInfo(in []spot_instrumentsInfo) (out []entity.InstrumentsInfo) {
-	if len(in) == 0 {
-		return out
-	}
-	for _, item := range in {
-		out = append(out, entity.InstrumentsInfo{
-			Symbol:             item.InstId,
-			ContractSize:       item.CtVal,
-			ContractMultiplier: item.CtMult,
-			StepContractSize:   item.LotSz,
-			MinContractSize:    item.MinSz,
-			StepTickPrice:      item.TickSz,
-			MaxLeverage:        item.Lever,
-			State:              strings.ToUpper(item.State),
-			// InstType:           item.InstType,
-			Base:  item.BaseCcy,
-			Quote: item.QuoteCcy,
-		})
-	}
-	return out
-}
-
-func futures_convertSetLeverage(in []setLeverageAnswer) (out entity.Futures_Leverage) {
-	if len(in) == 0 {
-		return out
-	}
-	for _, item := range in {
-		out.Symbol = item.InstId
-		out.Leverage = item.Lever
-		// out.MarginMode = item.MgnMode
-		// out.PositionSide = item.PosSide
-	}
-	return out
-}
-
 func futures_convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
 		positionSide := "LONG"
