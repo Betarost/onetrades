@@ -212,3 +212,10 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 	}
 	return out
 }
+
+func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
+
+	out.Symbol = in.Symbol
+	out.Leverage = fmt.Sprintf("%d", in.LongLeverage)
+	return out
+}

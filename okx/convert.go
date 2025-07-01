@@ -159,6 +159,13 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 	return out
 }
 
+func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
+
+	out.Symbol = in.InstId
+	out.Leverage = in.Lever
+	return out
+}
+
 // =======OLD
 
 func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
@@ -235,8 +242,8 @@ func futures_convertSetLeverage(in []setLeverageAnswer) (out entity.Futures_Leve
 	for _, item := range in {
 		out.Symbol = item.InstId
 		out.Leverage = item.Lever
-		out.MarginMode = item.MgnMode
-		out.PositionSide = item.PosSide
+		// out.MarginMode = item.MgnMode
+		// out.PositionSide = item.PosSide
 	}
 	return out
 }

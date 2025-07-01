@@ -168,6 +168,13 @@ func (c *futures_converts) convertBalance(in futures_Balance) (out []entity.Futu
 	return out
 }
 
+func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
+
+	out.Symbol = in.Currency_pair
+	out.Leverage = in.Leverage
+	return out
+}
+
 func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
 
 	out = append(out, entity.PlaceOrder{

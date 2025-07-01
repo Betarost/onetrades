@@ -217,7 +217,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewGetPositionMode().Do(ctx)) //processing
 	// printAnswers(gateioFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetPositionMode().Symbol("BTCUSDT").Do(ctx))
-	printAnswers(okxFutures.NewGetPositionMode().Do(ctx))
+	// printAnswers(okxFutures.NewGetPositionMode().Do(ctx))
 
 	//=======================SetPositionMode
 	n = "SetPositionMode"
@@ -226,11 +226,16 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewSetPositionMode().Symbol("DOGEUSDT").Mode(entity.PositionModeTypeHedge).Do(ctx))
 	// printAnswers(gateioFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
 	// printAnswers(bitgetFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
-	printAnswers(okxFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
+	// printAnswers(okxFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
 
 	//=======================GetLeverage
 	n = "GetLeverage"
 	//FUTURES
+	// printAnswers(bingxFutures.NewGetLeverage().Symbol("BTC-USDT").Do(ctx))
+	// printAnswers(bybitFutures.NewGetLeverage().Do(ctx))  //processing
+	// printAnswers(gateioFutures.NewGetLeverage().Symbol("BTC_USDT").Do(ctx))
+	// printAnswers(bitgetFutures.NewGetLeverage().Symbol("DOGEUSDT").Do(ctx))
+	printAnswers(okxFutures.NewGetLeverage().Symbol("DOGE-USDT-SWAP").TradeMode(entity.MarginModeTypeIsolated).Do(ctx))
 
 	//=======================SetLeverage
 	n = "SetLeverage"

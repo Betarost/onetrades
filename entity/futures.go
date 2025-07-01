@@ -12,6 +12,13 @@ type Futures_PositionsMode struct {
 	HedgeMode bool `json:"hedgeMode" bson:"hedgeMode"`
 }
 
+type Futures_Leverage struct {
+	Symbol   string `json:"symbol" bson:"symbol"`
+	Leverage string `json:"leverage" bson:"leverage"`
+	// MarginMode   string `json:"marginMode" bson:"marginMode"`
+	// PositionSide string `json:"positionSide" bson:"positionSide"`
+}
+
 type Futures_InstrumentsInfo struct {
 	Symbol         string `json:"symbol" bson:"symbol"`
 	Base           string `json:"base" bson:"base"`
@@ -25,13 +32,6 @@ type Futures_InstrumentsInfo struct {
 	Multiplier     string `json:"multiplier" bson:"multiplier"`
 	ContractSize   string `json:"contractSize" bson:"contractSize"`
 	IsSizeContract bool   `json:"isSizeContract" bson:"isSizeContract"`
-}
-
-type Futures_Leverage struct {
-	Symbol       string `json:"symbol" bson:"symbol"`
-	Leverage     string `json:"leverage" bson:"leverage"`
-	MarginMode   string `json:"marginMode" bson:"marginMode"`
-	PositionSide string `json:"positionSide" bson:"positionSide"`
 }
 
 type Futures_Positions struct {
