@@ -225,3 +225,12 @@ func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futu
 	}
 	return out
 }
+
+func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
+	out = append(out, entity.PlaceOrder{
+		OrderID:       in.Order.OrderID,
+		ClientOrderID: in.Order.ClientOrderId,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
+	return out
+}

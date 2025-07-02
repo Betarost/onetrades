@@ -12,6 +12,10 @@ type Futures_PositionsMode struct {
 	HedgeMode bool `json:"hedgeMode" bson:"hedgeMode"`
 }
 
+type Futures_MarginMode struct {
+	MarginMode string `json:"marginMode" bson:"marginMode"`
+}
+
 type Futures_Leverage struct {
 	Symbol   string `json:"symbol" bson:"symbol"`
 	Leverage string `json:"leverage" bson:"leverage"`

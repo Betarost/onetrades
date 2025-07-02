@@ -141,8 +141,20 @@ func (c *futuresClient) NewGetLeverage() *futures_getLeverage {
 	return &futures_getLeverage{callAPI: c.callAPI}
 }
 
+func (c *futuresClient) NewGetMarginMode() *futures_getMarginMode {
+	return &futures_getMarginMode{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewSetMarginMode() *futures_setMarginMode {
+	return &futures_setMarginMode{callAPI: c.callAPI}
+}
+
 func (c *futuresClient) NewSetLeverage() *futures_setLeverage {
 	return &futures_setLeverage{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
+	return &futures_placeOrder{callAPI: c.callAPI}
 }
 
 // func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
