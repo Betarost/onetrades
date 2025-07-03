@@ -10,7 +10,6 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-// ==============spot_getOrderList=================
 type spot_getOrderList struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert spot_converts

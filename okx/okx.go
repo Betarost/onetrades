@@ -61,6 +61,10 @@ func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
 	return &getFundingAccountBalance{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewOrdersHistory() *spot_ordersHistory {
+	return &spot_ordersHistory{callAPI: c.callAPI}
+}
+
 func (c *spotClient) NewGetOrderList() *spot_getOrderList {
 	return &spot_getOrderList{callAPI: c.callAPI}
 }
