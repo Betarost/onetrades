@@ -78,6 +78,31 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 	return out
 }
 
+func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (out []entity.Spot_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		out = append(out, entity.Spot_OrdersHistory{
+			Symbol:        item.Currency_pair,
+			OrderID:       item.ID,
+			ClientOrderID: item.Text,
+			Side:          strings.ToUpper(item.Side),
+			Size:          item.Amount,
+			Price:         item.Price,
+			ExecutedSize:  item.Filled_amount,
+			ExecutedPrice: item.Fill_price,
+			Fee:           item.Fee,
+			Type:          strings.ToUpper(item.Type),
+			Status:        strings.ToUpper(item.Finish_as),
+			CreateTime:    item.Create_time,
+			UpdateTime:    item.Update_time,
+		})
+	}
+	return out
+}
+
 func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
 
 	out = append(out, entity.PlaceOrder{

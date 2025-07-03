@@ -170,7 +170,7 @@ func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (ou
 			Symbol:        item.Symbol,
 			OrderID:       fmt.Sprintf("%d", item.OrderId),
 			ClientOrderID: item.ClientOrderId,
-			Side:          item.Side,
+			Side:          strings.ToUpper(item.Side),
 			Size:          item.OrigQty,
 			Price:         item.Price,
 			ExecutedSize:  item.ExecutedQty,
