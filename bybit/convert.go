@@ -94,6 +94,31 @@ func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out [
 	return out
 }
 
+func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (out []entity.Spot_OrdersHistory) {
+	if len(in.List) == 0 {
+		return out
+	}
+	for _, item := range in.List {
+		out = append(out, entity.Spot_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.OrderLinkId,
+			Side:          item.Side,
+			Size:          item.Qty,
+			Price:         item.Price,
+			ExecutedSize:  item.CumExecQty,
+			ExecutedPrice: item.AvgPrice,
+			Fee:           item.CumExecFee,
+			Type:          strings.ToUpper(item.OrderType),
+			Status:        strings.ToUpper(item.OrderStatus),
+			CreateTime:    utils.StringToInt64(item.CreatedTime),
+			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
+			Cursor:        in.NextPageCursor,
+		})
+	}
+	return out
+}
+
 func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
 
 	out = append(out, entity.PlaceOrder{

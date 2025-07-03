@@ -92,6 +92,7 @@ type Spot_OrdersHistory struct {
 	Fee           string `json:"fee" bson:"fee"`
 	Type          string `json:"type" bson:"type"`
 	Status        string `json:"status" bson:"status"`
+	Cursor        string `json:"cursor,omitempty" bson:"cursor,omitempty"`
 	CreateTime    int64  `json:"createTime" bson:"createTime"`
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 }
