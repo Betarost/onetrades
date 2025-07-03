@@ -1,7 +1,9 @@
 package bitget
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -88,6 +90,49 @@ func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.
 		ClientOrderID: in.ClientOid,
 		Ts:            time.Now().UTC().UnixMilli(),
 	})
+	return out
+}
+
+func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (out []entity.Spot_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	type feeDetailJson struct {
+		NewFees struct {
+			T float64 `json:"t"`
+		} `json:"newFees"`
+	}
+
+	for _, item := range in {
+		executedQty := item.BaseVolume
+		if strings.ToUpper(item.OrderType) == "MARKET" {
+			executedQty = item.QuoteVolume
+		}
+		fee := "0"
+		answ := feeDetailJson{}
+		err := json.Unmarshal([]byte(item.FeeDetail), &answ)
+		if err == nil {
+			fee = utils.FloatToStringAll(answ.NewFees.T)
+		} else {
+			log.Println("=Err convertOrdersHistory=", err)
+		}
+		out = append(out, entity.Spot_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.ClientOid,
+			Side:          strings.ToUpper(item.Side),
+			Size:          item.Size,
+			Price:         item.Price,
+			ExecutedSize:  executedQty,
+			ExecutedPrice: item.PriceAvg,
+			Fee:           fee,
+			Type:          strings.ToUpper(item.OrderType),
+			Status:        strings.ToUpper(item.Status),
+			CreateTime:    utils.StringToInt64(item.CTime),
+			UpdateTime:    utils.StringToInt64(item.UTime),
+		})
+	}
 	return out
 }
 
