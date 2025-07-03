@@ -161,6 +161,30 @@ func (c *spot_converts) convertOrderList(in spot_orderList) (out []entity.Spot_O
 	return out
 }
 
+func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (out []entity.Spot_OrdersHistory) {
+	if len(in.Orders) == 0 {
+		return out
+	}
+	for _, item := range in.Orders {
+		out = append(out, entity.Spot_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       fmt.Sprintf("%d", item.OrderId),
+			ClientOrderID: item.ClientOrderId,
+			Side:          item.Side,
+			Size:          item.OrigQty,
+			Price:         item.Price,
+			ExecutedSize:  item.ExecutedQty,
+			ExecutedPrice: utils.FloatToStringAll(item.AvgPrice),
+			Fee:           utils.FloatToStringAll(item.Fee),
+			Type:          strings.ToUpper(item.Type),
+			Status:        item.Status,
+			CreateTime:    item.Time,
+			UpdateTime:    item.UpdateTime,
+		})
+	}
+	return out
+}
+
 // ===============FUTURES=================
 
 type futures_converts struct{}

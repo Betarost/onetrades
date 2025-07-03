@@ -147,6 +147,11 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
 	// printAnswers(okxFutures.NewGetBalance().Do(ctx))
 
+	//=======================OrdersHistory
+	n = "OrdersHistory"
+	//SPOT
+	printAnswers(bingxSpot.NewOrdersHistory().Do(ctx))
+	//FUTURES
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	//SPOT
@@ -252,7 +257,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewGetMarginMode().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetMarginMode().Symbol("BTC-USDT").Do(ctx)) //processing
 	// printAnswers(gateioFutures.NewGetMarginMode().Symbol("BTC-USDT").Do(ctx))  //processing
-	printAnswers(bitgetFutures.NewGetMarginMode().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(bitgetFutures.NewGetMarginMode().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(okxFutures.NewGetMarginMode().Symbol("BTCUSDT").Do(ctx))  //processing
 
 	//=======================SetMarginMode
 	n = "SetMarginMode"

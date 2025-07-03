@@ -80,6 +80,22 @@ type Spot_OrdersList struct {
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 }
 
+type Spot_OrdersHistory struct {
+	Symbol        string `json:"symbol" bson:"symbol"`
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	Side          string `json:"side" bson:"side"`
+	Size          string `json:"size" bson:"size"`
+	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
+	Price         string `json:"price" bson:"price"`
+	ExecutedPrice string `json:"executedPrice" bson:"executedPrice"`
+	Fee           string `json:"fee" bson:"fee"`
+	Type          string `json:"type" bson:"type"`
+	Status        string `json:"status" bson:"status"`
+	CreateTime    int64  `json:"createTime" bson:"createTime"`
+	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+}
+
 type OrdersPendingList struct {
 	Symbol        string `json:"symbol" bson:"symbol"`
 	OrderID       string `json:"orderId" bson:"orderId"`
