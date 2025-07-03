@@ -55,6 +55,10 @@ func (c *spotClient) NewGetBalance() *spot_getBalance {
 	return &spot_getBalance{callAPI: c.callAPI}
 }
 
+func (c *spotClient) NewOrdersHistory() *spot_ordersHistory {
+	return &spot_ordersHistory{callAPI: c.callAPI}
+}
+
 func (c *spotClient) NewPlaceOrder() *spot_placeOrder {
 	return &spot_placeOrder{callAPI: c.callAPI}
 }

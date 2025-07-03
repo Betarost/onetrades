@@ -154,7 +154,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(gateioSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetSpot.NewOrdersHistory().Do(ctx))
-	printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
+	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
+	printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 	//FUTURES
 	//=======================PlaceOrder
 	n = "PlaceOrder"
