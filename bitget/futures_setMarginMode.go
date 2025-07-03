@@ -4,13 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
 )
 
-type futures_setLeverage struct {
+type futures_setMarginMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
@@ -20,46 +19,37 @@ type futures_setLeverage struct {
 	marginMode   *entity.MarginModeType
 }
 
-func (s *futures_setLeverage) Symbol(symbol string) *futures_setLeverage {
+func (s *futures_setMarginMode) Symbol(symbol string) *futures_setMarginMode {
 	s.symbol = &symbol
 	return s
 }
 
-func (s *futures_setLeverage) Leverage(leverage string) *futures_setLeverage {
-	s.leverage = &leverage
-	return s
-}
-
-func (s *futures_setLeverage) MarginMode(marginMode entity.MarginModeType) *futures_setLeverage {
+func (s *futures_setMarginMode) MarginMode(marginMode entity.MarginModeType) *futures_setMarginMode {
 	s.marginMode = &marginMode
 	return s
 }
 
-func (s *futures_setLeverage) PositionSide(positionSide entity.PositionSideType) *futures_setLeverage {
-	s.positionSide = &positionSide
-	return s
-}
-
-func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_Leverage, err error) {
+func (s *futures_setMarginMode) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_MarginMode, err error) {
 	r := &utils.Request{
 		Method:   http.MethodPost,
-		Endpoint: "/api/v2/mix/account/set-leverage",
+		Endpoint: "/api/v2/mix/account/set-margin-mode",
 		SecType:  utils.SecTypeSigned,
 	}
 
 	m := utils.Params{"productType": "USDT-FUTURES", "marginCoin": "USDT"}
+
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
 
-	if s.leverage != nil {
-		m["leverage"] = *s.leverage
+	if s.marginMode != nil {
+		switch *s.marginMode {
+		case entity.MarginModeTypeCross:
+			m["marginMode"] = "crossed"
+		case entity.MarginModeTypeIsolated:
+			m["marginMode"] = "isolated"
+		}
 	}
-
-	if s.positionSide != nil {
-		m["side"] = strings.ToLower(string(*s.positionSide))
-	}
-
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
@@ -68,7 +58,7 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	}
 
 	var answ struct {
-		Result futures_leverage `json:"data"`
+		Result futures_marginMode `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -76,5 +66,11 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, err
 	}
 
-	return s.convert.convertLeverage(answ.Result), nil
+	marginMode := "cross"
+
+	if answ.Result.MarginMode == "isolated" {
+		marginMode = "isolated"
+	}
+
+	return entity.Futures_MarginMode{MarginMode: marginMode}, nil
 }

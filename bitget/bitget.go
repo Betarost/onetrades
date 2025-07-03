@@ -128,3 +128,11 @@ func (c *futuresClient) NewGetLeverage() *futures_getLeverage {
 func (c *futuresClient) NewSetLeverage() *futures_setLeverage {
 	return &futures_setLeverage{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewGetMarginMode() *futures_getMarginMode {
+	return &futures_getMarginMode{callAPI: c.callAPI}
+}
+
+func (c *futuresClient) NewSetMarginMode() *futures_setMarginMode {
+	return &futures_setMarginMode{callAPI: c.callAPI}
+}
