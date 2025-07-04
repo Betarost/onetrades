@@ -198,23 +198,23 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 
 	for _, item := range in {
 		mMode := "cross"
-		if item.Isolated {
+		if item.MgnMode != "cross" {
 			mMode = "isolated"
 		}
 		out = append(out, entity.Futures_PositionsHistory{
-			Symbol:              item.Symbol,
-			PositionId:          item.PositionId,
-			PositionSide:        strings.ToUpper(item.PositionSide),
-			PositionAmt:         item.PositionAmt,
-			ExecutedPositionAmt: item.ClosePositionAmt,
-			AvgPrice:            item.AvgPrice,
-			ExecutedAvgPrice:    item.AvgClosePrice,
-			RealisedProfit:      item.RealisedProfit,
-			Fee:                 item.PositionCommission,
-			Funding:             item.TotalFunding,
+			Symbol:              item.InstId,
+			PositionId:          item.PosId,
+			PositionSide:        strings.ToUpper(item.PosSide),
+			PositionAmt:         item.OpenMaxPos,
+			ExecutedPositionAmt: item.CloseTotalPos,
+			AvgPrice:            item.OpenAvgPx,
+			ExecutedAvgPrice:    item.CloseAvgPx,
+			RealisedProfit:      item.Pnl,
+			Fee:                 item.Fee,
+			Funding:             item.FundingFee,
 			MarginMode:          mMode,
-			CreateTime:          item.OpenTime,
-			UpdateTime:          item.UpdateTime,
+			CreateTime:          utils.StringToInt64(item.CTime),
+			UpdateTime:          utils.StringToInt64(item.UTime),
 		})
 	}
 	return out

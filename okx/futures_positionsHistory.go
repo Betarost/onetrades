@@ -48,25 +48,25 @@ func (s *futures_positionsHistory) Page(page int64) *futures_positionsHistory {
 func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_PositionsHistory, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/openApi/swap/v1/trade/positionHistory",
+		Endpoint: "/api/v5/account/positions-history",
 		SecType:  utils.SecTypeSigned,
 	}
 
-	m := utils.Params{}
+	m := utils.Params{"instType": "SWAP", "type": "3"}
 	if s.symbol != nil {
-		m["symbol"] = *s.symbol
+		m["instId"] = *s.symbol
 	}
 	if s.limit != nil && *s.limit > 0 {
-		m["pageSize"] = *s.limit
+		m["limit"] = *s.limit
 	}
-	if s.page != nil && *s.page > 0 {
-		m["pageIndex"] = *s.page
-	}
+	// if s.page != nil && *s.page > 0 {
+	// 	m["pageIndex"] = *s.page
+	// }
 	if s.startTime != nil {
-		m["startTs"] = *s.startTime
+		m["after"] = *s.startTime
 	}
 	if s.endTime != nil {
-		m["endTs"] = *s.endTime
+		m["before"] = *s.endTime
 	}
 	r.SetParams(m)
 
@@ -74,11 +74,8 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
-		Result struct {
-			PositionHistory []futures_PositionsHistory_Response `json:"positionHistory"`
-		} `json:"data"`
+		Result []futures_PositionsHistory_Response `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -86,24 +83,22 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 		return res, err
 	}
 
-	return s.convert.convertPositionsHistory(answ.Result.PositionHistory), nil
+	return s.convert.convertPositionsHistory(answ.Result), nil
 }
 
 type futures_PositionsHistory_Response struct {
-	Symbol             string `json:"symbol"`
-	PositionId         string `json:"positionId"`
-	Isolated           bool   `json:"isolated"`
-	PositionSide       string `json:"positionSide"`
-	AvgPrice           string `json:"avgPrice"`
-	AvgClosePrice      string `json:"avgClosePrice"`
-	RealisedProfit     string `json:"realisedProfit"`
-	NetProfit          string `json:"netProfit"`
-	PositionAmt        string `json:"positionAmt"`
-	ClosePositionAmt   string `json:"closePositionAmt"`
-	PositionCommission string `json:"positionCommission"`
-	TotalFunding       string `json:"totalFunding"`
-	Leverage           int64  `json:"leverage"`
-
-	OpenTime   int64 `json:"openTime"`
-	UpdateTime int64 `json:"updateTime"`
+	InstId        string `json:"instId"`
+	PosId         string `json:"posId"`
+	MgnMode       string `json:"mgnMode"`
+	PosSide       string `json:"posSide"`
+	OpenAvgPx     string `json:"openAvgPx"`
+	CloseAvgPx    string `json:"closeAvgPx"`
+	OpenMaxPos    string `json:"openMaxPos"`
+	CloseTotalPos string `json:"closeTotalPos"`
+	Pnl           string `json:"pnl"`
+	RealizedPnl   string `json:"realizedPnl"`
+	Fee           string `json:"fee"`
+	FundingFee    string `json:"fundingFee"`
+	CTime         string `json:"cTime"`
+	UTime         string `json:"uTime"`
 }

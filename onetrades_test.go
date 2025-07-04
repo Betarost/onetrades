@@ -165,7 +165,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewPositionsHistory().Symbol("BTC-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
 	// printAnswers(bybitFutures.NewPositionsHistory().Do(ctx)) // processing
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))
-	printAnswers(bitgetFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(bitgetFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(okxFutures.NewPositionsHistory().Do(ctx))
 
 	//=======================PlaceOrder
 	n = "PlaceOrder"
