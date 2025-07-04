@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"testing"
+	"time"
 
 	"github.com/Betarost/onetrades/binance"
 	"github.com/Betarost/onetrades/bingx"
@@ -96,10 +97,10 @@ func TestOnetrades(t *testing.T) {
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
-	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("SAHARAUSDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
-	printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("PI-USDT-SWAP").Do(ctx))
+	printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("MOODENG-USDT-SWAP").Do(ctx))
 	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
 	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -155,8 +156,15 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
-	printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
+	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
+
 	//FUTURES
+
+	//=======================PositionsHistory
+	n = "PositionsHistory"
+	//FUTURES
+	printAnswers(bingxFutures.NewPositionsHistory().Symbol("BTC-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
+
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	//SPOT

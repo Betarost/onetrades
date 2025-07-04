@@ -157,6 +157,10 @@ func (c *futuresClient) NewSetLeverage() *futures_setLeverage {
 	return &futures_setLeverage{callAPI: c.callAPI}
 }
 
+func (c *futuresClient) NewPositionsHistory() *futures_positionsHistory {
+	return &futures_positionsHistory{callAPI: c.callAPI}
+}
+
 func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
 	return &futures_placeOrder{callAPI: c.callAPI}
 }

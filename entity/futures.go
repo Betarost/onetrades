@@ -38,6 +38,22 @@ type Futures_InstrumentsInfo struct {
 	IsSizeContract bool   `json:"isSizeContract" bson:"isSizeContract"`
 }
 
+type Futures_PositionsHistory struct {
+	Symbol              string `json:"symbol" bson:"symbol"`
+	PositionId          string `json:"positionId" bson:"positionId"`
+	PositionSide        string `json:"positionSide" bson:"positionSide"`
+	PositionAmt         string `json:"positionAmt" bson:"positionAmt"`
+	ExecutedPositionAmt string `json:"executedPositionAmt" bson:"executedPositionAmt"`
+	AvgPrice            string `json:"avgPrice" bson:"avgPrice"`
+	ExecutedAvgPrice    string `json:"executedAvgPrice" bson:"executedAvgPrice"`
+	RealisedProfit      string `json:"realisedProfit" bson:"realisedProfit"`
+	Fee                 string `json:"fee" bson:"fee"`
+	Funding             string `json:"funding" bson:"funding"`
+	MarginMode          string `json:"marginMode" bson:"marginMode"`
+	CreateTime          int64  `json:"createTime" bson:"createTime"`
+	UpdateTime          int64  `json:"updateTime" bson:"updateTime"`
+}
+
 type Futures_Positions struct {
 	Symbol           string `json:"symbol" bson:"symbol"`
 	PositionSide     string `json:"positionSide" bson:"positionSide"`

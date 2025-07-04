@@ -250,6 +250,35 @@ func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futu
 	return out
 }
 
+func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		mMode := "cross"
+		if item.Isolated {
+			mMode = "isolated"
+		}
+		out = append(out, entity.Futures_PositionsHistory{
+			Symbol:              item.Symbol,
+			PositionId:          item.PositionId,
+			PositionSide:        strings.ToUpper(item.PositionSide),
+			PositionAmt:         item.PositionAmt,
+			ExecutedPositionAmt: item.ClosePositionAmt,
+			AvgPrice:            item.AvgPrice,
+			ExecutedAvgPrice:    item.AvgClosePrice,
+			RealisedProfit:      item.RealisedProfit,
+			Fee:                 item.PositionCommission,
+			Funding:             item.TotalFunding,
+			MarginMode:          mMode,
+			CreateTime:          item.OpenTime,
+			UpdateTime:          item.UpdateTime,
+		})
+	}
+	return out
+}
+
 func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
 	out = append(out, entity.PlaceOrder{
 		OrderID:       in.Order.OrderID,
