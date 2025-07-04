@@ -140,3 +140,7 @@ func (c *futuresClient) NewGetMarginMode() *futures_getMarginMode {
 func (c *futuresClient) NewSetMarginMode() *futures_setMarginMode {
 	return &futures_setMarginMode{callAPI: c.callAPI}
 }
+
+func (c *futuresClient) NewPositionsHistory() *futures_positionsHistory {
+	return &futures_positionsHistory{callAPI: c.callAPI}
+}

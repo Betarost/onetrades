@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"testing"
-	"time"
 
 	"github.com/Betarost/onetrades/binance"
 	"github.com/Betarost/onetrades/bingx"
@@ -163,7 +162,10 @@ func TestOnetrades(t *testing.T) {
 	//=======================PositionsHistory
 	n = "PositionsHistory"
 	//FUTURES
-	printAnswers(bingxFutures.NewPositionsHistory().Symbol("BTC-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
+	// printAnswers(bingxFutures.NewPositionsHistory().Symbol("BTC-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
+	// printAnswers(bybitFutures.NewPositionsHistory().Do(ctx)) // processing
+	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))
+	printAnswers(bitgetFutures.NewPositionsHistory().Do(ctx))
 
 	//=======================PlaceOrder
 	n = "PlaceOrder"

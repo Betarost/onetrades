@@ -275,3 +275,38 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 	}
 	return res
 }
+
+func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		avgPrice := item.Long_price
+		executedAvgPrice := item.Short_price
+		if strings.ToUpper(item.Side) == "SHORT" {
+			avgPrice = item.Short_price
+			executedAvgPrice = item.Long_price
+		}
+		// mMode := "cross"
+		// if item.Isolated {
+		// 	mMode = "isolated"
+		// }
+		out = append(out, entity.Futures_PositionsHistory{
+			Symbol: item.Contract,
+			// PositionId:          item.PositionId,
+			PositionSide:        strings.ToUpper(item.Side),
+			PositionAmt:         item.Max_size,
+			ExecutedPositionAmt: item.Accum_size,
+			AvgPrice:            avgPrice,
+			ExecutedAvgPrice:    executedAvgPrice,
+			RealisedProfit:      item.Pnl,
+			Fee:                 item.Pnl_fee,
+			Funding:             item.Pnl_fund,
+			// MarginMode:          mMode,
+			CreateTime: item.First_open_time * 1000,
+			UpdateTime: item.Time * 1000,
+		})
+	}
+	return out
+}

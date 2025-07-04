@@ -224,3 +224,35 @@ func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futu
 	out.Leverage = fmt.Sprintf("%d", in.CrossedMarginLeverage)
 	return out
 }
+
+func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		mMode := "cross"
+		if item.MarginMode == "isolated" {
+			mMode = "isolated"
+		}
+
+		fee := utils.StringToFloat(item.OpenFee) + utils.StringToFloat(item.CloseFee)
+
+		out = append(out, entity.Futures_PositionsHistory{
+			Symbol:              item.Symbol,
+			PositionId:          item.PositionId,
+			PositionSide:        strings.ToUpper(item.HoldSide),
+			PositionAmt:         item.OpenTotalPos,
+			ExecutedPositionAmt: item.CloseTotalPos,
+			AvgPrice:            item.OpenAvgPrice,
+			ExecutedAvgPrice:    item.CloseAvgPrice,
+			RealisedProfit:      item.Pnl,
+			Fee:                 utils.FloatToStringAll(fee),
+			Funding:             item.TotalFunding,
+			MarginMode:          mMode,
+			CreateTime:          utils.StringToInt64(item.CTime),
+			UpdateTime:          utils.StringToInt64(item.UTime),
+		})
+	}
+	return out
+}
