@@ -1,16 +1,63 @@
 package entity
 
-type AccountInformation struct {
-	UID         string `json:"uid" bson:"uid"`
-	Label       string `json:"label" bson:"label"`
-	IP          string `json:"ip" bson:"ip"`
-	CanRead     bool   `json:"canRead" bson:"canRead"`
-	CanTrade    bool   `json:"canTrade" bson:"canTrade"`
-	CanTransfer bool   `json:"canTransfer" bson:"canTransfer"`
-	PermSpot    bool   `json:"permSpot" bson:"permSpot"`
-	PermFutures bool   `json:"permFutures" bson:"permFutures"`
-	// HedgeMode   bool   `json:"hedgeMode" bson:"hedgeMode"`
+// New SPOT
+
+type AssetsBalance struct {
+	Asset   string `json:"asset" bson:"asset"`
+	Balance string `json:"balance" bson:"balance"`
+	Locked  string `json:"locked" bson:"locked"`
 }
+
+type Spot_InstrumentsInfo struct {
+	Symbol         string `json:"symbol" bson:"symbol"`
+	Base           string `json:"base" bson:"base"`
+	Quote          string `json:"quote" bson:"quote"`
+	MinQty         string `json:"minQty" bson:"minQty"`
+	MinNotional    string `json:"minNotional" bson:"minNotional"`
+	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"`
+	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`
+	State          string `json:"state" bson:"state"`
+}
+
+type PlaceOrder struct {
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	PositionID    string `json:"positionID,omitempty" bson:"positionID,omitempty"`
+	Ts            int64  `json:"ts" bson:"ts"`
+}
+
+type Spot_OrdersList struct {
+	Symbol        string `json:"symbol" bson:"symbol"`
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	Side          string `json:"side" bson:"side"`
+	Size          string `json:"size" bson:"size"`
+	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
+	Price         string `json:"price" bson:"price"`
+	Type          string `json:"type" bson:"type"`
+	Status        string `json:"status" bson:"status"`
+	CreateTime    int64  `json:"createTime" bson:"createTime"`
+	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+}
+
+type Spot_OrdersHistory struct {
+	Symbol        string `json:"symbol" bson:"symbol"`
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	Side          string `json:"side" bson:"side"`
+	Size          string `json:"size" bson:"size"`
+	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
+	Price         string `json:"price" bson:"price"`
+	ExecutedPrice string `json:"executedPrice" bson:"executedPrice"`
+	Fee           string `json:"fee" bson:"fee"`
+	Type          string `json:"type" bson:"type"`
+	Status        string `json:"status" bson:"status"`
+	Cursor        string `json:"cursor,omitempty" bson:"cursor,omitempty"`
+	CreateTime    int64  `json:"createTime" bson:"createTime"`
+	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+}
+
+// OLD
 
 type TradingAccountBalance struct {
 	TotalEquity      string                         `json:"totalEquity" bson:"totalEquity"`
@@ -55,48 +102,6 @@ type InstrumentsInfo struct {
 	ContractMultiplier string `json:"contractMultiplier" bson:"contractMultiplier"`
 }
 
-type Spot_InstrumentsInfo struct {
-	Symbol         string `json:"symbol" bson:"symbol"`
-	Base           string `json:"base" bson:"base"`
-	Quote          string `json:"quote" bson:"quote"`
-	MinQty         string `json:"minQty" bson:"minQty"`
-	MinNotional    string `json:"minNotional" bson:"minNotional"`
-	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"`
-	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`
-	State          string `json:"state" bson:"state"`
-}
-
-type Spot_OrdersList struct {
-	Symbol        string `json:"symbol" bson:"symbol"`
-	OrderID       string `json:"orderId" bson:"orderId"`
-	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
-	Side          string `json:"side" bson:"side"`
-	Size          string `json:"size" bson:"size"`
-	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
-	Price         string `json:"price" bson:"price"`
-	Type          string `json:"type" bson:"type"`
-	Status        string `json:"status" bson:"status"`
-	CreateTime    int64  `json:"createTime" bson:"createTime"`
-	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
-}
-
-type Spot_OrdersHistory struct {
-	Symbol        string `json:"symbol" bson:"symbol"`
-	OrderID       string `json:"orderId" bson:"orderId"`
-	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
-	Side          string `json:"side" bson:"side"`
-	Size          string `json:"size" bson:"size"`
-	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
-	Price         string `json:"price" bson:"price"`
-	ExecutedPrice string `json:"executedPrice" bson:"executedPrice"`
-	Fee           string `json:"fee" bson:"fee"`
-	Type          string `json:"type" bson:"type"`
-	Status        string `json:"status" bson:"status"`
-	Cursor        string `json:"cursor,omitempty" bson:"cursor,omitempty"`
-	CreateTime    int64  `json:"createTime" bson:"createTime"`
-	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
-}
-
 type OrdersPendingList struct {
 	Symbol        string `json:"symbol" bson:"symbol"`
 	OrderID       string `json:"orderId" bson:"orderId"`
@@ -115,16 +120,4 @@ type OrdersPendingList struct {
 	IsTpLimit     bool   `json:"isTpLimit" bson:"isTpLimit"`
 	CreateTime    int64  `json:"createTime" bson:"createTime"`
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
-}
-
-type PlaceOrder struct {
-	OrderID       string `json:"orderId" bson:"orderId"`
-	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
-	Ts            int64  `json:"ts" bson:"ts"`
-}
-
-type AssetsBalance struct {
-	Asset   string `json:"asset" bson:"asset"`
-	Balance string `json:"balance" bson:"balance"`
-	Locked  string `json:"locked" bson:"locked"`
 }

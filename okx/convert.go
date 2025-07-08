@@ -203,7 +203,7 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 		}
 		out = append(out, entity.Futures_PositionsHistory{
 			Symbol:              item.InstId,
-			PositionId:          item.PosId,
+			PositionID:          item.PosId,
 			PositionSide:        strings.ToUpper(item.PosSide),
 			PositionAmt:         item.OpenMaxPos,
 			ExecutedPositionAmt: item.CloseTotalPos,

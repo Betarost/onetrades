@@ -294,7 +294,7 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 		// }
 		out = append(out, entity.Futures_PositionsHistory{
 			Symbol: item.Contract,
-			// PositionId:          item.PositionId,
+			// PositionID:          item.PositionId,
 			PositionSide:        strings.ToUpper(item.Side),
 			PositionAmt:         item.Max_size,
 			ExecutedPositionAmt: item.Accum_size,

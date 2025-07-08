@@ -1,28 +1,13 @@
 package entity
 
+// New FUTURES
+
 type FuturesBalance struct {
 	Asset            string `json:"asset" bson:"asset"`
 	Balance          string `json:"balance" bson:"balance"`
 	Equity           string `json:"equity" bson:"equity"`
 	Available        string `json:"available" bson:"available"`
 	UnrealizedProfit string `json:"unrealizedProfit" bson:"unrealizedProfit"`
-}
-
-type Futures_PositionsMode struct {
-	HedgeMode bool `json:"hedgeMode" bson:"hedgeMode"`
-}
-
-type Futures_MarginMode struct {
-	MarginMode string `json:"marginMode" bson:"marginMode"`
-}
-
-type Futures_Leverage struct {
-	Symbol        string `json:"symbol" bson:"symbol"`
-	Leverage      string `json:"leverage" bson:"leverage"`
-	LongLeverage  string `json:"longLeverage" bson:"longLeverage"`
-	ShortLeverage string `json:"shortLeverage" bson:"shortLeverage"`
-	// MarginMode   string `json:"marginMode" bson:"marginMode"`
-	// PositionSide string `json:"positionSide" bson:"positionSide"`
 }
 
 type Futures_InstrumentsInfo struct {
@@ -40,9 +25,28 @@ type Futures_InstrumentsInfo struct {
 	IsSizeContract bool   `json:"isSizeContract" bson:"isSizeContract"`
 }
 
+type Futures_PositionsMode struct {
+	HedgeMode bool `json:"hedgeMode" bson:"hedgeMode"`
+}
+
+type Futures_Leverage struct {
+	Symbol        string `json:"symbol" bson:"symbol"`
+	Leverage      string `json:"leverage" bson:"leverage"`
+	LongLeverage  string `json:"longLeverage" bson:"longLeverage"`
+	ShortLeverage string `json:"shortLeverage" bson:"shortLeverage"`
+	// MarginMode   string `json:"marginMode" bson:"marginMode"`
+	// PositionSide string `json:"positionSide" bson:"positionSide"`
+}
+
+type Futures_MarginMode struct {
+	MarginMode string `json:"marginMode" bson:"marginMode"`
+}
+
+// OLD
+
 type Futures_PositionsHistory struct {
 	Symbol              string `json:"symbol" bson:"symbol"`
-	PositionId          string `json:"positionId" bson:"positionId"`
+	PositionID          string `json:"positionID" bson:"positionID"`
 	PositionSide        string `json:"positionSide" bson:"positionSide"`
 	PositionAmt         string `json:"positionAmt" bson:"positionAmt"`
 	ExecutedPositionAmt string `json:"executedPositionAmt" bson:"executedPositionAmt"`
@@ -57,20 +61,26 @@ type Futures_PositionsHistory struct {
 }
 
 type Futures_OrdersHistory struct {
-	Symbol        string `json:"symbol" bson:"symbol"`
-	OrderID       string `json:"orderId" bson:"orderId"`
-	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
-	Side          string `json:"side" bson:"side"`
-	Size          string `json:"size" bson:"size"`
-	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
-	Price         string `json:"price" bson:"price"`
-	ExecutedPrice string `json:"executedPrice" bson:"executedPrice"`
-	Fee           string `json:"fee" bson:"fee"`
-	Type          string `json:"type" bson:"type"`
-	Status        string `json:"status" bson:"status"`
-	Cursor        string `json:"cursor,omitempty" bson:"cursor,omitempty"`
-	CreateTime    int64  `json:"createTime" bson:"createTime"`
-	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+	Symbol         string `json:"symbol" bson:"symbol"`
+	OrderID        string `json:"orderId" bson:"orderId"`
+	ClientOrderID  string `json:"clientOrderID" bson:"clientOrderID"`
+	PositionID     string `json:"positionID" bson:"positionID"`
+	Side           string `json:"side" bson:"side"`
+	PositionSide   string `json:"positionSide" bson:"positionSide"`
+	PositionSize   string `json:"positionSize" bson:"positionSize"`
+	ExecutedSize   string `json:"executedSize" bson:"executedSize"`
+	Price          string `json:"price" bson:"price"`
+	ExecutedPrice  string `json:"executedPrice" bson:"executedPrice"`
+	RealisedProfit string `json:"realisedProfit" bson:"realisedProfit"`
+	Fee            string `json:"fee" bson:"fee"`
+	Leverage       string `json:"leverage"  bson:"leverage"`
+	Type           string `json:"type" bson:"type"`
+	Status         string `json:"status" bson:"status"`
+	HedgeMode      bool   `json:"hedgeMode" bson:"hedgeMode"`
+	MarginMode     string `json:"marginMode" bson:"marginMode"`
+	Cursor         string `json:"cursor,omitempty" bson:"cursor,omitempty"`
+	CreateTime     int64  `json:"createTime" bson:"createTime"`
+	UpdateTime     int64  `json:"updateTime" bson:"updateTime"`
 }
 
 type Futures_Positions struct {

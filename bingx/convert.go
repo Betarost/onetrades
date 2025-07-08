@@ -146,6 +146,24 @@ func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (ou
 
 type futures_converts struct{}
 
+func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.FuturesBalance) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		out = append(out, entity.FuturesBalance{
+			Asset:     item.Asset,
+			Balance:   item.Balance,
+			Equity:    item.Equity,
+			Available: item.AvailableMargin,
+			// AvailableMargin:  item.AvailableMargin,
+			UnrealizedProfit: item.UnrealizedProfit,
+		})
+	}
+	return out
+}
+
 func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
 	if len(in) == 0 {
 		return out
@@ -176,24 +194,6 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 	return
 }
 
-func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.FuturesBalance) {
-	if len(in) == 0 {
-		return out
-	}
-
-	for _, item := range in {
-		out = append(out, entity.FuturesBalance{
-			Asset:     item.Asset,
-			Balance:   item.Balance,
-			Equity:    item.Equity,
-			Available: item.AvailableMargin,
-			// AvailableMargin:  item.AvailableMargin,
-			UnrealizedProfit: item.UnrealizedProfit,
-		})
-	}
-	return out
-}
-
 func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
 
 	out.Symbol = in.Symbol
@@ -206,64 +206,6 @@ func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futu
 	}
 	out.LongLeverage = fmt.Sprintf("%d", in.LongLeverage)
 	out.ShortLeverage = fmt.Sprintf("%d", in.ShortLeverage)
-	return out
-}
-
-func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
-	if len(in) == 0 {
-		return out
-	}
-
-	for _, item := range in {
-		mMode := "cross"
-		if item.Isolated {
-			mMode = "isolated"
-		}
-		out = append(out, entity.Futures_PositionsHistory{
-			Symbol:              item.Symbol,
-			PositionId:          item.PositionId,
-			PositionSide:        strings.ToUpper(item.PositionSide),
-			PositionAmt:         item.PositionAmt,
-			ExecutedPositionAmt: item.ClosePositionAmt,
-			AvgPrice:            item.AvgPrice,
-			ExecutedAvgPrice:    item.AvgClosePrice,
-			RealisedProfit:      item.RealisedProfit,
-			Fee:                 item.PositionCommission,
-			Funding:             item.TotalFunding,
-			MarginMode:          mMode,
-			CreateTime:          item.OpenTime,
-			UpdateTime:          item.UpdateTime,
-		})
-	}
-	return out
-}
-
-func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
-	if len(in) == 0 {
-		return out
-	}
-
-	// for _, item := range in {
-	// 	mMode := "cross"
-	// 	if item.Isolated {
-	// 		mMode = "isolated"
-	// 	}
-	// 	out = append(out, entity.Futures_OrdersHistory{
-	// 		Symbol:              item.Symbol,
-	// 		PositionId:          item.PositionId,
-	// 		PositionSide:        strings.ToUpper(item.PositionSide),
-	// 		PositionAmt:         item.PositionAmt,
-	// 		ExecutedPositionAmt: item.ClosePositionAmt,
-	// 		AvgPrice:            item.AvgPrice,
-	// 		ExecutedAvgPrice:    item.AvgClosePrice,
-	// 		RealisedProfit:      item.RealisedProfit,
-	// 		Fee:                 item.PositionCommission,
-	// 		Funding:             item.TotalFunding,
-	// 		MarginMode:          mMode,
-	// 		CreateTime:          item.OpenTime,
-	// 		UpdateTime:          item.UpdateTime,
-	// 	})
-	// }
 	return out
 }
 
@@ -344,4 +286,77 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		})
 	}
 	return res
+}
+
+func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		marginMode := "isolated"
+		hedgeMode := false
+
+		if !item.OnlyOnePosition {
+			hedgeMode = true
+		}
+
+		// if !item.Isolated {
+		// 	marginMode = "cross"
+		// }
+
+		marginMode = ""
+
+		out = append(out, entity.Futures_OrdersHistory{
+			Symbol:         item.Symbol,
+			OrderID:        utils.Int64ToString(item.OrderId),
+			ClientOrderID:  item.ClientOrderId,
+			PositionID:     utils.Int64ToString(item.PositionID),
+			Side:           strings.ToUpper(item.Side),
+			PositionSide:   strings.ToUpper(item.PositionSide),
+			PositionSize:   item.OrigQty,
+			ExecutedSize:   item.ExecutedQty,
+			Price:          item.Price,
+			ExecutedPrice:  item.AvgPrice,
+			RealisedProfit: item.Profit,
+			Fee:            item.Commission,
+			Type:           strings.ToUpper(item.Type),
+			Leverage:       strings.Replace(item.Leverage, "X", "", 1),
+			Status:         strings.ToUpper(item.Status),
+			HedgeMode:      hedgeMode,
+			MarginMode:     marginMode,
+			CreateTime:     item.Time,
+			UpdateTime:     item.UpdateTime,
+		})
+	}
+	return out
+}
+
+func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		mMode := "cross"
+		if item.Isolated {
+			mMode = "isolated"
+		}
+		out = append(out, entity.Futures_PositionsHistory{
+			Symbol:              item.Symbol,
+			PositionID:          item.PositionId,
+			PositionSide:        strings.ToUpper(item.PositionSide),
+			PositionAmt:         item.PositionAmt,
+			ExecutedPositionAmt: item.ClosePositionAmt,
+			AvgPrice:            item.AvgPrice,
+			ExecutedAvgPrice:    item.AvgClosePrice,
+			RealisedProfit:      item.RealisedProfit,
+			Fee:                 item.PositionCommission,
+			Funding:             item.TotalFunding,
+			MarginMode:          mMode,
+			CreateTime:          item.OpenTime,
+			UpdateTime:          item.UpdateTime,
+		})
+	}
+	return out
 }

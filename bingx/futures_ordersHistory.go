@@ -48,7 +48,7 @@ func (s *futures_ordersHistory) Page(page int64) *futures_ordersHistory {
 func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_OrdersHistory, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/openApi/swap/v1/trade/positionHistory",
+		Endpoint: "/openApi/swap/v2/trade/allOrders",
 		SecType:  utils.SecTypeSigned,
 	}
 
@@ -57,16 +57,14 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 		m["symbol"] = *s.symbol
 	}
 	if s.limit != nil && *s.limit > 0 {
-		m["pageSize"] = *s.limit
+		m["limit"] = *s.limit
 	}
-	if s.page != nil && *s.page > 0 {
-		m["pageIndex"] = *s.page
-	}
+
 	if s.startTime != nil {
-		m["startTs"] = *s.startTime
+		m["startTime"] = *s.startTime
 	}
 	if s.endTime != nil {
-		m["endTs"] = *s.endTime
+		m["endTime"] = *s.endTime
 	}
 	r.SetParams(m)
 
@@ -77,7 +75,7 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 
 	var answ struct {
 		Result struct {
-			PositionHistory []futures_ordersHistory_Response `json:"positionHistory"`
+			Orders []futures_ordersHistory_Response `json:"orders"`
 		} `json:"data"`
 	}
 
@@ -86,24 +84,27 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 		return res, err
 	}
 
-	return s.convert.convertOrdersHistory(answ.Result.PositionHistory), nil
+	return s.convert.convertOrdersHistory(answ.Result.Orders), nil
 }
 
 type futures_ordersHistory_Response struct {
-	Symbol             string `json:"symbol"`
-	PositionId         string `json:"positionId"`
-	Isolated           bool   `json:"isolated"`
-	PositionSide       string `json:"positionSide"`
-	AvgPrice           string `json:"avgPrice"`
-	AvgClosePrice      string `json:"avgClosePrice"`
-	RealisedProfit     string `json:"realisedProfit"`
-	NetProfit          string `json:"netProfit"`
-	PositionAmt        string `json:"positionAmt"`
-	ClosePositionAmt   string `json:"closePositionAmt"`
-	PositionCommission string `json:"positionCommission"`
-	TotalFunding       string `json:"totalFunding"`
-	Leverage           int64  `json:"leverage"`
-
-	OpenTime   int64 `json:"openTime"`
-	UpdateTime int64 `json:"updateTime"`
+	Symbol          string `json:"symbol"`
+	OrderId         int64  `json:"orderId"`
+	Side            string `json:"side"`
+	PositionSide    string `json:"positionSide"`
+	Type            string `json:"type"`
+	OrigQty         string `json:"origQty"`
+	Price           string `json:"price"`
+	ExecutedQty     string `json:"executedQty"`
+	AvgPrice        string `json:"avgPrice"`
+	CumQuote        string `json:"cumQuote"`
+	Profit          string `json:"profit"`
+	Commission      string `json:"commission"`
+	Status          string `json:"status"`
+	ClientOrderId   string `json:"clientOrderId"`
+	Leverage        string `json:"leverage"`
+	PositionID      int64  `json:"positionID"`
+	OnlyOnePosition bool   `json:"onlyOnePosition"`
+	Time            int64  `json:"time"`
+	UpdateTime      int64  `json:"updateTime"`
 }
