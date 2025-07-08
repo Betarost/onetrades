@@ -25,7 +25,6 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []futures_Balance `json:"data"`
 	}

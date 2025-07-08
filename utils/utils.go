@@ -30,6 +30,14 @@ func StringToInt(num string) int {
 	return int(newNum)
 }
 
+func Int64ToString(num int64) string {
+	return fmt.Sprintf("%d", num)
+}
+
+func IntToString(num int) string {
+	return fmt.Sprintf("%d", num)
+}
+
 func TimestampMilliToDateFormat(stamp int64, format string) string {
 	tHisory := time.UnixMilli(stamp).UTC()
 	hisNow := time.Date(tHisory.Year(), tHisory.Month(), tHisory.Day(), tHisory.Hour(), tHisory.Minute(), tHisory.Second(), 0, tHisory.Location())

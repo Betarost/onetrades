@@ -17,8 +17,10 @@ type Futures_MarginMode struct {
 }
 
 type Futures_Leverage struct {
-	Symbol   string `json:"symbol" bson:"symbol"`
-	Leverage string `json:"leverage" bson:"leverage"`
+	Symbol        string `json:"symbol" bson:"symbol"`
+	Leverage      string `json:"leverage" bson:"leverage"`
+	LongLeverage  string `json:"longLeverage" bson:"longLeverage"`
+	ShortLeverage string `json:"shortLeverage" bson:"shortLeverage"`
 	// MarginMode   string `json:"marginMode" bson:"marginMode"`
 	// PositionSide string `json:"positionSide" bson:"positionSide"`
 }
@@ -74,18 +76,23 @@ type Futures_OrdersList struct {
 	Symbol        string `json:"symbol" bson:"symbol"`
 	OrderID       string `json:"orderId" bson:"orderId"`
 	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	PositionID    string `json:"positionID" bson:"positionID"`
 	Side          string `json:"side" bson:"side"`
 	PositionSide  string `json:"positionSide" bson:"positionSide"`
-	PositionAmt   string `json:"positionAmt" bson:"positionAmt"`
+	PositionSize  string `json:"positionSize" bson:"positionSize"`
+	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
 	Price         string `json:"price" bson:"price"`
-	TpPrice       string `json:"tpPrice" bson:"tpPrice"`
-	SlPrice       string `json:"slPrice" bson:"slPrice"`
 	Leverage      string `json:"leverage" bson:"leverage"`
 	Type          string `json:"type" bson:"type"`
-	TradeMode     string `json:"tradeMode" bson:"tradeMode"`
-	InstType      string `json:"instType" bson:"instType"`
 	Status        string `json:"status" bson:"status"`
-	IsTpLimit     bool   `json:"isTpLimit" bson:"isTpLimit"`
 	CreateTime    int64  `json:"createTime" bson:"createTime"`
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+
+	//==========
+	TpPrice     string `json:"tpPrice" bson:"tpPrice"`
+	SlPrice     string `json:"slPrice" bson:"slPrice"`
+	TradeMode   string `json:"tradeMode" bson:"tradeMode"`
+	InstType    string `json:"instType" bson:"instType"`
+	IsTpLimit   bool   `json:"isTpLimit" bson:"isTpLimit"`
+	PositionAmt string `json:"positionAmt" bson:"positionAmt"`
 }

@@ -34,7 +34,9 @@ func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (
 		return res, err
 	}
 
-	return s.convert.convertBalance(answ.Result), nil
+	res = s.convert.convertBalance(answ.Result)
+
+	return res, nil
 }
 
 type spot_Balance struct {

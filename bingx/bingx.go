@@ -43,20 +43,12 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 	}
 }
 
-func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
-	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
-}
-
 func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
-	return &getFundingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
-	return &getTradingAccountBalance{callAPI: c.callAPI}
+func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
+	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
 func (c *spotClient) NewGetBalance() *spot_getBalance {
@@ -113,20 +105,12 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 	}
 }
 
-func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
-	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
-}
-
 func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
-	return &getFundingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *futuresClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
-	return &getTradingAccountBalance{callAPI: c.callAPI}
+func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
+	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
 func (c *futuresClient) NewGetBalance() *futures_getBalance {
@@ -165,6 +149,10 @@ func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
 	return &futures_placeOrder{callAPI: c.callAPI}
 }
 
-// func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
-// 	return &futures_placeOrder{callAPI: c.callAPI}
+// func (c *futuresClient) NewCancelOrder() *futures_cancelOrder {
+// 	return &futures_cancelOrder{callAPI: c.callAPI}
 // }
+
+func (c *futuresClient) NewGetOrderList() *futures_getOrderList {
+	return &futures_getOrderList{callAPI: c.callAPI}
+}

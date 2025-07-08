@@ -24,52 +24,9 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 			out.CanRead = true
 		case 3:
 			out.PermFutures = true
+		case 4:
+			out.CanTransfer = true
 		}
-	}
-	return out
-}
-
-func (c *account_converts) convertFundingAccountBalance(in fundingBalance) (out []entity.FundingAccountBalance) {
-	if len(in.Assets) == 0 {
-		return out
-	}
-
-	for _, item := range in.Assets {
-		out = append(out, entity.FundingAccountBalance{
-			Asset:            item.Asset,
-			Balance:          utils.FloatToStringAll(item.Free),
-			AvailableBalance: utils.FloatToStringAll(item.Free),
-			FrozenBalance:    utils.FloatToStringAll(item.Locked),
-		})
-	}
-
-	return out
-}
-
-func (c *account_converts) convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
-	if len(in) == 0 {
-		return out
-	}
-	for _, item := range in {
-		r := entity.TradingAccountBalance{
-			TotalEquity:      item.TotalEq,
-			AvailableEquity:  item.AvailEq,
-			NotionalUsd:      item.NotionalUsd,
-			UnrealizedProfit: item.Upl,
-			UpdateTime:       utils.StringToInt64(item.UTime),
-		}
-		for _, item := range item.Details {
-			r.Assets = append(r.Assets, entity.TradingAccountBalanceDetails{
-				Asset:            item.Ccy,
-				Balance:          item.CashBal,
-				EquityBalance:    item.Eq,
-				AvailableBalance: item.AvailBal,
-				AvailableEquity:  item.AvailEq,
-				UnrealizedProfit: item.Upl,
-			})
-		}
-
-		out = append(out, r)
 	}
 	return out
 }
@@ -77,6 +34,17 @@ func (c *account_converts) convertTradingAccountBalance(in []tradingBalance) (ou
 // ===============SPOT=================
 
 type spot_converts struct{}
+
+func (c *spot_converts) convertBalance(in spot_Balance) (out []entity.AssetsBalance) {
+	for _, item := range in.Balances {
+		out = append(out, entity.AssetsBalance{
+			Asset:   item.Asset,
+			Balance: utils.FloatToStringAll(utils.StringToFloat(item.Free) + utils.StringToFloat(item.Locked)),
+			Locked:  item.Locked,
+		})
+	}
+	return out
+}
 
 func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []entity.Spot_InstrumentsInfo) {
 	if len(in.Symbols) == 0 {
@@ -117,17 +85,6 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 		out = append(out, rec)
 	}
 	return
-}
-
-func (c *spot_converts) convertBalance(in spot_Balance) (out []entity.AssetsBalance) {
-	for _, item := range in.Balances {
-		out = append(out, entity.AssetsBalance{
-			Asset:   item.Asset,
-			Balance: item.Free,
-			Locked:  item.Locked,
-		})
-	}
-	return out
 }
 
 func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
@@ -240,13 +197,15 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
 
 	out.Symbol = in.Symbol
-	if in.LongLeverage != 0 {
+	if in.LongLeverage != 0 && in.LongLeverage == in.ShortLeverage {
 		out.Leverage = fmt.Sprintf("%d", in.LongLeverage)
 	}
 
 	if in.Leverage != 0 {
 		out.Leverage = fmt.Sprintf("%d", in.Leverage)
 	}
+	out.LongLeverage = fmt.Sprintf("%d", in.LongLeverage)
+	out.ShortLeverage = fmt.Sprintf("%d", in.ShortLeverage)
 	return out
 }
 
@@ -285,5 +244,40 @@ func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (ou
 		ClientOrderID: in.Order.ClientOrderId,
 		Ts:            time.Now().UTC().UnixMilli(),
 	})
+	return out
+}
+
+func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.Futures_OrdersList) {
+	if len(in.Orders) == 0 {
+		return out
+	}
+
+	for _, item := range in.Orders {
+		// positionSide := "LONG"
+		// // if item.PosSide == "net" {
+		// // 	if strings.ToUpper(item.Side) == "SELL" {
+		// // 		positionSide = "SHORT"
+		// // 	}
+		// // } else {
+		// // 	positionSide = strings.ToUpper(item.PosSide)
+		// // }
+
+		out = append(out, entity.Futures_OrdersList{
+			Symbol:        item.Symbol,
+			OrderID:       fmt.Sprintf("%d", item.OrderId),
+			ClientOrderID: item.ClientOrderId,
+			PositionID:    fmt.Sprintf("%d", item.PositionID),
+			Side:          item.Side,
+			PositionSide:  item.PositionSide,
+			Type:          strings.ToUpper(item.Type),
+			PositionSize:  item.OrigQty,
+			ExecutedSize:  item.ExecutedQty,
+			Price:         item.Price,
+			Leverage:      strings.Replace(item.Leverage, "X", "", 1),
+			Status:        strings.ToUpper(item.Status),
+			CreateTime:    item.Time,
+			UpdateTime:    item.UpdateTime,
+		})
+	}
 	return out
 }

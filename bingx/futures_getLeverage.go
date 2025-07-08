@@ -38,6 +38,7 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result futures_leverage `json:"data"`
 	}
@@ -53,6 +54,7 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 type futures_leverage struct {
 	Symbol           string `json:"symbol"`
 	LongLeverage     int    `json:"longLeverage"`
+	ShortLeverage    int    `json:"shortLeverage"`
 	MaxLongLeverage  int    `json:"maxLongLeverage"`
 	MaxShortLeverage int    `json:"maxShortLeverage"`
 	Leverage         int    `json:"leverage"`

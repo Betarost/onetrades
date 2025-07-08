@@ -22,13 +22,19 @@ type futures_placeOrder struct {
 	orderType     *entity.OrderType
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
-	tradeMode     *entity.MarginModeType
+	marginMode    *entity.MarginModeType
+	hedgeMode     *bool
 	tpPrice       *string
 	slPrice       *string
 }
 
-func (s *futures_placeOrder) TradeMode(tradeMode entity.MarginModeType) *futures_placeOrder {
-	s.tradeMode = &tradeMode
+func (s *futures_placeOrder) MarginMode(marginMode entity.MarginModeType) *futures_placeOrder {
+	s.marginMode = &marginMode
+	return s
+}
+
+func (s *futures_placeOrder) HedgeMode(hedgeMode bool) *futures_placeOrder {
+	s.hedgeMode = &hedgeMode
 	return s
 }
 
@@ -84,7 +90,7 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		SecType:  utils.SecTypeSigned,
 	}
 
-	m := utils.Params{}
+	m := utils.Params{"positionSide": strings.ToUpper(string(entity.PositionSideTypeBoth))}
 
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
@@ -110,36 +116,11 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		m["clientOrderId"] = *s.clientOrderID
 	}
 
-	// if s.tradeMode != nil {
-	// 	if *s.tradeMode == entity.MarginModeTypeCross {
-	// 		m["tdMode"] = "cross"
-	// 	} else if *s.tradeMode == entity.MarginModeTypeIsolated {
-	// 		m["tdMode"] = "isolated"
-	// 	}
-	// }
-
-	// if s.positionSide != nil {
-	// 	m["posSide"] = strings.ToLower(string(*s.positionSide))
-	// }
-
-	// if s.tpPrice != nil || s.slPrice != nil {
-	// 	attachAlgoOrds := []orderList_attachAlgoOrds{{}}
-	// 	if s.tpPrice != nil {
-	// 		attachAlgoOrds[0].TpTriggerPx = *s.tpPrice
-	// 		attachAlgoOrds[0].TpOrdPx = "-1"
-	// 	}
-
-	// 	if s.slPrice != nil {
-	// 		attachAlgoOrds[0].SlTriggerPx = *s.slPrice
-	// 		attachAlgoOrds[0].SlOrdPx = "-1"
-	// 	}
-	// 	j, err := json.Marshal(attachAlgoOrds)
-	// 	if err != nil {
-	// 		return res, err
-	// 	}
-
-	// 	m["attachAlgoOrds"] = string(j)
-	// }
+	if s.hedgeMode != nil && *s.hedgeMode {
+		if s.positionSide != nil {
+			m["positionSide"] = strings.ToUpper(string(*s.positionSide))
+		}
+	}
 
 	r.SetFormParams(m)
 

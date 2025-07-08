@@ -44,7 +44,8 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 	if err != nil {
 		return res, err
 	}
-	return s.convert.convertInstrumentsInfo(answ.Result), nil
+	res = s.convert.convertInstrumentsInfo(answ.Result)
+	return res, nil
 }
 
 type spot_instrumentsInfo struct {
