@@ -218,6 +218,15 @@ func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (ou
 	return out
 }
 
+func (c *futures_converts) convertPlaceOrder_extra(in futures_placeOrder_Response_Extra) (out []entity.PlaceOrder) {
+	out = append(out, entity.PlaceOrder{
+		OrderID:       in.Order.OrderID.(string),
+		ClientOrderID: in.Order.ClientOrderId.(string),
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
+	return out
+}
+
 func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.Futures_OrdersList) {
 	if len(in.Orders) == 0 {
 		return out

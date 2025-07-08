@@ -9,6 +9,7 @@ import (
 	"github.com/Betarost/onetrades/bingx"
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bybit"
+	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
@@ -150,7 +151,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	//SPOT
-	// printAnswers(bingxSpot.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("0.2892").Size("10").Do(ctx))
+	// printAnswers(bingxSpot.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Price("0.2892").Size("10").Do(ctx))
 	// printAnswers(bybitSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("35").Do(ctx))
 	// printAnswers(gateioSpot.NewPlaceOrder().Symbol("DOGE_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("35").Price("0.15870").Do(ctx))
 	// printAnswers(mexcSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.15870").Size("10").Do(ctx))
@@ -159,7 +160,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("100").Price("0.15666").UID("69069265").Do(ctx))
 
 	//FUTURES
-	// printAnswers(bingxFutures.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Price("0.00000910").Size("5").HedgeMode(false).Do(ctx))
+	printAnswers(bingxFutures.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Price("0.28550").Size("10").HedgeMode(false).Do(ctx))
 
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").OrderType(entity.OrderTypeMarket).ClientOrderID("t-235k").Do(ctx))
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("TRX_USDT").Side(entity.SideTypeBuy).Size("1").Price("0.2687").OrderType(entity.OrderTypeLimit).ClientOrderID("t-235k2").Do(ctx))
@@ -167,7 +168,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetPositions
 	n = "GetPositions"
 	//FUTURES
-	printAnswers(bingxFutures.NewGetPositions().Do(ctx))
+	// printAnswers(bingxFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
@@ -221,7 +222,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
-	printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================PositionsHistory
 	n = "PositionsHistory"

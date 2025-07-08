@@ -122,15 +122,14 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		}
 	}
 
-	r.SetFormParams(m)
+	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
-		Result futures_placeOrder_Response `json:"data"`
+		Result futures_placeOrder_Response_Extra `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -138,7 +137,15 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		return res, err
 	}
 
-	return s.convert.convertPlaceOrder(answ.Result), nil
+	return s.convert.convertPlaceOrder_extra(answ.Result), nil
+}
+
+type futures_placeOrder_Response_Extra struct {
+	Order struct {
+		Symbol        string `json:"symbol"`
+		OrderID       any    `json:"orderId"`
+		ClientOrderId any    `json:"clientOrderId"`
+	} `json:"order"`
 }
 
 type futures_placeOrder_Response struct {
