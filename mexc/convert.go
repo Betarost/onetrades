@@ -90,14 +90,14 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 			state = "SUSPENDED"
 		}
 		rec := entity.Spot_InstrumentsInfo{
-			Symbol:      item.Symbol,
-			Base:        item.BaseAsset,
-			Quote:       item.QuoteAsset,
-			MinQty:      item.BaseSizePrecision,
-			MinNotional: item.QuoteAmountPrecision,
-			// PricePrecision: "",
-			SizePrecision: fmt.Sprintf("%d", item.BaseAssetPrecision),
-			State:         state,
+			Symbol:         item.Symbol,
+			Base:           item.BaseAsset,
+			Quote:          item.QuoteAsset,
+			MinQty:         item.BaseSizePrecision,
+			MinNotional:    item.QuoteAmountPrecision,
+			PricePrecision: fmt.Sprintf("%d", item.QuotePrecision),
+			SizePrecision:  fmt.Sprintf("%d", item.BaseAssetPrecision),
+			State:          state,
 		}
 		out = append(out, rec)
 	}
@@ -142,6 +142,30 @@ func (c *spot_converts) convertOrderList(answ []spot_orderList) (res []entity.Sp
 		})
 	}
 	return res
+}
+
+func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (out []entity.Spot_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out = append(out, entity.Spot_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.ClientOrderId,
+			Side:          strings.ToUpper(item.Side),
+			Size:          item.OrigQty,
+			Price:         item.Price,
+			ExecutedSize:  item.ExecutedQty,
+			ExecutedPrice: item.Price,
+			// Fee:           utils.FloatToStringAll(item.Fee),
+			Type:       strings.ToUpper(item.Type),
+			Status:     strings.ToUpper(item.Status),
+			CreateTime: item.Time,
+			UpdateTime: item.UpdateTime,
+		})
+	}
+	return out
 }
 
 // ===============FUTURES=================
