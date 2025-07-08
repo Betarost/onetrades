@@ -56,20 +56,45 @@ type Futures_PositionsHistory struct {
 	UpdateTime          int64  `json:"updateTime" bson:"updateTime"`
 }
 
+type Futures_OrdersHistory struct {
+	Symbol        string `json:"symbol" bson:"symbol"`
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	Side          string `json:"side" bson:"side"`
+	Size          string `json:"size" bson:"size"`
+	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
+	Price         string `json:"price" bson:"price"`
+	ExecutedPrice string `json:"executedPrice" bson:"executedPrice"`
+	Fee           string `json:"fee" bson:"fee"`
+	Type          string `json:"type" bson:"type"`
+	Status        string `json:"status" bson:"status"`
+	Cursor        string `json:"cursor,omitempty" bson:"cursor,omitempty"`
+	CreateTime    int64  `json:"createTime" bson:"createTime"`
+	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+}
+
 type Futures_Positions struct {
-	Symbol           string `json:"symbol" bson:"symbol"`
-	PositionSide     string `json:"positionSide" bson:"positionSide"`
-	PositionAmt      string `json:"positionAmt" bson:"positionAmt"`
+	Symbol       string `json:"symbol" bson:"symbol"`
+	PositionSide string `json:"positionSide" bson:"positionSide"`
+	PositionSize string `json:"positionSize"`
+	Leverage     string `json:"leverage"`
+
 	PositionID       string `json:"positionID"`
 	EntryPrice       string `json:"entryPrice" bson:"entryPrice"`
 	MarkPrice        string `json:"markPrice" bson:"markPrice"`
 	UnRealizedProfit string `json:"unRealizedProfit" bson:"unRealizedProfit"`
 	RealizedProfit   string `json:"realizedProfit" bson:"realizedProfit"`
 	Notional         string `json:"notional" bson:"notional"`
+	HedgeMode        bool   `json:"hedgeMode" bson:"hedgeMode"`
+	MarginMode       string `json:"marginMode" bson:"marginMode"`
+	CreateTime       int64  `json:"createTime" bson:"createTime"`
+	UpdateTime       int64  `json:"updateTime" bson:"updateTime"`
+
+	//
 	InitialMargin    string `json:"initialMargin" bson:"initialMargin"`
 	MarginRatio      string `json:"marginRatio" bson:"marginRatio"`
 	AutoDeleveraging string `json:"autoDeleveraging" bson:"autoDeleveraging"`
-	UpdateTime       int64  `json:"updateTime" bson:"updateTime"`
+	PositionAmt      string `json:"positionAmt" bson:"positionAmt"`
 }
 
 type Futures_OrdersList struct {

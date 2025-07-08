@@ -238,9 +238,38 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 	return out
 }
 
+func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	// for _, item := range in {
+	// 	mMode := "cross"
+	// 	if item.Isolated {
+	// 		mMode = "isolated"
+	// 	}
+	// 	out = append(out, entity.Futures_OrdersHistory{
+	// 		Symbol:              item.Symbol,
+	// 		PositionId:          item.PositionId,
+	// 		PositionSide:        strings.ToUpper(item.PositionSide),
+	// 		PositionAmt:         item.PositionAmt,
+	// 		ExecutedPositionAmt: item.ClosePositionAmt,
+	// 		AvgPrice:            item.AvgPrice,
+	// 		ExecutedAvgPrice:    item.AvgClosePrice,
+	// 		RealisedProfit:      item.RealisedProfit,
+	// 		Fee:                 item.PositionCommission,
+	// 		Funding:             item.TotalFunding,
+	// 		MarginMode:          mMode,
+	// 		CreateTime:          item.OpenTime,
+	// 		UpdateTime:          item.UpdateTime,
+	// 	})
+	// }
+	return out
+}
+
 func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
 	out = append(out, entity.PlaceOrder{
-		OrderID:       in.Order.OrderID,
+		OrderID:       utils.Int64ToString(in.Order.OrderID),
 		ClientOrderID: in.Order.ClientOrderId,
 		Ts:            time.Now().UTC().UnixMilli(),
 	})
@@ -280,4 +309,39 @@ func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.
 		})
 	}
 	return out
+}
+
+func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
+	for _, item := range answ {
+
+		marginMode := "isolated"
+		hedgeMode := false
+
+		if !item.OnlyOnePosition {
+			hedgeMode = true
+		}
+
+		if !item.Isolated {
+			marginMode = "cross"
+		}
+		res = append(res, entity.Futures_Positions{
+			Symbol:       item.Symbol,
+			PositionSide: item.PositionSide,
+			PositionID:   item.PositionId,
+			PositionSize: item.PositionAmt,
+			EntryPrice:   item.AvgPrice,
+			MarkPrice:    item.MarkPrice,
+			// InitialMargin:    item.Initial_margin,
+			UnRealizedProfit: item.UnrealizedProfit,
+			RealizedProfit:   item.RealisedProfit,
+			Notional:         item.PositionValue,
+			// MarginRatio:      item.Maintenance_rate,
+			Leverage:   utils.Int64ToString(item.Leverage),
+			MarginMode: marginMode,
+			HedgeMode:  hedgeMode,
+			CreateTime: item.CreateTime,
+			UpdateTime: item.UpdateTime,
+		})
+	}
+	return res
 }

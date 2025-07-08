@@ -144,7 +144,7 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 type futures_placeOrder_Response struct {
 	Order struct {
 		Symbol        string `json:"symbol"`
-		OrderID       string `json:"orderID"`
+		OrderID       int64  `json:"orderId"`
 		ClientOrderId string `json:"clientOrderId"`
 	} `json:"order"`
 }

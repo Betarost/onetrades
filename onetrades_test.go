@@ -167,7 +167,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetPositions
 	n = "GetPositions"
 	//FUTURES
-	// printAnswers(gateioFutures.NewGetPositions().Do(ctx))
+	printAnswers(bingxFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
@@ -181,7 +181,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1367428516065452").Do(ctx))
 
 	//FUTURES
-	// printAnswers(bingxFutures.NewCancelOrder().OrderID("186336434877885773").Do(ctx))
+	// printAnswers(bingxFutures.NewCancelOrder().Symbol("TRX-USDT").OrderID("1942486320061566976").Do(ctx))
 	// printAnswers(gateioFutures.NewCancelOrder().OrderID("186336434877885773").Do(ctx))
 
 	//=======================AmendOrder

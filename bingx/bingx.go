@@ -15,7 +15,7 @@ var (
 
 // ===============SPOT=================
 
-type spotClient struct {
+type SpotClient struct {
 	apiKey     string
 	secretKey  string
 	keyType    string
@@ -26,14 +26,14 @@ type spotClient struct {
 	TimeOffset int64
 }
 
-func (c *spotClient) debug(format string, v ...interface{}) {
+func (c *SpotClient) debug(format string, v ...interface{}) {
 	if c.Debug {
 		c.logger.Printf(format, v...)
 	}
 }
 
-func NewSpotClient(apiKey, secretKey string) *spotClient {
-	return &spotClient{
+func NewSpotClient(apiKey, secretKey string) *SpotClient {
+	return &SpotClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
@@ -43,41 +43,41 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 	}
 }
 
-func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
+func (c *SpotClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
-	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetBalance() *spot_getBalance {
+func (c *SpotClient) NewGetBalance() *spot_getBalance {
 	return &spot_getBalance{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewPlaceOrder() *spot_placeOrder {
+func (c *SpotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
+	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
+}
+
+func (c *SpotClient) NewPlaceOrder() *spot_placeOrder {
 	return &spot_placeOrder{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewOrdersHistory() *spot_ordersHistory {
-	return &spot_ordersHistory{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewGetOrderList() *spot_getOrderList {
-	return &spot_getOrderList{callAPI: c.callAPI}
-}
-
-func (c *spotClient) NewCancelOrder() *spot_cancelOrder {
+func (c *SpotClient) NewCancelOrder() *spot_cancelOrder {
 	return &spot_cancelOrder{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewAmendOrder() *spot_amendOrder {
-	return &spot_amendOrder{callAPI: c.callAPI}
+// func (c *SpotClient) NewAmendOrder() *spot_amendOrder {
+// 	return &spot_amendOrder{callAPI: c.callAPI}
+// }
+
+func (c *SpotClient) NewGetOrderList() *spot_getOrderList {
+	return &spot_getOrderList{callAPI: c.callAPI}
+}
+
+func (c *SpotClient) NewOrdersHistory() *spot_ordersHistory {
+	return &spot_ordersHistory{callAPI: c.callAPI}
 }
 
 // ===============FUTURES=================
 
-type futuresClient struct {
+type FuturesClient struct {
 	apiKey     string
 	secretKey  string
 	keyType    string
@@ -88,14 +88,14 @@ type futuresClient struct {
 	TimeOffset int64
 }
 
-func (c *futuresClient) debug(format string, v ...interface{}) {
+func (c *FuturesClient) debug(format string, v ...interface{}) {
 	if c.Debug {
 		c.logger.Printf(format, v...)
 	}
 }
 
-func NewFuturesClient(apiKey, secretKey string) *futuresClient {
-	return &futuresClient{
+func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
+	return &FuturesClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
@@ -105,54 +105,66 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 	}
 }
 
-func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
+func (c *FuturesClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
-	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
-}
-
-func (c *futuresClient) NewGetBalance() *futures_getBalance {
+func (c *FuturesClient) NewGetBalance() *futures_getBalance {
 	return &futures_getBalance{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewGetPositionMode() *futures_getPositionMode {
+func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
+	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetPositionMode() *futures_getPositionMode {
 	return &futures_getPositionMode{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewSetPositionMode() *futures_setPositionMode {
+func (c *FuturesClient) NewSetPositionMode() *futures_setPositionMode {
 	return &futures_setPositionMode{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewGetLeverage() *futures_getLeverage {
+func (c *FuturesClient) NewGetLeverage() *futures_getLeverage {
 	return &futures_getLeverage{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewGetMarginMode() *futures_getMarginMode {
-	return &futures_getMarginMode{callAPI: c.callAPI}
-}
-
-func (c *futuresClient) NewSetMarginMode() *futures_setMarginMode {
-	return &futures_setMarginMode{callAPI: c.callAPI}
-}
-
-func (c *futuresClient) NewSetLeverage() *futures_setLeverage {
+func (c *FuturesClient) NewSetLeverage() *futures_setLeverage {
 	return &futures_setLeverage{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewPositionsHistory() *futures_positionsHistory {
-	return &futures_positionsHistory{callAPI: c.callAPI}
+func (c *FuturesClient) NewGetMarginMode() *futures_getMarginMode {
+	return &futures_getMarginMode{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewPlaceOrder() *futures_placeOrder {
+func (c *FuturesClient) NewSetMarginMode() *futures_setMarginMode {
+	return &futures_setMarginMode{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
 	return &futures_placeOrder{callAPI: c.callAPI}
 }
 
-// func (c *futuresClient) NewCancelOrder() *futures_cancelOrder {
-// 	return &futures_cancelOrder{callAPI: c.callAPI}
+func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
+	return &futures_cancelOrder{callAPI: c.callAPI}
+}
+
+// func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
+// 	return &futures_amendOrder{callAPI: c.callAPI}
 // }
 
-func (c *futuresClient) NewGetOrderList() *futures_getOrderList {
+func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
 	return &futures_getOrderList{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetPositions() *futures_getPositions {
+	return &futures_getPositions{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
+	return &futures_ordersHistory{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
+	return &futures_positionsHistory{callAPI: c.callAPI}
 }
