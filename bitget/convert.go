@@ -75,9 +75,10 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 	}
 	for _, item := range in {
 		out = append(out, entity.AssetsBalance{
-			Asset:   item.Coin,
-			Balance: item.Available,
-			Locked:  item.Locked,
+			Asset: item.Coin,
+			// Balance: item.Available,
+			Balance: utils.FloatToStringAll(utils.StringToFloat(item.Available) + utils.StringToFloat(item.Locked) + utils.StringToFloat(item.Frozen)),
+			Locked:  utils.FloatToStringAll(utils.StringToFloat(item.Frozen) + utils.StringToFloat(item.Locked)),
 		})
 	}
 	return out
@@ -111,12 +112,15 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 		}
 		fee := "0"
 		answ := feeDetailJson{}
-		err := json.Unmarshal([]byte(item.FeeDetail), &answ)
-		if err == nil {
-			fee = utils.FloatToStringAll(answ.NewFees.T)
-		} else {
-			log.Println("=Err convertOrdersHistory=", err)
+		if item.FeeDetail != "" {
+			err := json.Unmarshal([]byte(item.FeeDetail), &answ)
+			if err == nil {
+				fee = utils.FloatToStringAll(answ.NewFees.T)
+			} else {
+				log.Println("=Err convertOrdersHistory=", err)
+			}
 		}
+
 		out = append(out, entity.Spot_OrdersHistory{
 			Symbol:        item.Symbol,
 			OrderID:       item.OrderId,
@@ -129,8 +133,9 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 			Fee:           fee,
 			Type:          strings.ToUpper(item.OrderType),
 			Status:        strings.ToUpper(item.Status),
-			CreateTime:    utils.StringToInt64(item.CTime),
-			UpdateTime:    utils.StringToInt64(item.UTime),
+			// Status:     "FILLED",
+			CreateTime: utils.StringToInt64(item.CTime),
+			UpdateTime: utils.StringToInt64(item.UTime),
 		})
 	}
 	return out
@@ -150,7 +155,7 @@ func (c *spot_converts) convertOrderList(in []spot_orderList) (out []entity.Spot
 			Price:         item.PriceAvg,
 			ExecutedSize:  item.BaseVolume,
 			Type:          strings.ToUpper(item.OrderType),
-			Status:        item.Status,
+			Status:        strings.ToUpper(item.Status),
 			CreateTime:    utils.StringToInt64(item.CTime),
 			UpdateTime:    utils.StringToInt64(item.UTime),
 		})

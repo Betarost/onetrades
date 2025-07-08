@@ -49,7 +49,8 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v2/spot/trade/history-orders",
-		SecType:  utils.SecTypeSigned,
+		// Endpoint: "/api/v2/spot/trade/fills",
+		SecType: utils.SecTypeSigned,
 	}
 
 	m := utils.Params{"status": "FILLED"}
@@ -85,6 +86,24 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 
 	return s.convert.convertOrdersHistory(answ.Result), nil
 }
+
+// type spot_ordersHistory_Response struct {
+// 	Symbol      string `json:"symbol"`
+// 	OrderId     string `json:"orderId"`
+// 	ClientOid   string `json:"clientOid"`
+// 	Side        string `json:"side"`
+// 	Size        string `json:"size"`
+// 	BaseVolume  string `json:"baseVolume"`
+// 	QuoteVolume string `json:"quoteVolume"`
+// 	Price       string `json:"price"`
+// 	PriceAvg    string `json:"priceAvg"`
+// 	FeeDetail   string `json:"feeDetail"`
+
+// 	OrderType string `json:"orderType"`
+// 	Status    string `json:"status"`
+// 	CTime     string `json:"cTime"`
+// 	UTime     string `json:"uTime"`
+// }
 
 type spot_ordersHistory_Response struct {
 	Symbol      string `json:"symbol"`
