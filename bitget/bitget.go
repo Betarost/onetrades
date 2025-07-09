@@ -160,3 +160,11 @@ func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
 func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
 	return &futures_cancelOrder{callAPI: c.callAPI}
 }
+
+func (c *FuturesClient) NewGetPositions() *futures_getPositions {
+	return &futures_getPositions{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
+	return &futures_ordersHistory{callAPI: c.callAPI}
+}

@@ -335,3 +335,95 @@ func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.
 	}
 	return out
 }
+
+func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
+	for _, item := range answ {
+
+		marginMode := "isolated"
+		hedgeMode := false
+
+		if item.PosMode != "one_way_mode" {
+			hedgeMode = true
+		}
+
+		if item.MarginMode == "crossed" {
+			marginMode = "cross"
+		}
+		res = append(res, entity.Futures_Positions{
+			Symbol:       item.Symbol,
+			PositionSide: strings.ToUpper(item.HoldSide),
+			// PositionID:   item.PositionId,
+			PositionSize: item.Available,
+			EntryPrice:   item.OpenPriceAvg,
+			MarkPrice:    item.MarkPrice,
+			// InitialMargin:    item.Initial_margin,
+			UnRealizedProfit: item.UnrealizedPL,
+			RealizedProfit:   item.AchievedProfits,
+			// Notional:         item.PositionValue,
+			// MarginRatio:      item.Maintenance_rate,
+			Leverage:   item.Leverage,
+			MarginMode: marginMode,
+			HedgeMode:  hedgeMode,
+			CreateTime: utils.StringToInt64(item.CreateTime),
+			UpdateTime: utils.StringToInt64(item.UpdateTime),
+		})
+	}
+	return res
+}
+
+func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		marginMode := "isolated"
+		hedgeMode := false
+
+		if item.PosMode != "one_way_mode" {
+			hedgeMode = true
+		}
+
+		if item.MarginMode == "crossed" {
+			marginMode = "cross"
+		}
+
+		// side := strings.ToUpper(item.Side)
+		positionSide := "LONG"
+
+		// if strings.ToUpper(item.PosSide) == "LONG" && strings.ToUpper(item.TradeSide) == "CLOSE" {
+		// 	side = "SELL"
+		// } else if strings.ToUpper(item.PosSide) == "SHORT" && strings.ToUpper(item.TradeSide) == "CLOSE" {
+		// 	side = "BUY"
+		// }
+		if item.PosSide == "net" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PosSide)
+		}
+		out = append(out, entity.Futures_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.ClientOid,
+			// PositionID:     utils.Int64ToString(item.PositionID),
+			Side:           strings.ToUpper(item.Side),
+			PositionSide:   strings.ToUpper(positionSide),
+			PositionSize:   item.Size,
+			ExecutedSize:   item.BaseVolume,
+			Price:          item.Price,
+			ExecutedPrice:  item.PriceAvg,
+			RealisedProfit: item.TotalProfits,
+			Fee:            item.Fee,
+			Type:           strings.ToUpper(item.OrderType),
+			Leverage:       item.Leverage,
+			Status:         strings.ToUpper(item.Status),
+			HedgeMode:      hedgeMode,
+			MarginMode:     marginMode,
+			CreateTime:     utils.StringToInt64(item.CTime),
+			UpdateTime:     utils.StringToInt64(item.UTime),
+		})
+	}
+	return out
+}
