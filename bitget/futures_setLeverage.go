@@ -57,7 +57,7 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	}
 
 	if s.positionSide != nil {
-		m["side"] = strings.ToLower(string(*s.positionSide))
+		m["holdSide"] = strings.ToLower(string(*s.positionSide))
 	}
 
 	r.SetFormParams(m)
@@ -68,7 +68,7 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	}
 
 	var answ struct {
-		Result futures_leverage `json:"data"`
+		Result futures_leverage_extra `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -76,5 +76,13 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, err
 	}
 
-	return s.convert.convertLeverage(answ.Result), nil
+	return s.convert.convertLeverage_extra(answ.Result), nil
+}
+
+type futures_leverage_extra struct {
+	Symbol                string `json:"symbol"`
+	MarginMode            string `json:"marginMode"`
+	CrossedMarginLeverage string `json:"crossMarginLeverage"`
+	IsolatedLongLever     string `json:"longLeverage"`
+	IsolatedShortLever    string `json:"shortLeverage"`
 }

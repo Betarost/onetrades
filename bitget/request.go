@@ -27,7 +27,7 @@ func (e aPIError) IsValid() bool {
 }
 
 // ===============SPOT=================
-func (c *spotClient) callAPI(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error) {
+func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error) {
 	r.BaseURL = c.BaseURL
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
@@ -93,7 +93,7 @@ func (c *spotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 
 // ===============FUTURES=================
 
-func (c *futuresClient) callAPI(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error) {
+func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error) {
 	r.BaseURL = c.BaseURL
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey

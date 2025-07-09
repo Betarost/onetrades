@@ -2,7 +2,6 @@ package bitget
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"strings"
 	"time"
@@ -226,7 +225,39 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
 
 	out.Symbol = in.Symbol
-	out.Leverage = fmt.Sprintf("%d", in.CrossedMarginLeverage)
+
+	if in.MarginMode == "crossed" {
+		out.Leverage = utils.Int64ToString(in.CrossedMarginLeverage)
+		out.LongLeverage = utils.Int64ToString(in.CrossedMarginLeverage)
+		out.ShortLeverage = utils.Int64ToString(in.CrossedMarginLeverage)
+	} else {
+		out.LongLeverage = utils.Int64ToString(in.IsolatedLongLever)
+		out.ShortLeverage = utils.Int64ToString(in.IsolatedShortLever)
+	}
+	return out
+}
+
+func (c *futures_converts) convertLeverage_extra(in futures_leverage_extra) (out entity.Futures_Leverage) {
+
+	out.Symbol = in.Symbol
+
+	if in.MarginMode == "crossed" {
+		out.Leverage = in.CrossedMarginLeverage
+		out.LongLeverage = in.CrossedMarginLeverage
+		out.ShortLeverage = in.CrossedMarginLeverage
+	} else {
+		out.LongLeverage = in.IsolatedLongLever
+		out.ShortLeverage = in.IsolatedShortLever
+	}
+	return out
+}
+
+func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
+	out = append(out, entity.PlaceOrder{
+		OrderID:       in.OrderId,
+		ClientOrderID: in.ClientOid,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
 	return out
 }
 
@@ -257,6 +288,49 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 			MarginMode:          mMode,
 			CreateTime:          utils.StringToInt64(item.CTime),
 			UpdateTime:          utils.StringToInt64(item.UTime),
+		})
+	}
+	return out
+}
+
+func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.Futures_OrdersList) {
+	if len(in.Orders) == 0 {
+		return out
+	}
+
+	for _, item := range in.Orders {
+
+		side := strings.ToUpper(item.Side)
+		positionSide := "LONG"
+
+		if strings.ToUpper(item.PositionSide) == "LONG" && strings.ToUpper(item.TradeSide) == "CLOSE" {
+			side = "SELL"
+		} else if strings.ToUpper(item.PositionSide) == "SHORT" && strings.ToUpper(item.TradeSide) == "CLOSE" {
+			side = "BUY"
+		}
+		if item.PositionSide == "net" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PositionSide)
+		}
+
+		out = append(out, entity.Futures_OrdersList{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.ClientOrderId,
+			// PositionID:    fmt.Sprintf("%d", item.PositionID),
+			Side:         side,
+			PositionSide: positionSide,
+			Type:         strings.ToUpper(item.Type),
+			PositionSize: item.Size,
+			ExecutedSize: item.BaseVolume,
+			Price:        item.Price,
+			Leverage:     item.Leverage,
+			Status:       strings.ToUpper(item.Status),
+			CreateTime:   utils.StringToInt64(item.Time),
+			UpdateTime:   utils.StringToInt64(item.UpdateTime),
 		})
 	}
 	return out

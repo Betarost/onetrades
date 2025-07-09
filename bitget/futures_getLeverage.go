@@ -39,7 +39,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result futures_leverage `json:"data"`
 	}
@@ -56,6 +55,7 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 
 type futures_leverage struct {
 	Symbol                string `json:"symbol"`
+	MarginMode            string `json:"marginMode"`
 	CrossedMarginLeverage int64  `json:"crossedMarginLeverage"`
 	IsolatedLongLever     int64  `json:"isolatedLongLever"`
 	IsolatedShortLever    int64  `json:"isolatedShortLever"`
