@@ -234,8 +234,8 @@ func createHeaders(r *utils.Request) error {
 		header = r.Header.Clone()
 	}
 
-	// header.Set("Accept", "application/json")
-	// header.Set("Content-Type", "application/json")
+	header.Set("Accept", "application/json")
+	header.Set("Content-Type", "application/json")
 	if r.SecType == utils.SecTypeSigned {
 		header.Set("KEY", r.TmpApi)
 		header.Set("SIGN", r.Sign)

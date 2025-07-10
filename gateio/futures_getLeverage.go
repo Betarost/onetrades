@@ -39,7 +39,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-
 	var answ []futures_leverage
 
 	err = json.Unmarshal(data, &answ)

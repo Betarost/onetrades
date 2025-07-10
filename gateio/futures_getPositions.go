@@ -42,7 +42,6 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-
 	answ := []futures_Position{}
 
 	err = json.Unmarshal(data, &answ)
@@ -53,17 +52,18 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 }
 
 type futures_Position struct {
-	Contract         string `json:"contract"`
-	Value            string `json:"value"`
-	Leverage         string `json:"leverage"`
-	Mode             string `json:"mode"`
-	Entry_price      string `json:"entry_price"`
-	Mark_price       string `json:"mark_price"`
-	Realised_pnl     string `json:"realised_pnl"`
-	Unrealised_pnl   string `json:"unrealised_pnl"`
-	Size             int64  `json:"size"`
-	Maintenance_rate string `json:"maintenance_rate"`
-	Initial_margin   string `json:"initial_margin"`
-	Open_time        int64  `json:"open_time"`
-	Update_time      int64  `json:"update_time"`
+	Contract             string `json:"contract"`
+	Value                string `json:"value"`
+	Leverage             string `json:"leverage"`
+	Cross_leverage_limit string `json:"cross_leverage_limit"`
+	Mode                 string `json:"mode"`
+	Entry_price          string `json:"entry_price"`
+	Mark_price           string `json:"mark_price"`
+	Realised_pnl         string `json:"realised_pnl"`
+	Unrealised_pnl       string `json:"unrealised_pnl"`
+	Size                 int64  `json:"size"`
+	Maintenance_rate     string `json:"maintenance_rate"`
+	Initial_margin       string `json:"initial_margin"`
+	Open_time            int64  `json:"open_time"`
+	Update_time          int64  `json:"update_time"`
 }

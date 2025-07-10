@@ -26,7 +26,6 @@ func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (
 	if err != nil {
 		return res, err
 	}
-
 	answ := []spot_Balance{}
 
 	err = json.Unmarshal(data, &answ)

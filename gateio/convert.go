@@ -48,7 +48,6 @@ func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out [
 		if item.Trade_status == "tradable" {
 			item.Trade_status = "LIVE"
 		}
-
 		rec := entity.Spot_InstrumentsInfo{
 			Symbol:         item.ID,
 			Base:           item.Base,
@@ -70,8 +69,9 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 	}
 	for _, item := range in {
 		out = append(out, entity.AssetsBalance{
-			Asset:   item.Currency,
-			Balance: item.Available,
+			Asset: item.Currency,
+			// Balance: item.Available,
+			Balance: utils.FloatToStringAll(utils.StringToFloat(item.Available) + utils.StringToFloat(item.Locked)),
 			Locked:  item.Locked,
 		})
 	}
@@ -92,7 +92,7 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 			Size:          item.Amount,
 			Price:         item.Price,
 			ExecutedSize:  item.Filled_amount,
-			ExecutedPrice: item.Fill_price,
+			ExecutedPrice: item.Avg_deal_price,
 			Fee:           item.Fee,
 			Type:          strings.ToUpper(item.Type),
 			Status:        strings.ToUpper(item.Finish_as),
@@ -129,7 +129,7 @@ func (c *spot_converts) convertOrderList(in []spot_orderList) (out []entity.Spot
 				Price:         item.Price,
 				ExecutedSize:  item.Filled_amount,
 				Type:          strings.ToUpper(item.Type),
-				Status:        item.Status,
+				Status:        strings.ToUpper(item.Status),
 				CreateTime:    item.Create_time,
 				UpdateTime:    item.Update_time,
 			})
@@ -223,20 +223,33 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		} else {
 			positionSide = strings.ToUpper(item.Mode)
 		}
+		leverage := item.Cross_leverage_limit
+		hedgeMode := false
+		marginMode := "cross"
 
+		if item.Leverage != "0" {
+			marginMode = "isolated"
+			leverage = item.Leverage
+		}
+
+		if item.Mode != "single" {
+			hedgeMode = true
+		}
 		res = append(res, entity.Futures_Positions{
 			Symbol:       item.Contract,
 			PositionSide: positionSide,
-			// PositionID:       item.PosID,
 			PositionSize: fmt.Sprintf("%d", item.Size),
-			EntryPrice:   item.Entry_price,
-			MarkPrice:    item.Mark_price,
-			// InitialMargin:    item.Initial_margin,
+			Leverage:     leverage,
+			// PositionID:       item.PosID,
+			EntryPrice:       item.Entry_price,
+			MarkPrice:        item.Mark_price,
 			UnRealizedProfit: item.Unrealised_pnl,
 			RealizedProfit:   item.Realised_pnl,
 			Notional:         item.Value,
-			// MarginRatio:      item.Maintenance_rate,
-			UpdateTime: item.Update_time,
+			HedgeMode:        hedgeMode,
+			MarginMode:       marginMode,
+			CreateTime:       item.Open_time,
+			UpdateTime:       item.Update_time,
 		})
 	}
 	return res
@@ -245,6 +258,12 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {
 	for _, item := range answ {
 		positionSide := "LONG"
+		side := "BUY"
+		if item.Size < 0 {
+			positionSide = "SHORT"
+			side = "SELL"
+
+		}
 		// if item.PosSide == "net" {
 		// 	if strings.ToUpper(item.Side) == "SELL" {
 		// 		positionSide = "SHORT"
@@ -257,18 +276,15 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 			Symbol:        item.Contract,
 			OrderID:       fmt.Sprintf("%d", item.ID),
 			ClientOrderID: item.Text,
-			PositionSide:  positionSide,
-			// Side:          item.Side,
+			// PositionID: ,
+			Side:         side,
+			PositionSide: positionSide,
 			PositionSize: fmt.Sprintf("%d", item.Size),
-			Price:        item.Price,
-			// TpPrice:       tp,
-			// SlPrice:       sl,
-			// Type:          strings.ToUpper(item.OrdType),
-			// TradeMode:     item.TdMode,
-			// InstType:      item.InstType,
+			// ExecutedSize: utils.Int64ToString(item.Left),
+			Price: item.Price,
 			// Leverage:      item.Lever,
-			// Status:        item.State,
-			// IsTpLimit:     b,
+			Type:       "LIMIT",
+			Status:     strings.ToUpper(item.Status),
 			CreateTime: int64(item.Create_time),
 			UpdateTime: int64(item.Update_time),
 		})

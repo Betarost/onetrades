@@ -75,7 +75,6 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-
 	answ := []spot_ordersHistory_Response{}
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
@@ -86,18 +85,19 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 }
 
 type spot_ordersHistory_Response struct {
-	Currency_pair string `json:"currency_pair"`
-	ID            string `json:"id"`
-	Text          string `json:"text"`
-	Side          string `json:"side"`
-	Amount        string `json:"amount"`
-	Filled_amount string `json:"filled_amount"`
-	Price         string `json:"price"`
-	Fill_price    string `json:"fill_price"`
-	Fee           string `json:"fee"`
-	Type          string `json:"type"`
-	Status        string `json:"status"`
-	Finish_as     string `json:"finish_as"`
-	Create_time   int64  `json:"create_time_ms"`
-	Update_time   int64  `json:"update_time_ms"`
+	Currency_pair  string `json:"currency_pair"`
+	ID             string `json:"id"`
+	Text           string `json:"text"`
+	Side           string `json:"side"`
+	Amount         string `json:"amount"`
+	Filled_amount  string `json:"filled_amount"`
+	Price          string `json:"price"`
+	Fill_price     string `json:"fill_price"`
+	Avg_deal_price string `json:"avg_deal_price"`
+	Fee            string `json:"fee"`
+	Type           string `json:"type"`
+	Status         string `json:"status"`
+	Finish_as      string `json:"finish_as"`
+	Create_time    int64  `json:"create_time_ms"`
+	Update_time    int64  `json:"update_time_ms"`
 }

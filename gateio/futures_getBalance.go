@@ -36,7 +36,6 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-
 	answ := futures_Balance{}
 
 	err = json.Unmarshal(data, &answ)
