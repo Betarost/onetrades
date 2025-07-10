@@ -14,8 +14,8 @@ type futures_getLeverage struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol    *string
-	tradeMode *entity.MarginModeType
+	symbol     *string
+	marginMode *entity.MarginModeType
 }
 
 func (s *futures_getLeverage) Symbol(symbol string) *futures_getLeverage {
@@ -23,8 +23,8 @@ func (s *futures_getLeverage) Symbol(symbol string) *futures_getLeverage {
 	return s
 }
 
-func (s *futures_getLeverage) TradeMode(tradeMode entity.MarginModeType) *futures_getLeverage {
-	s.tradeMode = &tradeMode
+func (s *futures_getLeverage) MarginMode(marginMode entity.MarginModeType) *futures_getLeverage {
+	s.marginMode = &marginMode
 	return s
 }
 
@@ -41,8 +41,8 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		m["instId"] = *s.symbol
 	}
 
-	if s.tradeMode != nil {
-		switch *s.tradeMode {
+	if s.marginMode != nil {
+		switch *s.marginMode {
 		case entity.MarginModeTypeCross:
 			m["mgnMode"] = "cross"
 		case entity.MarginModeTypeIsolated:
@@ -56,7 +56,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []futures_leverage `json:"data"`
 	}
@@ -70,10 +69,11 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, errors.New("Zero Answer")
 	}
 
-	return s.convert.convertLeverage(answ.Result[0]), nil
+	return s.convert.convertLeverage(answ.Result), nil
 }
 
 type futures_leverage struct {
-	InstId string `json:"instId"`
-	Lever  string `json:"lever"`
+	InstId  string `json:"instId"`
+	Lever   string `json:"lever"`
+	PosSide string `json:"posSide"`
 }

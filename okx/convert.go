@@ -1,7 +1,6 @@
 package okx
 
 import (
-	"strconv"
 	"strings"
 	"time"
 
@@ -131,7 +130,7 @@ func (c *spot_converts) convertOrderList(answ []spot_orderList) (res []entity.Sp
 			Side:          strings.ToUpper(item.Side),
 			Price:         item.Px,
 			Type:          strings.ToUpper(item.OrdType),
-			Status:        item.State,
+			Status:        strings.ToUpper(item.State),
 			CreateTime:    utils.StringToInt64(item.CTime),
 			UpdateTime:    utils.StringToInt64(item.UTime),
 		})
@@ -184,10 +183,40 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 	return out
 }
 
-func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
+func (c *futures_converts) convertLeverage(in []futures_leverage) (out entity.Futures_Leverage) {
+	if len(in) == 0 {
+		return out
+	} else if len(in) == 1 {
+		out.Symbol = in[0].InstId
+		out.Leverage = in[0].Lever
+		out.LongLeverage = in[0].Lever
+		out.ShortLeverage = in[0].Lever
+	} else if len(in) == 2 {
+		out.Symbol = in[0].InstId
+		for _, item := range in {
+			switch strings.ToUpper(item.PosSide) {
+			case "LONG":
+				out.LongLeverage = item.Lever
+			case "SHORT":
+				out.ShortLeverage = item.Lever
+			}
+		}
+	}
 
-	out.Symbol = in.InstId
-	out.Leverage = in.Lever
+	return out
+}
+
+func (c *futures_converts) convertPlaceOrder(in []placeOrder_Response) (out []entity.PlaceOrder) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		out = append(out, entity.PlaceOrder{
+			OrderID:       item.OrdId,
+			ClientOrderID: item.ClOrdId,
+			Ts:            time.Now().UTC().UnixMilli(),
+		})
+	}
 	return out
 }
 
@@ -220,54 +249,58 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 	return out
 }
 
-// =======OLD
-
-func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
-	if len(in) == 0 {
-		return out
-	}
-	for _, item := range in {
-		r := entity.TradingAccountBalance{
-			TotalEquity:      item.TotalEq,
-			AvailableEquity:  item.AvailEq,
-			NotionalUsd:      item.NotionalUsd,
-			UnrealizedProfit: item.Upl,
-			UpdateTime:       utils.StringToInt64(item.UTime),
-		}
-		for _, item := range item.Details {
-			r.Assets = append(r.Assets, entity.TradingAccountBalanceDetails{
-				Asset:            item.Ccy,
-				Balance:          item.CashBal,
-				EquityBalance:    item.Eq,
-				AvailableBalance: item.AvailBal,
-				AvailableEquity:  item.AvailEq,
-				UnrealizedProfit: item.Upl,
-			})
+func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {
+	for _, item := range answ {
+		positionSide := "LONG"
+		if item.PosSide == "net" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PosSide)
 		}
 
-		out = append(out, r)
-	}
-	return out
-}
+		// tp := ""
+		// sl := ""
+		// if len(item.AttachAlgoOrds) > 0 {
+		// 	if item.AttachAlgoOrds[0].TpOrdPx != "-1" && item.AttachAlgoOrds[0].TpOrdPx != "" {
+		// 		tp = item.AttachAlgoOrds[0].TpOrdPx
+		// 	} else if item.AttachAlgoOrds[0].TpTriggerPx != "-1" && item.AttachAlgoOrds[0].TpTriggerPx != "" {
+		// 		tp = item.AttachAlgoOrds[0].TpTriggerPx
+		// 	}
 
-func convertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAccountBalance) {
-	if len(in) == 0 {
-		return out
-	}
-
-	for _, item := range in {
-		out = append(out, entity.FundingAccountBalance{
-			Asset:            item.Ccy,
-			Balance:          item.Bal,
-			AvailableBalance: item.AvailBal,
-			FrozenBalance:    item.FrozenBal,
+		// 	if item.AttachAlgoOrds[0].SlOrdPx != "-1" && item.AttachAlgoOrds[0].SlOrdPx != "" {
+		// 		sl = item.AttachAlgoOrds[0].SlOrdPx
+		// 	} else if item.AttachAlgoOrds[0].SlTriggerPx != "-1" && item.AttachAlgoOrds[0].SlTriggerPx != "" {
+		// 		sl = item.AttachAlgoOrds[0].SlTriggerPx
+		// 	}
+		// }
+		// b, _ := strconv.ParseBool(item.IsTpLimit)
+		res = append(res, entity.Futures_OrdersList{
+			Symbol:        item.InstId,
+			OrderID:       item.OrdId,
+			ClientOrderID: item.ClOrdId,
+			PositionSide:  positionSide,
+			Side:          strings.ToUpper(item.Side),
+			PositionSize:  item.Sz,
+			ExecutedSize:  item.FillSz,
+			Price:         item.Px,
+			// TpPrice:       tp,
+			// SlPrice:       sl,
+			Type:       strings.ToUpper(item.OrdType),
+			MarginMode: item.TdMode,
+			// InstType:      item.InstType,
+			Leverage: item.Lever,
+			Status:   strings.ToUpper(item.State),
+			// IsTpLimit:     b,
+			CreateTime: utils.StringToInt64(item.CTime),
+			UpdateTime: utils.StringToInt64(item.UTime),
 		})
 	}
-
-	return out
+	return res
 }
 
-func futures_convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
+func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
 		positionSide := "LONG"
 		if item.PosSide == "net" {
@@ -278,124 +311,33 @@ func futures_convertPositions(answ []futures_Position) (res []entity.Futures_Pos
 			positionSide = strings.ToUpper(item.PosSide)
 		}
 
+		hedgeMode := false
+
+		if item.PosSide != "net" {
+			hedgeMode = true
+
+		}
 		res = append(res, entity.Futures_Positions{
 			Symbol:           item.InstID,
 			PositionSide:     positionSide,
+			PositionSize:     item.Pos,
+			Leverage:         item.Lever,
 			PositionID:       item.PosID,
-			PositionAmt:      item.Pos,
 			EntryPrice:       item.AvgPx,
 			MarkPrice:        item.MarkPx,
-			InitialMargin:    item.Imr,
 			UnRealizedProfit: item.Upl,
 			RealizedProfit:   item.RealizedPnl,
 			Notional:         item.NotionalUsd,
-			MarginRatio:      item.MgnRatio,
-			AutoDeleveraging: item.ADL,
+			HedgeMode:        hedgeMode,
+			MarginMode:       strings.ToLower(item.MgnMode),
+			CreateTime:       utils.StringToInt64(item.CTime),
 			UpdateTime:       utils.StringToInt64(item.UTime),
 		})
 	}
 	return res
 }
 
-func convertOrderList(answ []orderList) (res []entity.OrdersPendingList) {
-	for _, item := range answ {
-		positionSide := "LONG"
-		if item.PosSide == "net" {
-			if strings.ToUpper(item.Side) == "SELL" {
-				positionSide = "SHORT"
-			}
-		} else {
-			positionSide = strings.ToUpper(item.PosSide)
-		}
-
-		tp := ""
-		sl := ""
-		if len(item.AttachAlgoOrds) > 0 {
-			if item.AttachAlgoOrds[0].TpOrdPx != "-1" && item.AttachAlgoOrds[0].TpOrdPx != "" {
-				tp = item.AttachAlgoOrds[0].TpOrdPx
-			} else if item.AttachAlgoOrds[0].TpTriggerPx != "-1" && item.AttachAlgoOrds[0].TpTriggerPx != "" {
-				tp = item.AttachAlgoOrds[0].TpTriggerPx
-			}
-
-			if item.AttachAlgoOrds[0].SlOrdPx != "-1" && item.AttachAlgoOrds[0].SlOrdPx != "" {
-				sl = item.AttachAlgoOrds[0].SlOrdPx
-			} else if item.AttachAlgoOrds[0].SlTriggerPx != "-1" && item.AttachAlgoOrds[0].SlTriggerPx != "" {
-				sl = item.AttachAlgoOrds[0].SlTriggerPx
-			}
-		}
-		b, _ := strconv.ParseBool(item.IsTpLimit)
-		res = append(res, entity.OrdersPendingList{
-			Symbol:        item.InstId,
-			OrderID:       item.OrdId,
-			ClientOrderID: item.ClOrdId,
-			PositionSide:  positionSide,
-			Side:          item.Side,
-			PositionAmt:   item.Sz,
-			Price:         item.Px,
-			TpPrice:       tp,
-			SlPrice:       sl,
-			Type:          strings.ToUpper(item.OrdType),
-			TradeMode:     item.TdMode,
-			InstType:      item.InstType,
-			Leverage:      item.Lever,
-			Status:        item.State,
-			IsTpLimit:     b,
-			CreateTime:    utils.StringToInt64(item.CTime),
-			UpdateTime:    utils.StringToInt64(item.UTime),
-		})
-	}
-	return res
-}
-
-func futures_convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {
-	for _, item := range answ {
-		positionSide := "LONG"
-		if item.PosSide == "net" {
-			if strings.ToUpper(item.Side) == "SELL" {
-				positionSide = "SHORT"
-			}
-		} else {
-			positionSide = strings.ToUpper(item.PosSide)
-		}
-
-		tp := ""
-		sl := ""
-		if len(item.AttachAlgoOrds) > 0 {
-			if item.AttachAlgoOrds[0].TpOrdPx != "-1" && item.AttachAlgoOrds[0].TpOrdPx != "" {
-				tp = item.AttachAlgoOrds[0].TpOrdPx
-			} else if item.AttachAlgoOrds[0].TpTriggerPx != "-1" && item.AttachAlgoOrds[0].TpTriggerPx != "" {
-				tp = item.AttachAlgoOrds[0].TpTriggerPx
-			}
-
-			if item.AttachAlgoOrds[0].SlOrdPx != "-1" && item.AttachAlgoOrds[0].SlOrdPx != "" {
-				sl = item.AttachAlgoOrds[0].SlOrdPx
-			} else if item.AttachAlgoOrds[0].SlTriggerPx != "-1" && item.AttachAlgoOrds[0].SlTriggerPx != "" {
-				sl = item.AttachAlgoOrds[0].SlTriggerPx
-			}
-		}
-		b, _ := strconv.ParseBool(item.IsTpLimit)
-		res = append(res, entity.Futures_OrdersList{
-			Symbol:        item.InstId,
-			OrderID:       item.OrdId,
-			ClientOrderID: item.ClOrdId,
-			PositionSide:  positionSide,
-			Side:          item.Side,
-			PositionAmt:   item.Sz,
-			Price:         item.Px,
-			TpPrice:       tp,
-			SlPrice:       sl,
-			Type:          strings.ToUpper(item.OrdType),
-			TradeMode:     item.TdMode,
-			InstType:      item.InstType,
-			Leverage:      item.Lever,
-			Status:        item.State,
-			IsTpLimit:     b,
-			CreateTime:    utils.StringToInt64(item.CTime),
-			UpdateTime:    utils.StringToInt64(item.UTime),
-		})
-	}
-	return res
-}
+// =======OLD
 
 func convertPlaceOrder(in []placeOrder_Response) (out []entity.PlaceOrder) {
 	if len(in) == 0 {

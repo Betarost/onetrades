@@ -42,7 +42,6 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []futures_instrumentsInfo `json:"data"`
 	}

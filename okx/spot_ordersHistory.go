@@ -79,7 +79,6 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []spot_ordersHistory_Response `json:"data"`
 	}

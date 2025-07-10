@@ -90,5 +90,47 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, errors.New("Zero Answer")
 	}
 
-	return s.convert.convertLeverage(answ.Result[0]), nil
+	//=== Проверка плечей
+
+	r2 := &utils.Request{
+		Method:   http.MethodGet,
+		Endpoint: "/api/v5/account/leverage-info",
+		SecType:  utils.SecTypeSigned,
+	}
+
+	m2 := utils.Params{}
+
+	if s.symbol != nil {
+		m2["instId"] = *s.symbol
+	}
+
+	if s.marginMode != nil {
+		switch *s.marginMode {
+		case entity.MarginModeTypeCross:
+			m2["mgnMode"] = "cross"
+		case entity.MarginModeTypeIsolated:
+			m2["mgnMode"] = "isolated"
+		}
+	}
+
+	r2.SetParams(m2)
+
+	data2, _, err := s.callAPI(ctx, r2, opts...)
+	if err != nil {
+		return res, err
+	}
+	var answ2 struct {
+		Result []futures_leverage `json:"data"`
+	}
+
+	err = json.Unmarshal(data2, &answ2)
+	if err != nil {
+		return res, err
+	}
+
+	if len(answ2.Result) == 0 {
+		return res, errors.New("Zero Answer")
+	}
+
+	return s.convert.convertLeverage(answ2.Result), nil
 }
