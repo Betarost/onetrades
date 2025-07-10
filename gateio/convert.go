@@ -292,6 +292,43 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 	return res
 }
 
+func (c *futures_converts) convertOrdersHistory(answ []futures_ordersHistory_Response) (res []entity.Futures_OrdersHistory) {
+	for _, item := range answ {
+		positionSide := "LONG"
+		side := "BUY"
+		if item.Size < 0 {
+			positionSide = "SHORT"
+			side = "SELL"
+
+		}
+		// if item.PosSide == "net" {
+		// 	if strings.ToUpper(item.Side) == "SELL" {
+		// 		positionSide = "SHORT"
+		// 	}
+		// } else {
+		// 	positionSide = strings.ToUpper(item.PosSide)
+		// }
+
+		res = append(res, entity.Futures_OrdersHistory{
+			Symbol:        item.Contract,
+			OrderID:       fmt.Sprintf("%d", item.ID),
+			ClientOrderID: item.Text,
+			// PositionID: ,
+			Side:         side,
+			PositionSide: positionSide,
+			PositionSize: fmt.Sprintf("%d", item.Size),
+			ExecutedSize: utils.Int64ToString(item.Size),
+			Price:        item.Price,
+			// Leverage:      item.Lever,
+			// Type:       "LIMIT",
+			Status:     strings.ToUpper(item.Status),
+			CreateTime: int64(item.Create_time),
+			UpdateTime: int64(item.Update_time),
+		})
+	}
+	return res
+}
+
 func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
 	if len(in) == 0 {
 		return out
