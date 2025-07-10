@@ -231,6 +231,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================PositionsHistory
 	n = "PositionsHistory"
@@ -239,7 +240,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewPositionsHistory().Do(ctx)) // processing
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewPositionsHistory().Do(ctx))
-	// printAnswers(okxFutures.NewPositionsHistory().Do(ctx))
+	printAnswers(okxFutures.NewPositionsHistory().Do(ctx))
 
 	//=======================GetPositionMode
 	n = "GetPositionMode"

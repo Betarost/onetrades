@@ -176,3 +176,7 @@ func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
 func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
 	return &futures_placeOrder{callAPI: c.callAPI}
 }
+
+func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
+	return &futures_ordersHistory{callAPI: c.callAPI}
+}
