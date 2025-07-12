@@ -15,7 +15,7 @@ var (
 
 // ===============SPOT=================
 
-type spotClient struct {
+type SpotClient struct {
 	apiKey     string
 	secretKey  string
 	keyType    string
@@ -26,14 +26,14 @@ type spotClient struct {
 	TimeOffset int64
 }
 
-func (c *spotClient) debug(format string, v ...interface{}) {
+func (c *SpotClient) debug(format string, v ...interface{}) {
 	if c.Debug {
 		c.logger.Printf(format, v...)
 	}
 }
 
-func NewSpotClient(apiKey, secretKey string) *spotClient {
-	return &spotClient{
+func NewSpotClient(apiKey, secretKey string) *SpotClient {
+	return &SpotClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
@@ -43,37 +43,37 @@ func NewSpotClient(apiKey, secretKey string) *spotClient {
 	}
 }
 
-func (c *spotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
+func (c *SpotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
 	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetAccountInfo() *getAccountInfo {
+func (c *SpotClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetBalance() *spot_getBalance {
+func (c *SpotClient) NewGetBalance() *spot_getBalance {
 	return &spot_getBalance{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewOrdersHistory() *spot_ordersHistory {
+func (c *SpotClient) NewOrdersHistory() *spot_ordersHistory {
 	return &spot_ordersHistory{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewPlaceOrder() *spot_placeOrder {
+func (c *SpotClient) NewPlaceOrder() *spot_placeOrder {
 	return &spot_placeOrder{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewGetOrderList() *spot_getOrderList {
+func (c *SpotClient) NewGetOrderList() *spot_getOrderList {
 	return &spot_getOrderList{callAPI: c.callAPI}
 }
 
-func (c *spotClient) NewCancelOrder() *spot_cancelOrder {
+func (c *SpotClient) NewCancelOrder() *spot_cancelOrder {
 	return &spot_cancelOrder{callAPI: c.callAPI}
 }
 
 // ===============FUTURES=================
 
-type futuresClient struct {
+type FuturesClient struct {
 	apiKey     string
 	secretKey  string
 	keyType    string
@@ -84,14 +84,14 @@ type futuresClient struct {
 	TimeOffset int64
 }
 
-func (c *futuresClient) debug(format string, v ...interface{}) {
+func (c *FuturesClient) debug(format string, v ...interface{}) {
 	if c.Debug {
 		c.logger.Printf(format, v...)
 	}
 }
 
-func NewFuturesClient(apiKey, secretKey string) *futuresClient {
-	return &futuresClient{
+func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
+	return &FuturesClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,
 		keyType:   utils.KeyTypeHmac,
@@ -101,14 +101,14 @@ func NewFuturesClient(apiKey, secretKey string) *futuresClient {
 	}
 }
 
-func (c *futuresClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
+func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewGetAccountInfo() *getAccountInfo {
+func (c *FuturesClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *futuresClient) NewGetBalance() *futures_getBalance {
+func (c *FuturesClient) NewGetBalance() *futures_getBalance {
 	return &futures_getBalance{callAPI: c.callAPI}
 }

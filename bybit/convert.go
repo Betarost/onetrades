@@ -143,7 +143,7 @@ func (c *spot_converts) convertOrderList(in []spot_orderList) (out []entity.Spot
 			Price:         item.Price,
 			ExecutedSize:  item.CumExecQty,
 			Type:          strings.ToUpper(item.OrderType),
-			Status:        item.OrderStatus,
+			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),
 			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
 		})
