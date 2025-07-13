@@ -211,70 +211,169 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 	}
 
 	for _, item := range in {
-		mMode := "cross"
-		if item.Isolated {
-			mMode = "isolated"
+		positionSide := ""
+		switch item.PositionIdx {
+		case 0:
+			if strings.ToUpper(item.Side) == "BUY" {
+				positionSide = "LONG"
+			} else {
+				positionSide = "SHORT"
+			}
+		case 1:
+			positionSide = "LONG"
+		case 2:
+			positionSide = "SHORT"
 		}
 		out = append(out, entity.Futures_PositionsHistory{
-			Symbol:              item.Symbol,
-			PositionID:          item.PositionId,
-			PositionSide:        strings.ToUpper(item.PositionSide),
-			PositionAmt:         item.PositionAmt,
-			ExecutedPositionAmt: item.ClosePositionAmt,
-			AvgPrice:            item.AvgPrice,
-			ExecutedAvgPrice:    item.AvgClosePrice,
-			RealisedProfit:      item.RealisedProfit,
-			Fee:                 item.PositionCommission,
-			Funding:             item.TotalFunding,
-			MarginMode:          mMode,
-			CreateTime:          item.OpenTime,
-			UpdateTime:          item.UpdateTime,
+			Symbol: item.Symbol,
+			// PositionID:          item.PositionId,
+			PositionSide:        positionSide,
+			PositionAmt:         item.Qty,
+			ExecutedPositionAmt: item.ClosedSize,
+			AvgPrice:            item.AvgEntryPrice,
+			ExecutedAvgPrice:    item.AvgExitPrice,
+			RealisedProfit:      item.ClosedPnl,
+			Fee:                 utils.FloatToStringAll(utils.StringToFloat(item.OpenFee) + utils.StringToFloat(item.CloseFee)),
+			// Funding:             item.TotalFunding,
+			// MarginMode:          mMode,
+			CreateTime: utils.StringToInt64(item.CreatedTime),
+			UpdateTime: utils.StringToInt64(item.UpdatedTime),
 		})
 	}
 	return out
 }
 
-// ======================OLD
-func convertTradingAccountBalance(in []tradingBalance) (out []entity.TradingAccountBalance) {
-	if len(in) == 0 {
-		return out
-	}
+func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
 
-	for _, item := range in {
-		r := entity.TradingAccountBalance{
-			TotalEquity:      item.TotalEquity,
-			AvailableEquity:  item.TotalAvailableBalance,
-			UnrealizedProfit: item.TotalPerpUPL,
-			UpdateTime:       time.Now().UnixMilli(),
-		}
-		for _, i := range item.Coin {
-			r.Assets = append(r.Assets, entity.TradingAccountBalanceDetails{
-				Asset:            i.Coin,
-				Balance:          i.WalletBalance,
-				EquityBalance:    i.Equity,
-				AvailableBalance: i.AvailableToWithdraw,
-				AvailableEquity:  i.AvailableToWithdraw,
-				UnrealizedProfit: i.UnrealisedPnl,
-			})
-		}
-		out = append(out, r)
-	}
-
+	out = append(out, entity.PlaceOrder{
+		OrderID:       in.OrderId,
+		ClientOrderID: in.OrderLinkId,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
 	return out
 }
 
-func convertFundingAccountBalance(in []fundingBalance) (out []entity.FundingAccountBalance) {
+func (c *futures_converts) convertOrderList(in []futures_orderList) (out []entity.Futures_OrdersList) {
 	if len(in) == 0 {
 		return out
 	}
-
 	for _, item := range in {
-		out = append(out, entity.FundingAccountBalance{
-			Asset:            item.Coin,
-			Balance:          item.WalletBalance,
-			AvailableBalance: item.TransferBalance,
+
+		positionSide := ""
+		switch item.PositionIdx {
+		case 0:
+			if strings.ToUpper(item.Side) == "BUY" {
+				positionSide = "LONG"
+			} else {
+				positionSide = "SHORT"
+			}
+		case 1:
+			positionSide = "LONG"
+		case 2:
+			positionSide = "SHORT"
+		}
+		out = append(out, entity.Futures_OrdersList{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.OrderLinkId,
+			Side:          strings.ToUpper(item.Side),
+			PositionSide:  positionSide,
+			PositionSize:  item.Qty,
+			ExecutedSize:  item.CumExecQty,
+			Price:         item.Price,
+			Type:          strings.ToUpper(item.OrderType),
+			Status:        strings.ToUpper(item.OrderStatus),
+			CreateTime:    utils.StringToInt64(item.CreatedTime),
+			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
 		})
 	}
+	return out
+}
 
+func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
+	for _, item := range answ {
+
+		marginMode := ""
+		hedgeMode := false
+		positionSide := ""
+
+		if item.PositionIdx != 0 {
+			hedgeMode = true
+		}
+
+		switch item.PositionIdx {
+		case 0:
+			if strings.ToUpper(item.Side) == "BUY" {
+				positionSide = "LONG"
+			} else {
+				positionSide = "SHORT"
+			}
+		case 1:
+			positionSide = "LONG"
+		case 2:
+			positionSide = "SHORT"
+		}
+
+		res = append(res, entity.Futures_Positions{
+			Symbol:       item.Symbol,
+			PositionSide: positionSide,
+			// PositionID:   item.PositionId,
+			PositionSize: item.Size,
+			EntryPrice:   item.AvgPrice,
+			MarkPrice:    item.MarkPrice,
+			// InitialMargin:    item.Initial_margin,
+			UnRealizedProfit: item.UnrealisedPnl,
+			RealizedProfit:   item.CurRealisedPnl,
+			Notional:         item.PositionValue,
+			// MarginRatio:      item.Maintenance_rate,
+			Leverage:   item.Leverage,
+			MarginMode: marginMode,
+			HedgeMode:  hedgeMode,
+			CreateTime: utils.StringToInt64(item.CreatedTime),
+			UpdateTime: utils.StringToInt64(item.UpdatedTime),
+		})
+	}
+	return res
+}
+
+func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
+
+	if len(in.List) == 0 {
+		return out
+	}
+	for _, item := range in.List {
+
+		positionSide := ""
+		switch item.PositionIdx {
+		case 0:
+			if strings.ToUpper(item.Side) == "BUY" {
+				positionSide = "LONG"
+			} else {
+				positionSide = "SHORT"
+			}
+		case 1:
+			positionSide = "LONG"
+		case 2:
+			positionSide = "SHORT"
+		}
+
+		out = append(out, entity.Futures_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.OrderLinkId,
+			Side:          strings.ToUpper(item.Side),
+			PositionSide:  positionSide,
+			PositionSize:  item.Qty,
+			Price:         item.Price,
+			ExecutedSize:  item.CumExecQty,
+			ExecutedPrice: item.AvgPrice,
+			Fee:           item.CumExecFee,
+			Type:          strings.ToUpper(item.OrderType),
+			Status:        strings.ToUpper(item.OrderStatus),
+			CreateTime:    utils.StringToInt64(item.CreatedTime),
+			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
+			Cursor:        in.NextPageCursor,
+		})
+	}
 	return out
 }

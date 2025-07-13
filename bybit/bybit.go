@@ -55,14 +55,6 @@ func (c *SpotClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
 
-func (c *SpotClient) NewGetTradingAccountBalance() *spot_getTradingAccountBalance {
-	return &spot_getTradingAccountBalance{callAPI: c.callAPI}
-}
-
-func (c *SpotClient) NewGetFundingAccountBalance() *spot_getFundingAccountBalance {
-	return &spot_getFundingAccountBalance{callAPI: c.callAPI}
-}
-
 func (c *SpotClient) NewOrdersHistory() *spot_ordersHistory {
 	return &spot_ordersHistory{callAPI: c.callAPI}
 }
@@ -141,6 +133,34 @@ func (c *FuturesClient) NewSetLeverage() *futures_setLeverage {
 	return &futures_setLeverage{callAPI: c.callAPI}
 }
 
+func (c *FuturesClient) NewSetMarginMode() *futures_setMarginMode {
+	return &futures_setMarginMode{callAPI: c.callAPI}
+}
+
 func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
 	return &futures_positionsHistory{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
+	return &futures_ordersHistory{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
+	return &futures_placeOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
+	return &futures_getOrderList{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
+	return &futures_cancelOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
+	return &futures_amendOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetPositions() *futures_getPositions {
+	return &futures_getPositions{callAPI: c.callAPI}
 }

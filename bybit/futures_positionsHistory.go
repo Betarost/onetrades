@@ -18,6 +18,7 @@ type futures_positionsHistory struct {
 	endTime   *int64
 	limit     *int64
 	page      *int64
+	cursor    *string
 }
 
 func (s *futures_positionsHistory) Symbol(symbol string) *futures_positionsHistory {
@@ -45,28 +46,33 @@ func (s *futures_positionsHistory) Page(page int64) *futures_positionsHistory {
 	return s
 }
 
+func (s *futures_positionsHistory) Cursor(cursor string) *futures_positionsHistory {
+	s.cursor = &cursor
+	return s
+}
+
 func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_PositionsHistory, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/openApi/swap/v1/trade/positionHistory",
+		Endpoint: "/v5/position/closed-pnl",
 		SecType:  utils.SecTypeSigned,
 	}
 
-	m := utils.Params{}
+	m := utils.Params{"category": "linear", "limit": 100}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
 	if s.limit != nil && *s.limit > 0 {
-		m["pageSize"] = *s.limit
+		m["limit"] = *s.limit
 	}
-	if s.page != nil && *s.page > 0 {
-		m["pageIndex"] = *s.page
+	if s.cursor != nil && *s.cursor != "" {
+		m["cursor"] = *s.cursor
 	}
 	if s.startTime != nil {
-		m["startTs"] = *s.startTime
+		m["startTime"] = *s.startTime
 	}
 	if s.endTime != nil {
-		m["endTs"] = *s.endTime
+		m["endTime"] = *s.endTime
 	}
 	r.SetParams(m)
 
@@ -77,8 +83,8 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 
 	var answ struct {
 		Result struct {
-			PositionHistory []futures_PositionsHistory_Response `json:"positionHistory"`
-		} `json:"data"`
+			List []futures_PositionsHistory_Response `json:"list"`
+		} `json:"result"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -86,24 +92,21 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 		return res, err
 	}
 
-	return s.convert.convertPositionsHistory(answ.Result.PositionHistory), nil
+	return s.convert.convertPositionsHistory(answ.Result.List), nil
 }
 
 type futures_PositionsHistory_Response struct {
-	Symbol             string `json:"symbol"`
-	PositionId         string `json:"positionId"`
-	Isolated           bool   `json:"isolated"`
-	PositionSide       string `json:"positionSide"`
-	AvgPrice           string `json:"avgPrice"`
-	AvgClosePrice      string `json:"avgClosePrice"`
-	RealisedProfit     string `json:"realisedProfit"`
-	NetProfit          string `json:"netProfit"`
-	PositionAmt        string `json:"positionAmt"`
-	ClosePositionAmt   string `json:"closePositionAmt"`
-	PositionCommission string `json:"positionCommission"`
-	TotalFunding       string `json:"totalFunding"`
-	Leverage           int64  `json:"leverage"`
+	Symbol        string `json:"symbol"`
+	Side          string `json:"side"`
+	PositionIdx   int64  `json:"positionIdx"`
+	Qty           string `json:"qty"`
+	ClosedSize    string `json:"closedSize"`
+	AvgEntryPrice string `json:"avgEntryPrice"`
+	AvgExitPrice  string `json:"avgExitPrice"`
+	ClosedPnl     string `json:"closedPnl"`
+	OpenFee       string `json:"openFee"`
+	CloseFee      string `json:"closeFee"`
 
-	OpenTime   int64 `json:"openTime"`
-	UpdateTime int64 `json:"updateTime"`
+	CreatedTime string `json:"createdTime"`
+	UpdatedTime string `json:"updatedTime"`
 }

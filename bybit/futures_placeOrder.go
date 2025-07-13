@@ -10,9 +10,9 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-type spot_placeOrder struct {
+type futures_placeOrder struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
-	convert spot_converts
+	convert futures_converts
 
 	symbol        *string
 	side          *entity.SideType
@@ -26,57 +26,57 @@ type spot_placeOrder struct {
 	slPrice       *string
 }
 
-func (s *spot_placeOrder) TradeMode(tradeMode entity.MarginModeType) *spot_placeOrder {
+func (s *futures_placeOrder) TradeMode(tradeMode entity.MarginModeType) *futures_placeOrder {
 	s.tradeMode = &tradeMode
 	return s
 }
 
-func (s *spot_placeOrder) SlPrice(slPrice string) *spot_placeOrder {
+func (s *futures_placeOrder) SlPrice(slPrice string) *futures_placeOrder {
 	s.slPrice = &slPrice
 	return s
 }
 
-func (s *spot_placeOrder) TpPrice(tpPrice string) *spot_placeOrder {
+func (s *futures_placeOrder) TpPrice(tpPrice string) *futures_placeOrder {
 	s.tpPrice = &tpPrice
 	return s
 }
 
-func (s *spot_placeOrder) Symbol(symbol string) *spot_placeOrder {
+func (s *futures_placeOrder) Symbol(symbol string) *futures_placeOrder {
 	s.symbol = &symbol
 	return s
 }
 
-func (s *spot_placeOrder) Side(side entity.SideType) *spot_placeOrder {
+func (s *futures_placeOrder) Side(side entity.SideType) *futures_placeOrder {
 	s.side = &side
 	return s
 }
 
-func (s *spot_placeOrder) Size(size string) *spot_placeOrder {
+func (s *futures_placeOrder) Size(size string) *futures_placeOrder {
 	s.size = &size
 	return s
 }
 
-func (s *spot_placeOrder) Price(price string) *spot_placeOrder {
+func (s *futures_placeOrder) Price(price string) *futures_placeOrder {
 	s.price = &price
 	return s
 }
 
-func (s *spot_placeOrder) OrderType(orderType entity.OrderType) *spot_placeOrder {
+func (s *futures_placeOrder) OrderType(orderType entity.OrderType) *futures_placeOrder {
 	s.orderType = &orderType
 	return s
 }
 
-func (s *spot_placeOrder) ClientOrderID(clientOrderID string) *spot_placeOrder {
+func (s *futures_placeOrder) ClientOrderID(clientOrderID string) *futures_placeOrder {
 	s.clientOrderID = &clientOrderID
 	return s
 }
 
-func (s *spot_placeOrder) PositionSide(positionSide entity.PositionSideType) *spot_placeOrder {
+func (s *futures_placeOrder) PositionSide(positionSide entity.PositionSideType) *futures_placeOrder {
 	s.positionSide = &positionSide
 	return s
 }
 
-func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
+func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
 	r := &utils.Request{
 		Method:   http.MethodPost,
 		Endpoint: "/v5/order/create",
@@ -84,7 +84,7 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 	}
 
 	m := utils.Params{
-		"category": "spot",
+		"category": "linear",
 	}
 
 	if s.symbol != nil {
@@ -92,7 +92,11 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 	}
 
 	if s.side != nil {
-		m["side"] = strings.ToLower(string(*s.side))
+		if *s.side == entity.SideTypeBuy {
+			m["side"] = "Buy"
+		} else if *s.side == entity.SideTypeSell {
+			m["side"] = "Sell"
+		}
 	}
 
 	if s.price != nil {
@@ -154,7 +158,7 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 	}
 
 	var answ struct {
-		Result placeOrder_Response `json:"result"`
+		Result futures_placeOrder_Response `json:"result"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -165,7 +169,7 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 	return s.convert.convertPlaceOrder(answ.Result), nil
 }
 
-type placeOrder_Response struct {
+type futures_placeOrder_Response struct {
 	OrderId     string `json:"orderId"`
 	OrderLinkId string `json:"orderLinkId"`
 }
