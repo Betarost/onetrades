@@ -1,4 +1,4 @@
-package huobi
+package binance
 
 import (
 	"context"
@@ -48,27 +48,28 @@ func (s *spot_ordersHistory) Page(page int64) *spot_ordersHistory {
 func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Spot_OrdersHistory, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/v1/order/history",
+		Endpoint: "/api/v3/allOrders",
 		SecType:  utils.SecTypeSigned,
 	}
 
-	m := utils.Params{"size": 1000}
+	m := utils.Params{}
 
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
 	if s.limit != nil && *s.limit > 0 {
-		m["size"] = *s.limit
+		m["limit"] = *s.limit
 	}
 	// if s.page != nil && *s.page > 0 {
 	// 	m["page"] = *s.page
 	// }
 	if s.startTime != nil {
-		m["start-time"] = *s.startTime
+		m["startTime"] = *s.startTime
 	}
 	if s.endTime != nil {
-		m["end-time"] = *s.endTime
+		m["endTime"] = *s.endTime
 	}
+
 	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
@@ -76,30 +77,28 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 		return res, err
 	}
 
-	var answ struct {
-		Result []spot_ordersHistory_Response `json:"data"`
-	}
+	answ := []spot_ordersHistory_Response{}
+
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
 	}
 
-	return s.convert.convertOrdersHistory(answ.Result), nil
+	return s.convert.convertOrdersHistory(answ), nil
 }
 
 type spot_ordersHistory_Response struct {
-	Symbol          string `json:"symbol"`
-	ID              int64  `json:"id"`
-	Client_order_id string `json:"client-order-id"`
-	Type            string `json:"type"`
-	Amount          string `json:"amount"`
-	Filled_amount   string `json:"field-amount"`
-	Price           string `json:"price"`
-	// Fill_price    string `json:"fill_price"`
-	Fill_cash string `json:"field-cash-amount"`
-	Fee       string `json:"field-fees"`
-	State     string `json:"state"`
-
-	Created_at int64 `json:"created-at"`
-	Updated_at int64 `json:"updated-at"`
+	Symbol        string `json:"symbol"`
+	OrderId       int64  `json:"orderId"`
+	ClientOrderId string `json:"clientOrderId"`
+	Side          string `json:"side"`
+	OrigQty       string `json:"origQty"`
+	ExecutedQty   string `json:"executedQty"`
+	Price         string `json:"price"`
+	// AvgPx     string `json:"avgPx"`
+	// Fee       string `json:"fee"`
+	Type       string `json:"type"`
+	Status     string `json:"status"`
+	Time       int64  `json:"time"`
+	UpdateTime int64  `json:"updateTime"`
 }

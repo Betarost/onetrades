@@ -1,14 +1,20 @@
 package entity
 
 type AccountInformation struct {
-	UID         string `json:"uid" bson:"uid"`
-	Label       string `json:"label" bson:"label"`
-	IP          string `json:"ip" bson:"ip"`
-	CanRead     bool   `json:"canRead" bson:"canRead"`
-	CanTrade    bool   `json:"canTrade" bson:"canTrade"`
-	CanTransfer bool   `json:"canTransfer" bson:"canTransfer"`
-	PermSpot    bool   `json:"permSpot" bson:"permSpot"`
-	PermFutures bool   `json:"permFutures" bson:"permFutures"`
+	UID         string                        `json:"uid" bson:"uid"`
+	Label       string                        `json:"label" bson:"label"`
+	IP          string                        `json:"ip" bson:"ip"`
+	CanRead     bool                          `json:"canRead" bson:"canRead"`
+	CanTrade    bool                          `json:"canTrade" bson:"canTrade"`
+	CanTransfer bool                          `json:"canTransfer" bson:"canTransfer"`
+	PermSpot    bool                          `json:"permSpot" bson:"permSpot"`
+	PermFutures bool                          `json:"permFutures" bson:"permFutures"`
+	ExtraInfo   []AccountInformationExtraInfo `json:"extraInfo,omitempty" bson:"extraInfo,omitempty"`
+}
+
+type AccountInformationExtraInfo struct {
+	UID  string `json:"uid" bson:"uid"`
+	Type string `json:"type" bson:"type"`
 }
 
 // OLD

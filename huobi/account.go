@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -29,7 +28,6 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 		return res, err
 	}
 
-	log.Println("=3d21ab=", string(data))
 	var answ struct {
 		Result []accountInfo `json:"data"`
 	}
@@ -42,7 +40,7 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if len(answ.Result) == 0 {
 		return res, errors.New("Zero Answer")
 	}
-	return s.convert.convertAccountInfo(answ.Result[0]), nil
+	return s.convert.convertAccountInfo(answ.Result), nil
 }
 
 type accountInfo struct {

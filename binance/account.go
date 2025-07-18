@@ -3,7 +3,6 @@ package binance
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -28,8 +27,6 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 		return res, err
 	}
 
-	log.Println("=61fd61=", string(data))
-
 	answ := accountInfo{}
 
 	err = json.Unmarshal(data, &answ)
@@ -41,7 +38,7 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 }
 
 type accountInfo struct {
-	UID         string   `json:"uid"`
+	UID         int64    `json:"uid"`
 	CanTrade    bool     `json:"canTrade"`
 	CanWithdraw bool     `json:"canWithdraw"`
 	CanDeposit  bool     `json:"canDeposit"`

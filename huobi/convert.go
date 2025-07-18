@@ -11,28 +11,19 @@ import (
 // ===============ACCOUNT=================
 type account_converts struct{}
 
-func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.AccountInformation) {
-
-	out.UID = fmt.Sprintf("%d", in.ID)
-	// out.Label = in.Label
-	// out.IP = in.Ip
-	// out.PermSpot = true
-
-	// if strings.Contains(in.Perm, "read") {
-	// 	out.CanRead = true
-	// }
-
-	// if strings.Contains(in.Perm, "trade") {
-	// 	out.CanTrade = true
-	// }
-
-	// if in.PosMode == "long_short_mode" {
-	// 	// out.HedgeMode = true
-	// }
-
-	// if in.AcctLv != "1" {
-	// 	out.PermFutures = true
-	// }
+func (c *account_converts) convertAccountInfo(in []accountInfo) (out entity.AccountInformation) {
+	extra := []entity.AccountInformationExtraInfo{}
+	for _, item := range in {
+		t := "SPOT"
+		if strings.ToUpper(item.Type) != "SPOT" {
+			t = "FUTURES"
+		}
+		extra = append(extra, entity.AccountInformationExtraInfo{
+			UID:  utils.Int64ToString(item.ID),
+			Type: t,
+		})
+	}
+	out.ExtraInfo = extra
 	return out
 }
 
@@ -45,7 +36,9 @@ func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out [
 		return out
 	}
 	for _, item := range in {
-
+		// if strings.ToUpper(item.Symbol) == "BTCUSDT" {
+		// 	log.Printf("=28606a= %+v", item)
+		// }
 		if item.Status == "online" {
 			item.Status = "LIVE"
 		}
@@ -58,7 +51,7 @@ func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentsInfo) (out [
 			// MinNotional:    item.MinTradeUSDT,
 			PricePrecision: utils.FloatToStringAll(item.PricePrecision),
 			SizePrecision:  utils.FloatToStringAll(item.QuantityPrecision),
-			State:          item.Status,
+			State:          strings.ToUpper(item.Status),
 		}
 		out = append(out, rec)
 	}
@@ -76,12 +69,11 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 		t, is := mapsAssets[item.Currency]
 		if !is {
 			t = entity.AssetsBalance{Asset: item.Currency}
-
 		}
-
-		if item.Type == "trade" {
+		switch item.Type {
+		case "trade":
 			t.Balance = item.Balance
-		} else if item.Type == "frozen" {
+		case "frozen":
 			t.Locked = item.Balance
 		}
 		mapsAssets[item.Currency] = t
@@ -90,6 +82,7 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 
 	for _, i := range mapsAssets {
 		if i.Balance != "0" || i.Locked != "0" {
+			i.Balance = utils.FloatToStringAll(utils.StringToFloat(i.Balance) + utils.StringToFloat(i.Locked))
 			out = append(out, i)
 		}
 	}
@@ -112,10 +105,8 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 			typeOrd = sp[1]
 		}
 
-		stat := item.State
-
-		if item.State == "submitted" {
-			stat = "FILLED"
+		if item.State != "filled" || utils.StringToFloat(item.Filled_amount) == 0 {
+			continue
 		}
 		out = append(out, entity.Spot_OrdersHistory{
 			Symbol:        strings.ToUpper(item.Symbol),
@@ -125,12 +116,12 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 			Size:          item.Amount,
 			Price:         item.Price,
 			ExecutedSize:  item.Filled_amount,
-			// ExecutedPrice: item.Fill_price,
-			// Fee:           item.Fee,
-			Type:       strings.ToUpper(typeOrd),
-			Status:     stat,
-			CreateTime: item.Created_at,
-			UpdateTime: item.Updated_at,
+			ExecutedPrice: utils.FloatToStringAll(utils.StringToFloat(item.Fill_cash) / utils.StringToFloat(item.Filled_amount)),
+			Fee:           item.Fee,
+			Type:          strings.ToUpper(typeOrd),
+			Status:        strings.ToUpper(item.State),
+			CreateTime:    item.Created_at,
+			UpdateTime:    item.Updated_at,
 		})
 	}
 	return out

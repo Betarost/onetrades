@@ -31,6 +31,7 @@ func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result struct {
 			List []spot_Balance `json:"list"`

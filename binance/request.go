@@ -181,7 +181,7 @@ func createBody(r *utils.Request) error {
 	body := &bytes.Buffer{}
 	bodyString := r.Form.Encode()
 	if bodyString != "" {
-		r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		// r.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 		body = bytes.NewBufferString(bodyString)
 	}
 	r.BodyString = bodyString
