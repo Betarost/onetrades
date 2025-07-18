@@ -161,7 +161,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("56").Price("0.20899").UID("69069265").Do(ctx))
 
 	//FUTURES
-	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.23545").Size("41").Do(ctx))
+	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("35").Do(ctx))
 	// printAnswers(bingxFutures.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Price("0.28550").Size("10").HedgeMode(false).Do(ctx))
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("0.19880").Size("35").Do(ctx))
 	// printAnswers(gateioFutures.NewPlaceOrder().Symbol("DOGE_USDT").Side(entity.SideTypeSell).Size("2").Price("0.18780").OrderType(entity.OrderTypeLimit).Do(ctx))
@@ -191,7 +191,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewCancelOrder().OrderID("1371171052466066").Do(ctx))
 
 	//FUTURES
-	printAnswers(binanceFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("76780426418").Do(ctx))
+	// printAnswers(binanceFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("76780426418").Do(ctx))
 	// printAnswers(bingxFutures.NewCancelOrder().Symbol("TRX-USDT").OrderID("1942486320061566976").Do(ctx))
 	// printAnswers(bybitFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("0c88fc3c-7896-4b62-aacc-b5c9c52122cd").Do(ctx))
 	// printAnswers(gateioFutures.NewCancelOrder().OrderID("56013522187409589").Do(ctx))
@@ -245,6 +245,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
+	printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(gateioFutures.NewOrdersHistory().Do(ctx))
@@ -254,6 +255,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================PositionsHistory
 	n = "PositionsHistory"
 	//FUTURES
+	printAnswers(binanceFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(bingxFutures.NewPositionsHistory().Symbol("TRX-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
 	// printAnswers(bybitFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))

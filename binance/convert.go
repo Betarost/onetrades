@@ -279,3 +279,117 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 	}
 	return res
 }
+
+func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
+
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+
+		hedgeMode := false
+		positionSide := "LONG"
+		if item.PositionSide == "BOTH" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PositionSide)
+			hedgeMode = true
+		}
+
+		out = append(out, entity.Futures_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       utils.Int64ToString(item.OrderId),
+			ClientOrderID: item.ClientOrderId,
+			Side:          strings.ToUpper(item.Side),
+			PositionSide:  positionSide,
+			PositionSize:  item.OrigQty,
+			ExecutedSize:  item.ExecutedQty,
+			Price:         item.Price,
+			ExecutedPrice: item.AvgPrice,
+			// RealisedProfit: item.Pnl,
+			// Fee:            item.Fee,
+			// Leverage:       item.Lever,
+			HedgeMode: hedgeMode,
+			// MarginMode:     strings.ToLower(item.TdMode),
+			Type:       strings.ToUpper(item.Type),
+			Status:     strings.ToUpper(item.Status),
+			CreateTime: item.Time,
+			UpdateTime: item.UpdateTime,
+		})
+	}
+	return out
+
+	// if len(in) == 0 {
+	// 	return out
+	// }
+
+	// for _, item := range in {
+	// 	marginMode := "isolated"
+	// 	hedgeMode := false
+
+	// 	if !item.OnlyOnePosition {
+	// 		hedgeMode = true
+	// 	}
+
+	// 	// if !item.Isolated {
+	// 	// 	marginMode = "cross"
+	// 	// }
+
+	// 	marginMode = ""
+
+	// 	out = append(out, entity.Futures_OrdersHistory{
+	// 		Symbol:         item.Symbol,
+	// 		OrderID:        utils.Int64ToString(item.OrderId),
+	// 		ClientOrderID:  item.ClientOrderId,
+	// 		PositionID:     utils.Int64ToString(item.PositionID),
+	// 		Side:           strings.ToUpper(item.Side),
+	// 		PositionSide:   strings.ToUpper(item.PositionSide),
+	// 		PositionSize:   item.OrigQty,
+	// 		ExecutedSize:   item.ExecutedQty,
+	// 		Price:          item.Price,
+	// 		ExecutedPrice:  item.AvgPrice,
+	// 		RealisedProfit: item.Profit,
+	// 		Fee:            item.Commission,
+	// 		Type:           strings.ToUpper(item.Type),
+	// 		Leverage:       strings.Replace(item.Leverage, "X", "", 1),
+	// 		Status:         strings.ToUpper(item.Status),
+	// 		HedgeMode:      hedgeMode,
+	// 		MarginMode:     marginMode,
+	// 		CreateTime:     item.Time,
+	// 		UpdateTime:     item.UpdateTime,
+	// 	})
+	// }
+	// return out
+}
+
+func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		mMode := "cross"
+		if item.MgnMode != "cross" {
+			mMode = "isolated"
+		}
+		out = append(out, entity.Futures_PositionsHistory{
+			Symbol:              item.InstId,
+			PositionID:          item.PosId,
+			PositionSide:        strings.ToUpper(item.PosSide),
+			PositionAmt:         item.OpenMaxPos,
+			ExecutedPositionAmt: item.CloseTotalPos,
+			AvgPrice:            item.OpenAvgPx,
+			ExecutedAvgPrice:    item.CloseAvgPx,
+			RealisedProfit:      item.Pnl,
+			Fee:                 item.Fee,
+			Funding:             item.FundingFee,
+			MarginMode:          mMode,
+			CreateTime:          utils.StringToInt64(item.CTime),
+			UpdateTime:          utils.StringToInt64(item.UTime),
+		})
+	}
+	return out
+}
