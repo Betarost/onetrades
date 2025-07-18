@@ -3,7 +3,6 @@ package binance
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -76,7 +75,6 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 		return res, err
 	}
 
-	log.Println("=b6b64a=", string(data))
 	answ := []futures_PositionsHistory_Response{}
 
 	err = json.Unmarshal(data, &answ)
@@ -88,18 +86,11 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 }
 
 type futures_PositionsHistory_Response struct {
-	InstId        string `json:"instId"`
-	PosId         string `json:"posId"`
-	MgnMode       string `json:"mgnMode"`
-	PosSide       string `json:"posSide"`
-	OpenAvgPx     string `json:"openAvgPx"`
-	CloseAvgPx    string `json:"closeAvgPx"`
-	OpenMaxPos    string `json:"openMaxPos"`
-	CloseTotalPos string `json:"closeTotalPos"`
-	Pnl           string `json:"pnl"`
-	RealizedPnl   string `json:"realizedPnl"`
-	Fee           string `json:"fee"`
-	FundingFee    string `json:"fundingFee"`
-	CTime         string `json:"cTime"`
-	UTime         string `json:"uTime"`
+	Symbol       string `json:"symbol"`
+	PositionSide string `json:"positionSide"`
+	Qty          string `json:"qty"`
+	Price        string `json:"price"`
+	RealizedPnl  string `json:"realizedPnl"`
+	Commission   string `json:"commission"`
+	Time         int64  `json:"time"`
 }
