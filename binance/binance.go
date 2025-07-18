@@ -105,6 +105,46 @@ func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
 	}
 }
 
+func (c *FuturesClient) NewGetBalance() *futures_getBalance {
+	return &futures_getBalance{callAPI: c.callAPI}
+}
+
 func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetPositionMode() *futures_getPositionMode {
+	return &futures_getPositionMode{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewSetPositionMode() *futures_setPositionMode {
+	return &futures_setPositionMode{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetLeverage() *futures_getLeverage {
+	return &futures_getLeverage{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewSetLeverage() *futures_setLeverage {
+	return &futures_setLeverage{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
+	return &futures_placeOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetPositions() *futures_getPositions {
+	return &futures_getPositions{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
+	return &futures_getOrderList{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
+	return &futures_amendOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
+	return &futures_cancelOrder{callAPI: c.callAPI}
 }
