@@ -241,7 +241,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(mexcSpot.NewOrdersHistory().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewOrdersHistory().Do(ctx))
-	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
+	printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
@@ -250,7 +250,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(gateioFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
-	// printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
+	printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================PositionsHistory
 	n = "PositionsHistory"

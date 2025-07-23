@@ -78,9 +78,9 @@ type Futures_OrdersHistory struct {
 	Status         string `json:"status" bson:"status"`
 	HedgeMode      bool   `json:"hedgeMode" bson:"hedgeMode"`
 	MarginMode     string `json:"marginMode" bson:"marginMode"`
-	Cursor         string `json:"cursor,omitempty" bson:"cursor,omitempty"`
-	CreateTime     int64  `json:"createTime" bson:"createTime"`
-	UpdateTime     int64  `json:"updateTime" bson:"updateTime"`
+	// Cursor         string `json:"cursor,omitempty" bson:"cursor,omitempty"`
+	CreateTime int64 `json:"createTime" bson:"createTime"`
+	UpdateTime int64 `json:"updateTime" bson:"updateTime"`
 }
 
 type Futures_Positions struct {

@@ -113,7 +113,7 @@ func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (ou
 			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),
 			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
-			Cursor:        in.NextPageCursor,
+			// Cursor:        in.NextPageCursor,
 		})
 	}
 	return out
@@ -372,7 +372,7 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),
 			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
-			Cursor:        in.NextPageCursor,
+			// Cursor:        in.NextPageCursor,
 		})
 	}
 	return out
