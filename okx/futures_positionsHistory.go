@@ -52,7 +52,8 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 		SecType:  utils.SecTypeSigned,
 	}
 
-	m := utils.Params{"instType": "SWAP", "type": "3"}
+	// m := utils.Params{"instType": "SWAP", "type": "3"}
+	m := utils.Params{"instType": "SWAP"}
 	if s.symbol != nil {
 		m["instId"] = *s.symbol
 	}
