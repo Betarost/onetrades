@@ -64,10 +64,12 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	// 	m["pageIndex"] = *s.page
 	// }
 	if s.startTime != nil {
-		m["after"] = *s.startTime
+		// m["after"] = *s.startTime
+		m["before"] = *s.startTime
 	}
 	if s.endTime != nil {
-		m["before"] = *s.endTime
+		// m["before"] = *s.endTime
+		m["after"] = *s.endTime
 	}
 	r.SetParams(m)
 
