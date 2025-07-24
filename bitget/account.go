@@ -3,6 +3,7 @@ package bitget
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -41,4 +42,37 @@ type accountInfo struct {
 	UserId      string   `json:"userId"`
 	Ips         string   `json:"ips"`
 	Authorities []string `json:"authorities"`
+}
+
+// ===================SignAuthStream==================
+
+type signAuthStream struct {
+	sec       string
+	timeStamp *int64
+}
+
+func (s *signAuthStream) TimeStamp(timeStamp int64) *signAuthStream {
+	s.timeStamp = &timeStamp
+	return s
+}
+
+func (s *signAuthStream) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.SignAuthStream, err error) {
+	sf, err := utils.SignFunc(utils.KeyTypeHmacBase64)
+	if err != nil {
+		return res, err
+	}
+
+	t := int64(0)
+
+	if s.timeStamp != nil {
+		t = *s.timeStamp
+	}
+
+	raw := fmt.Sprintf("%dGET/user/verify", t)
+	sign, err := sf(s.sec, raw)
+	if err != nil {
+		return res, err
+	}
+	res.Signature = *sign
+	return res, nil
 }

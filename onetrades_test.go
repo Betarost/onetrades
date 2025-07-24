@@ -322,7 +322,7 @@ func TestOnetrades(t *testing.T) {
 	n = "GetListenKey"
 	//SPOT
 	// printAnswers(bingxSpot.NewGetListenKey().Do(ctx))
-	printAnswers(mexcSpot.NewGetListenKey().Do(ctx))
+	// printAnswers(mexcSpot.NewGetListenKey().Do(ctx))
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetListenKey().Do(ctx))
@@ -331,7 +331,7 @@ func TestOnetrades(t *testing.T) {
 	n = "ExtendListenKey"
 	//SPOT
 	// printAnswers(bingxSpot.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
-	// printAnswers(mexcSpot.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
+	// printAnswers(mexcSpot.NewExtendListenKey().ListenKey("802935b2c04071cff608424de8cb0416585ab71783e9c932ea748f73c6efe223").Do(ctx))
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
@@ -341,6 +341,7 @@ func TestOnetrades(t *testing.T) {
 	n = "SignAuthStream"
 	// printAnswers(bybitSpot.NewSignAuthStream().TimeStamp(1753350824193).Do(ctx))
 	// printAnswers(gateioSpot.NewSignAuthStream().TimeStamp(1753352964).Channel("futures.orders").Event("subscribe").Do(ctx))
+	printAnswers(bitgetSpot.NewSignAuthStream().TimeStamp(1753350824193).Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)
