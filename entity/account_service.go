@@ -12,6 +12,10 @@ type AccountInformation struct {
 	ExtraInfo   []AccountInformationExtraInfo `json:"extraInfo,omitempty" bson:"extraInfo,omitempty"`
 }
 
+type SignAuthStream struct {
+	Signature string `json:"signature " bson:"signature "`
+}
+
 type AccountInformationExtraInfo struct {
 	UID  string `json:"uid" bson:"uid"`
 	Type string `json:"type" bson:"type"`

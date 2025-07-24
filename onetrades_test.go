@@ -332,8 +332,12 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxSpot.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
 
 	//FUTURES
-	printAnswers(bingxFutures.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
+	// printAnswers(bingxFutures.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
 	// printAnswers(bingxFutures.NewExtendListenKey().Do(ctx))
+
+	//=======================SignAuthStream
+	n = "SignAuthStream"
+	printAnswers(bybitSpot.NewSignAuthStream().TimeStamp(1753350824193).Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)
