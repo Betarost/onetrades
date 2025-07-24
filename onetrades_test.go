@@ -341,7 +341,8 @@ func TestOnetrades(t *testing.T) {
 	n = "SignAuthStream"
 	// printAnswers(bybitSpot.NewSignAuthStream().TimeStamp(1753350824193).Do(ctx))
 	// printAnswers(gateioSpot.NewSignAuthStream().TimeStamp(1753352964).Channel("futures.orders").Event("subscribe").Do(ctx))
-	printAnswers(bitgetSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
+	// printAnswers(bitgetSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
+	printAnswers(okxSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)
