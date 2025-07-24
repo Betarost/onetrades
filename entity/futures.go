@@ -42,6 +42,10 @@ type Futures_MarginMode struct {
 	MarginMode string `json:"marginMode" bson:"marginMode"`
 }
 
+type Futures_ListenKey struct {
+	ListenKey string `json:"listenKey" bson:"listenKey"`
+}
+
 // OLD
 
 type Futures_PositionsHistory struct {

@@ -75,6 +75,14 @@ func (c *SpotClient) NewOrdersHistory() *spot_ordersHistory {
 	return &spot_ordersHistory{callAPI: c.callAPI}
 }
 
+func (c *SpotClient) NewGetListenKey() *spot_getListenKey {
+	return &spot_getListenKey{callAPI: c.callAPI}
+}
+
+func (c *SpotClient) NewExtendListenKey() *spot_extendListenKey {
+	return &spot_extendListenKey{callAPI: c.callAPI}
+}
+
 // ===============FUTURES=================
 
 type FuturesClient struct {
@@ -167,4 +175,12 @@ func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
 
 func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
 	return &futures_positionsHistory{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetListenKey() *futures_getListenKey {
+	return &futures_getListenKey{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewExtendListenKey() *futures_extendListenKey {
+	return &futures_extendListenKey{callAPI: c.callAPI}
 }

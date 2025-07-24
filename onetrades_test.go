@@ -241,7 +241,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(mexcSpot.NewOrdersHistory().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(bitgetSpot.NewOrdersHistory().Do(ctx))
-	printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
+	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
@@ -250,7 +250,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(gateioFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
-	printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================PositionsHistory
 	n = "PositionsHistory"
@@ -260,7 +260,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewPositionsHistory().Do(ctx))
-	printAnswers(okxFutures.NewPositionsHistory().Symbol("ATOM-USDT-SWAP").Do(ctx))
+	// printAnswers(okxFutures.NewPositionsHistory().Symbol("ATOM-USDT-SWAP").Do(ctx))
 
 	//=======================GetPositionMode
 	n = "GetPositionMode"
@@ -317,6 +317,23 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewSetMarginMode().Symbol("DOGEUSDT").Leverage("20").MarginMode(entity.MarginModeTypeCross).Do(ctx)) //processing
 	// printAnswers(gateioFutures.NewSetMarginMode().Symbol("BTC-USDT").Do(ctx))  //processing
 	// printAnswers(bitgetFutures.NewSetMarginMode().Symbol("DOGEUSDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
+
+	//=======================GetListenKey
+	n = "GetListenKey"
+	//SPOT
+	// printAnswers(bingxSpot.NewGetListenKey().Do(ctx))
+
+	//FUTURES
+	// printAnswers(bingxFutures.NewGetListenKey().Do(ctx))
+
+	//=======================ExtendListenKey
+	n = "ExtendListenKey"
+	//SPOT
+	// printAnswers(bingxSpot.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
+
+	//FUTURES
+	printAnswers(bingxFutures.NewExtendListenKey().ListenKey("0e81716a1c67128521a48f066800b24420a14194b6637e43968d75e3a7293fce").Do(ctx))
+	// printAnswers(bingxFutures.NewExtendListenKey().Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)

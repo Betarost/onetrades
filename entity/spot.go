@@ -40,6 +40,10 @@ type Spot_OrdersList struct {
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 }
 
+type Spot_ListenKey struct {
+	ListenKey string `json:"listenKey" bson:"listenKey"`
+}
+
 type Spot_OrdersHistory struct {
 	Symbol        string `json:"symbol" bson:"symbol"`
 	OrderID       string `json:"orderId" bson:"orderId"`

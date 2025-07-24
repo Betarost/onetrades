@@ -142,6 +142,11 @@ func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (ou
 	return out
 }
 
+func (c *spot_converts) convertListenKey(in spot_listenKey) (out entity.Spot_ListenKey) {
+	out.ListenKey = in.ListenKey
+	return out
+}
+
 // ===============FUTURES=================
 
 type futures_converts struct{}
@@ -367,5 +372,10 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 			UpdateTime:          item.UpdateTime,
 		})
 	}
+	return out
+}
+
+func (c *futures_converts) convertListenKey(in futures_listenKey) (out entity.Futures_ListenKey) {
+	out.ListenKey = in.ListenKey
 	return out
 }

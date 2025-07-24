@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -74,6 +75,10 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	c.debug("response body: %s\n", string(data))
 	c.debug("response status code: %d\n", res.StatusCode)
 
+	if res.StatusCode == 404 {
+		return nil, &res.Header, errors.New("404 not find key")
+	}
+
 	apiErr := new(aPIError)
 	e := json.Unmarshal(data, apiErr)
 	if e != nil {
@@ -136,6 +141,10 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	c.debug("response: %#v\n", res)
 	c.debug("response body: %s\n", string(data))
 	c.debug("response status code: %d\n", res.StatusCode)
+
+	if res.StatusCode == 404 {
+		return nil, &res.Header, errors.New("404 not find key")
+	}
 
 	apiErr := new(aPIError)
 	e := json.Unmarshal(data, apiErr)
