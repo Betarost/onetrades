@@ -337,7 +337,8 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================SignAuthStream
 	n = "SignAuthStream"
-	printAnswers(bybitSpot.NewSignAuthStream().TimeStamp(1753350824193).Do(ctx))
+	// printAnswers(bybitSpot.NewSignAuthStream().TimeStamp(1753350824193).Do(ctx))
+	printAnswers(gateioSpot.NewSignAuthStream().TimeStamp(1753350824193).Channel("futures.orders").Event("subscribe").Do(ctx))
 
 	//===========Not Exit
 	// c := make(chan os.Signal, 1)

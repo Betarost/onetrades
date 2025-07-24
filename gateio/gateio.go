@@ -75,6 +75,10 @@ func (c *SpotClient) NewAmendOrder() *spot_amendOrder {
 	return &spot_amendOrder{callAPI: c.callAPI}
 }
 
+func (c *SpotClient) NewSignAuthStream() *signAuthStream {
+	return &signAuthStream{sec: c.secretKey}
+}
+
 // ===============FUTURES=================
 
 type FuturesClient struct {
@@ -159,4 +163,8 @@ func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
 
 func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
 	return &futures_ordersHistory{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewSignAuthStream() *signAuthStream {
+	return &signAuthStream{sec: c.secretKey}
 }

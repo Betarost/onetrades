@@ -3,6 +3,7 @@ package gateio
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -37,4 +38,43 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 type accountInfo struct {
 	User_id      int64    `json:"user_id"`
 	Ip_whitelist []string `json:"ip_whitelist"`
+}
+
+// ===================SignAuthStream==================
+
+type signAuthStream struct {
+	sec       string
+	timeStamp int64
+	channel   string
+	event     string
+}
+
+func (s *signAuthStream) TimeStamp(timeStamp int64) *signAuthStream {
+	s.timeStamp = timeStamp
+	return s
+}
+
+func (s *signAuthStream) Channel(channel string) *signAuthStream {
+	s.channel = channel
+	return s
+}
+
+func (s *signAuthStream) Event(event string) *signAuthStream {
+	s.event = event
+	return s
+}
+
+func (s *signAuthStream) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.SignAuthStream, err error) {
+	sf, err := utils.SignFunc(utils.KeyTypeHmacHex512)
+	if err != nil {
+		return res, err
+	}
+
+	raw := fmt.Sprintf("channel=%s&event=%s&time=%d", s.channel, s.event, s.timeStamp)
+	sign, err := sf(s.sec, raw)
+	if err != nil {
+		return res, err
+	}
+	res.Signature = *sign
+	return res, nil
 }
