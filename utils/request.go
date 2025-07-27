@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 )
@@ -24,6 +25,7 @@ type Request struct {
 	Method      string
 	BaseURL     string
 	Endpoint    string
+	Proxy       string
 	TimeOffset  int64
 	Query       url.Values
 	QueryString string
@@ -114,6 +116,23 @@ func (c *Request) ReadAllBody(r io.Reader, content string) ([]byte, error) {
 }
 
 func (c *Request) DoFunc(req *http.Request) (*http.Response, error, *tls.Conn) {
+	if c.Proxy != "" {
+		proxyURL, err := url.Parse(c.Proxy)
+		if err != nil {
+			log.Println("DoFunc Err", err)
+		} else {
+			transport := &http.Transport{
+				Proxy: http.ProxyURL(proxyURL),
+			}
+			client := &http.Client{
+				Transport: transport,
+			}
+			resp, err := client.Do(req)
+			return resp, err, nil
+		}
+
+	}
+
 	resp, err := http.DefaultClient.Do(req)
 	return resp, err, nil
 }
