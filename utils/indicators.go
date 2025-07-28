@@ -34,8 +34,8 @@ func CalculateRSI(candles []entity.Futures_MarketCandle, period int, limit int) 
 		result = r.Calculate(next)
 		rsiArr = append(rsiArr, entity.RSI{
 			Value:      result,
-			ClosePrice: close[period+i],
-			Time:       times[period+i],
+			ClosePrice: close[initialLength+i],
+			Time:       times[initialLength+i],
 		})
 	}
 	return rsiArr[len(rsiArr)-limit:]

@@ -195,7 +195,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetPositions().Do(ctx))
 	// printAnswers(okxFutures.NewGetPositions().Do(ctx))
-	printAnswers(bullishFutures.NewGetPositions().UID("111872616831896").Do(ctx))
+	// printAnswers(bullishFutures.NewGetPositions().UID("111872616831896").Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
