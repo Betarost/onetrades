@@ -15,6 +15,7 @@ import (
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
 	"github.com/Betarost/onetrades/okx"
+	"github.com/Betarost/onetrades/utils"
 	"github.com/spf13/viper"
 )
 
@@ -154,12 +155,15 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("ETH-USD-SWAP").Do(ctx))
 	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
-	// printAnswers(bullishFutures.NewGetInstrumentsInfo().Symbol("BTC-USDC-PERP").Do(ctx))
+	printAnswers(bullishFutures.NewGetInstrumentsInfo().Symbol("BTC-USDC-PERP").Do(ctx))
 
 	//=======================MarketCandle
 	//FUTURES
 	n = "MarketCandle"
-	printAnswers(bullishFutures.NewGetMarketCandle().Symbol("BTC-USDC-PERP").TimeFrame(entity.TimeFrameType1H).Do(ctx))
+	// printAnswers(bullishFutures.NewGetMarketCandle().Symbol("BTC-USDC-PERP").TimeFrame(entity.TimeFrameType1H).Do(ctx))
+	r, _ := bullishFutures.NewGetMarketCandle().Symbol("BTC-USDC-PERP").TimeFrame(entity.TimeFrameType1H).Do(ctx)
+	b := utils.CalculateRSI(r, 14, 3)
+	log.Printf("== %+v  %d", b, len(b))
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	//SPOT
