@@ -98,6 +98,10 @@ func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
+func (c *FuturesClient) NewGetMarketCandle() *futures_getMarketCandle {
+	return &futures_getMarketCandle{callAPI: c.callAPI}
+}
+
 func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
 	return &futures_placeOrder{callAPI: c.callAPI}
 }

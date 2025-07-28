@@ -10,6 +10,16 @@ type FuturesBalance struct {
 	UnrealizedProfit string `json:"unrealizedProfit" bson:"unrealizedProfit"`
 }
 
+type Futures_MarketCandle struct {
+	OpenPrice    string `json:"openPrice" bson:"openPrice"`
+	HighestPrice string `json:"highestPrice" bson:"highestPrice"`
+	LowestPrice  string `json:"lowestPrice" bson:"lowestPrice"`
+	ClosePrice   string `json:"closePrice" bson:"closePrice"`
+	Volume       string `json:"volume" bson:"volume"`
+	Time         int64  `json:"time" bson:"time"`
+	Complete     bool   `json:"complete" bson:"complete"`
+}
+
 type Futures_InstrumentsInfo struct {
 	Symbol         string `json:"symbol" bson:"symbol"`
 	Base           string `json:"base" bson:"base"`

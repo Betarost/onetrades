@@ -10,6 +10,7 @@ import (
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
+	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
@@ -131,7 +132,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
 	// printAnswers(okxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(huobiFutures.NewGetBalance().UID("53799773").Do(ctx))
-	printAnswers(bullishFutures.NewGetBalance().UID("111872616831896").Do(ctx))
+	// printAnswers(bullishFutures.NewGetBalance().UID("111872616831896").Do(ctx))
 
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
@@ -155,6 +156,10 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bullishFutures.NewGetInstrumentsInfo().Symbol("BTC-USDC-PERP").Do(ctx))
 
+	//=======================MarketCandle
+	//FUTURES
+	n = "MarketCandle"
+	printAnswers(bullishFutures.NewGetMarketCandle().Symbol("BTC-USDC-PERP").TimeFrame(entity.TimeFrameType1H).Do(ctx))
 	//=======================PlaceOrder
 	n = "PlaceOrder"
 	//SPOT
@@ -244,7 +249,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(okxFutures.NewGetOrderList().Do(ctx))
-	printAnswers(bullishFutures.NewGetOrderList().Do(ctx))
+	// printAnswers(bullishFutures.NewGetOrderList().Do(ctx))
 	//=======================OrdersHistory
 	n = "OrdersHistory"
 	//SPOT

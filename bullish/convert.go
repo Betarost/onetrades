@@ -56,6 +56,29 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 	return
 }
 
+func (c *futures_converts) convertMarketCandle(in []futures_marketCandle_responce) (out []entity.Futures_MarketCandle) {
+	if len(in) == 0 {
+		return out
+	}
+	for index, item := range in {
+
+		complete := true
+		if index == 0 {
+			complete = false
+		}
+		out = append(out, entity.Futures_MarketCandle{
+			OpenPrice:    item.Open,
+			HighestPrice: item.High,
+			LowestPrice:  item.Low,
+			ClosePrice:   item.Close,
+			Volume:       item.Volume,
+			Time:         utils.StringToInt64(item.CreatedAtTimestamp),
+			Complete:     complete,
+		})
+	}
+	return
+}
+
 func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
 
 	out = append(out, entity.PlaceOrder{

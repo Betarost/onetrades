@@ -39,7 +39,9 @@ const (
 	TimeFrameType1H  TimeFrameType = "1H"
 	TimeFrameType2H  TimeFrameType = "2H"
 	TimeFrameType4H  TimeFrameType = "4H"
+	TimeFrameType6H  TimeFrameType = "6H"
 	TimeFrameType8H  TimeFrameType = "8H"
+	TimeFrameType12H TimeFrameType = "12H"
 	TimeFrameType1D  TimeFrameType = "1D"
 
 	// OrderTypeLimitMaker      OrderType = "LIMIT_MAKER"
