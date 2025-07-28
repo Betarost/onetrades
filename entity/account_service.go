@@ -13,7 +13,7 @@ type AccountInformation struct {
 }
 
 type SignAuthStream struct {
-	Signature string `json:"signature " bson:"signature "`
+	Signature string `json:"signature" bson:"signature"`
 }
 
 type AccountInformationExtraInfo struct {
