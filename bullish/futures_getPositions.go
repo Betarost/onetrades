@@ -3,7 +3,6 @@ package bullish
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -49,7 +48,6 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-	log.Println("=ca92e7=", string(data))
 	answ := []futures_Position{}
 
 	err = json.Unmarshal(data, &answ)

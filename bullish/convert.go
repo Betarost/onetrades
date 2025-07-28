@@ -92,6 +92,9 @@ func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (ou
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
 
+		if utils.StringToFloat(item.Quantity) == 0 {
+			continue
+		}
 		marginMode := "cross"
 		hedgeMode := false
 		positionSide := ""
