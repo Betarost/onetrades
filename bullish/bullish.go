@@ -70,7 +70,7 @@ func (c *FuturesClient) proxy(proxy string) {
 	c.Proxy = proxy
 }
 
-func (c *FuturesClient) updateJWT(jwt string) {
+func (c *FuturesClient) UpdateJWT(jwt string) {
 	c.memo = jwt
 }
 
