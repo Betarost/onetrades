@@ -56,3 +56,26 @@ func GetPrecisionFromStr(s string) (pr string) {
 	}
 	return pr
 }
+
+func PrecisionFormatString(ret string, scale string) string {
+	sp := strings.Split(ret, ".")
+	precision := StringToInt(scale)
+	if precision == 0 {
+		ret = sp[0]
+	} else if len(sp) == 2 && len(sp[1]) > precision {
+		ret = sp[0] + "." + sp[1][:precision]
+	}
+	return ret
+}
+
+func PrecisionFormatFloat64(num float64, scale string) string {
+	ret := strconv.FormatFloat(num, 'f', -1, 64)
+	precision := StringToInt(scale)
+	sp := strings.Split(ret, ".")
+	if precision == 0 {
+		ret = sp[0]
+	} else if len(sp) == 2 && len(sp[1]) > precision {
+		ret = sp[0] + "." + sp[1][:precision]
+	}
+	return ret
+}
