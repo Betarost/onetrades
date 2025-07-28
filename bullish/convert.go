@@ -87,7 +87,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			EntryPrice: utils.FloatToStringAll(utils.StringToFloat(item.EntryNotional) / utils.StringToFloat(item.Quantity)),
 			// MarkPrice:    item.MarkPrice,
 			// InitialMargin:    item.Initial_margin,
-			UnRealizedProfit: item.MtmPnl,
+			UnRealizedProfit: item.ReportedMtmPnl,
 			RealizedProfit:   item.RealizedPnl,
 			Notional:         item.Notional,
 			// MarginRatio:      item.Maintenance_rate,

@@ -70,6 +70,10 @@ func (c *FuturesClient) proxy(proxy string) {
 	c.Proxy = proxy
 }
 
+func (c *FuturesClient) updateJWT(jwt string) {
+	c.memo = jwt
+}
+
 func NewFuturesClient(apiKey, secretKey, memo string) *FuturesClient {
 	return &FuturesClient{
 		apiKey:    apiKey,

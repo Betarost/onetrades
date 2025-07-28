@@ -175,7 +175,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetFutures.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Price("0.17000").Size("120").HedgeMode(false).MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(okxFutures.NewPlaceOrder().Symbol("DOGE-USDT-SWAP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("0.17950").Size("0.01").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(bullishFutures.NewPlaceOrder().UID("111872616831896").Symbol("BTC-USDC-PERP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("0.001").Do(ctx))
-	// printAnswers(bullishFutures.NewPlaceOrder().UID("111872616831896").Symbol("BTC-USDC-PERP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("118750").Size("0.001").Do(ctx))
+	// printAnswers(bullishFutures.NewPlaceOrder().UID("111872616831896").Symbol("BTC-USDC-PERP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("0.002").Do(ctx))
 
 	//=======================GetPositions
 	n = "GetPositions"
