@@ -28,8 +28,10 @@ const (
 	SideTypeBuy  SideType = "BUY"
 	SideTypeSell SideType = "SELL"
 
-	OrderTypeLimit  OrderType = "LIMIT"
-	OrderTypeMarket OrderType = "MARKET"
+	OrderTypeLimit      OrderType = "LIMIT"
+	OrderTypeMarket     OrderType = "MARKET"
+	OrderTypeTakeProfit OrderType = "TAKE_PROFIT"
+	OrderTypeStop       OrderType = "STOP"
 
 	TimeFrameType1m  TimeFrameType = "1m"
 	TimeFrameType3m  TimeFrameType = "3m"

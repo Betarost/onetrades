@@ -91,7 +91,7 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	if s.orderType != nil {
 		m["type"] = strings.ToUpper(string(*s.orderType))
-		if *s.orderType == entity.OrderTypeLimit {
+		if *s.orderType == entity.OrderTypeLimit || *s.orderType == entity.OrderTypeStop || *s.orderType == entity.OrderTypeTakeProfit {
 			m["timeInForce"] = "GTC"
 		}
 	}
@@ -101,7 +101,11 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	}
 
 	if s.price != nil {
-		m["price"] = *s.price
+		if *s.orderType == entity.OrderTypeStop || *s.orderType == entity.OrderTypeTakeProfit {
+			m["stopPrice"] = *s.price
+		} else {
+			m["price"] = *s.price
+		}
 	}
 
 	if s.clientOrderID != nil {

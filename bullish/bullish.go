@@ -66,10 +66,6 @@ func (c *FuturesClient) debug(format string, v ...interface{}) {
 	}
 }
 
-func (c *FuturesClient) proxy(proxy string) {
-	c.Proxy = proxy
-}
-
 func (c *FuturesClient) UpdateJWT(jwt string) {
 	c.memo = jwt
 }

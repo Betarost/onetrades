@@ -106,6 +106,9 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	if s.price != nil {
 		m["price"] = *s.price
+		if *s.orderType == entity.OrderTypeStop || *s.orderType == entity.OrderTypeTakeProfit {
+			m["stopPrice"] = *s.price
+		}
 	}
 
 	if s.size != nil {

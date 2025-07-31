@@ -3,6 +3,7 @@ package bullish
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -38,7 +39,7 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-
+	log.Println("=63ca39=", string(data))
 	answ := []futures_Balance{}
 
 	err = json.Unmarshal(data, &answ)
