@@ -10,25 +10,19 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-type futures_getLeverage struct {
+type futures_getMarginMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol     *string
-	marginMode *entity.MarginModeType
+	symbol *string
 }
 
-func (s *futures_getLeverage) Symbol(symbol string) *futures_getLeverage {
+func (s *futures_getMarginMode) Symbol(symbol string) *futures_getMarginMode {
 	s.symbol = &symbol
 	return s
 }
 
-func (s *futures_getLeverage) MarginMode(marginMode entity.MarginModeType) *futures_getLeverage {
-	s.marginMode = &marginMode
-	return s
-}
-
-func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_Leverage, err error) {
+func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_MarginMode, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/fapi/v1/symbolConfig",
@@ -36,7 +30,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	}
 
 	m := utils.Params{}
-
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
@@ -47,8 +40,9 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
+
 	log.Println("=206ca7=", string(data))
-	answ := []futures_leverage{}
+	answ := []futures_marginMode{}
 
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
@@ -58,10 +52,16 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if len(answ) == 0 {
 		return res, nil
 	}
-	return s.convert.convertLeverage(answ[0]), nil
+	res.MarginMode = "cross"
+
+	if answ[0].MarginType != "CROSSED" {
+		res.MarginMode = "isolated"
+	}
+
+	return res, nil
 }
 
-type futures_leverage struct {
+type futures_marginMode struct {
 	Symbol     string `json:"symbol"`
 	Leverage   int64  `json:"leverage"`
 	MarginType string `json:"marginType"`

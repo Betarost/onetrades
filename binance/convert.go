@@ -192,6 +192,7 @@ func (c *futures_converts) convertInstrumentsInfo(in futures_instrumentsInfo) (o
 }
 
 func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
+
 	out.Symbol = in.Symbol
 	out.Leverage = utils.Int64ToString(in.Leverage)
 	return out
