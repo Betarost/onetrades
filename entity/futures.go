@@ -68,6 +68,7 @@ type Futures_PositionsHistory struct {
 	ExecutedAvgPrice    string `json:"executedAvgPrice" bson:"executedAvgPrice"`
 	RealisedProfit      string `json:"realisedProfit" bson:"realisedProfit"`
 	Fee                 string `json:"fee" bson:"fee"`
+	Leverage            string `json:"leverage" bson:"leverage"`
 	Funding             string `json:"funding" bson:"funding"`
 	MarginMode          string `json:"marginMode" bson:"marginMode"`
 	CreateTime          int64  `json:"createTime" bson:"createTime"`

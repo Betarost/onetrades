@@ -77,6 +77,7 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result []futures_PositionsHistory_Response `json:"data"`
 	}
@@ -94,9 +95,11 @@ type futures_PositionsHistory_Response struct {
 	PosId         string `json:"posId"`
 	MgnMode       string `json:"mgnMode"`
 	PosSide       string `json:"posSide"`
+	Direction     string `json:"direction"`
 	OpenAvgPx     string `json:"openAvgPx"`
 	CloseAvgPx    string `json:"closeAvgPx"`
 	OpenMaxPos    string `json:"openMaxPos"`
+	Lever         string `json:"lever"`
 	CloseTotalPos string `json:"closeTotalPos"`
 	Pnl           string `json:"pnl"`
 	RealizedPnl   string `json:"realizedPnl"`

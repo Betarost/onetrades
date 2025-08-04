@@ -119,9 +119,9 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	if s.orderType != nil {
 		m["orderType"] = strings.ToLower(string(*s.orderType))
-		if *s.orderType == entity.OrderTypeLimit {
+		// if *s.orderType == entity.OrderTypeLimit {
 
-		}
+		// }
 	}
 
 	if s.clientOrderID != nil {

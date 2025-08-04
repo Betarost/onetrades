@@ -230,6 +230,10 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 		if item.MgnMode != "cross" {
 			mMode = "isolated"
 		}
+
+		if strings.ToUpper(item.PosSide) == "NET" {
+			item.PosSide = item.Direction
+		}
 		out = append(out, entity.Futures_PositionsHistory{
 			Symbol:              item.InstId,
 			PositionID:          item.PosId,
@@ -241,6 +245,7 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 			RealisedProfit:      item.Pnl,
 			Fee:                 item.Fee,
 			Funding:             item.FundingFee,
+			Leverage:            item.Lever,
 			MarginMode:          mMode,
 			CreateTime:          utils.StringToInt64(item.CTime),
 			UpdateTime:          utils.StringToInt64(item.UTime),
