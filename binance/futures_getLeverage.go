@@ -3,7 +3,6 @@ package binance
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -47,7 +46,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-	log.Println("=206ca7=", string(data))
 	answ := []futures_leverage{}
 
 	err = json.Unmarshal(data, &answ)

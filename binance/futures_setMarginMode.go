@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -56,18 +55,18 @@ func (s *futures_setMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return res, err
 	}
-	log.Println("=60b5eb=", string(data))
 	var answ struct {
 		Msg  string `json:"msg"`
 		Code int64  `json:"code"`
 	}
 
-	if answ.Code != 200 {
-		return res, errors.New(answ.Msg)
-	}
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
+	}
+
+	if answ.Code != 200 {
+		return res, errors.New(answ.Msg)
 	}
 
 	return entity.Futures_MarginMode{MarginMode: string(*s.marginMode)}, nil

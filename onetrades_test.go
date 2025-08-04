@@ -10,6 +10,7 @@ import (
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
+	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
@@ -88,8 +89,6 @@ func TestOnetrades(t *testing.T) {
 	huobiFutures.Debug = false
 	bullishFutures.Debug = false
 	bullishFutures.Proxy = "http://localhost:1080"
-	binanceSpot.Proxy = "http://localhost:1080"
-	binanceFutures.Proxy = "http://localhost:1080"
 	//=======================AccountInfo
 	n = "AccountInfo"
 	//SPOT
@@ -322,7 +321,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================SetLeverage
 	n = "SetLeverage"
 	//FUTURES
-	printAnswers(binanceFutures.NewSetLeverage().Symbol("TRXUSDT").Leverage("50").Do(ctx))
+	// printAnswers(binanceFutures.NewSetLeverage().Symbol("TRXUSDT").Leverage("50").Do(ctx))
 	// printAnswers(bingxFutures.NewSetLeverage().Symbol("TRX-USDT").Leverage("50").PositionSide(entity.PositionSideTypeBoth).Do(ctx))
 	// printAnswers(bybitFutures.NewSetLeverage().Symbol("DOGEUSDT").Leverage("10").Do(ctx))
 	// printAnswers(gateioFutures.NewSetLeverage().Symbol("DOGE_USDT").Leverage("20").Do(ctx))
@@ -340,7 +339,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================SetMarginMode
 	n = "SetMarginMode"
 	//FUTURES
-	// printAnswers(binanceFutures.NewSetMarginMode().Symbol("TRX-USDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
+	printAnswers(binanceFutures.NewSetMarginMode().Symbol("TRXUSDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 	// printAnswers(bingxFutures.NewSetMarginMode().Symbol("TRX-USDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 	// printAnswers(bybitFutures.NewSetMarginMode().Symbol("DOGEUSDT").Leverage("20").MarginMode(entity.MarginModeTypeCross).Do(ctx)) //processing
 	// printAnswers(gateioFutures.NewSetMarginMode().Symbol("BTC-USDT").Do(ctx))  //processing
