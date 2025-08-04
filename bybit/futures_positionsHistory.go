@@ -106,6 +106,7 @@ type futures_PositionsHistory_Response struct {
 	ClosedPnl     string `json:"closedPnl"`
 	OpenFee       string `json:"openFee"`
 	CloseFee      string `json:"closeFee"`
+	Leverage      string `json:"leverage"`
 
 	CreatedTime string `json:"createdTime"`
 	UpdatedTime string `json:"updatedTime"`

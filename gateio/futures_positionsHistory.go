@@ -3,7 +3,6 @@ package gateio
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 
@@ -87,7 +86,6 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
-	log.Println("=cbbc55=", string(data))
 
 	answ := []futures_PositionsHistory_Response{}
 
@@ -112,7 +110,7 @@ type futures_PositionsHistory_Response struct {
 	Accum_size  string `json:"accum_size"`
 	Pnl_fee     string `json:"pnl_fee"`
 	Pnl_fund    string `json:"pnl_fund"`
-	// Leverage    int64  `json:"leverage"`
+	Leverage    string `json:"leverage"`
 
 	First_open_time int64 `json:"first_open_time"`
 	Time            int64 `json:"time"`

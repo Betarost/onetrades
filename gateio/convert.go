@@ -357,6 +357,7 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 			Fee:                 item.Pnl_fee,
 			Funding:             item.Pnl_fund,
 			// MarginMode:          mMode,
+			Leverage:   item.Leverage,
 			CreateTime: item.First_open_time * 1000,
 			UpdateTime: item.Time * 1000,
 		})

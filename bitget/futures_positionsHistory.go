@@ -74,6 +74,7 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result struct {
 			List []futures_PositionsHistory_Response `json:"list"`
