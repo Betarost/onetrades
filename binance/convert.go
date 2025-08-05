@@ -71,8 +71,8 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 				rec.MinQty = utils.FloatToStringAll(utils.StringToFloat(m["minQty"].(string)))
 				// rec.MinQty = m["minQty"].(string)
 				// rec.StepContractSize = m["stepSize"].(string)
-			case "MIN_NOTIONAL":
-				rec.MinNotional = utils.FloatToStringAll(utils.StringToFloat(m["notional"].(string)))
+			case "NOTIONAL":
+				rec.MinNotional = utils.FloatToStringAll(utils.StringToFloat(m["minNotional"].(string)))
 			}
 		}
 		out = append(out, rec)

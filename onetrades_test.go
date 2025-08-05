@@ -10,7 +10,6 @@ import (
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
-	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
@@ -136,7 +135,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
 	//SPOT
-	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("TONUSDT").Do(ctx))
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("TRX-USDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("DOGE_USDT").Do(ctx))
@@ -151,7 +150,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("TRX-USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("DOGE_USDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
-	printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("ETH-USD-SWAP").Do(ctx))
+	// printAnswers(okxFutures.NewGetInstrumentsInfo().Symbol("ETH-USD-SWAP").Do(ctx))
 	// printAnswers(huobiFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(bullishFutures.NewGetInstrumentsInfo().Symbol("BTC-USDC-PERP").Do(ctx))
 
@@ -311,7 +310,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetLeverage
 	n = "GetLeverage"
 	//FUTURES
-	printAnswers(binanceFutures.NewGetLeverage().Symbol("TRXUSDT").Do(ctx))
+	// printAnswers(binanceFutures.NewGetLeverage().Symbol("TRXUSDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetLeverage().Symbol("TRX-USDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetLeverage().Do(ctx))  //processing
 	// printAnswers(gateioFutures.NewGetLeverage().Symbol("DOGE_USDT").Do(ctx))
@@ -331,7 +330,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetMarginMode
 	n = "GetMarginMode"
 	//FUTURES
-	printAnswers(binanceFutures.NewGetMarginMode().Symbol("TRXUSDT").Do(ctx))
+	// printAnswers(binanceFutures.NewGetMarginMode().Symbol("TRXUSDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetMarginMode().Symbol("DOGE-USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetMarginMode().Symbol("BTC-USDT").Do(ctx))  //processing
 	// printAnswers(bitgetFutures.NewGetMarginMode().Symbol("DOGEUSDT").Do(ctx))
@@ -339,7 +338,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================SetMarginMode
 	n = "SetMarginMode"
 	//FUTURES
-	printAnswers(binanceFutures.NewSetMarginMode().Symbol("TRXUSDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
+	// printAnswers(binanceFutures.NewSetMarginMode().Symbol("TRXUSDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 	// printAnswers(bingxFutures.NewSetMarginMode().Symbol("TRX-USDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 	// printAnswers(bybitFutures.NewSetMarginMode().Symbol("DOGEUSDT").Leverage("20").MarginMode(entity.MarginModeTypeCross).Do(ctx)) //processing
 	// printAnswers(gateioFutures.NewSetMarginMode().Symbol("BTC-USDT").Do(ctx))  //processing
