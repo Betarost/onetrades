@@ -56,11 +56,11 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 			item.Status = "LIVE"
 		}
 		rec := entity.Spot_InstrumentsInfo{
-			Symbol:        item.Symbol,
-			Base:          item.BaseAsset,
-			Quote:         item.QuoteAsset,
-			SizePrecision: utils.Int64ToString(item.BaseAssetPrecision),
-			State:         item.Status,
+			Symbol: item.Symbol,
+			Base:   item.BaseAsset,
+			Quote:  item.QuoteAsset,
+			// SizePrecision: utils.Int64ToString(item.BaseAssetPrecision),
+			State: item.Status,
 		}
 		for _, i := range item.Filters {
 			m := i.(map[string]interface{})
@@ -68,6 +68,7 @@ func (c *spot_converts) convertInstrumentsInfo(in spot_instrumentsInfo) (out []e
 			case "PRICE_FILTER":
 				rec.PricePrecision = utils.GetPrecisionFromStr(utils.FloatToStringAll(utils.StringToFloat(m["tickSize"].(string))))
 			case "LOT_SIZE":
+				rec.SizePrecision = utils.GetPrecisionFromStr(utils.FloatToStringAll(utils.StringToFloat(m["minQty"].(string))))
 				rec.MinQty = utils.FloatToStringAll(utils.StringToFloat(m["minQty"].(string)))
 				// rec.MinQty = m["minQty"].(string)
 				// rec.StepContractSize = m["stepSize"].(string)
@@ -169,11 +170,11 @@ func (c *futures_converts) convertInstrumentsInfo(in futures_instrumentsInfo) (o
 			item.Status = "LIVE"
 		}
 		rec := entity.Futures_InstrumentsInfo{
-			Symbol:        item.Symbol,
-			Base:          item.BaseAsset,
-			Quote:         item.QuoteAsset,
-			SizePrecision: utils.Int64ToString(item.BaseAssetPrecision),
-			State:         item.Status,
+			Symbol: item.Symbol,
+			Base:   item.BaseAsset,
+			Quote:  item.QuoteAsset,
+			// SizePrecision: utils.Int64ToString(item.BaseAssetPrecision),
+			State: item.Status,
 		}
 		for _, i := range item.Filters {
 			m := i.(map[string]interface{})
@@ -182,6 +183,7 @@ func (c *futures_converts) convertInstrumentsInfo(in futures_instrumentsInfo) (o
 				rec.PricePrecision = utils.GetPrecisionFromStr(utils.FloatToStringAll(utils.StringToFloat(m["tickSize"].(string))))
 			case "LOT_SIZE":
 				rec.MinQty = utils.FloatToStringAll(utils.StringToFloat(m["minQty"].(string)))
+				rec.SizePrecision = utils.GetPrecisionFromStr(utils.FloatToStringAll(utils.StringToFloat(m["minQty"].(string))))
 			case "MIN_NOTIONAL":
 				rec.MinNotional = utils.FloatToStringAll(utils.StringToFloat(m["notional"].(string)))
 			}

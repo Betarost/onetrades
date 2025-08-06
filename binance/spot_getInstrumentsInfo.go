@@ -37,7 +37,6 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 	if err != nil {
 		return res, err
 	}
-
 	answ := spot_instrumentsInfo{}
 
 	err = json.Unmarshal(data, &answ)
