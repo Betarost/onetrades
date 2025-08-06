@@ -14,10 +14,16 @@ import (
 type GetContractsInfo struct {
 	c      *Client
 	symbol *string
+	uly    *string
 }
 
 func (s *GetContractsInfo) Symbol(symbol string) *GetContractsInfo {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *GetContractsInfo) Uly(uly string) *GetContractsInfo {
+	s.uly = &uly
 	return s
 }
 
@@ -37,6 +43,10 @@ func (s *GetContractsInfo) Do(ctx context.Context, opts ...utils.RequestOption) 
 
 	if s.symbol != nil {
 		m["instId"] = *s.symbol
+	}
+
+	if s.uly != nil {
+		m["uly"] = *s.uly
 	}
 
 	r.SetParams(m)
