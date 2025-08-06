@@ -88,10 +88,16 @@ type ContractsInfo struct {
 type GetMarketData struct {
 	c       *Client
 	expTime *string
+	uly     *string
 }
 
 func (s *GetMarketData) ExpTime(expTime string) *GetMarketData {
 	s.expTime = &expTime
+	return s
+}
+
+func (s *GetMarketData) Uly(uly string) *GetMarketData {
+	s.uly = &uly
 	return s
 }
 
@@ -112,6 +118,9 @@ func (s *GetMarketData) Do(ctx context.Context, opts ...utils.RequestOption) (re
 		m["expTime"] = *s.expTime
 	}
 
+	if s.uly != nil {
+		m["uly"] = *s.uly
+	}
 	r.SetParams(m)
 
 	data, _, err := s.c.callAPI(ctx, r, opts...)
