@@ -242,6 +242,11 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		if item.Mode != "single" {
 			hedgeMode = true
 		}
+
+		if item.Size < 0 {
+			item.Size = 0 - item.Size
+		}
+
 		res = append(res, entity.Futures_Positions{
 			Symbol:       item.Contract,
 			PositionSide: positionSide,
@@ -278,6 +283,10 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 		// } else {
 		// 	positionSide = strings.ToUpper(item.PosSide)
 		// }
+
+		if item.Size < 0 {
+			item.Size = 0 - item.Size
+		}
 
 		res = append(res, entity.Futures_OrdersList{
 			Symbol:        item.Contract,
@@ -316,6 +325,10 @@ func (c *futures_converts) convertOrdersHistory(answ []futures_ordersHistory_Res
 		// 	positionSide = strings.ToUpper(item.PosSide)
 		// }
 
+		if item.Size < 0 {
+			item.Size = 0 - item.Size
+		}
+
 		res = append(res, entity.Futures_OrdersHistory{
 			Symbol:        item.Contract,
 			OrderID:       fmt.Sprintf("%d", item.ID),
@@ -352,6 +365,7 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 		// if item.Isolated {
 		// 	mMode = "isolated"
 		// }
+
 		out = append(out, entity.Futures_PositionsHistory{
 			Symbol: item.Contract,
 			// PositionID:          item.PositionId,

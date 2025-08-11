@@ -329,6 +329,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewSetLeverage().Symbol("TRX-USDT").Leverage("50").PositionSide(entity.PositionSideTypeBoth).Do(ctx))
 	// printAnswers(bybitFutures.NewSetLeverage().Symbol("DOGEUSDT").Leverage("10").Do(ctx))
 	// printAnswers(gateioFutures.NewSetLeverage().Symbol("DOGE_USDT").Leverage("30").Do(ctx))
+	// printAnswers(gateioFutures.NewSetLeverage().Symbol("DOGE_USDT").Leverage("30").Do(ctx))
 	// printAnswers(bitgetFutures.NewSetLeverage().Symbol("DOGEUSDT").Leverage("30").PositionSide(entity.PositionSideTypeLong).Do(ctx))
 	// printAnswers(okxFutures.NewSetLeverage().Symbol("BTC-USDT-SWAP").Leverage("100").PositionSide(entity.PositionSideTypeShort).MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 
