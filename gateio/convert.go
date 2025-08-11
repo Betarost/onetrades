@@ -200,6 +200,9 @@ func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futu
 		out.Symbol = in.Сontract
 	}
 	out.Leverage = in.Leverage
+	if utils.StringToInt(in.Leverage) == 0 {
+		out.Leverage = in.Cross_leverage_limit
+	}
 	return out
 }
 

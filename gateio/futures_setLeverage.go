@@ -2,7 +2,6 @@ package gateio
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"strings"
 
@@ -63,19 +62,26 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		// m["currency_pair"] = *s.symbol
 	}
 
-	if s.leverage != nil {
-		m["leverage"] = *s.leverage
+	if s.leverage != nil && s.marginMode != nil {
+		switch *s.marginMode {
+		case entity.MarginModeTypeCross:
+			m["leverage"] = 0
+			m["cross_leverage_limit"] = *s.leverage
+		case entity.MarginModeTypeIsolated:
+			m["leverage"] = *s.leverage
+		}
+
 	}
 
 	// r.SetFormParams(m)
 	r.SetParams(m)
 
-	data, _, err := s.callAPI(ctx, r, opts...)
+	// data, _, err := s.callAPI(ctx, r, opts...)
+	_, _, err = s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
 
-	log.Println("=192412=", string(data))
 	// if string(data) != "" {
 	// 	return res, errors.New("Not Zero Answers")
 	// }

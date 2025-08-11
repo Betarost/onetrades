@@ -11,14 +11,19 @@ import (
 )
 
 type futures_getLeverage struct {
-	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
-	convert futures_converts
-
-	symbol *string
+	callAPI    func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	convert    futures_converts
+	marginMode *entity.MarginModeType
+	symbol     *string
 }
 
 func (s *futures_getLeverage) Symbol(symbol string) *futures_getLeverage {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_getLeverage) MarginMode(marginMode entity.MarginModeType) *futures_getLeverage {
+	s.marginMode = &marginMode
 	return s
 }
 
@@ -67,7 +72,8 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 // }
 
 type futures_leverage struct {
-	Currency_pair string `json:"currency_pair"`
-	Сontract      string `json:"contract"`
-	Leverage      string `json:"leverage"`
+	Currency_pair        string `json:"currency_pair"`
+	Сontract             string `json:"contract"`
+	Leverage             string `json:"leverage"`
+	Cross_leverage_limit string `json:"cross_leverage_limit"`
 }
