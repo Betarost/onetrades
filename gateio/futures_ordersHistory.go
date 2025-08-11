@@ -3,7 +3,6 @@ package gateio
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 
@@ -74,7 +73,6 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return res, err
 	}
-	log.Println("=a30286=", string(data))
 	answ := []futures_ordersHistory_Response{}
 
 	err = json.Unmarshal(data, &answ)

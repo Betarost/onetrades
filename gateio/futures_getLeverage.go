@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -41,7 +40,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, err
 	}
 
-	log.Println("=a6f895=", string(data))
 	var answ []futures_leverage
 
 	err = json.Unmarshal(data, &answ)

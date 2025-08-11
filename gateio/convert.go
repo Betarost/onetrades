@@ -215,6 +215,9 @@ func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (ou
 
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
+		if item.Size == 0 {
+			continue
+		}
 		positionSide := "LONG"
 		if item.Mode == "single" {
 			if item.Size < 0 {

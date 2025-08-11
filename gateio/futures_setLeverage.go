@@ -2,8 +2,9 @@ package gateio
 
 import (
 	"context"
-	"errors"
+	"log"
 	"net/http"
+	"strings"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
@@ -42,40 +43,42 @@ func (s *futures_setLeverage) PositionSide(positionSide entity.PositionSideType)
 
 func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_Leverage, err error) {
 	r := &utils.Request{
-		Method: http.MethodPost,
-		// Endpoint: "/api/v4/futures/{settle}/positions/{contract}/leverage",
-		Endpoint: "/api/v4/margin/leverage/user_market_setting",
-		SecType:  utils.SecTypeSigned,
+		Method:   http.MethodPost,
+		Endpoint: "/api/v4/futures/{settle}/positions/{contract}/leverage",
+		// Endpoint: "/api/v4/margin/leverage/user_market_setting",
+		SecType: utils.SecTypeSigned,
 	}
 
-	// settleDefault := "usdt"
+	settleDefault := "usdt"
 
-	// if s.settle == nil {
-	// 	s.settle = &settleDefault
-	// }
+	if s.settle == nil {
+		s.settle = &settleDefault
+	}
 
-	// r.Endpoint = strings.Replace(r.Endpoint, "{settle}", *s.settle, 1)
+	r.Endpoint = strings.Replace(r.Endpoint, "{settle}", *s.settle, 1)
 
 	m := utils.Params{}
 	if s.symbol != nil {
-		// r.Endpoint = strings.Replace(r.Endpoint, "{contract}", *s.symbol, 1)
-		m["currency_pair"] = *s.symbol
+		r.Endpoint = strings.Replace(r.Endpoint, "{contract}", *s.symbol, 1)
+		// m["currency_pair"] = *s.symbol
 	}
 
 	if s.leverage != nil {
 		m["leverage"] = *s.leverage
 	}
 
-	r.SetFormParams(m)
+	// r.SetFormParams(m)
+	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
 
-	if string(data) != "" {
-		return res, errors.New("Not Zero Answers")
-	}
+	log.Println("=192412=", string(data))
+	// if string(data) != "" {
+	// 	return res, errors.New("Not Zero Answers")
+	// }
 	// var answ futures_leverage
 	// err = json.Unmarshal(data, &answ)
 	// if err != nil {
