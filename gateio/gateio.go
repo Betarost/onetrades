@@ -168,3 +168,11 @@ func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
 func (c *FuturesClient) NewSignAuthStream() *signAuthStream {
 	return &signAuthStream{sec: c.secretKey}
 }
+
+func (c *FuturesClient) NewSetMarginMode() *futures_setMarginMode {
+	return &futures_setMarginMode{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetMarginMode() *futures_getMarginMode {
+	return &futures_getMarginMode{callAPI: c.callAPI}
+}
