@@ -120,7 +120,7 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	}
 
 	if s.hedgeMode != nil && s.positionSide != nil && s.side != nil {
-		if *s.hedgeMode && ((strings.ToLower(string(*s.positionSide)) == "LONG" && strings.ToLower(string(*s.positionSide)) == "SELL") || (strings.ToLower(string(*s.positionSide)) == "SHORT" && strings.ToLower(string(*s.positionSide)) == "BUY")) {
+		if *s.hedgeMode && ((strings.ToUpper(string(*s.positionSide)) == "LONG" && strings.ToUpper(string(*s.side)) == "SELL") || (strings.ToUpper(string(*s.positionSide)) == "SHORT" && strings.ToUpper(string(*s.side)) == "BUY")) {
 			m["reduce_only"] = true
 		}
 	}

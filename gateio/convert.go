@@ -222,6 +222,10 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			}
 		} else {
 			positionSide = strings.ToUpper(item.Mode)
+			spt := strings.Split(positionSide, "_")
+			if len(spt) > 1 {
+				positionSide = spt[1]
+			}
 		}
 		leverage := item.Cross_leverage_limit
 		hedgeMode := false
