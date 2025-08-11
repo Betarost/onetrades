@@ -80,6 +80,7 @@ func (s *futures_amendOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result futures_placeOrder_Response `json:"data"`
 	}

@@ -23,8 +23,7 @@ type futures_placeOrder struct {
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
 	tradeMode     *entity.MarginModeType
-	tpPrice       *string
-	slPrice       *string
+	hedgeMode     *bool
 	settle        *string
 }
 
@@ -32,14 +31,8 @@ func (s *futures_placeOrder) TradeMode(tradeMode entity.MarginModeType) *futures
 	s.tradeMode = &tradeMode
 	return s
 }
-
-func (s *futures_placeOrder) SlPrice(slPrice string) *futures_placeOrder {
-	s.slPrice = &slPrice
-	return s
-}
-
-func (s *futures_placeOrder) TpPrice(tpPrice string) *futures_placeOrder {
-	s.tpPrice = &tpPrice
+func (s *futures_placeOrder) HedgeMode(hedgeMode bool) *futures_placeOrder {
+	s.hedgeMode = &hedgeMode
 	return s
 }
 
@@ -126,6 +119,11 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		m["text"] = *s.clientOrderID
 	}
 
+	if s.hedgeMode != nil && s.positionSide != nil && s.side != nil {
+		if *s.hedgeMode && ((strings.ToLower(string(*s.positionSide)) == "LONG" && strings.ToLower(string(*s.positionSide)) == "SELL") || (strings.ToLower(string(*s.positionSide)) == "SHORT" && strings.ToLower(string(*s.positionSide)) == "BUY")) {
+			m["reduce_only"] = true
+		}
+	}
 	// if s.tradeMode != nil {
 	// 	if *s.tradeMode == entity.MarginModeTypeCross {
 	// 		m["tdMode"] = "cross"

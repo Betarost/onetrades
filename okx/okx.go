@@ -22,6 +22,7 @@ type SpotClient struct {
 	keyType    string
 	BaseURL    string
 	UserAgent  string
+	Proxy      string
 	Debug      bool
 	logger     *log.Logger
 	TimeOffset int64
@@ -102,6 +103,7 @@ type FuturesClient struct {
 	keyType    string
 	BaseURL    string
 	UserAgent  string
+	Proxy      string
 	Debug      bool
 	logger     *log.Logger
 	TimeOffset int64
