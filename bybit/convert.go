@@ -294,6 +294,10 @@ func (c *futures_converts) convertOrderList(in []futures_orderList) (out []entit
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
 
+		if utils.StringToFloat(item.Size) == 0 {
+			continue
+		}
+
 		marginMode := ""
 		hedgeMode := false
 		positionSide := ""

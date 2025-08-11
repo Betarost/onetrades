@@ -30,6 +30,7 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 
 	m := utils.Params{
 		"category": "linear",
+		"limit":    1000,
 	}
 
 	if s.symbol != nil {

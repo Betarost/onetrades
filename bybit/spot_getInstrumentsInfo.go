@@ -30,6 +30,7 @@ func (s *spot_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.RequestO
 
 	m := utils.Params{
 		"category": "spot",
+		"limit":    1000,
 	}
 
 	if s.symbol != nil {
