@@ -150,7 +150,7 @@ func TestOnetrades(t *testing.T) {
 	// huobiSpot.NewGetInstrumentsInfo().Do(ctx)
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Do(ctx))
-	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("TONUSDT").Do(ctx))
+	printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("TONUSDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("ATOM_USDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
