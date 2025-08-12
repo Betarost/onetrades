@@ -21,23 +21,11 @@ type futures_placeOrder struct {
 	orderType     *entity.OrderType
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
-	tradeMode     *entity.MarginModeType
-	tpPrice       *string
-	slPrice       *string
+	hedgeMode     *bool
 }
 
-func (s *futures_placeOrder) TradeMode(tradeMode entity.MarginModeType) *futures_placeOrder {
-	s.tradeMode = &tradeMode
-	return s
-}
-
-func (s *futures_placeOrder) SlPrice(slPrice string) *futures_placeOrder {
-	s.slPrice = &slPrice
-	return s
-}
-
-func (s *futures_placeOrder) TpPrice(tpPrice string) *futures_placeOrder {
-	s.tpPrice = &tpPrice
+func (s *futures_placeOrder) HedgeMode(hedgeMode bool) *futures_placeOrder {
+	s.hedgeMode = &hedgeMode
 	return s
 }
 
@@ -92,9 +80,10 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	}
 
 	if s.side != nil {
-		if *s.side == entity.SideTypeBuy {
+		switch *s.side {
+		case entity.SideTypeBuy:
 			m["side"] = "Buy"
-		} else if *s.side == entity.SideTypeSell {
+		case entity.SideTypeSell:
 			m["side"] = "Sell"
 		}
 	}
@@ -118,38 +107,18 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		m["orderLinkId"] = *s.clientOrderID
 	}
 
-	// if s.positionSide != nil {
-	// 	m["posSide"] = strings.ToLower(string(*s.positionSide))
-	// } else {
-	// 	m["positionIdx"] = 0
-	// }
-
-	// if s.tradeMode != nil {
-	// 	if *s.tradeMode == entity.MarginModeTypeCross {
-	// 		m["tdMode"] = "cross"
-	// 	} else if *s.tradeMode == entity.MarginModeTypeIsolated {
-	// 		m["tdMode"] = "isolated"
-	// 	}
-	// }
-
-	// if s.tpPrice != nil || s.slPrice != nil {
-	// 	attachAlgoOrds := []orderList_attachAlgoOrds{{}}
-	// 	if s.tpPrice != nil {
-	// 		attachAlgoOrds[0].TpTriggerPx = *s.tpPrice
-	// 		attachAlgoOrds[0].TpOrdPx = "-1"
-	// 	}
-
-	// 	if s.slPrice != nil {
-	// 		attachAlgoOrds[0].SlTriggerPx = *s.slPrice
-	// 		attachAlgoOrds[0].SlOrdPx = "-1"
-	// 	}
-	// 	j, err := json.Marshal(attachAlgoOrds)
-	// 	if err != nil {
-	// 		return res, err
-	// 	}
-
-	// 	m["attachAlgoOrds"] = string(j)
-	// }
+	if s.hedgeMode != nil && *s.hedgeMode {
+		if s.positionSide != nil {
+			switch *s.positionSide {
+			case entity.PositionSideTypeLong:
+				m["positionIdx"] = 1
+			case entity.PositionSideTypeShort:
+				m["positionIdx"] = 2
+			}
+		}
+	} else {
+		m["positionIdx"] = 0
+	}
 
 	r.SetFormParams(m)
 	data, _, err := s.callAPI(ctx, r, opts...)
