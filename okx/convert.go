@@ -174,7 +174,7 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 			out = append(out, entity.FuturesBalance{
 				Asset:            item.Ccy,
 				Balance:          item.CashBal,
-				Equity:           item.AvailEq,
+				Equity:           item.Eq,
 				Available:        item.AvailBal,
 				UnrealizedProfit: item.Upl,
 			})
