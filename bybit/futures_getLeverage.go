@@ -3,6 +3,7 @@ package bybit
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -24,11 +25,11 @@ func (s *futures_getLeverage) Symbol(symbol string) *futures_getLeverage {
 func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_Leverage, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/openApi/swap/v2/trade/leverage",
+		Endpoint: "/v5/position/list",
 		SecType:  utils.SecTypeSigned,
 	}
 
-	m := utils.Params{}
+	m := utils.Params{"category": "linear"}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
@@ -39,7 +40,9 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, err
 	}
 	var answ struct {
-		Result futures_leverage `json:"data"`
+		Result struct {
+			List []futures_leverage `json:"list"`
+		} `json:"result"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -47,12 +50,13 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, err
 	}
 
-	return s.convert.convertLeverage(answ.Result), nil
+	if len(answ.Result.List) == 0 {
+		return res, errors.New("Empty Results")
+	}
+	return s.convert.convertLeverage(answ.Result.List[0]), nil
 }
 
 type futures_leverage struct {
-	Symbol           string `json:"symbol"`
-	LongLeverage     int    `json:"longLeverage"`
-	MaxLongLeverage  int    `json:"maxLongLeverage"`
-	MaxShortLeverage int    `json:"maxShortLeverage"`
+	Symbol   string `json:"symbol"`
+	Leverage string `json:"leverage"`
 }
