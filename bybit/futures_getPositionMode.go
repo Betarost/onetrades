@@ -3,6 +3,7 @@ package bybit
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -18,7 +19,7 @@ type futures_getPositionMode struct {
 func (s *futures_getPositionMode) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_PositionsMode, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/openApi/swap/v1/positionSide/dual",
+		Endpoint: "/v5/account/info",
 		SecType:  utils.SecTypeSigned,
 	}
 
@@ -26,7 +27,7 @@ func (s *futures_getPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 	if err != nil {
 		return res, err
 	}
-
+	log.Println("=3c97f9=", string(data))
 	var answ struct {
 		Result futures_positionMode `json:"data"`
 	}

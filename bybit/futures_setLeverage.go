@@ -78,11 +78,9 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	}
 
 	if answ.RetMsg != "OK" {
-		return res, errors.New("Wrong Answer")
+		return res, errors.New(answ.RetMsg)
 	}
-	if err != nil {
-		return res, err
-	}
+
 	return entity.Futures_Leverage{Symbol: *s.symbol, Leverage: *s.leverage}, nil
 }
 

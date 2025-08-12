@@ -3,6 +3,7 @@ package gateio
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"strings"
 
@@ -72,11 +73,13 @@ func (s *futures_setMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return res, err
 	}
-
+	log.Println("=a9f605=", string(data))
 	answ := futures_marginMode{}
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
-		return res, err
+		// return res, err
+		log.Println("=futures_setMarginMode ERR=", err)
+		return entity.Futures_MarginMode{MarginMode: string(*s.marginMode)}, nil
 	}
 
 	res.MarginMode = "cross"

@@ -172,3 +172,7 @@ func (c *FuturesClient) NewGetPositions() *futures_getPositions {
 func (c *FuturesClient) NewSignAuthStream() *signAuthStream {
 	return &signAuthStream{sec: c.secretKey}
 }
+
+func (c *FuturesClient) NewGetMarginMode() *futures_getMarginMode {
+	return &futures_getMarginMode{callAPI: c.callAPI}
+}
