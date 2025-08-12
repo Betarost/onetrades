@@ -10,6 +10,7 @@ import (
 	"github.com/Betarost/onetrades/bitget"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
+	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/mexc"
@@ -297,7 +298,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(bingxFutures.NewGetPositionMode().Do(ctx))
-	// printAnswers(bybitFutures.NewGetPositionMode().Do(ctx)) //processing
+	// printAnswers(bybitFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(gateioFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetPositionMode().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(okxFutures.NewGetPositionMode().Do(ctx))
@@ -307,7 +308,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
 	// printAnswers(bingxFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
-	// printAnswers(bybitFutures.NewSetPositionMode().Symbol("DOGEUSDT").Mode(entity.PositionModeTypeOneWay).Do(ctx))
+	printAnswers(bybitFutures.NewSetPositionMode().Symbol("SKYUSDT").Mode(entity.PositionModeTypeHedge).Do(ctx))
 	// printAnswers(gateioFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
 	// printAnswers(bitgetFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
 	// printAnswers(okxFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
@@ -317,7 +318,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetLeverage().Symbol("TRXUSDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetLeverage().Symbol("TRX-USDT").Do(ctx))
-	printAnswers(bybitFutures.NewGetLeverage().Symbol("SKYUSDT").Do(ctx))
+	printAnswers(bybitFutures.NewGetLeverage().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetLeverage().Symbol("DOGE_USDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetLeverage().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(okxFutures.NewGetLeverage().Symbol("BTC-USDT-SWAP").MarginMode(entity.MarginModeTypeCross).Do(ctx))

@@ -46,7 +46,7 @@ func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 		case entity.PositionModeTypeHedge:
 			m["mode"] = 3
 			b = true
-
+			res.HedgeMode = true
 		case entity.PositionModeTypeOneWay:
 			m["mode"] = 0
 		}
@@ -76,8 +76,6 @@ func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 	if answ.RetMsg != "OK" {
 		return res, errors.New("Wrong Answer")
 	}
-	if err != nil {
-		return res, err
-	}
+
 	return entity.Futures_PositionsMode{HedgeMode: b}, nil
 }
