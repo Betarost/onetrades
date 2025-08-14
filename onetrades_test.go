@@ -92,7 +92,6 @@ func TestOnetrades(t *testing.T) {
 	okxFutures.Proxy = "http://localhost:1080"
 	binanceSpot.Proxy = "http://localhost:1080"
 	binanceFutures.Proxy = "http://localhost:1080"
-	bybitFutures.BrokerID = "Sk000842"
 	//=======================AccountInfo
 	n = "AccountInfo"
 	//SPOT
