@@ -26,6 +26,7 @@ type Request struct {
 	BaseURL     string
 	Endpoint    string
 	Proxy       string
+	BrokerID    string
 	TimeOffset  int64
 	Query       url.Values
 	QueryString string

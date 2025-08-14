@@ -92,6 +92,7 @@ func TestOnetrades(t *testing.T) {
 	okxFutures.Proxy = "http://localhost:1080"
 	binanceSpot.Proxy = "http://localhost:1080"
 	binanceFutures.Proxy = "http://localhost:1080"
+	bybitFutures.BrokerID = "Sk000842"
 	//=======================AccountInfo
 	n = "AccountInfo"
 	//SPOT
@@ -107,7 +108,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxFutures.NewGetAccountInfo().Do(ctx))
-	// printAnswers(bybitFutures.NewGetAccountInfo().Do(ctx))
+	printAnswers(bybitFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(okxFutures.NewGetAccountInfo().Do(ctx))
@@ -129,10 +130,10 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
-	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
+	printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
-	printAnswers(okxFutures.NewGetBalance().Do(ctx))
+	// printAnswers(okxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(huobiFutures.NewGetBalance().UID("53799773").Do(ctx))
 	// printAnswers(bullishFutures.NewGetBalance().UID("111872616831896").Do(ctx))
 
