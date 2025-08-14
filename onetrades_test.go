@@ -61,7 +61,6 @@ func TestOnetrades(t *testing.T) {
 	gateioSpot := gateio.NewSpotClient(gateKey, gateSecret)
 	gateioFutures := gateio.NewFuturesClient(gateKey, gateSecret)
 	mexcSpot := mexc.NewSpotClient(mexcKey, mexcSecret)
-	// mexcFutures := mexc.NewFuturesClient(mexcKey, mexcSecret)
 	bitgetSpot := bitget.NewSpotClient(bitgetKey, bitgetSecret, bitgetMemo)
 	bitgetFutures := bitget.NewFuturesClient(bitgetKey, bitgetSecret, bitgetMemo)
 	okxSpot := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
@@ -79,7 +78,6 @@ func TestOnetrades(t *testing.T) {
 	gateioSpot.Debug = false
 	gateioFutures.Debug = false
 	mexcSpot.Debug = false
-	// mexcFutures.Debug = false
 	bitgetSpot.Debug = false
 	bitgetFutures.Debug = false
 	okxSpot.Debug = false
@@ -87,11 +85,11 @@ func TestOnetrades(t *testing.T) {
 	huobiSpot.Debug = false
 	huobiFutures.Debug = false
 	bullishFutures.Debug = false
-	bullishFutures.Proxy = "http://localhost:1080"
-	okxSpot.Proxy = "http://localhost:1080"
-	okxFutures.Proxy = "http://localhost:1080"
-	binanceSpot.Proxy = "http://localhost:1080"
-	binanceFutures.Proxy = "http://localhost:1080"
+	// bullishFutures.Proxy = "http://localhost:1080"
+	// okxSpot.Proxy = "http://localhost:1080"
+	// okxFutures.Proxy = "http://localhost:1080"
+	// binanceSpot.Proxy = "http://localhost:1080"
+	// binanceFutures.Proxy = "http://localhost:1080"
 	//=======================AccountInfo
 	n = "AccountInfo"
 	//SPOT

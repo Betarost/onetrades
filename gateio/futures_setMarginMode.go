@@ -69,12 +69,11 @@ func (s *futures_setMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 
 	r.SetFormParams(m)
 
-	log.Printf("=SetFormParams= %+v", m)
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
-	log.Println("=a9f605=", string(data))
+
 	answ := futures_marginMode{}
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
