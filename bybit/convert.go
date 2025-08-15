@@ -187,10 +187,10 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 	for _, i := range in {
 		for _, item := range i.Coin {
 			out = append(out, entity.FuturesBalance{
-				Asset:   item.Coin,
-				Balance: item.WalletBalance,
-				Equity:  item.Equity,
-				// AvailableMargin:  item.AvailableToWithdraw,
+				Asset:            item.Coin,
+				Balance:          item.WalletBalance,
+				Equity:           item.Equity,
+				Available:        utils.FloatToStringAll(utils.StringToFloat(item.Equity) - utils.StringToFloat(item.TotalPositionMM)),
 				UnrealizedProfit: item.UnrealisedPnl,
 			})
 		}
