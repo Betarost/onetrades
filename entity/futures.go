@@ -101,9 +101,9 @@ type Futures_OrdersHistory struct {
 type Futures_Positions struct {
 	Symbol           string `json:"symbol" bson:"symbol"`
 	PositionSide     string `json:"positionSide" bson:"positionSide"`
-	PositionSize     string `json:"positionSize"`
-	Leverage         string `json:"leverage"`
-	PositionID       string `json:"positionID"`
+	PositionSize     string `json:"positionSize" bson:"positionSize"`
+	Leverage         string `json:"leverage" bson:"leverage"`
+	PositionID       string `json:"positionID" bson:"positionID"`
 	EntryPrice       string `json:"entryPrice" bson:"entryPrice"`
 	MarkPrice        string `json:"markPrice" bson:"markPrice"`
 	UnRealizedProfit string `json:"unRealizedProfit" bson:"unRealizedProfit"`
