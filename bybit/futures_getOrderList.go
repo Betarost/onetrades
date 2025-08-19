@@ -34,6 +34,8 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	} else {
+		m["settleCoin"] = "USDT"
 	}
 	r.SetParams(m)
 
