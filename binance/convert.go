@@ -116,6 +116,11 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 	}
 
 	for _, item := range in {
+
+		if strings.ToUpper(item.Status) != "FILLED" {
+			continue
+		}
+
 		out = append(out, entity.Spot_OrdersHistory{
 			Symbol:        item.Symbol,
 			OrderID:       utils.Int64ToString(item.OrderId),
