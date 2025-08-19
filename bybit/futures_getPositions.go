@@ -31,6 +31,8 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 	m := utils.Params{"category": "linear", "limit": 200}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	} else {
+		m["settleCoin"] = "USDT"
 	}
 	r.SetParams(m)
 

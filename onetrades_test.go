@@ -195,7 +195,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bingxFutures.NewGetPositions().Do(ctx))
-	// printAnswers(bybitFutures.NewGetPositions().Symbol("BTCUSDT").Do(ctx))
+	printAnswers(bybitFutures.NewGetPositions().Do(ctx))
 	// printAnswers(gateioFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetPositions().Do(ctx))
 	// printAnswers(okxFutures.NewGetPositions().Do(ctx))
