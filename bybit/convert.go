@@ -186,6 +186,9 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 	}
 	for _, i := range in {
 		for _, item := range i.Coin {
+			if utils.StringToFloat(item.WalletBalance) == 0 {
+				continue
+			}
 			out = append(out, entity.FuturesBalance{
 				Asset:            item.Coin,
 				Balance:          item.WalletBalance,
