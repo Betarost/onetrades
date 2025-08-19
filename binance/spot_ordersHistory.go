@@ -76,7 +76,6 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-
 	answ := []spot_ordersHistory_Response{}
 
 	err = json.Unmarshal(data, &answ)
@@ -88,13 +87,14 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 }
 
 type spot_ordersHistory_Response struct {
-	Symbol        string `json:"symbol"`
-	OrderId       int64  `json:"orderId"`
-	ClientOrderId string `json:"clientOrderId"`
-	Side          string `json:"side"`
-	OrigQty       string `json:"origQty"`
-	ExecutedQty   string `json:"executedQty"`
-	Price         string `json:"price"`
+	Symbol              string `json:"symbol"`
+	OrderId             int64  `json:"orderId"`
+	ClientOrderId       string `json:"clientOrderId"`
+	Side                string `json:"side"`
+	OrigQty             string `json:"origQty"`
+	ExecutedQty         string `json:"executedQty"`
+	СummulativeQuoteQty string `json:"cummulativeQuoteQty"`
+	Price               string `json:"price"`
 	// AvgPx     string `json:"avgPx"`
 	// Fee       string `json:"fee"`
 	Type       string `json:"type"`

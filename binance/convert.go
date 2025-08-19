@@ -124,7 +124,7 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 			Size:          item.OrigQty,
 			Price:         item.Price,
 			ExecutedSize:  item.ExecutedQty,
-			// ExecutedPrice: item.AvgPx,
+			ExecutedPrice: utils.FloatToStringAll(utils.StringToFloat(item.СummulativeQuoteQty) / utils.StringToFloat(item.ExecutedQty)),
 			// Fee:           item.Fee,
 			Type:       strings.ToUpper(item.Type),
 			Status:     strings.ToUpper(item.Status),
