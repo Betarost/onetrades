@@ -218,9 +218,9 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 		switch item.PositionIdx {
 		case 0:
 			if strings.ToUpper(item.Side) == "BUY" {
-				positionSide = "LONG"
-			} else {
 				positionSide = "SHORT"
+			} else {
+				positionSide = "LONG"
 			}
 		case 1:
 			positionSide = "LONG"
@@ -236,7 +236,7 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 			AvgPrice:            item.AvgEntryPrice,
 			ExecutedAvgPrice:    item.AvgExitPrice,
 			RealisedProfit:      item.ClosedPnl,
-			Fee:                 utils.FloatToStringAll(utils.StringToFloat(item.OpenFee) + utils.StringToFloat(item.CloseFee)),
+			Fee:                 utils.FloatToStringAll((0 - utils.StringToFloat(item.OpenFee)) + (0 - utils.StringToFloat(item.CloseFee))),
 			// Funding:             item.TotalFunding,
 			// MarginMode:          mMode,
 			Leverage:   item.Leverage,
@@ -375,7 +375,7 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 			Price:         item.Price,
 			ExecutedSize:  item.CumExecQty,
 			ExecutedPrice: item.AvgPrice,
-			Fee:           item.CumExecFee,
+			Fee:           fmt.Sprintf("-%s", item.CumExecFee),
 			Type:          strings.ToUpper(item.OrderType),
 			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),

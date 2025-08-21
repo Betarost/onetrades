@@ -89,11 +89,11 @@ func TestOnetrades(t *testing.T) {
 	// okxSpot.Proxy = "http://localhost:1080"
 	// okxFutures.Proxy = "http://localhost:1080"
 	// binanceSpot.Proxy = "http://localhost:1080"
-	// binanceFutures.Proxy = "http://localhost:1080"
+	binanceFutures.Proxy = "http://localhost:1080"
 	//=======================AccountInfo
 	n = "AccountInfo"
 	//SPOT
-	printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
@@ -114,7 +114,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetBalance
 	n = "GetBalance"
 	//SPOT
-	printAnswers(binanceSpot.NewGetBalance().Do(ctx))
+	// printAnswers(binanceSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
@@ -125,7 +125,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetBalance().UID("69069265").Do(ctx))
 
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
+	printAnswers(binanceFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
@@ -251,7 +251,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
+	printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(bingxFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(bybitFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
@@ -275,7 +275,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
-	// printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
+	printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(gateioFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
@@ -285,7 +285,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(bingxFutures.NewPositionsHistory().Symbol("TRX-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
-	// printAnswers(bybitFutures.NewPositionsHistory().Do(ctx))
+	printAnswers(bybitFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(okxFutures.NewPositionsHistory().Symbol("BNB-USDT-SWAP").Do(ctx))
