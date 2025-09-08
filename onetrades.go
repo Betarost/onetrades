@@ -8,6 +8,7 @@ import (
 	"github.com/Betarost/onetrades/futuregate"
 	"github.com/Betarost/onetrades/futuremexc"
 	"github.com/Betarost/onetrades/futureokx"
+	"github.com/Betarost/onetrades/hyperliquid"
 	"github.com/Betarost/onetrades/optionokx"
 )
 
@@ -37,6 +38,11 @@ func NewFutureBitgetClient(apiKey, secretKey, memo string) *futurebitget.Client 
 
 func NewFutureOKXClient(apiKey, secretKey, memo string) *futureokx.Client {
 	return futureokx.NewClient(apiKey, secretKey, memo)
+}
+
+// NewHyperliquidFuturesClient создает новый клиент для фьючерсной торговли на Hyperliquid
+func NewHyperliquidFuturesClient(privateKey string, isTestnet bool) (*hyperliquid.FuturesClient, error) {
+	return hyperliquid.NewFuturesClient(privateKey, isTestnet)
 }
 
 func NewOptionOKXClient(apiKey, secretKey, memo string) *optionokx.Client {
