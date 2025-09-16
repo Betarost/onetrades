@@ -18,13 +18,15 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	r := &utils.Request{
 		Method:   http.MethodGet,
 		Endpoint: "/api/v5/account/balance",
-		SecType:  utils.SecTypeSigned,
+		// Endpoint: "/api/v5/asset/balances",
+		SecType: utils.SecTypeSigned,
 	}
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result []futures_Balance `json:"data"`
 	}

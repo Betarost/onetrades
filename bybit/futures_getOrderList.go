@@ -72,16 +72,17 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 }
 
 type futures_orderList struct {
-	Symbol      string `json:"symbol"`
-	OrderId     string `json:"orderId"`
-	OrderLinkId string `json:"orderLinkId"`
-	Side        string `json:"side"`
-	PositionIdx int64  `json:"positionIdx"`
-	Qty         string `json:"qty"`
-	CumExecQty  string `json:"cumExecQty"`
-	Price       string `json:"price"`
-	OrderType   string `json:"orderType"`
-	OrderStatus string `json:"orderStatus"`
-	CreatedTime string `json:"createdTime"`
-	UpdatedTime string `json:"updatedTime"`
+	Symbol       string `json:"symbol"`
+	OrderId      string `json:"orderId"`
+	OrderLinkId  string `json:"orderLinkId"`
+	Side         string `json:"side"`
+	PositionIdx  int64  `json:"positionIdx"`
+	Qty          string `json:"qty"`
+	CumExecQty   string `json:"cumExecQty"`
+	Price        string `json:"price"`
+	TriggerPrice string `json:"triggerPrice"`
+	OrderType    string `json:"orderType"`
+	OrderStatus  string `json:"orderStatus"`
+	CreatedTime  string `json:"createdTime"`
+	UpdatedTime  string `json:"updatedTime"`
 }

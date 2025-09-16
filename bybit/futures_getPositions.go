@@ -53,7 +53,6 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result struct {
 			List []futures_Position `json:"list"`

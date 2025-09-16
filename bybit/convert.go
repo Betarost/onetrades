@@ -276,6 +276,10 @@ func (c *futures_converts) convertOrderList(in []futures_orderList) (out []entit
 		case 2:
 			positionSide = "SHORT"
 		}
+		price := item.Price
+		if price == "" || price == "0" {
+			price = item.TriggerPrice
+		}
 		out = append(out, entity.Futures_OrdersList{
 			Symbol:        item.Symbol,
 			OrderID:       item.OrderId,
@@ -284,7 +288,7 @@ func (c *futures_converts) convertOrderList(in []futures_orderList) (out []entit
 			PositionSide:  positionSide,
 			PositionSize:  item.Qty,
 			ExecutedSize:  item.CumExecQty,
-			Price:         item.Price,
+			Price:         price,
 			Type:          strings.ToUpper(item.OrderType),
 			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),

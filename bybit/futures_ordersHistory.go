@@ -93,7 +93,6 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result futures_ordersHistory_Response `json:"result"`
 	}
