@@ -13,11 +13,17 @@ type futures_getInstrumentsInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol *string
+	symbol   *string
+	category *string
 }
 
 func (s *futures_getInstrumentsInfo) Symbol(symbol string) *futures_getInstrumentsInfo {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_getInstrumentsInfo) Category(category string) *futures_getInstrumentsInfo {
+	s.category = &category
 	return s
 }
 
@@ -35,6 +41,10 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	}
+
+	if s.category != nil {
+		m["category"] = *s.category
 	}
 
 	r.SetParams(m)

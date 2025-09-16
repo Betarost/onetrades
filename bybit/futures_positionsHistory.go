@@ -14,6 +14,7 @@ type futures_positionsHistory struct {
 	convert futures_converts
 
 	symbol    *string
+	category  *string
 	startTime *int64
 	endTime   *int64
 	limit     *int64
@@ -23,6 +24,11 @@ type futures_positionsHistory struct {
 
 func (s *futures_positionsHistory) Symbol(symbol string) *futures_positionsHistory {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_positionsHistory) Category(category string) *futures_positionsHistory {
+	s.category = &category
 	return s
 }
 
@@ -61,6 +67,9 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	m := utils.Params{"category": "linear", "limit": 100}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	}
+	if s.category != nil {
+		m["category"] = *s.category
 	}
 	if s.limit != nil && *s.limit > 0 {
 		m["limit"] = *s.limit

@@ -13,11 +13,17 @@ type futures_getOrderList struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol *string
+	symbol   *string
+	category *string
 }
 
 func (s *futures_getOrderList) Symbol(symbol string) *futures_getOrderList {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_getOrderList) Category(category string) *futures_getOrderList {
+	s.category = &category
 	return s
 }
 
@@ -37,6 +43,13 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	} else {
 		m["settleCoin"] = "USDT"
 	}
+	if s.category != nil {
+		m["category"] = *s.category
+		if *s.category == "inverse" {
+			delete(m, "settleCoin")
+		}
+	}
+	// settleCoin need check
 	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)

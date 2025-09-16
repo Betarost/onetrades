@@ -15,6 +15,7 @@ type futures_placeOrder struct {
 	convert futures_converts
 
 	symbol        *string
+	category      *string
 	side          *entity.SideType
 	size          *string
 	price         *string
@@ -24,13 +25,13 @@ type futures_placeOrder struct {
 	hedgeMode     *bool
 }
 
-func (s *futures_placeOrder) HedgeMode(hedgeMode bool) *futures_placeOrder {
-	s.hedgeMode = &hedgeMode
+func (s *futures_placeOrder) Symbol(symbol string) *futures_placeOrder {
+	s.symbol = &symbol
 	return s
 }
 
-func (s *futures_placeOrder) Symbol(symbol string) *futures_placeOrder {
-	s.symbol = &symbol
+func (s *futures_placeOrder) Category(category string) *futures_placeOrder {
+	s.category = &category
 	return s
 }
 
@@ -64,6 +65,11 @@ func (s *futures_placeOrder) PositionSide(positionSide entity.PositionSideType) 
 	return s
 }
 
+func (s *futures_placeOrder) HedgeMode(hedgeMode bool) *futures_placeOrder {
+	s.hedgeMode = &hedgeMode
+	return s
+}
+
 func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
 	r := &utils.Request{
 		Method:   http.MethodPost,
@@ -78,7 +84,9 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
-
+	if s.category != nil {
+		m["category"] = *s.category
+	}
 	if s.side != nil {
 		switch *s.side {
 		case entity.SideTypeBuy:

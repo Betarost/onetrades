@@ -14,11 +14,17 @@ type futures_getLeverage struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol *string
+	symbol   *string
+	category *string
 }
 
 func (s *futures_getLeverage) Symbol(symbol string) *futures_getLeverage {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_getLeverage) Category(category string) *futures_getLeverage {
+	s.category = &category
 	return s
 }
 
@@ -32,6 +38,9 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	m := utils.Params{"category": "linear"}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	}
+	if s.category != nil {
+		m["category"] = *s.category
 	}
 	r.SetParams(m)
 

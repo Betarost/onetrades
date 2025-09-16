@@ -14,6 +14,7 @@ type futures_amendOrder struct {
 	convert futures_converts
 
 	symbol   *string
+	category *string
 	orderID  *string
 	newSize  *string
 	newPrice *string
@@ -21,6 +22,11 @@ type futures_amendOrder struct {
 
 func (s *futures_amendOrder) Symbol(symbol string) *futures_amendOrder {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_amendOrder) Category(category string) *futures_amendOrder {
+	s.category = &category
 	return s
 }
 
@@ -52,6 +58,10 @@ func (s *futures_amendOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	}
+
+	if s.category != nil {
+		m["category"] = *s.category
 	}
 
 	if s.orderID != nil {

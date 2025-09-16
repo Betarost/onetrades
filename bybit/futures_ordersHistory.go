@@ -19,10 +19,16 @@ type futures_ordersHistory struct {
 	limit     *int64
 	page      *int64
 	cursor    *string
+	category  *string
 }
 
 func (s *futures_ordersHistory) Symbol(symbol string) *futures_ordersHistory {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_ordersHistory) Category(category string) *futures_ordersHistory {
+	s.category = &category
 	return s
 }
 
@@ -62,6 +68,9 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	}
+	if s.category != nil {
+		m["category"] = *s.category
 	}
 	if s.limit != nil && *s.limit > 0 {
 		m["limit"] = *s.limit

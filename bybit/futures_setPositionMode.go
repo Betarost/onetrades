@@ -14,12 +14,18 @@ type futures_setPositionMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol *string
-	mode   *entity.PositionModeType
+	symbol   *string
+	category *string
+	mode     *entity.PositionModeType
 }
 
 func (s *futures_setPositionMode) Symbol(symbol string) *futures_setPositionMode {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_setPositionMode) Category(category string) *futures_setPositionMode {
+	s.category = &category
 	return s
 }
 
@@ -40,7 +46,12 @@ func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 	}
 
 	b := false
-
+	if s.symbol != nil {
+		m["symbol"] = *s.symbol
+	}
+	if s.category != nil {
+		m["category"] = *s.category
+	}
 	if s.mode != nil {
 		switch *s.mode {
 		case entity.PositionModeTypeHedge:
@@ -50,10 +61,6 @@ func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 		case entity.PositionModeTypeOneWay:
 			m["mode"] = 0
 		}
-	}
-
-	if s.symbol != nil {
-		m["symbol"] = *s.symbol
 	}
 
 	r.SetFormParams(m)

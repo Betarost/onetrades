@@ -15,6 +15,7 @@ type futures_setLeverage struct {
 	convert futures_converts
 
 	symbol       *string
+	category     *string
 	leverage     *string
 	positionSide *entity.PositionSideType
 	marginMode   *entity.MarginModeType
@@ -22,6 +23,11 @@ type futures_setLeverage struct {
 
 func (s *futures_setLeverage) Symbol(symbol string) *futures_setLeverage {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_setLeverage) Category(category string) *futures_setLeverage {
+	s.category = &category
 	return s
 }
 
@@ -51,7 +57,9 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
-
+	if s.category != nil {
+		m["category"] = *s.category
+	}
 	if s.leverage != nil {
 		m["buyLeverage"] = *s.leverage
 		m["sellLeverage"] = *s.leverage

@@ -13,12 +13,18 @@ type futures_cancelOrder struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol  *string
-	orderID *string
+	symbol   *string
+	category *string
+	orderID  *string
 }
 
 func (s *futures_cancelOrder) Symbol(symbol string) *futures_cancelOrder {
 	s.symbol = &symbol
+	return s
+}
+
+func (s *futures_cancelOrder) Category(category string) *futures_cancelOrder {
+	s.category = &category
 	return s
 }
 
@@ -40,6 +46,10 @@ func (s *futures_cancelOrder) Do(ctx context.Context, opts ...utils.RequestOptio
 
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+	}
+
+	if s.category != nil {
+		m["category"] = *s.category
 	}
 
 	if s.orderID != nil {
