@@ -228,7 +228,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetSpot.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1326467275447353344").Do(ctx))
 	// printAnswers(okxSpot.NewCancelOrder().Symbol("DOGE-USDT").OrderID("2669952276160045056").Do(ctx))
 	// printAnswers(huobiSpot.NewCancelOrder().OrderID("1371171052466066").Do(ctx))
-	printAnswers(kucoinSpot.NewCancelOrder().OrderID("68cc0554a4aad100075896a5").Do(ctx))
+	// printAnswers(kucoinSpot.NewCancelOrder().OrderID("68cc0554a4aad100075896a5").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("76780426418").Do(ctx))
@@ -266,7 +266,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(okxSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(huobiSpot.NewGetOrderList().Do(ctx))
-	printAnswers(kucoinSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(kucoinSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
@@ -290,7 +290,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
-	printAnswers(kucoinSpot.NewOrdersHistory().Do(ctx))
+	// printAnswers(kucoinSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
@@ -376,6 +376,7 @@ func TestOnetrades(t *testing.T) {
 	//SPOT
 	// printAnswers(bingxSpot.NewGetListenKey().Do(ctx))
 	// printAnswers(mexcSpot.NewGetListenKey().Do(ctx))
+	printAnswers(kucoinSpot.NewGetListenKey().Do(ctx))
 
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetListenKey().Do(ctx))

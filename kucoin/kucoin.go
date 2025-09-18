@@ -74,9 +74,9 @@ func (c *SpotClient) NewCancelOrder() *spot_cancelOrder {
 	return &spot_cancelOrder{callAPI: c.callAPI}
 }
 
-// func (c *SpotClient) NewSignAuthStream() *signAuthStream {
-// 	return &signAuthStream{sec: c.secretKey}
-// }
+func (c *SpotClient) NewGetListenKey() *spot_getListenKey {
+	return &spot_getListenKey{callAPI: c.callAPI}
+}
 
 // func (c *SpotClient) NewAmendOrder() *spot_amendOrder {
 // 	return &spot_amendOrder{callAPI: c.callAPI}
