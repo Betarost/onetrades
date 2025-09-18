@@ -19,6 +19,8 @@ var (
 	Huobi_futures   = "https://api.hbdm.com"
 	Bullish_spot    = "https://api.exchange.bullish.com"
 	Bullish_futures = "https://api.exchange.bullish.com"
+	Kucoin_spot     = "https://api.kucoin.com"
+	Kucoin_futures  = "https://api-futures.kucoin.com"
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
@@ -71,6 +73,10 @@ func GetEndpoint(trade string) string {
 		return Bullish_spot
 	case "BULLISH_FUTURES":
 		return Bullish_futures
+	case "KUCOIN_SPOT":
+		return Kucoin_spot
+	case "KUCOIN_FUTURES":
+		return Kucoin_futures
 	default:
 		return ""
 	}

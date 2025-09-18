@@ -28,7 +28,6 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result []accountInfo `json:"data"`
 	}
