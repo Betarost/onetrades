@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -30,15 +31,7 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	if c.Proxy != "" {
 		r.Proxy = c.Proxy
 	}
-	if c.BrokerID != "" {
-		header := http.Header{}
-		if r.Header != nil {
-			header = r.Header.Clone()
-		}
-		header.Set("KC-BROKER-NAME", c.BrokerID)
-		header.Set("KC-API-PARTNER", c.BrokerID)
-		r.Header = header
-	}
+
 	r.BaseURL = c.BaseURL
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
@@ -50,6 +43,26 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 		return []byte{}, &http.Header{}, err
 
 	}
+
+	if c.BrokerID != "" {
+		header := http.Header{}
+		if r.Header != nil {
+			header = r.Header.Clone()
+		}
+		sf, err := utils.SignFunc(utils.KeyTypeHmacBase64)
+		if err == nil {
+			raw := fmt.Sprintf("%d%s%s", r.Timestamp, c.BrokerName, c.apiKey)
+			sign, err := sf(c.BrokerID, raw)
+			if err == nil {
+				header.Set("KC-BROKER-NAME", c.BrokerName)
+				header.Set("KC-API-PARTNER", c.BrokerName)
+				header.Set("KC-API-PARTNER-SIGN", *sign)
+				header.Set("KC-API-PARTNER-VERIFY", "True")
+				r.Header = header
+			}
+		}
+	}
+
 	c.debug("FullURL %s\n", r.FullURL)
 	c.debug("Body %s\n", r.BodyString)
 	c.debug("Sign %s\n", r.Sign)
@@ -104,15 +117,6 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	if c.Proxy != "" {
 		r.Proxy = c.Proxy
 	}
-	if c.BrokerID != "" {
-		header := http.Header{}
-		if r.Header != nil {
-			header = r.Header.Clone()
-		}
-		header.Set("KC-BROKER-NAME", c.BrokerID)
-		header.Set("KC-API-PARTNER", c.BrokerID)
-		r.Header = header
-	}
 	r.BaseURL = c.BaseURL
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
@@ -124,6 +128,27 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 		return []byte{}, &http.Header{}, err
 
 	}
+
+	if c.BrokerID != "" {
+		header := http.Header{}
+		if r.Header != nil {
+			header = r.Header.Clone()
+		}
+		sf, err := utils.SignFunc(utils.KeyTypeHmacBase64)
+		if err == nil {
+			raw := fmt.Sprintf("%d%s%s", r.Timestamp, c.BrokerName, c.apiKey)
+			sign, err := sf(c.BrokerID, raw)
+			log.Println("=4aa323=", raw, "=", c.BrokerID, "=", *sign)
+			if err == nil {
+				header.Set("KC-BROKER-NAME", c.BrokerName)
+				header.Set("KC-API-PARTNER", c.BrokerName)
+				header.Set("KC-API-PARTNER-SIGN", *sign)
+				header.Set("KC-API-PARTNER-VERIFY", "True")
+				r.Header = header
+			}
+		}
+	}
+
 	c.debug("FullURL %s\n", r.FullURL)
 	c.debug("Body %s\n", r.BodyString)
 	c.debug("Sign %s\n", r.Sign)
@@ -255,6 +280,7 @@ func createHeaders(r *utils.Request) error {
 		header.Set("KC-API-SIGN", r.Sign)
 		header.Set("KC-API-TIMESTAMP", fmt.Sprintf("%d", r.Timestamp))
 		// header.Set("KC-API-KEY-VERSION", r.Sign)
+
 	}
 	r.TmpApi = ""
 	r.TmpMemo = ""
