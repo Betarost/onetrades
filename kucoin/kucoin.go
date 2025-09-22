@@ -23,6 +23,8 @@ type SpotClient struct {
 	BaseURL    string
 	UserAgent  string
 	Proxy      string
+	BrokerID   string
+	BrokerName string
 	Debug      bool
 	logger     *log.Logger
 	TimeOffset int64
@@ -92,6 +94,8 @@ type FuturesClient struct {
 	BaseURL    string
 	UserAgent  string
 	Proxy      string
+	BrokerID   string
+	BrokerName string
 	Debug      bool
 	logger     *log.Logger
 	TimeOffset int64
@@ -123,58 +127,62 @@ func (c *FuturesClient) NewGetBalance() *futures_getBalance {
 	return &futures_getBalance{callAPI: c.callAPI}
 }
 
-// func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
-// 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
+	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewGetPositionMode() *futures_getPositionMode {
-// 	return &futures_getPositionMode{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewGetPositionMode() *futures_getPositionMode {
+	return &futures_getPositionMode{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewSetPositionMode() *futures_setPositionMode {
-// 	return &futures_setPositionMode{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewSetPositionMode() *futures_setPositionMode {
+	return &futures_setPositionMode{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewGetLeverage() *futures_getLeverage {
-// 	return &futures_getLeverage{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewGetLeverage() *futures_getLeverage {
+	return &futures_getLeverage{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewSetLeverage() *futures_setLeverage {
-// 	return &futures_setLeverage{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewSetLeverage() *futures_setLeverage {
+	return &futures_setLeverage{callAPI: c.callAPI}
+}
 
-// // func (c *FuturesClient) NewGetMarginMode() *futures_getMarginMode {
-// // 	return &futures_getMarginMode{callAPI: c.callAPI}
-// // }
+func (c *FuturesClient) NewGetMarginMode() *futures_getMarginMode {
+	return &futures_getMarginMode{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
-// 	return &futures_positionsHistory{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewSetMarginMode() *futures_setMarginMode {
+	return &futures_setMarginMode{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewGetPositions() *futures_getPositions {
-// 	return &futures_getPositions{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
+	return &futures_placeOrder{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
-// 	return &futures_getOrderList{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
+	return &futures_getOrderList{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
-// 	return &futures_cancelOrder{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
+	return &futures_cancelOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetPositions() *futures_getPositions {
+	return &futures_getPositions{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
+	return &futures_positionsHistory{callAPI: c.callAPI}
+}
 
 // func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
 // 	return &futures_amendOrder{callAPI: c.callAPI}
 // }
 
-// func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
-// 	return &futures_placeOrder{callAPI: c.callAPI}
-// }
+func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
+	return &futures_ordersHistory{callAPI: c.callAPI}
+}
 
-// func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
-// 	return &futures_ordersHistory{callAPI: c.callAPI}
-// }
-
-// func (c *FuturesClient) NewSignAuthStream() *signAuthStream {
-// 	return &signAuthStream{sec: c.secretKey}
-// }
+func (c *FuturesClient) NewGetListenKey() *spot_getListenKey {
+	return &spot_getListenKey{callAPI: c.callAPI}
+}

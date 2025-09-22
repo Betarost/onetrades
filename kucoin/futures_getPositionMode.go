@@ -9,15 +9,15 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-type getAccountInfo struct {
+type futures_getPositionMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
-	convert account_converts
+	convert futures_converts
 }
 
-func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.AccountInformation, err error) {
+func (s *futures_getPositionMode) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_PositionsMode, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/api/v1/user/api-key",
+		Endpoint: "/api/v2/position/getPositionMode",
 		SecType:  utils.SecTypeSigned,
 	}
 
@@ -25,9 +25,8 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
-		Result accountInfo `json:"data"`
+		Result futures_positionMode `json:"data"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -35,13 +34,14 @@ func (s *getAccountInfo) Do(ctx context.Context, opts ...utils.RequestOption) (r
 		return res, err
 	}
 
-	return s.convert.convertAccountInfo(answ.Result), nil
+	b := false
+
+	if answ.Result.PositionMode == 1 {
+		b = true
+	}
+	return entity.Futures_PositionsMode{HedgeMode: b}, nil
 }
 
-type accountInfo struct {
-	UID        int64  `json:"uid"`
-	Remark     string `json:"remark"`
-	ApiVersion int64  `json:"apiVersion"`
-	Permission string `json:"permission"`
-	IsMaster   bool   `json:"isMaster"`
+type futures_positionMode struct {
+	PositionMode int64 `json:"positionMode"`
 }

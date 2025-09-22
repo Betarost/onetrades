@@ -109,5 +109,6 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 
 type placeOrder_Response struct {
 	OrderId           string `json:"orderId"`
+	СlientOid         string `json:"clientOid"`
 	CancelledOrderIds string `json:"cancelledOrderIds"`
 }

@@ -92,8 +92,9 @@ func (c *spot_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.
 		oID = in.CancelledOrderIds
 	}
 	out = append(out, entity.PlaceOrder{
-		OrderID: oID,
-		Ts:      time.Now().UTC().UnixMilli(),
+		OrderID:       oID,
+		ClientOrderID: in.СlientOid,
+		Ts:            time.Now().UTC().UnixMilli(),
 	})
 	return out
 }
@@ -162,15 +163,202 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 	}
 
 	for _, i := range in {
-		for _, item := range i.Details {
-			out = append(out, entity.FuturesBalance{
-				Asset:            item.Ccy,
-				Balance:          item.CashBal,
-				Equity:           item.Eq,
-				Available:        item.AvailBal,
-				UnrealizedProfit: item.Upl,
-			})
+		out = append(out, entity.FuturesBalance{
+			Asset:            i.Currency,
+			Balance:          utils.FloatToStringAll(i.MarginBalance),
+			Equity:           utils.FloatToStringAll(i.AccountEquity),
+			Available:        utils.FloatToStringAll(i.AvailableBalance),
+			UnrealizedProfit: utils.FloatToStringAll(i.UnrealisedPNL),
+		})
+	}
+	return out
+}
+
+func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
+	}
+	for _, item := range in {
+		state := "LIVE"
+		if strings.ToUpper(item.Status) != "OPEN" {
+			state = strings.ToUpper(item.Status)
 		}
+		out = append(out, entity.Futures_InstrumentsInfo{
+			Symbol:         item.Symbol,
+			Base:           item.BaseCurrency,
+			Quote:          item.QuoteCurrency,
+			MinQty:         utils.FloatToStringAll(item.LotSize),
+			PricePrecision: utils.GetPrecisionFromStr(utils.FloatToStringAll(item.IndexPriceTickSize)),
+			SizePrecision:  utils.GetPrecisionFromStr(utils.FloatToStringAll(item.LotSize)),
+			MaxLeverage:    utils.Int64ToString(item.MaxLeverage),
+			State:          state,
+			IsSizeContract: true,
+			Multiplier:     utils.FloatToStringAll(item.Multiplier),
+			ContractSize:   utils.FloatToStringAll(item.LotSize * item.Multiplier),
+		})
+	}
+	return out
+}
+
+func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
+	out.Symbol = in.Symbol
+	out.Leverage = in.Leverage
+	return out
+}
+
+func (c *futures_converts) convertPlaceOrder(in placeOrder_Response) (out []entity.PlaceOrder) {
+	oID := in.OrderId
+	if oID == "" {
+		oID = in.CancelledOrderIds
+	}
+	out = append(out, entity.PlaceOrder{
+		OrderID:       oID,
+		ClientOrderID: in.СlientOid,
+		Ts:            time.Now().UTC().UnixMilli(),
+	})
+	return out
+}
+
+func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {
+	for _, item := range answ {
+		positionSide := "LONG"
+		if item.PositionSide == "BOTH" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else {
+			positionSide = strings.ToUpper(item.PositionSide)
+		}
+
+		res = append(res, entity.Futures_OrdersList{
+			Symbol:        item.Symbol,
+			OrderID:       item.ID,
+			ClientOrderID: item.ClientOid,
+			PositionSide:  positionSide,
+			Side:          strings.ToUpper(item.Side),
+			PositionSize:  utils.FloatToStringAll(item.Size),
+			ExecutedSize:  utils.FloatToStringAll(item.FilledSize),
+			Price:         item.Price,
+			Type:          strings.ToUpper(item.Type),
+			MarginMode:    item.MarginMode,
+			Leverage:      item.Leverage,
+			Status:        strings.ToUpper(item.Status),
+			CreateTime:    item.CreatedAt,
+			UpdateTime:    item.UpdatedAt,
+		})
+	}
+	return res
+}
+
+func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
+	for _, item := range answ {
+
+		if !item.IsOpen {
+			continue
+		}
+
+		positionSide := "LONG"
+		hedgeMode := false
+
+		if item.PositionSide != "BOTH" {
+			hedgeMode = true
+			positionSide = strings.ToUpper(item.PositionSide)
+		} else {
+			if item.CurrentQty < 0 {
+				positionSide = "SHORT"
+				item.CurrentQty = 0 - item.CurrentQty
+			}
+		}
+
+		res = append(res, entity.Futures_Positions{
+			Symbol:           item.Symbol,
+			PositionSide:     positionSide,
+			PositionSize:     utils.FloatToStringAll(item.CurrentQty),
+			Leverage:         utils.Int64ToString(item.Leverage),
+			PositionID:       item.ID,
+			EntryPrice:       utils.FloatToStringAll(item.AvgEntryPrice),
+			MarkPrice:        utils.FloatToStringAll(item.MarkPrice),
+			UnRealizedProfit: utils.FloatToStringAll(item.UnrealisedPnl),
+			RealizedProfit:   utils.FloatToStringAll(item.RealisedPnl),
+			Notional:         utils.FloatToStringAll(item.CurrentCost),
+			HedgeMode:        hedgeMode,
+			MarginMode:       strings.ToLower(item.MarginMode),
+			CreateTime:       item.OpeningTimestamp,
+			UpdateTime:       item.CurrentTimestamp,
+		})
+	}
+	return res
+}
+
+func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
+
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		positionSide := "LONG"
+		hedgeMode := false
+
+		if item.Status == "done" {
+			item.Status = "FILLED"
+		}
+		if item.PositionSide != "BOTH" {
+			hedgeMode = true
+			positionSide = strings.ToUpper(item.PositionSide)
+		} else {
+			// if item.CurrentQty < 0 {
+			// 	positionSide = "SHORT"
+			// 	item.CurrentQty = 0 - item.CurrentQty
+			// }
+		}
+
+		out = append(out, entity.Futures_OrdersHistory{
+			Symbol:        item.Symbol,
+			OrderID:       item.ID,
+			ClientOrderID: item.ClientOid,
+			Side:          strings.ToUpper(item.Side),
+			PositionSide:  positionSide,
+			PositionSize:  utils.FloatToStringAll(item.Size),
+			ExecutedSize:  utils.FloatToStringAll(item.FilledSize),
+			Price:         item.Price,
+			ExecutedPrice: item.AvgDealPrice,
+			// 		RealisedProfit: item.Pnl,
+			// 		Fee:            item.Fee,
+			Leverage:   item.Leverage,
+			HedgeMode:  hedgeMode,
+			MarginMode: strings.ToLower(item.MarginMode),
+			Type:       strings.ToUpper(item.Type),
+			Status:     strings.ToUpper(item.Status),
+			CreateTime: item.CreatedAt,
+			UpdateTime: item.UpdatedAt,
+		})
+	}
+	return out
+}
+
+func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		out = append(out, entity.Futures_PositionsHistory{
+			Symbol:       item.Symbol,
+			PositionID:   item.CloseId,
+			PositionSide: strings.ToUpper(item.Side),
+			// PositionAmt:         item.OpenMaxPos,
+			// ExecutedPositionAmt: item.CloseTotalPos,
+			AvgPrice:         item.OpenPrice,
+			ExecutedAvgPrice: item.ClosePrice,
+			RealisedProfit:   item.Pnl,
+			Fee:              item.TradeFee,
+			Funding:          item.FundingFee,
+			Leverage:         item.Leverage,
+			MarginMode:       item.MarginMode,
+			CreateTime:       item.OpenTime,
+			UpdateTime:       item.CloseTime,
+		})
 	}
 	return out
 }
