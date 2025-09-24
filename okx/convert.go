@@ -193,6 +193,13 @@ func (c *futures_converts) convertLeverage(in []futures_leverage) (out entity.Fu
 		out.ShortLeverage = in[0].Lever
 	} else if len(in) == 2 {
 		out.Symbol = in[0].InstId
+		if in[0].Lever == in[1].Lever {
+			out.Leverage = in[0].Lever
+		} else if utils.StringToInt64(in[0].Lever) < utils.StringToInt64(in[1].Lever) {
+			out.Leverage = in[0].Lever
+		} else {
+			out.Leverage = in[1].Lever
+		}
 		for _, item := range in {
 			switch strings.ToUpper(item.PosSide) {
 			case "LONG":

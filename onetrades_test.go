@@ -178,7 +178,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	n = "MarketCandle"
 	// printAnswers(bullishFutures.NewGetMarketCandle().Symbol("BTC-USDC-PERP").TimeFrame(entity.TimeFrameType1H).Do(ctx))
-	printAnswers(binanceFutures.NewGetMarketCandle().Symbol("BTCUSDT").TimeFrame(entity.TimeFrameType1H).Limit(3).Do(ctx))
+	// printAnswers(binanceFutures.NewGetMarketCandle().Symbol("BTCUSDT").TimeFrame(entity.TimeFrameType1H).Limit(3).Do(ctx))
 
 	//=======================PlaceOrder
 	n = "PlaceOrder"
@@ -356,7 +356,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewGetLeverage().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetLeverage().Symbol("DOGE_USDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetLeverage().Symbol("DOGEUSDT").Do(ctx))
-	// printAnswers(okxFutures.NewGetLeverage().Symbol("BTC-USDT-SWAP").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	printAnswers(okxFutures.NewGetLeverage().Symbol("BTC-USDT-SWAP").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(kucoinFutures.NewGetLeverage().Symbol("DOGEUSDTM").Do(ctx))
 
 	//=======================SetLeverage
@@ -368,7 +368,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioFutures.NewSetLeverage().Symbol("DOGE_USDT").Leverage("30").Do(ctx))
 	// printAnswers(gateioFutures.NewSetLeverage().Symbol("DOGE_USDT").Leverage("20").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(bitgetFutures.NewSetLeverage().Symbol("DOGEUSDT").Leverage("30").PositionSide(entity.PositionSideTypeLong).Do(ctx))
-	// printAnswers(okxFutures.NewSetLeverage().Symbol("BTC-USDT-SWAP").Leverage("100").PositionSide(entity.PositionSideTypeShort).MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
+	// printAnswers(okxFutures.NewSetLeverage().Symbol("BTC-USDT-SWAP").Leverage("100").PositionSide(entity.PositionSideTypeShort).MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(kucoinFutures.NewSetLeverage().Symbol("DOGEUSDTM").Leverage("50").Do(ctx))
 
 	//=======================GetMarginMode
