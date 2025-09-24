@@ -65,7 +65,6 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result struct {
 			Items []futures_orderList `json:"items"`

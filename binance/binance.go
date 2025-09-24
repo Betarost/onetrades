@@ -115,6 +115,10 @@ func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
 	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
 }
 
+func (c *FuturesClient) NewGetMarketCandle() *futures_getMarketCandle {
+	return &futures_getMarketCandle{callAPI: c.callAPI}
+}
+
 func (c *FuturesClient) NewGetPositionMode() *futures_getPositionMode {
 	return &futures_getPositionMode{callAPI: c.callAPI}
 }

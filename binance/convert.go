@@ -1,11 +1,13 @@
 package binance
 
 import (
+	"log"
 	"strings"
 	"time"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
+	"github.com/bitly/go-simplejson"
 )
 
 // ===============ACCOUNT=================
@@ -196,6 +198,34 @@ func (c *futures_converts) convertInstrumentsInfo(in futures_instrumentsInfo) (o
 		out = append(out, rec)
 	}
 	return
+}
+
+func (c *futures_converts) convertMarketCandle(in *simplejson.Json) (out []entity.Futures_MarketCandle) {
+	num := len(in.MustArray())
+	out = make([]entity.Futures_MarketCandle, num)
+	for i := 0; i < num; i++ {
+		item := in.GetIndex(i)
+		if len(item.MustArray()) < 11 {
+			log.Println("Binance invalid kline response")
+			return []entity.Futures_MarketCandle{}
+		}
+		complete := true
+		if i == num-1 {
+			complete = false
+		}
+
+		out[i] = entity.Futures_MarketCandle{
+			OpenPrice:    item.GetIndex(1).MustString(),
+			HighestPrice: item.GetIndex(2).MustString(),
+			LowestPrice:  item.GetIndex(3).MustString(),
+			ClosePrice:   item.GetIndex(4).MustString(),
+			Volume:       item.GetIndex(5).MustString(),
+			Time:         item.GetIndex(0).MustInt64(),
+			Complete:     complete,
+		}
+	}
+
+	return out
 }
 
 func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {

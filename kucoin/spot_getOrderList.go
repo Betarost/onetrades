@@ -52,17 +52,12 @@ func (s *spot_getOrderList) Do(ctx context.Context, opts ...utils.RequestOption)
 		m["pageSize"] = *s.limit
 	}
 
-	// if s.orderType != nil {
-	// 	m["ordType"] = strings.ToLower(string(*s.orderType))
-	// }
-
 	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result struct {
 			Items []spot_orderList `json:"items"`

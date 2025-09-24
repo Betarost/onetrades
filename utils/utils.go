@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/bitly/go-simplejson"
 )
 
 func CurrentTimestamp() int64 {
@@ -78,4 +80,12 @@ func PrecisionFormatFloat64(num float64, scale string) string {
 		ret = sp[0] + "." + sp[1][:precision]
 	}
 	return ret
+}
+
+func NewJSON(data []byte) (j *simplejson.Json, err error) {
+	j, err = simplejson.NewJson(data)
+	if err != nil {
+		return nil, err
+	}
+	return j, nil
 }
