@@ -200,6 +200,41 @@ func (c *futures_converts) convertInstrumentsInfo(in futures_instrumentsInfo) (o
 	return
 }
 
+func (c *futures_converts) convertInstrumentsInfo_COINM(in futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
+	if len(in.Symbols) == 0 {
+		return out
+	}
+	for _, item := range in.Symbols {
+		if item.ContractStatus == "TRADING" {
+			item.Status = "LIVE"
+		}
+		rec := entity.Futures_InstrumentsInfo{
+			Symbol: item.Symbol,
+			Base:   item.BaseAsset,
+			Quote:  item.QuoteAsset,
+			// SizePrecision: utils.Int64ToString(item.BaseAssetPrecision),
+			State:          item.Status,
+			ContractSize:   utils.FloatToStringAll(item.ContractSize),
+			Multiplier:     "1",
+			IsSizeContract: true,
+		}
+		for _, i := range item.Filters {
+			m := i.(map[string]interface{})
+			switch m["filterType"] {
+			case "PRICE_FILTER":
+				rec.PricePrecision = utils.GetPrecisionFromStr(utils.FloatToStringAll(utils.StringToFloat(m["tickSize"].(string))))
+			case "LOT_SIZE":
+				rec.MinQty = utils.FloatToStringAll(utils.StringToFloat(m["minQty"].(string)))
+				rec.SizePrecision = utils.GetPrecisionFromStr(utils.FloatToStringAll(utils.StringToFloat(m["minQty"].(string))))
+			case "MIN_NOTIONAL":
+				rec.MinNotional = utils.FloatToStringAll(utils.StringToFloat(m["notional"].(string)))
+			}
+		}
+		out = append(out, rec)
+	}
+	return
+}
+
 func (c *futures_converts) convertMarketCandle(in *simplejson.Json) (out []entity.Futures_MarketCandle) {
 	num := len(in.MustArray())
 	out = make([]entity.Futures_MarketCandle, num)
@@ -235,6 +270,12 @@ func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futu
 	return out
 }
 
+func (c *futures_converts) convertLeverage_COINM(in futures_Position) (out entity.Futures_Leverage) {
+	out.Symbol = in.Symbol
+	out.Leverage = in.Leverage
+	return out
+}
+
 func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
 
 	out = append(out, entity.PlaceOrder{
@@ -248,6 +289,11 @@ func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (ou
 
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
+
+		if utils.StringToFloat(item.PositionAmt) == 0 {
+			continue
+		}
+
 		positionSide := "LONG"
 		hedgeMode := false
 		marginMode := "cross"
@@ -271,7 +317,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			Symbol:       item.Symbol,
 			PositionSide: positionSide,
 			PositionSize: item.PositionAmt,
-			// Leverage:         item.Lever,
+			Leverage:     item.Leverage,
 			// PositionID:       item.PosID,
 			EntryPrice:       item.EntryPrice,
 			MarkPrice:        item.MarkPrice,
@@ -325,7 +371,9 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 	}
 
 	for _, item := range in {
-
+		if strings.ToUpper(item.Status) != "FILLED" {
+			continue
+		}
 		hedgeMode := false
 		positionSide := "LONG"
 		if item.PositionSide == "BOTH" {

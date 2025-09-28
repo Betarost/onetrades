@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	tradeName_Spot    = "BINANCE_SPOT"
-	tradeName_Futures = "BINANCE_FUTURES"
+	tradeName_Spot         = "BINANCE_SPOT"
+	tradeName_Futures      = "BINANCE_FUTURES"
+	tradeName_FuturesCOINM = "BINANCE_FUTURES_COINM"
 )
 
 // ===============SPOT=================
@@ -86,6 +87,7 @@ type FuturesClient struct {
 	UserAgent  string
 	Proxy      string
 	Debug      bool
+	isCOINM    bool
 	logger     *log.Logger
 	TimeOffset int64
 }
@@ -94,6 +96,15 @@ func (c *FuturesClient) debug(format string, v ...interface{}) {
 	if c.Debug {
 		c.logger.Printf(format, v...)
 	}
+}
+
+func (c *FuturesClient) IsCOINM(is bool) {
+	if is {
+		c.BaseURL = utils.GetEndpoint(tradeName_FuturesCOINM)
+	} else {
+		c.BaseURL = utils.GetEndpoint(tradeName_Futures)
+	}
+	c.isCOINM = is
 }
 
 func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
@@ -108,65 +119,65 @@ func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
 }
 
 func (c *FuturesClient) NewGetBalance() *futures_getBalance {
-	return &futures_getBalance{callAPI: c.callAPI}
+	return &futures_getBalance{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
-	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
+	return &futures_getInstrumentsInfo{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewGetMarketCandle() *futures_getMarketCandle {
-	return &futures_getMarketCandle{callAPI: c.callAPI}
+	return &futures_getMarketCandle{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewGetPositionMode() *futures_getPositionMode {
-	return &futures_getPositionMode{callAPI: c.callAPI}
+	return &futures_getPositionMode{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewSetPositionMode() *futures_setPositionMode {
-	return &futures_setPositionMode{callAPI: c.callAPI}
+	return &futures_setPositionMode{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewGetLeverage() *futures_getLeverage {
-	return &futures_getLeverage{callAPI: c.callAPI}
+	return &futures_getLeverage{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewSetLeverage() *futures_setLeverage {
-	return &futures_setLeverage{callAPI: c.callAPI}
+	return &futures_setLeverage{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
-	return &futures_placeOrder{callAPI: c.callAPI}
+	return &futures_placeOrder{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewGetPositions() *futures_getPositions {
-	return &futures_getPositions{callAPI: c.callAPI}
+	return &futures_getPositions{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
-	return &futures_getOrderList{callAPI: c.callAPI}
+	return &futures_getOrderList{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
-	return &futures_amendOrder{callAPI: c.callAPI}
+	return &futures_amendOrder{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
-	return &futures_cancelOrder{callAPI: c.callAPI}
+	return &futures_cancelOrder{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
-	return &futures_ordersHistory{callAPI: c.callAPI}
+	return &futures_ordersHistory{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
-	return &futures_positionsHistory{callAPI: c.callAPI}
+	return &futures_positionsHistory{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewGetMarginMode() *futures_getMarginMode {
-	return &futures_getMarginMode{callAPI: c.callAPI}
+	return &futures_getMarginMode{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }
 
 func (c *FuturesClient) NewSetMarginMode() *futures_setMarginMode {
-	return &futures_setMarginMode{callAPI: c.callAPI}
+	return &futures_setMarginMode{callAPI: c.callAPI, isCOINM: c.isCOINM}
 }

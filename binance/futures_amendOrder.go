@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
@@ -13,6 +14,7 @@ import (
 
 type futures_amendOrder struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	symbol   *string
@@ -52,6 +54,10 @@ func (s *futures_amendOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		Method:   http.MethodPut,
 		Endpoint: "/fapi/v1/order",
 		SecType:  utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = strings.Replace(r.Endpoint, "/fapi/", "/dapi/", 1)
 	}
 
 	m := utils.Params{}

@@ -12,6 +12,7 @@ import (
 // ==============GetPositions=================
 type futures_getPositions struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 }
 
@@ -22,10 +23,15 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 		SecType:  utils.SecTypeSigned,
 	}
 
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/positionRisk"
+	}
+
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
+
 	answ := []futures_Position{}
 
 	err = json.Unmarshal(data, &answ)
@@ -40,9 +46,11 @@ type futures_Position struct {
 	PositionSide     string `json:"positionSide"`
 	PositionAmt      string `json:"positionAmt"`
 	EntryPrice       string `json:"entryPrice"`
+	Leverage         string `json:"leverage"`
 	MarkPrice        string `json:"markPrice"`
 	UnRealizedProfit string `json:"unRealizedProfit"`
 	Notional         string `json:"notional"`
+	NotionalValue    string `json:"notionalValue"`
 	IsolatedMargin   string `json:"isolatedMargin"`
 	UpdateTime       int64  `json:"updateTime"`
 }

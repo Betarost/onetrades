@@ -11,6 +11,7 @@ import (
 
 type futures_cancelOrder struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 	symbol  *string
 	orderID *string
@@ -31,6 +32,10 @@ func (s *futures_cancelOrder) Do(ctx context.Context, opts ...utils.RequestOptio
 		Method:   http.MethodDelete,
 		Endpoint: "/fapi/v1/order",
 		SecType:  utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/order"
 	}
 
 	m := utils.Params{}

@@ -11,6 +11,7 @@ import (
 
 type futures_getLeverage struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	symbol     *string
@@ -32,6 +33,41 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		Method:   http.MethodGet,
 		Endpoint: "/fapi/v1/symbolConfig",
 		SecType:  utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/positionRisk"
+
+		m := utils.Params{}
+
+		symbol := ""
+		if s.symbol != nil {
+			symbol = *s.symbol
+		}
+
+		r.SetParams(m)
+
+		data, _, err := s.callAPI(ctx, r, opts...)
+		if err != nil {
+			return res, err
+		}
+		answ := []futures_Position{}
+
+		err = json.Unmarshal(data, &answ)
+		if err != nil {
+			return res, err
+		}
+
+		if len(answ) == 0 || symbol == "" {
+			return res, nil
+		}
+		for _, item := range answ {
+			if item.Symbol == symbol {
+				return s.convert.convertLeverage_COINM(item), nil
+			}
+		}
+		return res, nil
+
 	}
 
 	m := utils.Params{}

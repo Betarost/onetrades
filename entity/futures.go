@@ -113,12 +113,6 @@ type Futures_Positions struct {
 	MarginMode       string `json:"marginMode" bson:"marginMode"`
 	CreateTime       int64  `json:"createTime" bson:"createTime"`
 	UpdateTime       int64  `json:"updateTime" bson:"updateTime"`
-
-	//
-	// InitialMargin    string `json:"initialMargin" bson:"initialMargin"`
-	// MarginRatio      string `json:"marginRatio" bson:"marginRatio"`
-	// AutoDeleveraging string `json:"autoDeleveraging" bson:"autoDeleveraging"`
-	// PositionAmt      string `json:"positionAmt" bson:"positionAmt"`
 }
 
 type Futures_OrdersList struct {
@@ -138,12 +132,4 @@ type Futures_OrdersList struct {
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 
 	MarginMode string `json:"marginMode" bson:"marginMode"`
-
-	//==========
-	// TpPrice     string `json:"tpPrice" bson:"tpPrice"`
-	// SlPrice     string `json:"slPrice" bson:"slPrice"`
-	// TradeMode   string `json:"tradeMode" bson:"tradeMode"`
-	// InstType    string `json:"instType" bson:"instType"`
-	// IsTpLimit   bool   `json:"isTpLimit" bson:"isTpLimit"`
-	// PositionAmt string `json:"positionAmt" bson:"positionAmt"`
 }

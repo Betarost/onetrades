@@ -11,9 +11,10 @@ import (
 
 // ==============getOrderList=================
 type futures_getOrderList struct {
+	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
-	callAPI   func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	symbol    *string
 	orderType *entity.OrderType
 	limit     *int
@@ -39,6 +40,10 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 		Method:   http.MethodGet,
 		Endpoint: "/fapi/v1/openOrders",
 		SecType:  utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/openOrders"
 	}
 
 	m := utils.Params{}

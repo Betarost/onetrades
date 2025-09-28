@@ -12,6 +12,7 @@ import (
 
 type futures_placeOrder struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	symbol        *string
@@ -71,6 +72,10 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		Method:   http.MethodPost,
 		Endpoint: "/fapi/v1/order",
 		SecType:  utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/order"
 	}
 
 	m := utils.Params{}
@@ -134,12 +139,3 @@ type futures_placeOrder_Response struct {
 	ClientOrderId string `json:"clientOrderId"`
 	OrderId       int64  `json:"orderId"`
 }
-
-// type futures_placeOrder_Response struct {
-// 	ClOrdId string `json:"clOrdId"`
-// 	OrdId   string `json:"ordId"`
-// 	Tag     string `json:"tag"`
-// 	Ts      string `json:"ts"`
-// 	SCode   string `json:"sCode"`
-// 	SMsg    string `json:"sMsg"`
-// }

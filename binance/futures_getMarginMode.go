@@ -3,7 +3,9 @@ package binance
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
@@ -11,6 +13,7 @@ import (
 
 type futures_getMarginMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	symbol *string
@@ -28,6 +31,45 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 		SecType:  utils.SecTypeSigned,
 	}
 
+	if s.isCOINM {
+		r.Method = http.MethodPost
+		r.Endpoint = "/dapi/v1/marginType"
+
+		m := utils.Params{"marginType": "CROSSED"}
+		if s.symbol != nil {
+			m["symbol"] = *s.symbol
+		}
+
+		r.SetFormParams(m)
+
+		data, _, err := s.callAPI(ctx, r, opts...)
+		if err != nil {
+			if strings.Contains(err.Error(), "No need to change margin type.") {
+				return entity.Futures_MarginMode{MarginMode: "cross"}, nil
+			}
+			return res, err
+		}
+		var answ struct {
+			Msg  string `json:"msg"`
+			Code int64  `json:"code"`
+		}
+
+		err = json.Unmarshal(data, &answ)
+		if err != nil {
+			return res, err
+		}
+
+		if answ.Code != -4046 {
+			return entity.Futures_MarginMode{MarginMode: "cross"}, nil
+		}
+
+		if answ.Code != 200 {
+			return res, errors.New(answ.Msg)
+		}
+
+		return entity.Futures_MarginMode{MarginMode: "cross"}, nil
+	}
+
 	m := utils.Params{}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
@@ -39,7 +81,6 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return res, err
 	}
-
 	answ := []futures_marginMode{}
 
 	err = json.Unmarshal(data, &answ)

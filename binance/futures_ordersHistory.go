@@ -11,6 +11,7 @@ import (
 
 type futures_ordersHistory struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	symbol    *string
@@ -52,6 +53,10 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 		Endpoint: "/fapi/v1/allOrders",
 		// Endpoint: "/fapi/v1/userTrades",
 		SecType: utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/allOrders"
 	}
 
 	m := utils.Params{}

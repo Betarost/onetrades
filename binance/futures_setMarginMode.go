@@ -12,6 +12,7 @@ import (
 
 type futures_setMarginMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	symbol     *string
@@ -33,6 +34,10 @@ func (s *futures_setMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 		Method:   http.MethodPost,
 		Endpoint: "/fapi/v1/marginType",
 		SecType:  utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/marginType"
 	}
 
 	m := utils.Params{}

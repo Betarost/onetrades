@@ -1,26 +1,27 @@
 package utils
 
 var (
-	Binance_spot    = "https://api.binance.com"
-	Binance_futures = "https://fapi.binance.com"
-	Bingx_spot      = "https://open-api.bingx.com"
-	Bingx_futures   = "https://open-api.bingx.com"
-	Bybit_spot      = "https://api.bybit.com"
-	Bybit_futures   = "https://api.bybit.com"
-	Gateio_spot     = "https://api.gateio.ws"
-	Gateio_futures  = "https://api.gateio.ws"
-	Mexc_spot       = "https://api.mexc.com"
-	Mexc_futures    = "https://contract.mexc.com"
-	Bitget_spot     = "https://api.bitget.com"
-	Bitget_futures  = "https://api.bitget.com"
-	Okx_spot        = "https://www.okx.com"
-	Okx_futures     = "https://www.okx.com"
-	Huobi_spot      = "https://api.huobi.pro"
-	Huobi_futures   = "https://api.hbdm.com"
-	Bullish_spot    = "https://api.exchange.bullish.com"
-	Bullish_futures = "https://api.exchange.bullish.com"
-	Kucoin_spot     = "https://api.kucoin.com"
-	Kucoin_futures  = "https://api-futures.kucoin.com"
+	Binance_spot          = "https://api.binance.com"
+	Binance_futures       = "https://fapi.binance.com"
+	Binance_futures_coinm = "https://dapi.binance.com"
+	Bingx_spot            = "https://open-api.bingx.com"
+	Bingx_futures         = "https://open-api.bingx.com"
+	Bybit_spot            = "https://api.bybit.com"
+	Bybit_futures         = "https://api.bybit.com"
+	Gateio_spot           = "https://api.gateio.ws"
+	Gateio_futures        = "https://api.gateio.ws"
+	Mexc_spot             = "https://api.mexc.com"
+	Mexc_futures          = "https://contract.mexc.com"
+	Bitget_spot           = "https://api.bitget.com"
+	Bitget_futures        = "https://api.bitget.com"
+	Okx_spot              = "https://www.okx.com"
+	Okx_futures           = "https://www.okx.com"
+	Huobi_spot            = "https://api.huobi.pro"
+	Huobi_futures         = "https://api.hbdm.com"
+	Bullish_spot          = "https://api.exchange.bullish.com"
+	Bullish_futures       = "https://api.exchange.bullish.com"
+	Kucoin_spot           = "https://api.kucoin.com"
+	Kucoin_futures        = "https://api-futures.kucoin.com"
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
@@ -41,6 +42,8 @@ func GetEndpoint(trade string) string {
 		return Binance_spot
 	case "BINANCE_FUTURES":
 		return Binance_futures
+	case "BINANCE_FUTURES_COINM":
+		return Binance_futures_coinm
 	case "BINGX_SPOT":
 		return Bingx_spot
 	case "BINGX_FUTURES":

@@ -11,8 +11,8 @@ import (
 
 type futures_setPositionMode struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
-
-	mode *entity.PositionModeType
+	isCOINM bool
+	mode    *entity.PositionModeType
 }
 
 func (s *futures_setPositionMode) Mode(mode entity.PositionModeType) *futures_setPositionMode {
@@ -25,6 +25,10 @@ func (s *futures_setPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 		Method:   http.MethodPost,
 		Endpoint: "/fapi/v1/positionSide/dual",
 		SecType:  utils.SecTypeSigned,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/positionSide/dual"
 	}
 
 	b := false

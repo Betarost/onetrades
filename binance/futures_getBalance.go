@@ -11,6 +11,7 @@ import (
 
 type futures_getBalance struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 }
 
@@ -21,11 +22,14 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 		SecType:  utils.SecTypeSigned,
 	}
 
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/account"
+	}
+
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
-
 	answ := futures_Balance{}
 
 	err = json.Unmarshal(data, &answ)

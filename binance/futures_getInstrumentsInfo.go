@@ -11,6 +11,7 @@ import (
 
 type futures_getInstrumentsInfo struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	symbol *string
@@ -26,6 +27,10 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 		Method:   http.MethodGet,
 		Endpoint: "/fapi/v1/exchangeInfo",
 		SecType:  utils.SecTypeNone,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/exchangeInfo"
 	}
 
 	data, _, err := s.callAPI(ctx, r, opts...)
@@ -47,6 +52,8 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 				a.Symbols = append(a.Symbols, struct {
 					Symbol             string        "json:\"symbol\""
 					Status             string        "json:\"status\""
+					ContractStatus     string        "json:\"contractStatus\""
+					ContractSize       float64       "json:\"contractSize\""
 					BaseAsset          string        "json:\"baseAsset\""
 					QuoteAsset         string        "json:\"quoteAsset\""
 					BaseAssetPrecision int64         "json:\"baseAssetPrecision\""
@@ -54,6 +61,8 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 				}{
 					Symbol:             item.Symbol,
 					Status:             item.Status,
+					ContractStatus:     item.ContractStatus,
+					ContractSize:       item.ContractSize,
 					BaseAsset:          item.BaseAsset,
 					QuoteAsset:         item.QuoteAsset,
 					BaseAssetPrecision: item.BaseAssetPrecision,
@@ -62,9 +71,14 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 				break
 			}
 		}
+		if s.isCOINM {
+			return s.convert.convertInstrumentsInfo_COINM(a), nil
+		}
 		return s.convert.convertInstrumentsInfo(a), nil
 	}
-
+	if s.isCOINM {
+		return s.convert.convertInstrumentsInfo_COINM(answ), nil
+	}
 	return s.convert.convertInstrumentsInfo(answ), nil
 }
 
@@ -73,6 +87,8 @@ type futures_instrumentsInfo struct {
 	Symbols    []struct {
 		Symbol             string        `json:"symbol"`
 		Status             string        `json:"status"`
+		ContractStatus     string        `json:"contractStatus"`
+		ContractSize       float64       `json:"contractSize"`
 		BaseAsset          string        `json:"baseAsset"`
 		QuoteAsset         string        `json:"quoteAsset"`
 		BaseAssetPrecision int64         `json:"baseAssetPrecision"`

@@ -11,6 +11,7 @@ import (
 
 type futures_getMarketCandle struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	isCOINM bool
 	convert futures_converts
 
 	timeFrame *entity.TimeFrameType
@@ -38,6 +39,10 @@ func (s *futures_getMarketCandle) Do(ctx context.Context, opts ...utils.RequestO
 		Method:   http.MethodGet,
 		Endpoint: "/fapi/v1/klines",
 		SecType:  utils.SecTypeNone,
+	}
+
+	if s.isCOINM {
+		r.Endpoint = "/dapi/v1/klines"
 	}
 
 	m := utils.Params{}

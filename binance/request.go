@@ -101,6 +101,7 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	if c.Proxy != "" {
 		r.Proxy = c.Proxy
 	}
+
 	r.BaseURL = c.BaseURL
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
