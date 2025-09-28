@@ -313,6 +313,11 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		if utils.StringToFloat(item.IsolatedMargin) != 0 {
 			marginMode = "isolated"
 		}
+
+		notional := item.Notional
+		if utils.StringToFloat(item.Notional) == 0 && utils.StringToFloat(item.NotionalValue) != 0 {
+			notional = utils.FloatToStringAll(utils.StringToFloat(item.EntryPrice) * utils.StringToFloat(item.NotionalValue))
+		}
 		res = append(res, entity.Futures_Positions{
 			Symbol:       item.Symbol,
 			PositionSide: positionSide,
@@ -323,7 +328,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			MarkPrice:        item.MarkPrice,
 			UnRealizedProfit: item.UnRealizedProfit,
 			// RealizedProfit:   item.RealizedPnl,
-			Notional:   item.Notional,
+			Notional:   notional,
 			HedgeMode:  hedgeMode,
 			MarginMode: marginMode,
 			// CreateTime:       utils.StringToInt64(item.CTime),
