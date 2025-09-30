@@ -100,7 +100,7 @@ func TestOnetrades(t *testing.T) {
 	binanceSpot.Proxy = "http://localhost:1080"
 	binanceFutures.Proxy = "http://localhost:1080"
 
-	binanceFutures.IsCOINM(true)
+	// binanceFutures.IsCOINM(true)
 	//=======================AccountInfo
 	n = "AccountInfo"
 	//SPOT
@@ -139,7 +139,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
+	printAnswers(binanceFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
@@ -165,7 +165,7 @@ func TestOnetrades(t *testing.T) {
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSD_PERP").Do(ctx))
-	printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSD").Category("inverse").Do(ctx))
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("ATOM_USDT").Do(ctx))
@@ -220,7 +220,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetPositions
 	n = "GetPositions"
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetPositions().Do(ctx))
+	printAnswers(binanceFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bingxFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bybitFutures.NewGetPositions().Do(ctx))
 	// printAnswers(gateioFutures.NewGetPositions().Do(ctx))
@@ -282,7 +282,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
+	printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(bingxFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(bybitFutures.NewGetOrderList().Category("inverse").Do(ctx))
 	// printAnswers(bybitFutures.NewGetOrderList().Do(ctx))

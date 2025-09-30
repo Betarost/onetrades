@@ -106,6 +106,7 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
 	r.TmpSig = c.secretKey
+	r.RecvWindow = 10000
 
 	opts = append(opts, createFullURL, createBody, createSign, createHeaders, createReq)
 	err = r.ParseRequest(opts...)
