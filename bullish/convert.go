@@ -50,8 +50,8 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 			PricePrecision: utils.GetPrecisionFromStr(utils.FloatToStringAll(utils.StringToFloat(item.TickSize))),
 			SizePrecision:  item.BasePrecision,
 			Multiplier:     item.ContractMultiplier,
-			ContractSize:   item.TickSize,
-			State:          state,
+			// ContractSize:   item.TickSize,
+			State: state,
 		})
 	}
 	return

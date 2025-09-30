@@ -39,6 +39,7 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 	if err != nil {
 		return res, err
 	}
+
 	if s.symbol != nil {
 		answ := futures_instrumentsInfo{}
 

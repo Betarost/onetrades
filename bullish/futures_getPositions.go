@@ -48,7 +48,6 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-
 	answ := []futures_Position{}
 
 	err = json.Unmarshal(data, &answ)

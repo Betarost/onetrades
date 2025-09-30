@@ -93,7 +93,7 @@ func TestOnetrades(t *testing.T) {
 	bullishFutures.Debug = false
 	kucoinSpot.Debug = false
 	kucoinFutures.Debug = false
-	// bullishFutures.Proxy = "http://localhost:1080"
+	bullishFutures.Proxy = "http://localhost:1080"
 	okxSpot.Proxy = "http://localhost:1080"
 	okxFutures.Proxy = "http://localhost:1080"
 	bybitFutures.Proxy = "http://localhost:1080"
@@ -164,8 +164,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 
 	//FUTURES
-	printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSD_PERP").Do(ctx))
-	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSD_PERP").Do(ctx))
+	printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSD").Category("inverse").Do(ctx))
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("ATOM_USDT").Do(ctx))
