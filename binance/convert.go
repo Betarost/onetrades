@@ -462,13 +462,17 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 	}
 
 	for _, item := range in {
+
+		if utils.StringToFloat(item.RealizedPnl) == 0 {
+			continue
+		}
 		// mMode := "cross"
 		// if item.MgnMode != "cross" {
 		// 	mMode = "isolated"
 		// }
 		out = append(out, entity.Futures_PositionsHistory{
-			Symbol: item.Symbol,
-			// PositionID:          item.PosId,
+			Symbol:              item.Symbol,
+			PositionID:          utils.Int64ToString(item.ID),
 			PositionSide:        strings.ToUpper(item.PositionSide),
 			PositionAmt:         item.Qty,
 			ExecutedPositionAmt: item.Qty,

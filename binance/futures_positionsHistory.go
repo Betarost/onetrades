@@ -79,7 +79,6 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
-
 	answ := []futures_PositionsHistory_Response{}
 
 	err = json.Unmarshal(data, &answ)
@@ -93,6 +92,8 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 type futures_PositionsHistory_Response struct {
 	Symbol       string `json:"symbol"`
 	PositionSide string `json:"positionSide"`
+	OrderId      int64  `json:"orderId"`
+	ID           int64  `json:"id"`
 	Qty          string `json:"qty"`
 	Price        string `json:"price"`
 	RealizedPnl  string `json:"realizedPnl"`

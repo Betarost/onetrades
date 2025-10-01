@@ -95,6 +95,7 @@ type futures_PositionsHistory_Response struct {
 	PosId         string `json:"posId"`
 	MgnMode       string `json:"mgnMode"`
 	PosSide       string `json:"posSide"`
+	Type          string `json:"type"`
 	Direction     string `json:"direction"`
 	OpenAvgPx     string `json:"openAvgPx"`
 	CloseAvgPx    string `json:"closeAvgPx"`

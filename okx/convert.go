@@ -233,6 +233,10 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 	}
 
 	for _, item := range in {
+
+		if item.Type == "1" || item.Type == "5" {
+			continue
+		}
 		mMode := "cross"
 		if item.MgnMode != "cross" {
 			mMode = "isolated"
@@ -249,7 +253,7 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 			ExecutedPositionAmt: item.CloseTotalPos,
 			AvgPrice:            item.OpenAvgPx,
 			ExecutedAvgPrice:    item.CloseAvgPx,
-			RealisedProfit:      item.Pnl,
+			RealisedProfit:      item.RealizedPnl,
 			Fee:                 item.Fee,
 			Funding:             item.FundingFee,
 			Leverage:            item.Lever,

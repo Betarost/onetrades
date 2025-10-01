@@ -62,7 +62,6 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-
 	answ := []futures_orderList{}
 
 	err = json.Unmarshal(data, &answ)
