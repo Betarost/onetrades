@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 
@@ -138,7 +137,6 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 		if err == nil {
 			raw := fmt.Sprintf("%d%s%s", r.Timestamp, c.BrokerName, c.apiKey)
 			sign, err := sf(c.BrokerID, raw)
-			log.Println("=4aa323=", raw, "=", c.BrokerID, "=", *sign)
 			if err == nil {
 				header.Set("KC-BROKER-NAME", c.BrokerName)
 				header.Set("KC-API-PARTNER", c.BrokerName)

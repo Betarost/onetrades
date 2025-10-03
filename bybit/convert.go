@@ -228,8 +228,8 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 			positionSide = "SHORT"
 		}
 		out = append(out, entity.Futures_PositionsHistory{
-			Symbol: item.Symbol,
-			// PositionID:          item.PositionId,
+			Symbol:              item.Symbol,
+			PositionID:          item.OrderId,
 			PositionSide:        positionSide,
 			PositionAmt:         item.Qty,
 			ExecutedPositionAmt: item.ClosedSize,

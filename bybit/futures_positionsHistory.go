@@ -106,6 +106,7 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 type futures_PositionsHistory_Response struct {
 	Symbol        string `json:"symbol"`
 	Side          string `json:"side"`
+	OrderId       string `json:"orderId"`
 	PositionIdx   int64  `json:"positionIdx"`
 	Qty           string `json:"qty"`
 	ClosedSize    string `json:"closedSize"`

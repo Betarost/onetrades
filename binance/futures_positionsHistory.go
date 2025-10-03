@@ -79,6 +79,7 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
+
 	answ := []futures_PositionsHistory_Response{}
 
 	err = json.Unmarshal(data, &answ)
