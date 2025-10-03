@@ -20,6 +20,8 @@ type futures_positionsHistory struct {
 	limit     *int64
 	page      *int64
 	cursor    *string
+
+	orderID *string
 }
 
 func (s *futures_positionsHistory) Symbol(symbol string) *futures_positionsHistory {
@@ -57,6 +59,11 @@ func (s *futures_positionsHistory) Cursor(cursor string) *futures_positionsHisto
 	return s
 }
 
+func (s *futures_positionsHistory) OrderID(orderID string) *futures_positionsHistory {
+	s.orderID = &orderID
+	return s
+}
+
 func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_PositionsHistory, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
@@ -89,6 +96,7 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result struct {
 			List []futures_PositionsHistory_Response `json:"list"`

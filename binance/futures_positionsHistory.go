@@ -19,6 +19,8 @@ type futures_positionsHistory struct {
 	endTime   *int64
 	limit     *int64
 	page      *int64
+
+	orderID *string
 }
 
 func (s *futures_positionsHistory) Symbol(symbol string) *futures_positionsHistory {
@@ -43,6 +45,11 @@ func (s *futures_positionsHistory) Limit(limit int64) *futures_positionsHistory 
 
 func (s *futures_positionsHistory) Page(page int64) *futures_positionsHistory {
 	s.page = &page
+	return s
+}
+
+func (s *futures_positionsHistory) OrderID(orderID string) *futures_positionsHistory {
+	s.orderID = &orderID
 	return s
 }
 

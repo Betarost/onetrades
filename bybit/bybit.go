@@ -153,6 +153,10 @@ func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
 	return &futures_ordersHistory{callAPI: c.callAPI}
 }
 
+func (c *FuturesClient) NewExecutionsHistory() *futures_executionsHistory {
+	return &futures_executionsHistory{callAPI: c.callAPI}
+}
+
 func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
 	return &futures_placeOrder{callAPI: c.callAPI}
 }

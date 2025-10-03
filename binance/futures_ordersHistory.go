@@ -19,6 +19,8 @@ type futures_ordersHistory struct {
 	endTime   *int64
 	limit     *int64
 	page      *int64
+
+	orderID *string
 }
 
 func (s *futures_ordersHistory) Symbol(symbol string) *futures_ordersHistory {
@@ -43,6 +45,11 @@ func (s *futures_ordersHistory) Limit(limit int64) *futures_ordersHistory {
 
 func (s *futures_ordersHistory) Page(page int64) *futures_ordersHistory {
 	s.page = &page
+	return s
+}
+
+func (s *futures_ordersHistory) OrderID(orderID string) *futures_ordersHistory {
+	s.orderID = &orderID
 	return s
 }
 
@@ -75,6 +82,10 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	}
 	if s.endTime != nil {
 		m["endTime"] = *s.endTime
+	}
+
+	if s.orderID != nil {
+		m["orderId"] = *s.orderID
 	}
 
 	r.SetParams(m)

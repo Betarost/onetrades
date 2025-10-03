@@ -389,3 +389,32 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 	}
 	return out
 }
+
+func (c *futures_converts) convertExecutionsHistory(in futures_executionsHistory_Response) (out []entity.Futures_ExecutionsHistory) {
+
+	if len(in.List) == 0 {
+		return out
+	}
+	for _, item := range in.List {
+
+		if utils.StringToFloat(item.ExecQty) < utils.StringToFloat(item.OrderQty) {
+			continue
+		}
+		out = append(out, entity.Futures_ExecutionsHistory{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.OrderLinkId,
+			Side:          strings.ToUpper(item.Side),
+			PositionSize:  item.OrderQty,
+			Price:         item.OrderPrice,
+			ExecutedSize:  item.ExecQty,
+			ExecutedPrice: item.ExecPrice,
+			Fee:           fmt.Sprintf("-%s", item.ExecFee),
+			Type:          strings.ToUpper(item.OrderType),
+			Status:        "FILLED",
+			// CreateTime:    utils.StringToInt64(item.CreatedTime),
+			UpdateTime: utils.StringToInt64(item.ExecTime),
+		})
+	}
+	return out
+}

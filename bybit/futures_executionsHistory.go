@@ -9,7 +9,7 @@ import (
 	"github.com/Betarost/onetrades/utils"
 )
 
-type futures_ordersHistory struct {
+type futures_executionsHistory struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
@@ -24,50 +24,50 @@ type futures_ordersHistory struct {
 	orderID *string
 }
 
-func (s *futures_ordersHistory) Symbol(symbol string) *futures_ordersHistory {
+func (s *futures_executionsHistory) Symbol(symbol string) *futures_executionsHistory {
 	s.symbol = &symbol
 	return s
 }
 
-func (s *futures_ordersHistory) Category(category string) *futures_ordersHistory {
+func (s *futures_executionsHistory) Category(category string) *futures_executionsHistory {
 	s.category = &category
 	return s
 }
 
-func (s *futures_ordersHistory) StartTime(startTime int64) *futures_ordersHistory {
+func (s *futures_executionsHistory) StartTime(startTime int64) *futures_executionsHistory {
 	s.startTime = &startTime
 	return s
 }
 
-func (s *futures_ordersHistory) EndTime(endTime int64) *futures_ordersHistory {
+func (s *futures_executionsHistory) EndTime(endTime int64) *futures_executionsHistory {
 	s.endTime = &endTime
 	return s
 }
 
-func (s *futures_ordersHistory) Limit(limit int64) *futures_ordersHistory {
+func (s *futures_executionsHistory) Limit(limit int64) *futures_executionsHistory {
 	s.limit = &limit
 	return s
 }
 
-func (s *futures_ordersHistory) Page(page int64) *futures_ordersHistory {
+func (s *futures_executionsHistory) Page(page int64) *futures_executionsHistory {
 	s.page = &page
 	return s
 }
 
-func (s *futures_ordersHistory) Cursor(cursor string) *futures_ordersHistory {
+func (s *futures_executionsHistory) Cursor(cursor string) *futures_executionsHistory {
 	s.cursor = &cursor
 	return s
 }
 
-func (s *futures_ordersHistory) OrderID(orderID string) *futures_ordersHistory {
+func (s *futures_executionsHistory) OrderID(orderID string) *futures_executionsHistory {
 	s.orderID = &orderID
 	return s
 }
 
-func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_OrdersHistory, err error) {
+func (s *futures_executionsHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_ExecutionsHistory, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/v5/order/history",
+		Endpoint: "/v5/execution/list",
 		SecType:  utils.SecTypeSigned,
 	}
 
@@ -105,7 +105,7 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 		return res, err
 	}
 	var answ struct {
-		Result futures_ordersHistory_Response `json:"result"`
+		Result futures_executionsHistory_Response `json:"result"`
 	}
 
 	err = json.Unmarshal(data, &answ)
@@ -113,26 +113,28 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 		return res, err
 	}
 
-	return s.convert.convertOrdersHistory(answ.Result), nil
+	return s.convert.convertExecutionsHistory(answ.Result), nil
 }
 
-type futures_ordersHistory_Response struct {
+type futures_executionsHistory_Response struct {
 	List []struct {
 		Symbol      string `json:"symbol"`
 		OrderId     string `json:"orderId"`
 		OrderLinkId string `json:"orderLinkId"`
 		Side        string `json:"side"`
-		PositionIdx int64  `json:"positionIdx"`
-		Qty         string `json:"qty"`
-		CumExecQty  string `json:"cumExecQty"`
-		Price       string `json:"price"`
-		AvgPrice    string `json:"avgPrice"`
-		CumExecFee  string `json:"cumExecFee"`
+		OrderQty    string `json:"orderQty"`
+		ExecQty     string `json:"execQty"`
+		ClosedSize  string `json:"closedSize"`
+		OrderPrice  string `json:"orderPrice"`
+		ExecPrice   string `json:"execPrice"`
+		MarkPrice   string `json:"markPrice"`
 
-		OrderType   string `json:"orderType"`
-		OrderStatus string `json:"orderStatus"`
-		CreatedTime string `json:"createdTime"`
-		UpdatedTime string `json:"updatedTime"`
+		ExecFee   string `json:"execFee"`
+		ExecValue string `json:"execValue"`
+
+		OrderType string `json:"orderType"`
+		ExecType  string `json:"execType"`
+		ExecTime  string `json:"execTime"`
 	} `json:"list"`
 	NextPageCursor string `json:"nextPageCursor"`
 }

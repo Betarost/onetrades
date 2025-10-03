@@ -98,6 +98,22 @@ type Futures_OrdersHistory struct {
 	UpdateTime int64 `json:"updateTime" bson:"updateTime"`
 }
 
+type Futures_ExecutionsHistory struct {
+	Symbol        string `json:"symbol" bson:"symbol"`
+	OrderID       string `json:"orderId" bson:"orderId"`
+	ClientOrderID string `json:"clientOrderID" bson:"clientOrderID"`
+	Side          string `json:"side" bson:"side"`
+	PositionSize  string `json:"positionSize" bson:"positionSize"`
+	ExecutedSize  string `json:"executedSize" bson:"executedSize"`
+	Price         string `json:"price" bson:"price"`
+	ExecutedPrice string `json:"executedPrice" bson:"executedPrice"`
+	Fee           string `json:"fee" bson:"fee"`
+	Type          string `json:"type" bson:"type"`
+	Status        string `json:"status" bson:"status"`
+	CreateTime    int64  `json:"createTime" bson:"createTime"`
+	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
+}
+
 type Futures_Positions struct {
 	Symbol           string `json:"symbol" bson:"symbol"`
 	PositionSide     string `json:"positionSide" bson:"positionSide"`
