@@ -326,7 +326,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().OrderID("8389765814458701896").Limit(2).Do(ctx))
 	// printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
-	printAnswers(bybitFutures.NewOrdersHistory().OrderID("b37ca3eb-857f-4b5d-a5d2-93e9cea635b5").Do(ctx))
+	// printAnswers(bybitFutures.NewOrdersHistory().OrderID("b37ca3eb-857f-4b5d-a5d2-93e9cea635b5").Do(ctx))
 	// printAnswers(bybitFutures.NewOrdersHistory().OrderID("fddec6d3-a8e7-4f52-a732-0832c034be36").Limit(2).Do(ctx))
 	// printAnswers(gateioFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
@@ -335,11 +335,11 @@ func TestOnetrades(t *testing.T) {
 
 	//=======================ExecutionsHistory
 	n = "ExecutionsHistory"
-	printAnswers(bybitFutures.NewExecutionsHistory().Limit(1).Do(ctx))
+	// printAnswers(bybitFutures.NewExecutionsHistory().Limit(1).Do(ctx))
 	//=======================PositionsHistory
 	n = "PositionsHistory"
 	//FUTURES
-	// printAnswers(binanceFutures.NewPositionsHistory().Limit(1).Do(ctx))
+	printAnswers(binanceFutures.NewPositionsHistory().Limit(1).Do(ctx))
 	// printAnswers(bingxFutures.NewPositionsHistory().Symbol("TRX-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
 	// printAnswers(bybitFutures.NewPositionsHistory().Limit(1).Do(ctx))
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))
