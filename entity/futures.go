@@ -1,7 +1,5 @@
 package entity
 
-// New FUTURES
-
 type FuturesBalance struct {
 	Asset            string `json:"asset" bson:"asset"`
 	Balance          string `json:"balance" bson:"balance"`
@@ -44,8 +42,6 @@ type Futures_Leverage struct {
 	Leverage      string `json:"leverage" bson:"leverage"`
 	LongLeverage  string `json:"longLeverage" bson:"longLeverage"`
 	ShortLeverage string `json:"shortLeverage" bson:"shortLeverage"`
-	// MarginMode   string `json:"marginMode" bson:"marginMode"`
-	// PositionSide string `json:"positionSide" bson:"positionSide"`
 }
 
 type Futures_MarginMode struct {
@@ -55,8 +51,6 @@ type Futures_MarginMode struct {
 type Futures_ListenKey struct {
 	ListenKey string `json:"listenKey" bson:"listenKey"`
 }
-
-// OLD
 
 type Futures_PositionsHistory struct {
 	Symbol              string `json:"symbol" bson:"symbol"`
@@ -146,6 +140,5 @@ type Futures_OrdersList struct {
 	Status        string `json:"status" bson:"status"`
 	CreateTime    int64  `json:"createTime" bson:"createTime"`
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
-
-	MarginMode string `json:"marginMode" bson:"marginMode"`
+	MarginMode    string `json:"marginMode" bson:"marginMode"`
 }
