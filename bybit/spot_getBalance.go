@@ -53,5 +53,6 @@ type spot_Balance struct {
 		Locked          string `json:"locked"`
 		TotalPositionMM string `json:"totalPositionMM"`
 		TotalPositionIM string `json:"totalPositionIM"`
+		UnrealisedPnl   string `json:"unrealisedPnl"`
 	} `json:"coin"`
 }

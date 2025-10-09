@@ -61,7 +61,7 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 				Asset:   item.Coin,
 				Balance: item.WalletBalance,
 				// Locked:  item.Locked,
-				Locked: utils.FloatToStringAll(utils.StringToFloat(item.TotalPositionIM) + utils.StringToFloat(item.Locked)),
+				Locked: utils.FloatToStringAll(utils.StringToFloat(item.TotalPositionIM) + utils.StringToFloat(item.Locked) + utils.StringToFloat(item.UnrealisedPnl)),
 			})
 		}
 	}
