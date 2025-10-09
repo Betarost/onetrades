@@ -76,7 +76,7 @@ func TestOnetrades(t *testing.T) {
 	kucoinFutures := kucoin.NewFuturesClient(kucoinKey, kucoinSecret, kucoinMemo)
 
 	binanceSpot.Debug = false
-	binanceFutures.Debug = true
+	binanceFutures.Debug = false
 	bingxSpot.Debug = false
 	bingxFutures.Debug = false
 	bybitSpot.Debug = false
@@ -139,7 +139,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
-	printAnswers(binanceFutures.NewGetBalance().Do(ctx))
+	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
@@ -329,7 +329,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
-	// printAnswers(kucoinSpot.NewOrdersHistory().Do(ctx))
+	printAnswers(kucoinSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().OrderID("8389765814458701896").Limit(2).Do(ctx))
@@ -339,7 +339,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(okxFutures.NewOrdersHistory().OrderID("2896365455043928064").Limit(2).Do(ctx))
-	// printAnswers(kucoinFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(kucoinFutures.NewOrdersHistory().Limit(50).StartTime(1758362413105).EndTime(1758382413105).Do(ctx))
 
 	//=======================ExecutionsHistory
 	n = "ExecutionsHistory"
