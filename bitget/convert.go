@@ -267,9 +267,9 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 	}
 
 	for _, item := range in {
-		mMode := "cross"
+		mMode := string(entity.MarginModeTypeCross)
 		if item.MarginMode == "isolated" {
-			mMode = "isolated"
+			mMode = string(entity.MarginModeTypeIsolated)
 		}
 
 		fee := utils.StringToFloat(item.OpenFee) + utils.StringToFloat(item.CloseFee)
@@ -339,7 +339,7 @@ func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
 
-		marginMode := "isolated"
+		marginMode := string(entity.MarginModeTypeIsolated)
 		hedgeMode := false
 
 		if item.PosMode != "one_way_mode" {
@@ -347,7 +347,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		}
 
 		if item.MarginMode == "crossed" {
-			marginMode = "cross"
+			marginMode = string(entity.MarginModeTypeCross)
 		}
 		res = append(res, entity.Futures_Positions{
 			Symbol:       item.Symbol,
@@ -377,7 +377,7 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 	}
 
 	for _, item := range in {
-		marginMode := "isolated"
+		marginMode := string(entity.MarginModeTypeIsolated)
 		hedgeMode := false
 
 		if item.PosMode != "one_way_mode" {
@@ -385,7 +385,7 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 		}
 
 		if item.MarginMode == "crossed" {
-			marginMode = "cross"
+			marginMode = string(entity.MarginModeTypeCross)
 		}
 
 		// side := strings.ToUpper(item.Side)

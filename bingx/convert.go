@@ -270,7 +270,7 @@ func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
 
-		marginMode := "isolated"
+		marginMode := string(entity.MarginModeTypeIsolated)
 		hedgeMode := false
 
 		if !item.OnlyOnePosition {
@@ -278,7 +278,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		}
 
 		if !item.Isolated {
-			marginMode = "cross"
+			marginMode = string(entity.MarginModeTypeCross)
 		}
 		res = append(res, entity.Futures_Positions{
 			Symbol:       item.Symbol,
@@ -308,7 +308,7 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 	}
 
 	for _, item := range in {
-		marginMode := "isolated"
+		marginMode := string(entity.MarginModeTypeIsolated)
 		hedgeMode := false
 
 		if !item.OnlyOnePosition {

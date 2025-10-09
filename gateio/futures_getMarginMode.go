@@ -52,9 +52,9 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 		return res, err
 	}
 
-	res.MarginMode = "cross"
+	res.MarginMode = string(entity.MarginModeTypeCross)
 	if utils.StringToInt(answ.Leverage) != 0 {
-		res.MarginMode = "isolated"
+		res.MarginMode = string(entity.MarginModeTypeIsolated)
 	}
 	// return entity.Futures_MarginMode{MarginMode: string(*s.marginMode)}, nil
 	return res, nil

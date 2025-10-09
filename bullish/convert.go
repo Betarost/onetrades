@@ -96,7 +96,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		if utils.StringToFloat(item.Quantity) == 0 {
 			continue
 		}
-		marginMode := "cross"
+		marginMode := string(entity.MarginModeTypeCross)
 		hedgeMode := false
 		positionSide := ""
 

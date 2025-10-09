@@ -76,7 +76,7 @@ func TestOnetrades(t *testing.T) {
 	kucoinFutures := kucoin.NewFuturesClient(kucoinKey, kucoinSecret, kucoinMemo)
 
 	binanceSpot.Debug = false
-	binanceFutures.Debug = false
+	binanceFutures.Debug = true
 	bingxSpot.Debug = false
 	bingxFutures.Debug = false
 	bybitSpot.Debug = false
@@ -139,7 +139,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
+	printAnswers(binanceFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
@@ -165,7 +165,7 @@ func TestOnetrades(t *testing.T) {
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSD_PERP").Do(ctx))
-	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSD").Do(ctx))
 	// printAnswers(bybitFutures.NewGetInstrumentsInfo().Symbol("BTCUSD").Category("inverse").Do(ctx))
 	// printAnswers(bingxFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(gateioFutures.NewGetInstrumentsInfo().Symbol("ATOM_USDT").Do(ctx))
@@ -199,17 +199,25 @@ func TestOnetrades(t *testing.T) {
 	//TEST MARKET
 	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.001").Do(ctx))
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.001").HedgeMode(true).Do(ctx))
-	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.03").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+
+	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSD").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("100").HedgeMode(false).Category("inverse").Do(ctx))
+
+	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.05").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+
 	//TEST LIMIT
-	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Price("117123").Size("0.001").Do(ctx))
-	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Size("0.001").HedgeMode(true).Price("117123").Do(ctx))
-	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("117123").PositionSide(entity.PositionSideTypeLong).Size("0.03").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Price("123000").Size("0.001").Do(ctx))
+
+	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Size("100").HedgeMode(true).Price("124200").Do(ctx))
+
+	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSD").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Size("100").HedgeMode(false).Category("inverse").Price("125000").Do(ctx))
+
+	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("125000").PositionSide(entity.PositionSideTypeLong).Size("0.05").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	//==========
 
 	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSD_PERP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("1").Do(ctx))
 	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("35").Do(ctx))
 	// printAnswers(bingxFutures.NewPlaceOrder().Symbol("TRX-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Price("0.28550").Size("10").HedgeMode(false).Do(ctx))
-	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Size("0.001").HedgeMode(true).Price("115750").Do(ctx))
+
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.1").HedgeMode(true).Do(ctx))
 
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSD").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("100").HedgeMode(true).Category("inverse").Do(ctx))
@@ -261,7 +269,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewCancelOrder().Symbol("BTCUSD_PERP").OrderID("187460348550").Do(ctx))
 	// printAnswers(bingxFutures.NewCancelOrder().Symbol("TRX-USDT").OrderID("1942486320061566976").Do(ctx))
-	// printAnswers(bybitFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("0c88fc3c-7896-4b62-aacc-b5c9c52122cd").Do(ctx))
+	// printAnswers(bybitFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("0b4308fa-058b-4a26-9477-1d95ef29fd57").Do(ctx))
 	// printAnswers(gateioFutures.NewCancelOrder().OrderID("56013522187409589").Do(ctx))
 	// printAnswers(bitgetFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1326805187463618574").Do(ctx))
 	// printAnswers(okxFutures.NewCancelOrder().Symbol("DOGE-USDT-SWAP").OrderID("2672372971099906048").Do(ctx))
@@ -326,7 +334,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().OrderID("8389765814458701896").Limit(2).Do(ctx))
 	// printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
-	// printAnswers(bybitFutures.NewOrdersHistory().OrderID("b37ca3eb-857f-4b5d-a5d2-93e9cea635b5").Do(ctx))
+	// printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bybitFutures.NewOrdersHistory().OrderID("fddec6d3-a8e7-4f52-a732-0832c034be36").Limit(2).Do(ctx))
 	// printAnswers(gateioFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
@@ -339,7 +347,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================PositionsHistory
 	n = "PositionsHistory"
 	//FUTURES
-	printAnswers(binanceFutures.NewPositionsHistory().Limit(1).Do(ctx))
+	// printAnswers(binanceFutures.NewPositionsHistory().Limit(1).Do(ctx))
 	// printAnswers(bingxFutures.NewPositionsHistory().Symbol("TRX-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
 	// printAnswers(bybitFutures.NewPositionsHistory().Limit(1).Do(ctx))
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))

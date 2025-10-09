@@ -18,8 +18,8 @@ const (
 	PositionModeTypeOneWay PositionModeType = "ONE_WAY"
 	PositionModeTypeHedge  PositionModeType = "HEDGE"
 
-	MarginModeTypeCross    MarginModeType = "cross"
-	MarginModeTypeIsolated MarginModeType = "isolated"
+	MarginModeTypeCross    MarginModeType = "CROSS"
+	MarginModeTypeIsolated MarginModeType = "ISOLATED"
 
 	PositionSideTypeLong  PositionSideType = "LONG"
 	PositionSideTypeShort PositionSideType = "SHORT"

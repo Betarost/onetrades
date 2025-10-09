@@ -45,7 +45,7 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 		data, _, err := s.callAPI(ctx, r, opts...)
 		if err != nil {
 			if strings.Contains(err.Error(), "No need to change margin type.") {
-				return entity.Futures_MarginMode{MarginMode: "cross"}, nil
+				return entity.Futures_MarginMode{MarginMode: string(entity.MarginModeTypeCross)}, nil
 			}
 			return res, err
 		}
@@ -60,14 +60,14 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 		}
 
 		if answ.Code != -4046 {
-			return entity.Futures_MarginMode{MarginMode: "cross"}, nil
+			return entity.Futures_MarginMode{MarginMode: string(entity.MarginModeTypeCross)}, nil
 		}
 
 		if answ.Code != 200 {
 			return res, errors.New(answ.Msg)
 		}
 
-		return entity.Futures_MarginMode{MarginMode: "cross"}, nil
+		return entity.Futures_MarginMode{MarginMode: string(entity.MarginModeTypeCross)}, nil
 	}
 
 	m := utils.Params{}
@@ -91,10 +91,10 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 	if len(answ) == 0 {
 		return res, nil
 	}
-	res.MarginMode = "cross"
+	res.MarginMode = string(entity.MarginModeTypeCross)
 
 	if answ[0].MarginType != "CROSSED" {
-		res.MarginMode = "isolated"
+		res.MarginMode = string(entity.MarginModeTypeIsolated)
 	}
 
 	return res, nil

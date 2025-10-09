@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
@@ -65,5 +66,5 @@ func (s *futures_setMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 		return res, err
 	}
 
-	return entity.Futures_MarginMode{MarginMode: answ.Result.MarginMode}, nil
+	return entity.Futures_MarginMode{MarginMode: strings.ToUpper(answ.Result.MarginMode)}, nil
 }

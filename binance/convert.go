@@ -296,7 +296,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 
 		positionSide := "LONG"
 		hedgeMode := false
-		marginMode := "cross"
+		marginMode := entity.MarginModeTypeCross
 
 		if item.PositionSide == "BOTH" {
 			if utils.StringToFloat(item.PositionAmt) < 0 {
@@ -311,7 +311,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		}
 
 		if utils.StringToFloat(item.IsolatedMargin) != 0 {
-			marginMode = "isolated"
+			marginMode = entity.MarginModeTypeIsolated
 		}
 
 		notional := item.Notional
@@ -330,7 +330,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			// RealizedProfit:   item.RealizedPnl,
 			Notional:   notional,
 			HedgeMode:  hedgeMode,
-			MarginMode: marginMode,
+			MarginMode: string(marginMode),
 			// CreateTime:       utils.StringToInt64(item.CTime),
 			UpdateTime: item.UpdateTime,
 		})

@@ -235,10 +235,10 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		}
 		leverage := item.Cross_leverage_limit
 		hedgeMode := false
-		marginMode := "cross"
+		marginMode := string(entity.MarginModeTypeCross)
 
 		if item.Leverage != "0" {
-			marginMode = "isolated"
+			marginMode = string(entity.MarginModeTypeIsolated)
 			leverage = item.Leverage
 		}
 

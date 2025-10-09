@@ -237,9 +237,9 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 		if item.Type == "1" || item.Type == "5" {
 			continue
 		}
-		mMode := "cross"
+		mMode := string(entity.MarginModeTypeCross)
 		if item.MgnMode != "cross" {
-			mMode = "isolated"
+			mMode = string(entity.MarginModeTypeIsolated)
 		}
 
 		if strings.ToUpper(item.PosSide) == "NET" {
@@ -304,7 +304,7 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 			// TpPrice:       tp,
 			// SlPrice:       sl,
 			Type:       strings.ToUpper(item.OrdType),
-			MarginMode: item.TdMode,
+			MarginMode: strings.ToUpper(item.TdMode),
 			// InstType:      item.InstType,
 			Leverage: item.Lever,
 			Status:   strings.ToUpper(item.State),
@@ -345,7 +345,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			RealizedProfit:   item.RealizedPnl,
 			Notional:         item.NotionalUsd,
 			HedgeMode:        hedgeMode,
-			MarginMode:       strings.ToLower(item.MgnMode),
+			MarginMode:       strings.ToUpper(item.MgnMode),
 			CreateTime:       utils.StringToInt64(item.CTime),
 			UpdateTime:       utils.StringToInt64(item.UTime),
 		})
@@ -386,7 +386,7 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 			Fee:            item.Fee,
 			Leverage:       item.Lever,
 			HedgeMode:      hedgeMode,
-			MarginMode:     strings.ToLower(item.TdMode),
+			MarginMode:     strings.ToUpper(item.TdMode),
 			Type:           strings.ToUpper(item.OrdType),
 			Status:         strings.ToUpper(item.State),
 			CreateTime:     utils.StringToInt64(item.CTime),
