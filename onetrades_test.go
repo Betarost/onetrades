@@ -153,7 +153,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
 	//SPOT
-	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("TONUSDT").Do(ctx))
+	printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("TONUSDT").Do(ctx))
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("TRX-USDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("ATOM_USDT").Do(ctx))
