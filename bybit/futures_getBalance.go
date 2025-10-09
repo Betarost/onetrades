@@ -54,7 +54,7 @@ type futures_Balance struct {
 		Equity              string `json:"equity"`
 		TotalPositionMM     string `json:"totalPositionMM"`
 		TotalPositionIM     string `json:"totalPositionIM"`
-
-		UnrealisedPnl string `json:"unrealisedPnl"`
+		Locked              string `json:"locked"`
+		UnrealisedPnl       string `json:"unrealisedPnl"`
 	} `json:"coin"`
 }
