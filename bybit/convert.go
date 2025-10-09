@@ -60,7 +60,7 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 			out = append(out, entity.AssetsBalance{
 				Asset:   item.Coin,
 				Balance: item.WalletBalance,
-				Locked:  item.Locked,
+				Locked:  item.TotalPositionIM,
 			})
 		}
 	}
@@ -193,7 +193,7 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 				Asset:            item.Coin,
 				Balance:          item.WalletBalance,
 				Equity:           item.Equity,
-				Available:        utils.FloatToStringAll(utils.StringToFloat(item.Equity) - utils.StringToFloat(item.TotalPositionMM)),
+				Available:        utils.FloatToStringAll(utils.StringToFloat(item.Equity) - utils.StringToFloat(item.TotalPositionIM)),
 				UnrealizedProfit: item.UnrealisedPnl,
 			})
 		}

@@ -31,7 +31,7 @@ func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (
 	if err != nil {
 		return res, err
 	}
-
+	// log.Println("=SPOT=", string(data))
 	var answ struct {
 		Result struct {
 			List []spot_Balance `json:"list"`
@@ -48,8 +48,10 @@ func (s *spot_getBalance) Do(ctx context.Context, opts ...utils.RequestOption) (
 
 type spot_Balance struct {
 	Coin []struct {
-		Coin          string `json:"coin"`
-		WalletBalance string `json:"walletBalance"`
-		Locked        string `json:"locked"`
+		Coin            string `json:"coin"`
+		WalletBalance   string `json:"walletBalance"`
+		Locked          string `json:"locked"`
+		TotalPositionMM string `json:"totalPositionMM"`
+		TotalPositionIM string `json:"totalPositionIM"`
 	} `json:"coin"`
 }

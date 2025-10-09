@@ -31,6 +31,7 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
+	// log.Println("=FUTURES=", string(data))
 	var answ struct {
 		Result struct {
 			List []futures_Balance `json:"list"`
@@ -52,6 +53,8 @@ type futures_Balance struct {
 		AvailableToWithdraw string `json:"availableToWithdraw"`
 		Equity              string `json:"equity"`
 		TotalPositionMM     string `json:"totalPositionMM"`
-		UnrealisedPnl       string `json:"unrealisedPnl"`
+		TotalPositionIM     string `json:"totalPositionIM"`
+
+		UnrealisedPnl string `json:"unrealisedPnl"`
 	} `json:"coin"`
 }
