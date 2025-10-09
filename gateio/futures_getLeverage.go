@@ -3,8 +3,8 @@ package gateio
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
-	"strings"
 
 	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/utils"
@@ -29,20 +29,20 @@ func (s *futures_getLeverage) MarginMode(marginMode entity.MarginModeType) *futu
 
 func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_Leverage, err error) {
 	r := &utils.Request{
-		Method: http.MethodGet,
-		// Endpoint: "/api/v4/margin/user/account",
-		Endpoint: "/api/v4/futures/{settle}/positions/{contract}",
-		SecType:  utils.SecTypeSigned,
+		Method:   http.MethodGet,
+		Endpoint: "/api/v4/margin/user/account",
+		// Endpoint: "/api/v4/futures/{settle}/positions/{contract}",
+		SecType: utils.SecTypeSigned,
 	}
 
-	settleDefault := "usdt"
+	// settleDefault := "usdt"
 
-	r.Endpoint = strings.Replace(r.Endpoint, "{settle}", settleDefault, 1)
+	// r.Endpoint = strings.Replace(r.Endpoint, "{settle}", settleDefault, 1)
 
 	m := utils.Params{}
 	if s.symbol != nil {
-		// m["currency_pair"] = *s.symbol
-		r.Endpoint = strings.Replace(r.Endpoint, "{contract}", *s.symbol, 1)
+		m["currency_pair"] = *s.symbol
+		// r.Endpoint = strings.Replace(r.Endpoint, "{contract}", *s.symbol, 1)
 	}
 	r.SetParams(m)
 
@@ -51,29 +51,30 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, err
 	}
 	// log.Println("=ae0817=", string(data))
-	// var answ []futures_leverage
-	var answ futures_leverage
+	var answ []futures_leverage
+	// var answ futures_leverage
 
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
 		return res, err
 	}
 
-	// if len(answ) == 0 {
-	// 	return res, errors.New("Zero Answers")
-	// }
-	return s.convert.convertLeverage(answ), nil
+	if len(answ) == 0 {
+		return res, errors.New("Zero Answers")
+	}
+	return s.convert.convertLeverage(answ[0]), nil
+	// return s.convert.convertLeverage(answ), nil
+}
+
+type futures_leverage struct {
+	Currency_pair string `json:"currency_pair"`
+	Сontract      string `json:"contract"`
+	Leverage      string `json:"leverage"`
 }
 
 // type futures_leverage struct {
-// 	Currency_pair string `json:"currency_pair"`
-// 	Сontract      string `json:"contract"`
-// 	Leverage      string `json:"leverage"`
+// 	Currency_pair        string `json:"currency_pair"`
+// 	Сontract             string `json:"contract"`
+// 	Leverage             string `json:"leverage"`
+// 	Cross_leverage_limit string `json:"cross_leverage_limit"`
 // }
-
-type futures_leverage struct {
-	Currency_pair        string `json:"currency_pair"`
-	Сontract             string `json:"contract"`
-	Leverage             string `json:"leverage"`
-	Cross_leverage_limit string `json:"cross_leverage_limit"`
-}

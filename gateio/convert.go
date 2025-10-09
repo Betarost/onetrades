@@ -196,14 +196,24 @@ func (c *futures_converts) convertBalance(in futures_Balance) (out []entity.Futu
 func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futures_Leverage) {
 
 	out.Symbol = in.Currency_pair
-	if in.Сontract != "" {
-		out.Symbol = in.Сontract
-	}
+	// if in.Сontract != "" {
+	// 	out.Symbol = in.Сontract
+	// }
 	out.Leverage = in.Leverage
-	if utils.StringToInt(in.Leverage) == 0 {
-		out.Leverage = in.Cross_leverage_limit
-	}
+	// if utils.StringToInt(in.Leverage) == 0 {
+	// 	out.Leverage = in.Cross_leverage_limit
+	// }
 	return out
+
+	// out.Symbol = in.Currency_pair
+	// if in.Сontract != "" {
+	// 	out.Symbol = in.Сontract
+	// }
+	// out.Leverage = in.Leverage
+	// if utils.StringToInt(in.Leverage) == 0 {
+	// 	out.Leverage = in.Cross_leverage_limit
+	// }
+	// return out
 }
 
 func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (out []entity.PlaceOrder) {
