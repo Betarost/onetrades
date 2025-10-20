@@ -36,6 +36,18 @@ func (c *SpotClient) debug(format string, v ...interface{}) {
 }
 
 func NewSpotClient(apiKey, secretKey string) *SpotClient {
+
+	if strings.Contains(secretKey, "https://") {
+		return &SpotClient{
+			apiKey:    apiKey,
+			secretKey: secretKey,
+			keyType:   utils.KeyTypeHmac,
+			BaseURL:   secretKey,
+			UserAgent: "Onetrades/golang",
+			logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Spot), log.LstdFlags),
+		}
+	}
+
 	return &SpotClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,
