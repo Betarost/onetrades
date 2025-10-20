@@ -68,7 +68,12 @@ func TestOnetrades(t *testing.T) {
 	bitgetSpot := bitget.NewSpotClient(bitgetKey, bitgetSecret, bitgetMemo)
 	bitgetFutures := bitget.NewFuturesClient(bitgetKey, bitgetSecret, bitgetMemo)
 	okxSpot := okx.NewSpotClient(okxKey, okxSecret, okxMemo)
-	okxFutures := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
+	okxFutures := NewOKXFutures(Credentials{
+		APIKey:    okxKey,
+		SecretKey: okxSecret,
+		Memo:      okxMemo,
+	})
+	// okxFutures := okx.NewFuturesClient(okxKey, okxSecret, okxMemo)
 	huobiSpot := huobi.NewSpotClient(huobiKey, huobiSecret)
 	huobiFutures := huobi.NewFuturesClient(huobiKey, huobiSecret)
 	bullishFutures := bullish.NewFuturesClient(bullishKey, bullishSecret, bullishJWT)
@@ -140,7 +145,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
+	printAnswers(binanceFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
@@ -153,7 +158,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
 	//SPOT
-	printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("TONUSDT").Do(ctx))
+	// printAnswers(binanceSpot.NewGetInstrumentsInfo().Symbol("TONUSDT").Do(ctx))
 	// printAnswers(bybitSpot.NewGetInstrumentsInfo().Symbol("DOGEUSDT").Do(ctx))
 	// printAnswers(bingxSpot.NewGetInstrumentsInfo().Symbol("TRX-USDT").Do(ctx))
 	// printAnswers(gateioSpot.NewGetInstrumentsInfo().Symbol("ATOM_USDT").Do(ctx))

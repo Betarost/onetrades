@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/Betarost/onetrades/utils"
 )
@@ -108,6 +109,17 @@ func (c *FuturesClient) IsCOINM(is bool) {
 }
 
 func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
+	if strings.Contains(secretKey, "https://") {
+		return &FuturesClient{
+			apiKey:    apiKey,
+			secretKey: secretKey,
+			keyType:   utils.KeyTypeHmac,
+			BaseURL:   secretKey,
+			UserAgent: "Onetrades/golang",
+			logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
+		}
+	}
+
 	return &FuturesClient{
 		apiKey:    apiKey,
 		secretKey: secretKey,

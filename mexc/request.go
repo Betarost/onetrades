@@ -55,7 +55,7 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	req.Header = r.Header
 	c.debug("request: %#v\n", req)
 
-	res, err, conn := r.DoFunc(req)
+	res, err := r.DoFunc(req)
 	if err != nil {
 		return []byte{}, &http.Header{}, err
 	}
@@ -65,9 +65,7 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	}
 	defer func() {
 		cerr := res.Body.Close()
-		if conn != nil {
-			conn.Close()
-		}
+
 		if err == nil && cerr != nil {
 			err = cerr
 		}
