@@ -37,6 +37,159 @@ type HasBrokerID interface{ SetBrokerID(string) }
 type HasTimeOffset interface{ SetTimeOffset(int64) }
 type HasCOINM interface{ SetCOINM(bool) }
 
+// ===================== BINANCE =====================
+
+func NewBinanceSpot(cred Credentials, opts ...Options) *binance.SpotClient {
+	o := pickOpts(opts...)
+	c := binance.NewSpotClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+func NewBinanceFutures(cred Credentials, opts ...Options) *binance.FuturesClient {
+	o := pickOpts(opts...)
+	c := binance.NewFuturesClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== BYBIT =====================
+
+func NewBybitSpot(cred Credentials, opts ...Options) *bybit.SpotClient {
+	o := pickOpts(opts...)
+	c := bybit.NewSpotClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+func NewBybitFutures(cred Credentials, opts ...Options) *bybit.FuturesClient {
+	o := pickOpts(opts...)
+	c := bybit.NewFuturesClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== OKX =====================
+
+func NewOKXSpot(cred Credentials, opts ...Options) *okx.SpotClient {
+	o := pickOpts(opts...)
+	c := okx.NewSpotClient(cred.APIKey, cred.SecretKey, cred.Memo)
+	applyOptions(c, o)
+	return c
+}
+func NewOKXFutures(cred Credentials, opts ...Options) *okx.FuturesClient {
+	o := pickOpts(opts...)
+	c := okx.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== BINGX =====================
+
+func NewBingXSpot(cred Credentials, opts ...Options) *bingx.SpotClient {
+	o := pickOpts(opts...)
+	c := bingx.NewSpotClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+func NewBingXFutures(cred Credentials, opts ...Options) *bingx.FuturesClient {
+	o := pickOpts(opts...)
+	c := bingx.NewFuturesClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== BITGET =====================
+
+func NewBitgetSpot(cred Credentials, opts ...Options) *bitget.SpotClient {
+	o := pickOpts(opts...)
+	c := bitget.NewSpotClient(cred.APIKey, cred.SecretKey, cred.Memo)
+	applyOptions(c, o)
+	return c
+}
+
+func NewBitgetFutures(cred Credentials, opts ...Options) *bitget.FuturesClient {
+	o := pickOpts(opts...)
+	c := bitget.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== BULLISH =====================
+
+func NewBullishFutures(cred Credentials, opts ...Options) *bullish.FuturesClient {
+	o := pickOpts(opts...)
+	c := bullish.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== GATE.IO =====================
+
+func NewGateIOSpot(cred Credentials, opts ...Options) *gateio.SpotClient {
+	o := pickOpts(opts...)
+	c := gateio.NewSpotClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+func NewGateIOFutures(cred Credentials, opts ...Options) *gateio.FuturesClient {
+	o := pickOpts(opts...)
+	c := gateio.NewFuturesClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== HUOBI =====================
+
+func NewHuobiSpot(cred Credentials, opts ...Options) *huobi.SpotClient {
+	o := pickOpts(opts...)
+	c := huobi.NewSpotClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+func NewHuobiFutures(cred Credentials, opts ...Options) *huobi.FuturesClient {
+	o := pickOpts(opts...)
+	c := huobi.NewFuturesClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== KUCOIN =====================
+
+func NewKucoinSpot(cred Credentials, opts ...Options) *kucoin.SpotClient {
+	o := pickOpts(opts...)
+	c := kucoin.NewSpotClient(cred.APIKey, cred.SecretKey, cred.Memo)
+	applyOptions(c, o)
+	return c
+}
+
+func NewKucoinFutures(cred Credentials, opts ...Options) *kucoin.FuturesClient {
+	o := pickOpts(opts...)
+	c := kucoin.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== MEXC =====================
+
+func NewMEXCSpot(cred Credentials, opts ...Options) *mexc.SpotClient {
+	o := pickOpts(opts...)
+	c := mexc.NewSpotClient(cred.APIKey, cred.SecretKey)
+	applyOptions(c, o)
+	return c
+}
+
+// ===================== HELPERS =====================
+
+func pickOpts(opts ...Options) Options {
+	if len(opts) > 0 {
+		return opts[0]
+	}
+	return Options{}
+}
+
 func applyOptions(cli any, opts Options) {
 	if v, ok := cli.(HasProxy); ok && opts.Proxy != "" {
 		v.SetProxy(opts.Proxy)
@@ -56,102 +209,4 @@ func applyOptions(cli any, opts Options) {
 	if v, ok := cli.(HasCOINM); ok {
 		v.SetCOINM(opts.COINM)
 	}
-}
-
-// ===================== BINANCE =====================
-
-func NewBinanceSpot(cred Credentials) *binance.SpotClient {
-	return binance.NewSpotClient(cred.APIKey, cred.SecretKey)
-}
-
-func NewBinanceFutures(cred Credentials, opts Options) *binance.FuturesClient {
-	c := binance.NewFuturesClient(cred.APIKey, cred.SecretKey)
-	if opts.COINM {
-		c.IsCOINM(true)
-	}
-	return c
-}
-
-// ===================== BYBIT =====================
-
-func NewBybitSpot(cred Credentials) *bybit.SpotClient {
-	return bybit.NewSpotClient(cred.APIKey, cred.SecretKey)
-}
-
-func NewBybitFutures(cred Credentials) *bybit.FuturesClient {
-	return bybit.NewFuturesClient(cred.APIKey, cred.SecretKey)
-}
-
-// ===================== OKX =====================
-
-func NewOKXSpot(cred Credentials) *okx.SpotClient {
-	return okx.NewSpotClient(cred.APIKey, cred.SecretKey, cred.Memo)
-}
-
-func NewOKXFutures(cred Credentials) *okx.FuturesClient {
-	return okx.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
-}
-
-// ===================== BINGX =====================
-
-func NewBingXSpot(cred Credentials) *bingx.SpotClient {
-	return bingx.NewSpotClient(cred.APIKey, cred.SecretKey)
-}
-
-func NewBingXFutures(cred Credentials) *bingx.FuturesClient {
-	return bingx.NewFuturesClient(cred.APIKey, cred.SecretKey)
-}
-
-// ===================== BITGET =====================
-
-func NewBitgetSpot(cred Credentials) *bitget.SpotClient {
-	// У Bitget обычно требуется passphrase/memo
-	return bitget.NewSpotClient(cred.APIKey, cred.SecretKey, cred.Memo)
-}
-
-func NewBitgetFutures(cred Credentials) *bitget.FuturesClient {
-	return bitget.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
-}
-
-// ===================== BULLISH =====================
-
-func NewBullishFutures(cred Credentials) *bullish.FuturesClient {
-	return bullish.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
-}
-
-// ===================== GATE.IO =====================
-
-func NewGateIOSpot(cred Credentials) *gateio.SpotClient {
-	return gateio.NewSpotClient(cred.APIKey, cred.SecretKey)
-}
-
-func NewGateIOFutures(cred Credentials) *gateio.FuturesClient {
-	return gateio.NewFuturesClient(cred.APIKey, cred.SecretKey)
-}
-
-// ===================== HUOBI =====================
-
-func NewHuobiSpot(cred Credentials) *huobi.SpotClient {
-	return huobi.NewSpotClient(cred.APIKey, cred.SecretKey)
-}
-
-func NewHuobiFutures(cred Credentials) *huobi.FuturesClient {
-	return huobi.NewFuturesClient(cred.APIKey, cred.SecretKey)
-}
-
-// ===================== KUCOIN =====================
-
-func NewKucoinSpot(cred Credentials) *kucoin.SpotClient {
-	// KuCoin требует passphrase
-	return kucoin.NewSpotClient(cred.APIKey, cred.SecretKey, cred.Memo)
-}
-
-func NewKucoinFutures(cred Credentials) *kucoin.FuturesClient {
-	return kucoin.NewFuturesClient(cred.APIKey, cred.SecretKey, cred.Memo)
-}
-
-// ===================== MEXC =====================
-
-func NewMEXCSpot(cred Credentials) *mexc.SpotClient {
-	return mexc.NewSpotClient(cred.APIKey, cred.SecretKey)
 }

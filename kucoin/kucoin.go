@@ -30,6 +30,12 @@ type SpotClient struct {
 	TimeOffset int64
 }
 
+func (c *SpotClient) SetProxy(proxy string)  { c.Proxy = proxy }
+func (c *SpotClient) SetUserAgent(ua string) { c.UserAgent = ua }
+func (c *SpotClient) SetDebug(v bool)        { c.Debug = v }
+func (c *SpotClient) SetBrokerID(id string)  { c.BrokerID = id }
+func (c *SpotClient) SetTimeOffset(ms int64) { c.TimeOffset = ms }
+
 func (c *SpotClient) debug(format string, v ...interface{}) {
 	if c.Debug {
 		c.logger.Printf(format, v...)
@@ -100,6 +106,14 @@ type FuturesClient struct {
 	logger     *log.Logger
 	TimeOffset int64
 }
+
+func (c *FuturesClient) SetProxy(proxy string)  { c.Proxy = proxy }
+func (c *FuturesClient) SetUserAgent(ua string) { c.UserAgent = ua }
+func (c *FuturesClient) SetDebug(v bool)        { c.Debug = v }
+func (c *FuturesClient) SetBrokerID(id string)  { c.BrokerID = id }
+func (c *FuturesClient) SetTimeOffset(ms int64) { c.TimeOffset = ms }
+
+// func (c *FuturesClient) SetCOINM(is bool) { c.IsCOINM(is) }
 
 func (c *FuturesClient) debug(format string, v ...interface{}) {
 	if c.Debug {
