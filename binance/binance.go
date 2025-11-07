@@ -109,6 +109,7 @@ type FuturesClient struct {
 	BrokerID   string
 	Debug      bool
 	isCOINM    bool
+	isPMargin  bool
 	logger     *log.Logger
 	TimeOffset int64
 }
@@ -119,6 +120,7 @@ func (c *FuturesClient) SetDebug(v bool)        { c.Debug = v }
 func (c *FuturesClient) SetBrokerID(id string)  { c.BrokerID = id }
 func (c *FuturesClient) SetTimeOffset(ms int64) { c.TimeOffset = ms }
 func (c *FuturesClient) SetCOINM(is bool)       { c.IsCOINM(is) }
+func (c *FuturesClient) SetPmargin(is bool)     { c.isPMargin = is }
 
 func (c *FuturesClient) debug(format string, v ...interface{}) {
 	if c.Debug {
@@ -142,6 +144,7 @@ func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
 			secretKey: secretKey,
 			keyType:   utils.KeyTypeHmac,
 			BaseURL:   secretKey,
+			isPMargin: true,
 			UserAgent: "Onetrades/golang",
 			logger:    log.New(os.Stderr, fmt.Sprintf("%s-onetrades ", tradeName_Futures), log.LstdFlags),
 		}
@@ -158,7 +161,7 @@ func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
 }
 
 func (c *FuturesClient) NewGetBalance() *futures_getBalance {
-	return &futures_getBalance{callAPI: c.callAPI, isCOINM: c.isCOINM}
+	return &futures_getBalance{callAPI: c.callAPI, isCOINM: c.isCOINM, isPMargin: c.isPMargin}
 }
 
 func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {

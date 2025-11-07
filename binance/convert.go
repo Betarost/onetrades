@@ -168,6 +168,24 @@ func (c *futures_converts) convertBalance(in futures_Balance) (out []entity.Futu
 	return out
 }
 
+func (c *futures_converts) convertBalance_PMargin(in []futures_Balance_PMargin) (out []entity.FuturesBalance) {
+
+	for _, item := range in {
+
+		if utils.StringToFloat(item.TotalWalletBalance) == 0 {
+			continue
+		}
+
+		out = append(out, entity.FuturesBalance{
+			Asset:            item.Asset,
+			Balance:          item.TotalWalletBalance,
+			Available:        utils.FloatToStringAll(utils.StringToFloat(item.TotalWalletBalance) + utils.StringToFloat(item.UmUnrealizedPNL)),
+			UnrealizedProfit: item.UmUnrealizedPNL,
+		})
+	}
+	return out
+}
+
 func (c *futures_converts) convertInstrumentsInfo(in futures_instrumentsInfo) (out []entity.Futures_InstrumentsInfo) {
 	if len(in.Symbols) == 0 {
 		return out
