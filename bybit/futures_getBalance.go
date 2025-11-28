@@ -28,10 +28,10 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
+
 	if err != nil {
 		return res, err
 	}
-	// log.Println("=FUTURES=", string(data))
 	var answ struct {
 		Result struct {
 			List []futures_Balance `json:"list"`

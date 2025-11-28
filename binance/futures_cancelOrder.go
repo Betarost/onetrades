@@ -51,10 +51,10 @@ func (s *futures_cancelOrder) Do(ctx context.Context, opts ...utils.RequestOptio
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
+
 	if err != nil {
 		return res, err
 	}
-
 	answ := futures_placeOrder_Response{}
 
 	err = json.Unmarshal(data, &answ)

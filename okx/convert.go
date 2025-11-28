@@ -276,22 +276,6 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 			positionSide = strings.ToUpper(item.PosSide)
 		}
 
-		// tp := ""
-		// sl := ""
-		// if len(item.AttachAlgoOrds) > 0 {
-		// 	if item.AttachAlgoOrds[0].TpOrdPx != "-1" && item.AttachAlgoOrds[0].TpOrdPx != "" {
-		// 		tp = item.AttachAlgoOrds[0].TpOrdPx
-		// 	} else if item.AttachAlgoOrds[0].TpTriggerPx != "-1" && item.AttachAlgoOrds[0].TpTriggerPx != "" {
-		// 		tp = item.AttachAlgoOrds[0].TpTriggerPx
-		// 	}
-
-		// 	if item.AttachAlgoOrds[0].SlOrdPx != "-1" && item.AttachAlgoOrds[0].SlOrdPx != "" {
-		// 		sl = item.AttachAlgoOrds[0].SlOrdPx
-		// 	} else if item.AttachAlgoOrds[0].SlTriggerPx != "-1" && item.AttachAlgoOrds[0].SlTriggerPx != "" {
-		// 		sl = item.AttachAlgoOrds[0].SlTriggerPx
-		// 	}
-		// }
-		// b, _ := strconv.ParseBool(item.IsTpLimit)
 		res = append(res, entity.Futures_OrdersList{
 			Symbol:        item.InstId,
 			OrderID:       item.OrdId,
