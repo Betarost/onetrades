@@ -16,6 +16,7 @@ import (
 	"github.com/Betarost/onetrades/kucoin"
 	"github.com/Betarost/onetrades/mexc"
 	"github.com/Betarost/onetrades/okx"
+	"github.com/Betarost/onetrades/whitebit"
 	"github.com/spf13/viper"
 )
 
@@ -59,6 +60,8 @@ func TestOnetrades(t *testing.T) {
 	blofinKey := viper.GetString("BLOFIN_API")
 	blofinSecret := viper.GetString("BLOFIN_SECRET")
 	blofinMemo := viper.GetString("BLOFIN_MEMO")
+	whitebitKey := viper.GetString("WHITEBIT_API")
+	whitebitSecret := viper.GetString("WHITEBIT_SECRET")
 	//==========================CLIENTS==========================
 
 	binanceSpot := binance.NewSpotClient(binanceKey, binanceSecret)
@@ -86,6 +89,8 @@ func TestOnetrades(t *testing.T) {
 	kucoinFutures := kucoin.NewFuturesClient(kucoinKey, kucoinSecret, kucoinMemo)
 	blofinSpot := blofin.NewSpotClient(blofinKey, blofinSecret, blofinMemo)
 	blofinFutures := blofin.NewFuturesClient(blofinKey, blofinSecret, blofinMemo)
+	whitebitSpot := whitebit.NewSpotClient(whitebitKey, whitebitSecret)
+	whitebitFutures := whitebit.NewFuturesClient(whitebitKey, whitebitSecret)
 
 	binanceSpot.Debug = false
 	binanceFutures.Debug = false
@@ -106,6 +111,8 @@ func TestOnetrades(t *testing.T) {
 	kucoinSpot.Debug = false
 	kucoinFutures.Debug = false
 	blofinFutures.Debug = false
+	whitebitSpot.Debug = false
+	whitebitFutures.Debug = false
 	bullishFutures.Proxy = "http://localhost:1080"
 	okxSpot.Proxy = "http://localhost:1080"
 	// bingxFutures.Proxy = "http://localhost:1080"
@@ -116,6 +123,8 @@ func TestOnetrades(t *testing.T) {
 	binanceFutures.Proxy = "http://localhost:1080"
 	blofinSpot.Proxy = "http://localhost:1080"
 	blofinFutures.Proxy = "http://localhost:1080"
+	whitebitSpot.Proxy = "http://localhost:1080"
+	whitebitFutures.Proxy = "http://localhost:1080"
 	// binanceFutures.IsCOINM(true)
 	// =======================AccountInfo
 	n = "AccountInfo"
@@ -140,6 +149,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(kucoinFutures.NewGetAccountInfo().Do(ctx))
 	// printAnswers(blofinFutures.NewGetAccountInfo().Do(ctx))
+	// printAnswers(whitebitFutures.NewGetAccountInfo().Do(ctx))
 
 	//=======================GetBalance
 	n = "GetBalance"
@@ -166,6 +176,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bullishFutures.NewGetBalance().UID("111872616831896").Do(ctx))
 	// printAnswers(kucoinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(blofinFutures.NewGetBalance().Do(ctx))
+	// printAnswers(whitebitFutures.NewGetBalance().Do(ctx))
 
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
@@ -195,6 +206,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bullishFutures.NewGetInstrumentsInfo().Symbol("BTC-USDC-PERP").Do(ctx))
 	// printAnswers(kucoinFutures.NewGetInstrumentsInfo().Symbol("DOGEUSDTM").Do(ctx))
 	// printAnswers(blofinFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	// printAnswers(whitebitFutures.NewGetInstrumentsInfo().Symbol("BTC_PERP").Do(ctx))
 
 	//=======================MarketCandle
 	//FUTURES
@@ -217,12 +229,13 @@ func TestOnetrades(t *testing.T) {
 
 	//FUTURES
 	//TEST MARKET
-	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("3.173").ClientOrderID("tcbmanual").Do(ctx))
+	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.002").Do(ctx))
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.001").HedgeMode(true).Do(ctx))
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSD").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("100").HedgeMode(false).Category("inverse").Do(ctx))
-	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("0.05").MarginMode(entity.MarginModeTypeCross).Do(ctx))
-	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("0.05").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("2283").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USD-SWAP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("2280").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(blofinFutures.NewPlaceOrder().Symbol("BTC-USDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("0.2").MarginMode(entity.MarginModeTypeCross).PositionSide(entity.PositionSideTypeLong).Do(ctx))
+	// printAnswers(whitebitFutures.NewPlaceOrder().Symbol("BTC_PERP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("0.001").PositionSide(entity.PositionSideTypeShort).Do(ctx))
 
 	//TEST LIMIT
 	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Price("101250").Size("0.001").Do(ctx))
@@ -230,6 +243,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSD").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Size("100").HedgeMode(false).Category("inverse").Price("125000").Do(ctx))
 	// printAnswers(okxFutures.NewPlaceOrder().Symbol("BTC-USDT-SWAP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("125000").PositionSide(entity.PositionSideTypeLong).Size("0.05").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(blofinFutures.NewPlaceOrder().Symbol("BTC-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Price("90555.5").Size("0.2").MarginMode(entity.MarginModeTypeCross).PositionSide(entity.PositionSideTypeLong).Do(ctx))
+	// printAnswers(whitebitFutures.NewPlaceOrder().Symbol("BTC_PERP").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("0.001").Price("91550.5").PositionSide(entity.PositionSideTypeShort).Do(ctx))
 	//==========
 
 	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSD_PERP").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("1").Do(ctx))
@@ -266,6 +280,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bullishFutures.NewGetPositions().UID("111872616831896").Do(ctx))
 	// printAnswers(kucoinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(blofinFutures.NewGetPositions().Do(ctx))
+	// printAnswers(whitebitFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
@@ -290,6 +305,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bullishFutures.NewCancelOrder().UID("111872616831896").Symbol("BTC-USDC-PERP").OrderID("870221330058314753").Do(ctx))
 	// printAnswers(kucoinFutures.NewCancelOrder().OrderID("358517542999838720").Do(ctx))
 	// printAnswers(blofinFutures.NewCancelOrder().OrderID("5000054382203").Do(ctx))
+	// printAnswers(whitebitFutures.NewCancelOrder().Symbol("BTC_PERP").OrderID("1979248560459").Do(ctx))
 
 	//=======================AmendOrder
 	n = "AmendOrder"
@@ -334,6 +350,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bullishFutures.NewGetOrderList().UID("111872616831896").Do(ctx))
 	// printAnswers(kucoinFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(blofinFutures.NewGetOrderList().Do(ctx))
+	// printAnswers(whitebitFutures.NewGetOrderList().Do(ctx))
 
 	//=======================OrdersHistory
 	n = "OrdersHistory"
@@ -359,6 +376,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxFutures.NewOrdersHistory().OrderID("2896365455043928064").Limit(2).Do(ctx))
 	// printAnswers(kucoinFutures.NewOrdersHistory().Limit(50).StartTime(1758362413105).EndTime(1758382413105).Do(ctx))
 	// printAnswers(blofinFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(whitebitFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================ExecutionsHistory
 	n = "ExecutionsHistory"
@@ -375,7 +393,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxFutures.NewPositionsHistory().Symbol("BNB-USDT-SWAP").Do(ctx))
 	// printAnswers(okxFutures.NewPositionsHistory().StartTime(1757883600000).Limit(50).Do(ctx))
 	// printAnswers(kucoinFutures.NewPositionsHistory().Do(ctx))
-	printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(whitebitFutures.NewPositionsHistory().Do(ctx))
 
 	//=======================SetPositionMode
 	n = "SetPositionMode"
@@ -388,6 +407,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
 	// printAnswers(kucoinFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
 	// printAnswers(blofinFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
+	// printAnswers(whitebitFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
 
 	//=======================GetPositionMode
 	n = "GetPositionMode"
@@ -401,6 +421,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(kucoinFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(blofinFutures.NewGetPositionMode().Do(ctx))
+	// printAnswers(whitebitFutures.NewGetPositionMode().Do(ctx))
 
 	//=======================SetLeverage
 	n = "SetLeverage"
@@ -414,6 +435,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxFutures.NewSetLeverage().Symbol("BTC-USDT-SWAP").Leverage("100").PositionSide(entity.PositionSideTypeShort).MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(kucoinFutures.NewSetLeverage().Symbol("DOGEUSDTM").Leverage("50").Do(ctx))
 	// printAnswers(blofinFutures.NewSetLeverage().Symbol("BTC-USDT").Leverage("10").PositionSide(entity.PositionSideTypeBoth).MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	// printAnswers(whitebitFutures.NewSetLeverage().Leverage("50").Do(ctx))
 
 	//=======================GetLeverage
 	n = "GetLeverage"
@@ -427,6 +449,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxFutures.NewGetLeverage().Symbol("BTC-USDT-SWAP").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(kucoinFutures.NewGetLeverage().Symbol("DOGEUSDTM").Do(ctx))
 	// printAnswers(blofinFutures.NewGetLeverage().Symbol("BTC-USDT").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	// printAnswers(whitebitFutures.NewGetLeverage().Do(ctx))
 
 	//=======================SetMarginMode
 	n = "SetMarginMode"
@@ -460,6 +483,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetListenKey().Do(ctx))
 	// printAnswers(kucoinFutures.NewGetListenKey().Do(ctx))
+	printAnswers(whitebitFutures.NewGetListenKey().Do(ctx))
 
 	//=======================ExtendListenKey
 	n = "ExtendListenKey"

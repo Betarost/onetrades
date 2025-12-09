@@ -24,6 +24,8 @@ var (
 	Kucoin_futures        = "https://api-futures.kucoin.com"
 	Blofin_spot           = "https://openapi.blofin.com"
 	Blofin_futures        = "https://openapi.blofin.com"
+	Whitebit_spot         = "https://whitebit.com"
+	Whitebit_futures      = "https://whitebit.com"
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
@@ -86,6 +88,10 @@ func GetEndpoint(trade string) string {
 		return Blofin_spot
 	case "BLOFIN_FUTURES":
 		return Blofin_futures
+	case "WHITEBIT_SPOT":
+		return Whitebit_spot
+	case "WHITEBIT_FUTURES":
+		return Whitebit_futures
 	default:
 		return ""
 	}
