@@ -402,3 +402,142 @@ func (c *futures_converts) convertListenKey(in futures_listenKey) (out entity.Fu
 	out.ListenKey = in.WebsocketToken
 	return out
 }
+
+type spot_converts struct{}
+
+func (c *spot_converts) convertInstrumentsInfo(in []spot_instrumentWB) (out []entity.Spot_InstrumentsInfo) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		state := "LIVE"
+		if !item.TradesEnabled {
+			state = "DISABLED"
+		}
+
+		out = append(out, entity.Spot_InstrumentsInfo{
+			Symbol:         item.Name,      // например BTC_USDT
+			Base:           item.Stock,     // BTC
+			Quote:          item.Money,     // USDT
+			MinQty:         item.MinAmount, // "0.0001"
+			MinNotional:    item.MinTotal,  // "5"
+			PricePrecision: item.MoneyPrec, // "2"
+			SizePrecision:  item.StockPrec, // "6"
+			State:          strings.ToUpper(state),
+		})
+	}
+
+	return out
+}
+
+func (c *spot_converts) convertPlaceOrder(in spot_placeOrderResponseWB) (out []entity.PlaceOrder) {
+	if in.OrderID == 0 {
+		return out
+	}
+
+	out = append(out, entity.PlaceOrder{
+		OrderID:       strconv.FormatInt(in.OrderID, 10),
+		ClientOrderID: in.ClientOrderID,
+		// как и на фьючах, используем локальное время в мс
+		Ts: time.Now().UTC().UnixMilli(),
+	})
+
+	return out
+}
+
+func (c *spot_converts) convertSpotOrderList(in []spot_orderListWB) (out []entity.Spot_OrdersList) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		// Отфильтровать всё, что НЕ спот:
+		// 1) фьючерсы: рынки типа BTC_PERP
+		if strings.HasSuffix(strings.ToUpper(item.Market), "_PERP") {
+			continue
+		}
+		// 2) маржинальные: тип "margin limit" / "margin market"
+		if strings.HasPrefix(strings.ToLower(item.Type), "margin ") {
+			continue
+		}
+
+		// executedSize берём из dealStock (для спота это количество base-актива)
+		executedSize := item.DealStock
+
+		// timestamp приходит в секундах с дробной частью -> переводим в ms
+		tsMs := int64(item.Timestamp * 1000)
+
+		out = append(out, entity.Spot_OrdersList{
+			Symbol:        item.Market,
+			OrderID:       strconv.FormatInt(item.OrderID, 10),
+			ClientOrderID: item.ClientOrderID,
+			Side:          strings.ToUpper(item.Side),
+			Size:          item.Amount,
+			ExecutedSize:  executedSize,
+			Price:         item.Price,
+			Type:          strings.ToUpper(item.Type),
+			Status:        strings.ToUpper(item.Status),
+			CreateTime:    tsMs,
+			UpdateTime:    tsMs, // у API нет отдельного поля, используем timestamp
+		})
+	}
+
+	return out
+}
+
+func (c *spot_converts) convertSpotAmendOrder(in []spot_modifyOrderWB) (out []entity.PlaceOrder) {
+	if len(in) == 0 {
+		return out
+	}
+
+	nowMs := time.Now().UTC().UnixMilli()
+
+	for _, item := range in {
+		out = append(out, entity.PlaceOrder{
+			OrderID:       strconv.FormatInt(item.OrderID, 10),
+			ClientOrderID: item.ClientOrderID,
+			Ts:            nowMs,
+		})
+	}
+
+	return out
+}
+
+func (c *spot_converts) convertOrdersHistory(in []spot_tradeHistoryWB) (out []entity.Spot_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, t := range in {
+		// Для spot-метода отсекаем фьючерсные рынки типа *_PERP
+		if strings.HasSuffix(t.Market, "_PERP") {
+			continue
+		}
+
+		out = append(out, entity.Spot_OrdersHistory{
+			Symbol:        t.Market,
+			OrderID:       strconv.FormatInt(t.OrderID, 10),
+			ClientOrderID: t.ClientOrderID,
+			Side:          strings.ToUpper(t.Side),
+
+			Size:         t.Amount,
+			ExecutedSize: t.Amount,
+
+			Price:         t.Price,
+			ExecutedPrice: t.Price,
+
+			Fee: t.Fee,
+
+			// Эндпоинт не отдаёт тип явно (market/limit), оставляем пустым
+			Type:   "",
+			Status: "FILLED",
+
+			// time — float сек, переводим в ms.
+			CreateTime: int64(t.Time * 1000),
+			UpdateTime: int64(t.Time * 1000),
+		})
+	}
+
+	return out
+}

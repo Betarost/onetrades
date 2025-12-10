@@ -138,6 +138,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(huobiSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(kucoinSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(whitebitSpot.NewGetAccountInfo().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
@@ -164,6 +165,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetBalance().UID("53799773").Do(ctx))
 	// printAnswers(huobiSpot.NewGetBalance().UID("69069265").Do(ctx))
 	// printAnswers(kucoinSpot.NewGetBalance().Do(ctx))
+	// printAnswers(whitebitSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
@@ -191,6 +193,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetInstrumentsInfo().Do(ctx))
 	// huobiSpot.NewGetInstrumentsInfo().Do(ctx)
 	// printAnswers(kucoinSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
+	// printAnswers(whitebitSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -226,6 +229,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxSpot.NewPlaceOrder().Symbol("BTC-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("200").Do(ctx))
 	// printAnswers(huobiSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("56").Price("0.20899").UID("69069265").Do(ctx))
 	// printAnswers(kucoinSpot.NewPlaceOrder().Symbol("BTC-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Price("116910.5").Size("0.00001").ClientOrderID("3").Do(ctx))
+	// printAnswers(whitebitSpot.NewPlaceOrder().Symbol("BTC_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.00006").Price("92100.5").Do(ctx))
 
 	//FUTURES
 	//TEST MARKET
@@ -294,6 +298,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxSpot.NewCancelOrder().Symbol("DOGE-USDT").OrderID("2669952276160045056").Do(ctx))
 	// printAnswers(huobiSpot.NewCancelOrder().OrderID("1371171052466066").Do(ctx))
 	// printAnswers(kucoinSpot.NewCancelOrder().OrderID("68cc0554a4aad100075896a5").Do(ctx))
+	// printAnswers(whitebitSpot.NewCancelOrder().Symbol("BTC_USDT").OrderID("1981703663512").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewCancelOrder().Symbol("BTCUSDT").OrderID("815339205329").Do(ctx))
@@ -314,6 +319,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewAmendOrder().Symbol("DOGEUSDT").OrderID("1993102065488195328").NewPrice("0.19855").NewSize("31").Do(ctx))
 	// printAnswers(gateioSpot.NewAmendOrder().Symbol("TRX_USDT").OrderID("186336434877910305").NewSize("3").NewPrice("0.2314").Do(ctx))
 	// printAnswers(okxSpot.NewAmendOrder().Symbol("DOGE-USDT").OrderID("2669952276160045056").NewPrice("0.17101").NewSize("11.11").Do(ctx))
+	// printAnswers(whitebitSpot.NewAmendOrder().Symbol("BTC_USDT").OrderID("1981688045654").NewPrice("91910.7").NewSize("0.00006").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewAmendOrder().Symbol("DOGEUSDT").OrderID("76780426418").NewSize("39").NewPrice("0.23522").Side(entity.SideTypeBuy).Do(ctx))
@@ -336,6 +342,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(huobiSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(kucoinSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(whitebitSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
@@ -364,6 +371,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(kucoinSpot.NewOrdersHistory().Do(ctx))
+	printAnswers(whitebitSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
@@ -483,7 +491,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(bingxFutures.NewGetListenKey().Do(ctx))
 	// printAnswers(kucoinFutures.NewGetListenKey().Do(ctx))
-	printAnswers(whitebitFutures.NewGetListenKey().Do(ctx))
+	// printAnswers(whitebitFutures.NewGetListenKey().Do(ctx))
 
 	//=======================ExtendListenKey
 	n = "ExtendListenKey"

@@ -52,53 +52,41 @@ func NewSpotClient(apiKey, secretKey string) *SpotClient {
 	}
 }
 
-// func (c *SpotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
-// 	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewGetInstrumentsInfo() *spot_getInstrumentsInfo {
+	return &spot_getInstrumentsInfo{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewGetAccountInfo() *getAccountInfo {
-// 	return &getAccountInfo{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewGetAccountInfo() *getAccountInfo {
+	return &getAccountInfo{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewGetTradingAccountBalance() *getTradingAccountBalance {
-// 	return &getTradingAccountBalance{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewGetBalance() *spot_getBalance {
+	return &spot_getBalance{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewGetFundingAccountBalance() *getFundingAccountBalance {
-// 	return &getFundingAccountBalance{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewPlaceOrder() *spot_placeOrder {
+	return &spot_placeOrder{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewOrdersHistory() *spot_ordersHistory {
-// 	return &spot_ordersHistory{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewGetOrderList() *spot_getOrderList {
+	return &spot_getOrderList{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewGetOrderList() *spot_getOrderList {
-// 	return &spot_getOrderList{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewAmendOrder() *spot_amendOrder {
+	return &spot_amendOrder{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewCancelOrder() *spot_cancelOrder {
-// 	return &spot_cancelOrder{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewCancelOrder() *spot_cancelOrder {
+	return &spot_cancelOrder{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewMultiCancelOrders() *multiCancelOrders {
-// 	return &multiCancelOrders{callAPI: c.callAPI}
-// }
+func (c *SpotClient) NewOrdersHistory() *spot_ordersHistory {
+	return &spot_ordersHistory{callAPI: c.callAPI}
+}
 
-// func (c *SpotClient) NewAmendOrder() *spot_amendOrder {
-// 	return &spot_amendOrder{callAPI: c.callAPI}
-// }
-
-// func (c *SpotClient) NewPlaceOrder() *spot_placeOrder {
-// 	return &spot_placeOrder{callAPI: c.callAPI}
-// }
-
-// func (c *SpotClient) NewGetBalance() *spot_getBalance {
-// 	return &spot_getBalance{callAPI: c.callAPI}
-// }
-
-// func (c *SpotClient) NewSignAuthStream() *signAuthStream {
-// 	return &signAuthStream{sec: c.secretKey}
-// }
+func (c *SpotClient) NewGetListenKey() *futures_getListenKey {
+	return &futures_getListenKey{callAPI: c.callAPI}
+}
 
 // ===============FUTURES=================
 
