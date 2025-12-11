@@ -202,7 +202,7 @@ func (c *futures_converts) convertBalance(in []futures_Balance) (out []entity.Fu
 			Asset:            item.MarginCoin,
 			Balance:          item.AccountEquity,
 			Equity:           item.AccountEquity,
-			Available:        item.Available,
+			Available:        item.UnionAvailable,
 			UnrealizedProfit: item.UnrealizedPL,
 		})
 

@@ -114,6 +114,7 @@ func TestOnetrades(t *testing.T) {
 	whitebitSpot.Debug = false
 	whitebitFutures.Debug = false
 	bullishFutures.Proxy = "http://localhost:1080"
+	bitgetFutures.Proxy = "http://localhost:1080"
 	okxSpot.Proxy = "http://localhost:1080"
 	// bingxFutures.Proxy = "http://localhost:1080"
 	okxFutures.Proxy = "http://localhost:1080"
@@ -172,7 +173,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
-	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
+	printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
 	// printAnswers(okxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(huobiFutures.NewGetBalance().UID("53799773").Do(ctx))
 	// printAnswers(bullishFutures.NewGetBalance().UID("111872616831896").Do(ctx))
@@ -279,7 +280,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bybitFutures.NewGetPositions().Category("inverse").Do(ctx))
 	// printAnswers(gateioFutures.NewGetPositions().Do(ctx))
-	// printAnswers(bitgetFutures.NewGetPositions().Do(ctx))
+	printAnswers(bitgetFutures.NewGetPositions().Do(ctx))
 	// printAnswers(okxFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bullishFutures.NewGetPositions().UID("111872616831896").Do(ctx))
 	// printAnswers(kucoinFutures.NewGetPositions().Do(ctx))
@@ -371,7 +372,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(kucoinSpot.NewOrdersHistory().Do(ctx))
-	printAnswers(whitebitSpot.NewOrdersHistory().Do(ctx))
+	// printAnswers(whitebitSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
