@@ -3,7 +3,6 @@ package bitget
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -30,7 +29,6 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return res, err
 	}
-	log.Println("=0a5ae8=", string(data))
 	var answ struct {
 		Result []futures_Balance `json:"data"`
 	}

@@ -353,7 +353,7 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			Symbol:       item.Symbol,
 			PositionSide: strings.ToUpper(item.HoldSide),
 			// PositionID:   item.PositionId,
-			PositionSize: item.Available,
+			PositionSize: item.Total,
 			EntryPrice:   item.OpenPriceAvg,
 			MarkPrice:    item.MarkPrice,
 			// InitialMargin:    item.Initial_margin,
