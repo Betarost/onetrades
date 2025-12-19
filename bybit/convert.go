@@ -210,6 +210,25 @@ func (c *futures_converts) convertLeverage(in futures_leverage) (out entity.Futu
 	return out
 }
 
+func (c *futures_converts) convertLeverage_Extra(in []futures_leverage) (out entity.Futures_Leverage) {
+	if len(in) == 0 {
+		return out
+	}
+	out.Symbol = in[0].Symbol
+
+	for _, item := range in {
+		switch item.PositionIdx {
+		case 0:
+			out.Leverage = item.Leverage
+		case 1:
+			out.LongLeverage = item.Leverage
+		case 2:
+			out.ShortLeverage = item.Leverage
+		}
+	}
+	return out
+}
+
 func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {
 	if len(in) == 0 {
 		return out

@@ -68,6 +68,7 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	m := utils.Params{"category": "linear"}
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
+		res.Symbol = *s.symbol
 	}
 	if s.category != nil {
 		m["category"] = *s.category
@@ -80,9 +81,13 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if s.longLeverage != nil && s.shortLeverage != nil {
 		m["buyLeverage"] = *s.longLeverage
 		m["sellLeverage"] = *s.shortLeverage
+		res.LongLeverage = *s.longLeverage
+		res.ShortLeverage = *s.shortLeverage
 	} else if s.leverage != nil {
 		m["buyLeverage"] = *s.leverage
 		m["sellLeverage"] = *s.leverage
+		res.LongLeverage = *s.leverage
+		res.ShortLeverage = *s.leverage
 	}
 
 	// if s.positionSide != nil {
@@ -108,8 +113,7 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if answ.RetMsg != "OK" {
 		return res, errors.New(answ.RetMsg)
 	}
-
-	return entity.Futures_Leverage{Symbol: *s.symbol, Leverage: *s.leverage}, nil
+	return res, nil
 }
 
 // type futures_leverage struct {

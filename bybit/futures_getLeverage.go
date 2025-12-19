@@ -48,6 +48,7 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result struct {
 			List []futures_leverage `json:"list"`
@@ -62,10 +63,13 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if len(answ.Result.List) == 0 {
 		return res, errors.New("Empty Results")
 	}
-	return s.convert.convertLeverage(answ.Result.List[0]), nil
+
+	return s.convert.convertLeverage_Extra(answ.Result.List), nil
+	// return s.convert.convertLeverage(answ.Result.List[0]), nil
 }
 
 type futures_leverage struct {
-	Symbol   string `json:"symbol"`
-	Leverage string `json:"leverage"`
+	Symbol      string `json:"symbol"`
+	Leverage    string `json:"leverage"`
+	PositionIdx int64  `json:"positionIdx"`
 }
