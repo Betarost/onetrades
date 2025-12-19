@@ -76,7 +76,33 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		return res, err
 	}
 
-	return s.convert.convertLeverage(answ.Result), nil
+	r2 := &utils.Request{
+		Method:   http.MethodGet,
+		Endpoint: "/openApi/swap/v2/trade/leverage",
+		SecType:  utils.SecTypeSigned,
+	}
+
+	m2 := utils.Params{}
+	if s.symbol != nil {
+		m2["symbol"] = *s.symbol
+	}
+	r2.SetParams(m2)
+
+	data2, _, err2 := s.callAPI(ctx, r2, opts...)
+	if err2 != nil {
+		return res, err2
+	}
+	var answ2 struct {
+		Result futures_leverage `json:"data"`
+	}
+
+	err2 = json.Unmarshal(data2, &answ2)
+	if err2 != nil {
+		return res, err2
+	}
+
+	return s.convert.convertLeverage(answ2.Result), nil
+
 }
 
 // type futures_leverage struct {

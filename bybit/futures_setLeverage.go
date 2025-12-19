@@ -14,11 +14,13 @@ type futures_setLeverage struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol       *string
-	category     *string
-	leverage     *string
-	positionSide *entity.PositionSideType
-	marginMode   *entity.MarginModeType
+	symbol        *string
+	category      *string
+	leverage      *string
+	longLeverage  *string
+	shortLeverage *string
+	positionSide  *entity.PositionSideType
+	marginMode    *entity.MarginModeType
 }
 
 func (s *futures_setLeverage) Symbol(symbol string) *futures_setLeverage {
@@ -33,6 +35,16 @@ func (s *futures_setLeverage) Category(category string) *futures_setLeverage {
 
 func (s *futures_setLeverage) Leverage(leverage string) *futures_setLeverage {
 	s.leverage = &leverage
+	return s
+}
+
+func (s *futures_setLeverage) LongLeverage(longLeverage string) *futures_setLeverage {
+	s.longLeverage = &longLeverage
+	return s
+}
+
+func (s *futures_setLeverage) ShortLeverage(shortLeverage string) *futures_setLeverage {
+	s.shortLeverage = &shortLeverage
 	return s
 }
 
@@ -60,7 +72,15 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if s.category != nil {
 		m["category"] = *s.category
 	}
-	if s.leverage != nil {
+	// if s.leverage != nil {
+	// 	m["buyLeverage"] = *s.leverage
+	// 	m["sellLeverage"] = *s.leverage
+	// }
+
+	if s.longLeverage != nil && s.shortLeverage != nil {
+		m["buyLeverage"] = *s.longLeverage
+		m["sellLeverage"] = *s.shortLeverage
+	} else if s.leverage != nil {
 		m["buyLeverage"] = *s.leverage
 		m["sellLeverage"] = *s.leverage
 	}

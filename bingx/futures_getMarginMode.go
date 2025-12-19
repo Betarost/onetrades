@@ -52,7 +52,7 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 	marginMode := string(entity.MarginModeTypeCross)
 
 	if answ.Result.MarginType == "ISOLATED" {
-		marginMode = string(entity.MarginModeTypeCross)
+		marginMode = string(entity.MarginModeTypeIsolated)
 	}
 
 	return entity.Futures_MarginMode{MarginMode: marginMode}, nil

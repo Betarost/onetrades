@@ -38,7 +38,6 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result futures_leverage `json:"data"`
 	}
