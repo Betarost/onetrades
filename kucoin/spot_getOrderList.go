@@ -58,6 +58,7 @@ func (s *spot_getOrderList) Do(ctx context.Context, opts ...utils.RequestOption)
 	if err != nil {
 		return res, err
 	}
+
 	var answ struct {
 		Result struct {
 			Items []spot_orderList `json:"items"`

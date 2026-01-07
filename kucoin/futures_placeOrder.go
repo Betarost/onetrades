@@ -117,13 +117,16 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		}
 	}
 
+	if s.positionSide != nil {
+		m["positionSide"] = strings.ToUpper(string(*s.positionSide))
+	}
+
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result placeOrder_Response `json:"data"`
 	}
