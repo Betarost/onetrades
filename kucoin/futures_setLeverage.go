@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -14,8 +15,9 @@ type futures_setLeverage struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 	convert futures_converts
 
-	symbol   *string
-	leverage *string
+	symbol     *string
+	leverage   *string
+	marginMode *entity.MarginModeType
 }
 
 func (s *futures_setLeverage) Symbol(symbol string) *futures_setLeverage {
@@ -28,13 +30,19 @@ func (s *futures_setLeverage) Leverage(leverage string) *futures_setLeverage {
 	return s
 }
 
+func (s *futures_setLeverage) MarginMode(marginMode entity.MarginModeType) *futures_setLeverage {
+	s.marginMode = &marginMode
+	return s
+}
+
 func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOption) (res entity.Futures_Leverage, err error) {
 	r := &utils.Request{
 		Method:   http.MethodPost,
 		Endpoint: "/api/v2/changeCrossUserLeverage",
-		SecType:  utils.SecTypeSigned,
+		// Endpoint: "/api/v3/position/update-user-leverage",
+		// Endpoint: "/api/ua/v1/unified/account/modify-leverage",
+		SecType: utils.SecTypeSigned,
 	}
-
 	m := utils.Params{}
 
 	if s.symbol != nil {
@@ -47,12 +55,22 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 		res.Leverage = *s.leverage
 	}
 
+	if s.marginMode != nil {
+		switch *s.marginMode {
+		case entity.MarginModeTypeCross:
+			m["isIsolated"] = "false"
+		case entity.MarginModeTypeIsolated:
+			m["isIsolated"] = "true"
+		}
+	}
+
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
 	if err != nil {
 		return res, err
 	}
+	log.Println("=5c4e98=", string(data))
 	var answ struct {
 		Result bool `json:"data"`
 	}

@@ -39,7 +39,6 @@ func (s *futures_getPositionMode) Do(ctx context.Context, opts ...utils.RequestO
 	if err != nil {
 		return res, err
 	}
-
 	var answ struct {
 		Result futures_positionMode `json:"data"`
 	}

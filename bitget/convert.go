@@ -106,9 +106,9 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 
 	for _, item := range in {
 		executedQty := item.BaseVolume
-		if strings.ToUpper(item.OrderType) == "MARKET" {
-			executedQty = item.QuoteVolume
-		}
+		// if strings.ToUpper(item.OrderType) == "MARKET" {
+		// 	executedQty = item.QuoteVolume
+		// }
 		fee := "0"
 		answ := feeDetailJson{}
 		if item.FeeDetail != "" {

@@ -119,6 +119,11 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	r.TmpApi = c.apiKey
 	r.TmpSig = c.secretKey
 	r.TmpMemo = c.memo
+
+	if r.Endpoint == "/api/v1/user/api-key" || r.Endpoint == "/api/v3/position/update-user-leverage" || r.Endpoint == "/api/ua/v1/unified/account/modify-leverage" {
+		r.BaseURL = "https://api.kucoin.com"
+	}
+
 	opts = append(opts, createFullURL, createBody, createSign, createHeaders, createReq)
 	err = r.ParseRequest(opts...)
 	if err != nil {
