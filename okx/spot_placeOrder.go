@@ -12,8 +12,9 @@ import (
 )
 
 type spot_placeOrder struct {
-	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
-	convert spot_converts
+	callAPI  func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	brokerID string
+	convert  spot_converts
 
 	symbol        *string
 	side          *entity.SideType
@@ -143,6 +144,9 @@ func (s *spot_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (
 	// 	m["attachAlgoOrds"] = string(j)
 	// }
 
+	if s.brokerID != "" {
+		m["tag"] = s.brokerID
+	}
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)

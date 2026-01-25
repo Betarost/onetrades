@@ -12,7 +12,9 @@ import (
 )
 
 type futures_placeOrder struct {
-	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	callAPI  func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
+	brokerID string
+
 	convert futures_converts
 
 	symbol        *string
@@ -132,6 +134,9 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	// 	m["attachAlgoOrds"] = string(j)
 	// }
 
+	if s.brokerID != "" {
+		m["tag"] = s.brokerID
+	}
 	r.SetFormParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)

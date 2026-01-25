@@ -90,7 +90,7 @@ func (c *SpotClient) NewAmendOrder() *spot_amendOrder {
 }
 
 func (c *SpotClient) NewPlaceOrder() *spot_placeOrder {
-	return &spot_placeOrder{callAPI: c.callAPI}
+	return &spot_placeOrder{callAPI: c.callAPI, brokerID: c.BrokerID}
 }
 
 func (c *SpotClient) NewGetBalance() *spot_getBalance {
@@ -196,7 +196,7 @@ func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
 }
 
 func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
-	return &futures_placeOrder{callAPI: c.callAPI}
+	return &futures_placeOrder{callAPI: c.callAPI, brokerID: c.BrokerID}
 }
 
 func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {

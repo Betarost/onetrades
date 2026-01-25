@@ -130,6 +130,7 @@ func TestOnetrades(t *testing.T) {
 	kucoinSpot.Proxy = "http://localhost:1080"
 	kucoinFutures.Proxy = "http://localhost:1080"
 	// binanceFutures.IsCOINM(true)
+
 	// =======================AccountInfo
 	n = "AccountInfo"
 	//SPOT
@@ -160,7 +161,7 @@ func TestOnetrades(t *testing.T) {
 	n = "GetBalance"
 	//SPOT
 	// printAnswers(binanceSpot.NewGetBalance().Do(ctx))
-	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
+	printAnswers(bingxSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
@@ -173,7 +174,7 @@ func TestOnetrades(t *testing.T) {
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
-	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
+	printAnswers(bingxFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
@@ -371,7 +372,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(gateioSpot.NewOrdersHistory().StartTime((time.Now().UnixMilli() - (60 * 60 * 24 * 1000)) / 1000).EndTime(time.Now().UnixMilli() / 1000).Do(ctx))
 	// printAnswers(mexcSpot.NewOrdersHistory().Symbol("DOGEUSDT").Do(ctx))
-	printAnswers(bitgetSpot.NewOrdersHistory().Symbol("XRPUSDT").Do(ctx))
+	// printAnswers(bitgetSpot.NewOrdersHistory().Symbol("XRPUSDT").Do(ctx))
 	// printAnswers(okxSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(kucoinSpot.NewOrdersHistory().StartTime(1761725355000).Do(ctx))
