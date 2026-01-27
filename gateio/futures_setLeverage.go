@@ -92,6 +92,8 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	// }
 	res.Symbol = *s.symbol
 	res.Leverage = *s.leverage
+	res.LongLeverage = *s.leverage
+	res.ShortLeverage = *s.leverage
 	return res, nil
 	// return s.convert.convertLeverage(answ), nil
 }
