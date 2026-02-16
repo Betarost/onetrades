@@ -11,7 +11,6 @@ import (
 	"github.com/Betarost/onetrades/blofin"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
-	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/kucoin"
@@ -163,7 +162,7 @@ func TestOnetrades(t *testing.T) {
 	//SPOT
 	// printAnswers(binanceSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
-	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
+	printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetSpot.NewGetBalance().Do(ctx))
@@ -465,7 +464,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewGetLeverage().Symbol("ANKR-USDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetLeverage().Symbol("BTCUSD").Category("inverse").Do(ctx))
 	// printAnswers(bybitFutures.NewGetLeverage().Symbol("BTCUSDT").Do(ctx))
-	printAnswers(gateioFutures.NewGetLeverage().Symbol("ANKR_USDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
+	// printAnswers(gateioFutures.NewGetLeverage().Symbol("ANKR_USDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 	// printAnswers(bitgetFutures.NewGetLeverage().Symbol("ATOMUSDT").Do(ctx))
 	// printAnswers(okxFutures.NewGetLeverage().Symbol("BTC-USDT-SWAP").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(kucoinFutures.NewGetLeverage().Symbol("DOGEUSDTM").Do(ctx))
