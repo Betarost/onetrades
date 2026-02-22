@@ -23,6 +23,13 @@ type futures_placeOrder struct {
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
 	hedgeMode     *bool
+
+	reduce *bool
+}
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
 }
 
 func (s *futures_placeOrder) Symbol(symbol string) *futures_placeOrder {
@@ -126,6 +133,10 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		}
 	} else {
 		m["positionIdx"] = 0
+	}
+
+	if s.reduce != nil && *s.reduce == true {
+		m["reduceOnly"] = true
 	}
 
 	r.SetFormParams(m)

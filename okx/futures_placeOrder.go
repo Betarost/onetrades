@@ -27,6 +27,13 @@ type futures_placeOrder struct {
 	marginMode    *entity.MarginModeType
 	// tpPrice       *string
 	// slPrice       *string
+
+	reduce *bool
+}
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
 }
 
 func (s *futures_placeOrder) MarginMode(marginMode entity.MarginModeType) *futures_placeOrder {
@@ -113,6 +120,10 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	if s.positionSide != nil {
 		m["posSide"] = strings.ToLower(string(*s.positionSide))
+	}
+
+	if s.reduce != nil && *s.reduce == true {
+		m["reduceOnly"] = true
 	}
 
 	// if s.tpPrice != nil || s.slPrice != nil {

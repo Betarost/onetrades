@@ -28,6 +28,13 @@ type futures_placeOrder struct {
 	tpOrderPx     *string
 	slTriggerPx   *string
 	slOrderPx     *string
+
+	reduce *bool
+}
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
 }
 
 func (s *futures_placeOrder) MarginMode(marginMode entity.MarginModeType) *futures_placeOrder {

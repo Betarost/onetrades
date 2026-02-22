@@ -23,10 +23,15 @@ type futures_placeOrder struct {
 	orderType     *entity.OrderType
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
-	// при необходимости можно будет добавить stopLoss / takeProfit под OTO
+	reduce        *bool
 }
 
 // ========= сеттеры =========
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
+}
 
 func (s *futures_placeOrder) Symbol(symbol string) *futures_placeOrder {
 	s.symbol = &symbol

@@ -26,6 +26,13 @@ type futures_placeOrder struct {
 	hedgeMode     *bool
 	tpPrice       *string
 	slPrice       *string
+
+	reduce *bool
+}
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
 }
 
 func (s *futures_placeOrder) MarginMode(marginMode entity.MarginModeType) *futures_placeOrder {
@@ -109,6 +116,10 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		if *s.orderType == entity.OrderTypeStop || *s.orderType == entity.OrderTypeTakeProfit {
 			m["stopPrice"] = *s.price
 		}
+	}
+
+	if s.reduce != nil && *s.reduce == true {
+		m["reduceOnly"] = "true"
 	}
 
 	if s.size != nil {

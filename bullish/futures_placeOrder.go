@@ -22,6 +22,13 @@ type futures_placeOrder struct {
 	clientOrderID *string
 
 	uid *string
+
+	reduce *bool
+}
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
 }
 
 func (s *futures_placeOrder) UID(uid string) *futures_placeOrder {

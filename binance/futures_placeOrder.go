@@ -23,8 +23,16 @@ type futures_placeOrder struct {
 	clientOrderID *string
 	positionSide  *entity.PositionSideType
 	marginMode    *entity.MarginModeType
+
+	reduce *bool
+
 	// tpPrice       *string
 	// slPrice       *string
+}
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
 }
 
 func (s *futures_placeOrder) MarginMode(marginMode entity.MarginModeType) *futures_placeOrder {
@@ -92,6 +100,10 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		m["positionSide"] = strings.ToUpper(string(*s.positionSide))
 	} else {
 		m["positionSide"] = "BOTH"
+	}
+
+	if s.reduce != nil && *s.reduce == true {
+		m["reduceOnly"] = "true"
 	}
 
 	if s.orderType != nil {

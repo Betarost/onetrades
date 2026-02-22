@@ -22,8 +22,6 @@ type spot_placeOrder struct {
 	clientOrderID *string
 }
 
-// ====== билдэры ======
-
 func (s *spot_placeOrder) Symbol(symbol string) *spot_placeOrder {
 	s.symbol = &symbol
 	return s

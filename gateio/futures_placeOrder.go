@@ -25,6 +25,12 @@ type futures_placeOrder struct {
 	tradeMode     *entity.MarginModeType
 	hedgeMode     *bool
 	settle        *string
+	reduce        *bool
+}
+
+func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
+	s.reduce = &reduce
+	return s
 }
 
 func (s *futures_placeOrder) TradeMode(tradeMode entity.MarginModeType) *futures_placeOrder {
@@ -124,6 +130,11 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 			m["reduce_only"] = true
 		}
 	}
+
+	if s.reduce != nil && *s.reduce == true {
+		m["reduce_only"] = true
+	}
+
 	// if s.tradeMode != nil {
 	// 	if *s.tradeMode == entity.MarginModeTypeCross {
 	// 		m["tdMode"] = "cross"
