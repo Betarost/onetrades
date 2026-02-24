@@ -3,6 +3,7 @@ package binance
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 
@@ -24,14 +25,23 @@ type futures_placeOrder struct {
 	positionSide  *entity.PositionSideType
 	marginMode    *entity.MarginModeType
 
-	reduce *bool
-
-	// tpPrice       *string
-	// slPrice       *string
+	reduce  *bool
+	tpOrder *bool
+	slOrder *bool
 }
 
 func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
 	s.reduce = &reduce
+	return s
+}
+
+func (s *futures_placeOrder) TpOrder(v bool) *futures_placeOrder {
+	s.tpOrder = &v
+	return s
+}
+
+func (s *futures_placeOrder) SlOrder(v bool) *futures_placeOrder {
+	s.slOrder = &v
 	return s
 }
 
@@ -88,6 +98,71 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	m := utils.Params{}
 
+	// --- TP / SL separate order for existing futures position ---
+	isTP := s.tpOrder != nil && *s.tpOrder
+	isSL := s.slOrder != nil && *s.slOrder
+
+	// минимальная валидация: нельзя одновременно TP и SL
+	if isTP && isSL {
+		return res, errors.New("binance futures_placeOrder: TpOrder and SlOrder cannot both be true")
+	}
+
+	if isTP || isSL {
+
+		if s.symbol != nil {
+			m["symbol"] = *s.symbol
+		}
+
+		if s.side != nil {
+			m["side"] = strings.ToUpper(string(*s.side))
+		}
+
+		if s.positionSide != nil {
+			m["positionSide"] = strings.ToUpper(string(*s.positionSide))
+		} else {
+			m["positionSide"] = "BOTH"
+		}
+
+		// Binance требует stopPrice для STOP_MARKET / TAKE_PROFIT_MARKET
+		if s.price != nil {
+			m["stopPrice"] = *s.price
+		}
+
+		if isTP {
+			m["type"] = "TAKE_PROFIT_MARKET"
+		} else {
+			m["type"] = "STOP_MARKET"
+		}
+
+		// если size указан — частичное закрытие
+		if s.size != nil {
+			m["quantity"] = *s.size
+			m["reduceOnly"] = "true"
+		} else {
+			// если size нет — закрыть всю позицию
+			m["closePosition"] = "true"
+		}
+
+		if s.clientOrderID != nil {
+			m["newClientOrderId"] = *s.clientOrderID
+		}
+
+		r.SetFormParams(m)
+
+		data, _, err := s.callAPI(ctx, r, opts...)
+		if err != nil {
+			return res, err
+		}
+
+		answ := futures_placeOrder_Response{}
+		if err := json.Unmarshal(data, &answ); err != nil {
+			return res, err
+		}
+
+		return s.convert.convertPlaceOrder(answ), nil
+	}
+
+	// --- end TP / SL branch ---
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}

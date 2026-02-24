@@ -29,11 +29,23 @@ type futures_placeOrder struct {
 	slTriggerPx   *string
 	slOrderPx     *string
 
-	reduce *bool
+	reduce  *bool
+	tpOrder *bool
+	slOrder *bool
 }
 
 func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
 	s.reduce = &reduce
+	return s
+}
+
+func (s *futures_placeOrder) TpOrder(v bool) *futures_placeOrder {
+	s.tpOrder = &v
+	return s
+}
+
+func (s *futures_placeOrder) SlOrder(v bool) *futures_placeOrder {
+	s.slOrder = &v
 	return s
 }
 
@@ -103,7 +115,156 @@ func (s *futures_placeOrder) SlOrderPrice(px string) *futures_placeOrder {
 }
 
 func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
-	// --- базовые проверки обязательных полей ---
+	isTP := s.tpOrder != nil && *s.tpOrder
+	isSL := s.slOrder != nil && *s.slOrder
+
+	// минимальная валидация: нельзя одновременно TP и SL
+	if isTP && isSL {
+		return res, errors.New("blofin futures_placeOrder: TpOrder and SlOrder cannot both be true")
+	}
+
+	// --- TP/SL отдельным запросом (на существующую позицию) ---
+	if isTP || isSL {
+		r := &utils.Request{
+			Method:   http.MethodPost,
+			Endpoint: "/api/v1/trade/order-tpsl",
+			SecType:  utils.SecTypeSigned,
+		}
+
+		m := utils.Params{}
+
+		// instId
+		if s.symbol != nil {
+			m["instId"] = *s.symbol
+		}
+
+		// marginMode: cross / isolated
+		if s.marginMode != nil {
+			switch *s.marginMode {
+			case entity.MarginModeTypeCross:
+				m["marginMode"] = "cross"
+			case entity.MarginModeTypeIsolated:
+				m["marginMode"] = "isolated"
+			default:
+				// без дополнительной валидации: пусть биржа вернет ошибку
+				m["marginMode"] = strings.ToLower(string(*s.marginMode))
+			}
+		}
+
+		// positionSide: net / long / short (как у вас в обычном ордере)
+		if s.positionSide != nil {
+			ps := strings.ToLower(string(*s.positionSide))
+			if ps == "both" || ps == "one_way" {
+				ps = "net"
+			}
+			m["positionSide"] = ps
+		}
+
+		// side: buy / sell
+		if s.side != nil {
+			m["side"] = strings.ToLower(string(*s.side))
+		}
+
+		// size: если не задан — ставим "-1" (entire positions по доке)
+		if s.size != nil && *s.size != "" {
+			m["size"] = *s.size
+		} else {
+			m["size"] = "-1"
+		}
+
+		// reduceOnly: для TP/SL обычно true; если явно задано — используем
+		if s.reduceOnly != nil {
+			if *s.reduceOnly {
+				m["reduceOnly"] = "true"
+			} else {
+				m["reduceOnly"] = "false"
+			}
+		} else if s.reduce != nil && *s.reduce {
+			m["reduceOnly"] = "true"
+		} else {
+			m["reduceOnly"] = "true"
+		}
+
+		// clientOrderId
+		if s.clientOrderID != nil {
+			m["clientOrderId"] = *s.clientOrderID
+		}
+
+		// trigger + order price
+		// В нашем унифицированном варианте: s.price = trigger.
+		// orderPrice по умолчанию "-1" (market) — в доке для tp/sl order price это допустимо. :contentReference[oaicite:1]{index=1}
+		if s.price != nil {
+			if isTP {
+				m["tpTriggerPrice"] = *s.price
+				if s.tpOrderPx != nil && *s.tpOrderPx != "" {
+					m["tpOrderPrice"] = *s.tpOrderPx
+				} else {
+					m["tpOrderPrice"] = "-1"
+				}
+			} else {
+				m["slTriggerPrice"] = *s.price
+				if s.slOrderPx != nil && *s.slOrderPx != "" {
+					m["slOrderPrice"] = *s.slOrderPx
+				} else {
+					m["slOrderPrice"] = "-1"
+				}
+			}
+		}
+
+		r.SetFormParams(m)
+
+		data, _, err := s.callAPI(ctx, r, opts...)
+		if err != nil {
+			return res, err
+		}
+
+		var answ struct {
+			Code string `json:"code"`
+			Msg  string `json:"msg"`
+			Data struct {
+				TpslId        string `json:"tpslId"`
+				ClientOrderId any    `json:"clientOrderId"`
+				Code          string `json:"code"`
+				Msg           any    `json:"msg"`
+			} `json:"data"`
+		}
+
+		if err = json.Unmarshal(data, &answ); err != nil {
+			return res, err
+		}
+
+		// оставляем вашу текущую философию: если API вернул code!=0 в теле — превращаем в error
+		if answ.Code != "0" {
+			if answ.Msg != "" {
+				return res, errors.New(answ.Msg)
+			}
+			return res, errors.New("place tpsl failed with code " + answ.Code)
+		}
+		if answ.Data.Code != "" && answ.Data.Code != "0" {
+			// msg может быть null/any
+			if s, ok := answ.Data.Msg.(string); ok && s != "" {
+				return res, errors.New(s)
+			}
+			return res, errors.New("place tpsl failed with code " + answ.Data.Code)
+		}
+
+		// адаптируем под существующий convert.convertPlaceOrder([]placeOrder_Response)
+		out := []placeOrder_Response{
+			{
+				OrderId:       answ.Data.TpslId,
+				ClientOrderId: "",
+				Code:          "0",
+				Msg:           "",
+			},
+		}
+		// clientOrderId может быть null/string
+		if s, ok := answ.Data.ClientOrderId.(string); ok {
+			out[0].ClientOrderId = s
+		}
+
+		return s.convert.convertPlaceOrder(out), nil
+	}
+
 	if s.symbol == nil || *s.symbol == "" {
 		return res, errors.New("symbol (instId) is required")
 	}

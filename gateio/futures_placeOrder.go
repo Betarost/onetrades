@@ -3,6 +3,7 @@ package gateio
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -26,10 +27,22 @@ type futures_placeOrder struct {
 	hedgeMode     *bool
 	settle        *string
 	reduce        *bool
+	tpOrder       *bool
+	slOrder       *bool
 }
 
 func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
 	s.reduce = &reduce
+	return s
+}
+
+func (s *futures_placeOrder) TpOrder(v bool) *futures_placeOrder {
+	s.tpOrder = &v
+	return s
+}
+
+func (s *futures_placeOrder) SlOrder(v bool) *futures_placeOrder {
+	s.slOrder = &v
 	return s
 }
 
@@ -92,6 +105,127 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	r.Endpoint = strings.Replace(r.Endpoint, "{settle}", *s.settle, 1)
 
+	isTP := s.tpOrder != nil && *s.tpOrder
+	isSL := s.slOrder != nil && *s.slOrder
+
+	// минимальная валидация: нельзя одновременно TP и SL
+	if isTP && isSL {
+		return res, errors.New("gateio futures_placeOrder: TpOrder and SlOrder cannot both be true")
+	}
+
+	if isTP || isSL {
+		// price-triggered order endpoint
+		r.Endpoint = "/api/v4/futures/{settle}/price_orders"
+		r.Endpoint = strings.Replace(r.Endpoint, "{settle}", *s.settle, 1)
+
+		// -------- initial (что выставим, когда триггер сработает) --------
+		initial := utils.Params{}
+
+		if s.symbol != nil {
+			initial["contract"] = *s.symbol
+		}
+
+		// market close by default
+		initial["price"] = "0"
+		initial["tif"] = "ioc"
+
+		// close/reduce flags (пусть биржа валидирует если что)
+		initial["close"] = true
+		initial["reduce_only"] = true
+
+		// text (clientOrderID)
+		if s.clientOrderID != nil {
+			initial["text"] = *s.clientOrderID
+		} else {
+			// если не задан — можно не ставить вовсе, но оставим "api"
+			initial["text"] = "api"
+		}
+
+		// size:
+		// - если size не задан => size=0 (закрыть позицию целиком по доке)
+		// - если size задан => используем его, а знак определяем по side (если он задан)
+		if s.size != nil && *s.size != "" {
+			if s.side != nil && *s.side == entity.SideTypeSell {
+				initial["size"] = fmt.Sprintf("-%s", *s.size)
+			} else if s.side != nil && *s.side == entity.SideTypeBuy {
+				initial["size"] = *s.size
+			} else {
+				// side не задан — отправим как есть, биржа сама скажет
+				initial["size"] = *s.size
+			}
+		} else {
+			initial["size"] = 0
+		}
+
+		// -------- trigger (когда сработает) --------
+		trigger := utils.Params{
+			"strategy_type": 0,
+			"price_type":    0,     // last price
+			"expiration":    86400, // 24h
+		}
+
+		if s.price != nil {
+			trigger["price"] = *s.price
+		}
+
+		// rule (если side известен — подставим разумно; иначе пусть биржа валидирует)
+		// rule: 1 => >= price, 2 => <= price
+		if s.side != nil {
+			// трактуем side как "закрывающий" (как у Binance/Bybit в вашей логике)
+			// SELL обычно закрывает LONG, BUY закрывает SHORT
+			if *s.side == entity.SideTypeSell {
+				// LONG close
+				if isTP {
+					trigger["rule"] = 1 // >= trigger
+				} else {
+					trigger["rule"] = 2 // <= trigger
+				}
+			} else if *s.side == entity.SideTypeBuy {
+				// SHORT close
+				if isTP {
+					trigger["rule"] = 2 // <= trigger
+				} else {
+					trigger["rule"] = 1 // >= trigger
+				}
+			}
+		}
+
+		body := utils.Params{
+			"initial": initial,
+			"trigger": trigger,
+		}
+
+		r.SetFormParams(body)
+
+		data, _, err := s.callAPI(ctx, r, opts...)
+		if err != nil {
+			return res, err
+		}
+
+		// ответ: { "id": 1432329 }
+		var answ struct {
+			ID int64 `json:"id"`
+		}
+		if err := json.Unmarshal(data, &answ); err != nil {
+			return res, err
+		}
+
+		// адаптируем под текущий ответ create order
+		out := futures_placeOrder_Response{
+			Contract:    "",
+			ID:          answ.ID,
+			Text:        "",
+			Create_time: 0,
+		}
+		if s.symbol != nil {
+			out.Contract = *s.symbol
+		}
+		if s.clientOrderID != nil {
+			out.Text = *s.clientOrderID
+		}
+
+		return s.convert.convertPlaceOrder(out), nil
+	}
 	m := utils.Params{}
 
 	if s.price != nil {

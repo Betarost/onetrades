@@ -3,6 +3,7 @@ package bybit
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 
@@ -24,11 +25,23 @@ type futures_placeOrder struct {
 	positionSide  *entity.PositionSideType
 	hedgeMode     *bool
 
-	reduce *bool
+	reduce  *bool
+	tpOrder *bool
+	slOrder *bool
 }
 
 func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
 	s.reduce = &reduce
+	return s
+}
+
+func (s *futures_placeOrder) TpOrder(v bool) *futures_placeOrder {
+	s.tpOrder = &v
+	return s
+}
+
+func (s *futures_placeOrder) SlOrder(v bool) *futures_placeOrder {
+	s.slOrder = &v
 	return s
 }
 
@@ -87,6 +100,86 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	m := utils.Params{
 		"category": "linear",
 	}
+
+	// --- TP / SL separate call for existing position (Bybit V5) ---
+	isTP := s.tpOrder != nil && *s.tpOrder
+	isSL := s.slOrder != nil && *s.slOrder
+
+	// минимальная валидация
+	if isTP && isSL {
+		return res, errors.New("bybit futures_placeOrder: TpOrder and SlOrder cannot both be true")
+	}
+
+	if isTP || isSL {
+		// переключаемся на endpoint модификации TP/SL позиции
+		r.Endpoint = "/v5/position/trading-stop"
+
+		// category
+		if s.category != nil {
+			m["category"] = *s.category
+		}
+
+		// symbol
+		if s.symbol != nil {
+			m["symbol"] = *s.symbol
+		}
+
+		// positionIdx как и в обычном ордере
+		if s.hedgeMode != nil && *s.hedgeMode {
+			if s.positionSide != nil {
+				switch *s.positionSide {
+				case entity.PositionSideTypeLong:
+					m["positionIdx"] = 1
+				case entity.PositionSideTypeShort:
+					m["positionIdx"] = 2
+				}
+			}
+		} else {
+			m["positionIdx"] = 0
+		}
+
+		// price в нашем унифицированном варианте трактуем как TP/SL price
+		if s.price != nil {
+			if isTP {
+				m["takeProfit"] = *s.price
+			} else {
+				m["stopLoss"] = *s.price
+			}
+		}
+
+		// частичный TP/SL: если size задан — пробуем передать tpSize/slSize
+		if s.size != nil {
+			if isTP {
+				m["tpSize"] = *s.size
+			} else {
+				m["slSize"] = *s.size
+			}
+		}
+
+		r.SetFormParams(m)
+
+		data, _, err := s.callAPI(ctx, r, opts...)
+		if err != nil {
+			return res, err
+		}
+
+		// Ответ у trading-stop обычно с retCode/retMsg и пустым/неважным result :contentReference[oaicite:1]{index=1}
+		var answ struct {
+			Result any `json:"result"`
+		}
+		_ = json.Unmarshal(data, &answ) // ошибку игнорим: если сломается — вернётся уже наверху через err от callAPI
+
+		// адаптируем под текущий конвертер: orderId не будет, поэтому пусто
+		tmp := futures_placeOrder_Response{
+			OrderId:     "",
+			OrderLinkId: "",
+		}
+		if s.clientOrderID != nil {
+			tmp.OrderLinkId = *s.clientOrderID
+		}
+		return s.convert.convertPlaceOrder(tmp), nil
+	}
+	// --- end TP / SL branch ---
 
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol

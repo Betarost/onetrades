@@ -3,6 +3,7 @@ package bingx
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strings"
 
@@ -24,10 +25,10 @@ type futures_placeOrder struct {
 	positionSide  *entity.PositionSideType
 	marginMode    *entity.MarginModeType
 	hedgeMode     *bool
-	tpPrice       *string
-	slPrice       *string
 
-	reduce *bool
+	reduce  *bool
+	tpOrder *bool
+	slOrder *bool
 }
 
 func (s *futures_placeOrder) Reduce(reduce bool) *futures_placeOrder {
@@ -45,16 +46,15 @@ func (s *futures_placeOrder) HedgeMode(hedgeMode bool) *futures_placeOrder {
 	return s
 }
 
-func (s *futures_placeOrder) SlPrice(slPrice string) *futures_placeOrder {
-	s.slPrice = &slPrice
+func (s *futures_placeOrder) TpOrder(v bool) *futures_placeOrder {
+	s.tpOrder = &v
 	return s
 }
 
-func (s *futures_placeOrder) TpPrice(tpPrice string) *futures_placeOrder {
-	s.tpPrice = &tpPrice
+func (s *futures_placeOrder) SlOrder(v bool) *futures_placeOrder {
+	s.slOrder = &v
 	return s
 }
-
 func (s *futures_placeOrder) Symbol(symbol string) *futures_placeOrder {
 	s.symbol = &symbol
 	return s
@@ -99,6 +99,86 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 
 	m := utils.Params{"positionSide": strings.ToUpper(string(entity.PositionSideTypeBoth))}
 
+	// --- TP / SL separate order for existing futures position (BingX) ---
+	isTP := s.tpOrder != nil && *s.tpOrder
+	isSL := s.slOrder != nil && *s.slOrder
+
+	// минимальная валидация: нельзя одновременно TP и SL
+	if isTP && isSL {
+		return res, errors.New("bingx futures_placeOrder: TpOrder and SlOrder cannot both be true")
+	}
+
+	if isTP || isSL {
+
+		// symbol
+		if s.symbol != nil {
+			m["symbol"] = *s.symbol
+		}
+
+		// side (для закрытия: LONG->SELL, SHORT->BUY)
+		if s.side != nil {
+			m["side"] = strings.ToUpper(string(*s.side))
+		}
+
+		// positionSide: BOTH/LONG/SHORT (в hedge режиме важен)
+		if s.hedgeMode != nil && *s.hedgeMode {
+			if s.positionSide != nil {
+				m["positionSide"] = strings.ToUpper(string(*s.positionSide))
+			}
+		}
+
+		// trigger price
+		if s.price != nil {
+			// у BingX для STOP_MARKET/TAKE_PROFIT_MARKET используется stopPrice
+			m["stopPrice"] = *s.price
+		}
+
+		// type
+		if isTP {
+			m["type"] = "TAKE_PROFIT_MARKET"
+		} else {
+			m["type"] = "STOP_MARKET"
+		}
+
+		// если size указан — частичное закрытие позиции
+		if s.size != nil {
+			m["quantity"] = *s.size
+			m["reduceOnly"] = "true"
+		} else {
+			// если size нет — закрыть всю позицию (BingX поддерживает closePosition)
+			m["closePosition"] = "true"
+		}
+
+		// reduceOnly если явно задан (пусть переопределяет/дублирует — биржа разрулит)
+		if s.reduce != nil && *s.reduce == true {
+			m["reduceOnly"] = "true"
+		}
+
+		// clientOrderID
+		if s.clientOrderID != nil {
+			m["clientOrderId"] = *s.clientOrderID
+		}
+
+		r.SetParams(m)
+
+		data, _, err := s.callAPI(ctx, r, opts...)
+		if err != nil {
+			return res, err
+		}
+
+		var answ struct {
+			Result futures_placeOrder_Response_Extra `json:"data"`
+		}
+
+		err = json.Unmarshal(data, &answ)
+		if err != nil {
+			return res, err
+		}
+
+		return s.convert.convertPlaceOrder_extra(answ.Result), nil
+	}
+
+	// --- end TP / SL branch ---
 	if s.symbol != nil {
 		m["symbol"] = *s.symbol
 	}
