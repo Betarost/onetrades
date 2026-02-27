@@ -327,6 +327,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioFutures.NewCancelOrder().OrderID("56013522187409589").Do(ctx))
 	// printAnswers(bitgetFutures.NewCancelOrder().Symbol("DOGEUSDT").OrderID("1326805187463618574").Do(ctx))
 	// printAnswers(okxFutures.NewCancelOrder().Symbol("DOGE-USDT-SWAP").OrderID("2672372971099906048").Do(ctx))
+	printAnswers(okxFutures.NewCancelOrder().Symbol("XRP-USDT-SWAP").OrderID("3345313022222200832").IsTpSl(true).Do(ctx))
 	// printAnswers(bullishFutures.NewCancelOrder().UID("111872616831896").Symbol("BTC-USDC-PERP").OrderID("870221330058314753").Do(ctx))
 	// printAnswers(kucoinFutures.NewCancelOrder().OrderID("358517542999838720").Do(ctx))
 	// printAnswers(blofinFutures.NewCancelOrder().OrderID("5000054382203").Do(ctx))

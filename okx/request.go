@@ -190,6 +190,12 @@ func createBody(r *utils.Request) error {
 				bodyString = strings.Replace(bodyString, "]\"", "]", -1)
 				bodyString = strings.Replace(bodyString, `\"`, `"`, -1)
 			}
+
+			if r.Form.Get("cancel-algos") != "" {
+				bodyString = strings.Replace(r.Form.Get("cancel-algos"), "\"[", "[", -1)
+				bodyString = strings.Replace(bodyString, "]\"", "]", -1)
+				bodyString = strings.Replace(bodyString, `\"`, `"`, -1)
+			}
 		}
 	}
 
