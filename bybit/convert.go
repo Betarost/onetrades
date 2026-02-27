@@ -302,6 +302,15 @@ func (c *futures_converts) convertOrderList(in []futures_orderList) (out []entit
 		if price == "" || price == "0" {
 			price = item.TriggerPrice
 		}
+
+		istp := false
+		issl := false
+		if item.StopOrderType != "" && strings.ToLower(item.StopOrderType) == "stoploss" {
+			issl = true
+		}
+		if item.StopOrderType != "" && strings.ToLower(item.StopOrderType) == "takeprofit" {
+			istp = true
+		}
 		out = append(out, entity.Futures_OrdersList{
 			Symbol:        item.Symbol,
 			OrderID:       item.OrderId,
@@ -315,6 +324,8 @@ func (c *futures_converts) convertOrderList(in []futures_orderList) (out []entit
 			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),
 			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
+			TpOrder:       istp,
+			SlOrder:       issl,
 		})
 	}
 	return out

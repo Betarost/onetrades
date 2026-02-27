@@ -62,6 +62,9 @@ func TestOnetrades(t *testing.T) {
 	blofinMemo := viper.GetString("BLOFIN_MEMO")
 	whitebitKey := viper.GetString("WHITEBIT_API")
 	whitebitSecret := viper.GetString("WHITEBIT_SECRET")
+
+	// hyperliquidKey := viper.GetString("HYPERLIQUID_API")
+	// hyperliquidSecret := viper.GetString("HYPERLIQUID_SECRET")
 	//==========================CLIENTS==========================
 
 	binanceSpot := binance.NewSpotClient(binanceKey, binanceSecret)
@@ -91,6 +94,8 @@ func TestOnetrades(t *testing.T) {
 	blofinFutures := blofin.NewFuturesClient(blofinKey, blofinSecret, blofinMemo)
 	whitebitSpot := whitebit.NewSpotClient(whitebitKey, whitebitSecret)
 	whitebitFutures := whitebit.NewFuturesClient(whitebitKey, whitebitSecret)
+	// hyperliquidSpot := hyperliquid.NewSpotClient(hyperliquidKey, hyperliquidSecret)
+	// hyperliquidFutures := hyperliquid.NewFuturesClient(hyperliquidKey, hyperliquidSecret)
 
 	binanceSpot.Debug = false
 	binanceFutures.Debug = false
@@ -113,6 +118,8 @@ func TestOnetrades(t *testing.T) {
 	blofinFutures.Debug = false
 	whitebitSpot.Debug = false
 	whitebitFutures.Debug = false
+	// hyperliquidSpot.Debug = true
+	// hyperliquidFutures.Debug = true
 	bullishFutures.Proxy = "http://localhost:1080"
 	bitgetFutures.Proxy = "http://localhost:1080"
 	okxSpot.Proxy = "http://localhost:1080"
@@ -144,6 +151,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(kucoinSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(whitebitSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(hyperliquidSpot.NewGetAccountInfo().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
@@ -162,7 +170,7 @@ func TestOnetrades(t *testing.T) {
 	//SPOT
 	// printAnswers(binanceSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
-	printAnswers(bybitSpot.NewGetBalance().Do(ctx))
+	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetSpot.NewGetBalance().Do(ctx))
@@ -171,6 +179,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetBalance().UID("69069265").Do(ctx))
 	// printAnswers(kucoinSpot.NewGetBalance().Do(ctx))
 	// printAnswers(whitebitSpot.NewGetBalance().Do(ctx))
+	// printAnswers(hyperliquidSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
@@ -199,6 +208,7 @@ func TestOnetrades(t *testing.T) {
 	// huobiSpot.NewGetInstrumentsInfo().Do(ctx)
 	// printAnswers(kucoinSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(whitebitSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
+	// printAnswers(hyperliquidSpot.NewGetInstrumentsInfo().Symbol("USOL").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -237,6 +247,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("56").Price("0.20899").UID("69069265").Do(ctx))
 	// printAnswers(kucoinSpot.NewPlaceOrder().Symbol("BTC-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Price("116910.5").Size("0.00001").ClientOrderID("3").Do(ctx))
 	// printAnswers(whitebitSpot.NewPlaceOrder().Symbol("BTC_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.00006").Price("92100.5").Do(ctx))
+	// printAnswers(hyperliquidSpot.NewPlaceOrder().Symbol("10156").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("0.2").Do(ctx))
 
 	//FUTURES
 	//TEST MARKET
@@ -357,7 +368,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(bingxFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(bybitFutures.NewGetOrderList().Category("inverse").Do(ctx))
-	// printAnswers(bybitFutures.NewGetOrderList().Do(ctx))
+	printAnswers(bybitFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetOrderList().Do(ctx))

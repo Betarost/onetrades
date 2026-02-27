@@ -141,4 +141,6 @@ type Futures_OrdersList struct {
 	CreateTime    int64  `json:"createTime" bson:"createTime"`
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 	MarginMode    string `json:"marginMode" bson:"marginMode"`
+	TpOrder       bool   `json:"tpOrder" bson:"tpOrder"`
+	SlOrder       bool   `json:"slOrder" bson:"slOrder"`
 }

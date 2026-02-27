@@ -17,6 +17,7 @@ type Spot_InstrumentsInfo struct {
 	PricePrecision string `json:"pricePrecision" bson:"pricePrecision"`
 	SizePrecision  string `json:"sizePrecision" bson:"sizePrecision"`
 	State          string `json:"state" bson:"state"`
+	TokenId        string `json:"tokenId,omitempty" bson:"tokenId,omitempty"`
 }
 
 type PlaceOrder struct {
