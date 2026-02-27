@@ -437,3 +437,70 @@ func convertPlaceOrder(in []placeOrder_Response) (out []entity.PlaceOrder) {
 	}
 	return out
 }
+
+func (c *futures_converts) convertAlgoOrderList(in []futures_algoOrder) (out []entity.Futures_OrdersList) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, it := range in {
+		// В algo-ордерах нет обычного ordId; там algoId.
+		// Приводим в единый формат: OrderID = algoId, ClientOrderID = algoClOrdId
+		price := ""
+		// Для conditional TP/SL мы хотим показывать trigger price.
+		if it.TpTriggerPx != "" && it.TpTriggerPx != "0" && it.TpTriggerPx != "0.0" {
+			price = it.TpTriggerPx
+		} else if it.SlTriggerPx != "" && it.SlTriggerPx != "0" && it.SlTriggerPx != "0.0" {
+			price = it.SlTriggerPx
+		} else if it.TriggerPx != "" {
+			price = it.TriggerPx
+		}
+
+		// Type: оставляем CONDITIONAL, чтобы отличалось от обычного LIMIT/MARKET
+		// (если хочешь, можем писать TP/SL по наличию tpTriggerPx/slTriggerPx)
+		istp := false
+		issl := false
+
+		typ := "CONDITIONAL"
+		if it.TpTriggerPx != "" && it.TpTriggerPx != "0" && it.TpTriggerPx != "0.0" {
+			typ = "TP"
+			istp = true
+		} else if it.SlTriggerPx != "" && it.SlTriggerPx != "0" && it.SlTriggerPx != "0.0" {
+			typ = "SL"
+			issl = true
+		}
+
+		out = append(out, entity.Futures_OrdersList{
+			Symbol:        it.InstId,
+			OrderID:       it.AlgoId,
+			ClientOrderID: it.AlgoClOrdId,
+			PositionSide:  strings.ToUpper(it.PosSide),
+			Side:          strings.ToUpper(it.Side),
+			PositionSize:  it.Sz,
+			ExecutedSize:  "0", // pending algo обычно без fillSz (либо он не нужен)
+			Price:         price,
+			Type:          typ,
+			Status:        strings.ToUpper(it.State),
+			CreateTime:    strToInt64Safe(it.CTime),
+			UpdateTime:    strToInt64Safe(it.UTime),
+			TpOrder:       istp,
+			SlOrder:       issl,
+		})
+	}
+
+	return out
+}
+
+// локальный помощник (как минимум чтобы не падать)
+// если у тебя уже есть такой в utils — можно заменить на utils.StringToInt64
+func strToInt64Safe(s string) int64 {
+	// OKX обычно отдаёт ms timestamp строкой
+	var n int64
+	for _, ch := range s {
+		if ch < '0' || ch > '9' {
+			return 0
+		}
+		n = n*10 + int64(ch-'0')
+	}
+	return n
+}
