@@ -17,7 +17,6 @@ type futures_cancelOrder struct {
 	symbol  *string
 	orderID *string
 
-	// если true — это TP/SL (algo) ордер, отменяем через cancel-algos
 	isTpSl *bool
 }
 

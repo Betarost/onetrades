@@ -336,6 +336,79 @@ func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.
 	return out
 }
 
+func (c *futures_converts) convertPlanOrderList(in futures_planOrderList) (out []entity.Futures_OrdersList) {
+	if len(in.Orders) == 0 {
+		return out
+	}
+
+	for _, item := range in.Orders {
+		side := strings.ToUpper(item.Side)
+		positionSide := "LONG"
+
+		// Логика close/open похожа на вашу для обычных ордеров
+		if strings.ToUpper(item.PosSide) == "LONG" && strings.ToUpper(item.TradeSide) == "CLOSE" {
+			side = "SELL"
+		} else if strings.ToUpper(item.PosSide) == "SHORT" && strings.ToUpper(item.TradeSide) == "CLOSE" {
+			side = "BUY"
+		}
+
+		if item.PosSide == "net" {
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
+		} else if item.PosSide != "" {
+			positionSide = strings.ToUpper(item.PosSide)
+		}
+
+		// Для TP/SL разумнее показать triggerPrice как Price (в едином интерфейсе “цена”)
+		price := item.TriggerPrice
+		if price == "" {
+			// fallback
+			price = item.ExecutePrice
+		}
+
+		ordType := strings.ToUpper(item.OrderType)
+		if ordType == "" {
+			// чтобы хотя бы что-то было
+			ordType = "TRIGGER"
+		}
+
+		status := strings.ToUpper(item.Status)
+		if status == "" {
+			status = "LIVE"
+		}
+
+		istp := false
+		issl := false
+
+		if strings.ToLower(item.PlanType) == "loss_plan" {
+			issl = true
+		}
+
+		if strings.ToLower(item.PlanType) == "profit_plan" {
+			istp = true
+		}
+
+		out = append(out, entity.Futures_OrdersList{
+			Symbol:        item.Symbol,
+			OrderID:       item.OrderId,
+			ClientOrderID: item.ClientOid,
+			Side:          side,
+			PositionSide:  positionSide,
+			Type:          ordType,
+			PositionSize:  item.Size,
+			Price:         price,
+			Status:        status,
+			CreateTime:    utils.StringToInt64(item.CTime),
+			UpdateTime:    utils.StringToInt64(item.UTime),
+			TpOrder:       istp,
+			SlOrder:       issl,
+		})
+	}
+
+	return out
+}
+
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
 
