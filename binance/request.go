@@ -34,6 +34,9 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 		r.Proxy = c.Proxy
 	}
 	r.BaseURL = c.BaseURL
+	if c.GateWay != "" {
+		r.BaseURL = c.GateWay
+	}
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
 	r.TmpSig = c.secretKey
@@ -98,8 +101,10 @@ func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...u
 	if c.Proxy != "" {
 		r.Proxy = c.Proxy
 	}
-
 	r.BaseURL = c.BaseURL
+	if c.GateWay != "" {
+		r.BaseURL = c.GateWay
+	}
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
 	r.TmpSig = c.secretKey

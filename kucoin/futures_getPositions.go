@@ -3,7 +3,6 @@ package kucoin
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -27,7 +26,6 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-	log.Println("=90b565=", string(data))
 	var answ struct {
 		Result []futures_Position `json:"data"`
 	}
