@@ -143,7 +143,9 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		// если size указан — частичное закрытие позиции
 		if s.size != nil {
 			m["quantity"] = *s.size
-			m["reduceOnly"] = "true"
+			if s.hedgeMode == nil || *s.hedgeMode == false {
+				m["reduceOnly"] = "true"
+			}
 		} else {
 			// если size нет — закрыть всю позицию (BingX поддерживает closePosition)
 			m["closePosition"] = "true"

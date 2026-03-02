@@ -79,6 +79,7 @@ type futures_orderList struct {
 		AvgPrice      string `json:"avgPrice"`
 		Leverage      string `json:"leverage"`
 		Status        string `json:"status"`
+		StopPrice     string `json:"stopPrice"`
 		Time          int64  `json:"time"`
 		UpdateTime    int64  `json:"updateTime"`
 	} `json:"orders"`

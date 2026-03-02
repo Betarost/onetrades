@@ -126,6 +126,27 @@ func (r *Request) SetFormParams(m Params) *Request {
 	return r
 }
 
+func (r *Request) SetFormParamStruct(key string, value interface{}) *Request {
+	if r.Form == nil {
+		r.Form = url.Values{}
+	}
+
+	v := string(value.([]byte))
+	// v = strings.Replace(v, `\"`, `"`, -1)
+	// v = strings.Replace(v, `"{`, `{`, -1)
+	// v = strings.Replace(v, `"}`, `}`, -1)
+
+	r.Form.Set(key, v)
+	return r
+}
+
+func (r *Request) SetFormParamsStruct(m Params) *Request {
+	for k, v := range m {
+		r.SetFormParamStruct(k, v)
+	}
+	return r
+}
+
 func (r *Request) validate() error {
 	if r.Query == nil {
 		r.Query = url.Values{}

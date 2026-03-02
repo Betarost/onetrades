@@ -246,7 +246,18 @@ func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.
 		// // } else {
 		// // 	positionSide = strings.ToUpper(item.PosSide)
 		// // }
+		istp := false
+		isls := false
 
+		if strings.ToUpper(item.Type) == "TAKE_PROFIT_MARKET" {
+			istp = true
+			item.Price = item.StopPrice
+		}
+
+		if strings.ToUpper(item.Type) == "STOP_MARKET" {
+			isls = true
+			item.Price = item.StopPrice
+		}
 		out = append(out, entity.Futures_OrdersList{
 			Symbol:        item.Symbol,
 			OrderID:       fmt.Sprintf("%d", item.OrderId),
@@ -262,6 +273,8 @@ func (c *futures_converts) convertOrderList(in futures_orderList) (out []entity.
 			Status:        strings.ToUpper(item.Status),
 			CreateTime:    item.Time,
 			UpdateTime:    item.UpdateTime,
+			TpOrder:       istp,
+			SlOrder:       isls,
 		})
 	}
 	return out
