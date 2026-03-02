@@ -245,6 +245,8 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 			Status:        strings.ToUpper(item.Status),
 			CreateTime:    item.CreatedAt,
 			UpdateTime:    item.UpdatedAt,
+			TpOrder:       item.TpOrder,
+			SlOrder:       item.SlOrder,
 		})
 	}
 	return res

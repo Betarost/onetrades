@@ -101,34 +101,43 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	m := utils.Params{}
 
 	// --- TP / SL separate order for existing futures position (KuCoin) ---
+	// Делается через обычный /api/v1/orders с полями stop/stopPrice/stopPriceType.
+	// Тогда активные TP/SL появляются в /api/v1/stopOrders?status=active
 	isTP := s.tpOrder != nil && *s.tpOrder
 	isSL := s.slOrder != nil && *s.slOrder
 
-	// минимальная валидация: нельзя одновременно TP и SL
 	if isTP && isSL {
 		return res, errors.New("kucoin futures_placeOrder: TpOrder and SlOrder cannot both be true")
 	}
 
 	if isTP || isSL {
-		// KuCoin отдельный endpoint для TPSL
-		r.Endpoint = "/api/v1/st-orders"
+		// ВАЖНО: endpoint НЕ st-orders
+		r.Endpoint = "/api/v1/orders"
 
-		// Базовые поля такие же как у place order по доке :contentReference[oaicite:1]{index=1}
+		// базовые поля
 		if s.symbol != nil {
 			m["symbol"] = *s.symbol
+		} else {
+			return res, errors.New("kucoin futures_placeOrder: symbol is required")
 		}
+
 		if s.side != nil {
 			m["side"] = strings.ToLower(string(*s.side))
+		} else {
+			return res, errors.New("kucoin futures_placeOrder: side is required for tp/sl")
 		}
-		if s.size != nil {
-			m["size"] = *s.size
-		}
+
+		// Исполнение делаем market, а price используем как trigger (stopPrice)
+		m["type"] = "market"
+
 		if s.clientOrderID != nil {
 			m["clientOid"] = *s.clientOrderID
 		}
+
 		if s.leverage != nil {
 			m["leverage"] = *s.leverage
 		}
+
 		if s.marginMode != nil {
 			switch *s.marginMode {
 			case entity.MarginModeTypeCross:
@@ -137,54 +146,49 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 				m["marginMode"] = "ISOLATED"
 			}
 		}
+
 		if s.positionSide != nil {
 			m["positionSide"] = strings.ToUpper(string(*s.positionSide))
 		}
 
-		// Для нашего унифицированного TP/SL: делаем исполнение MARKET, а s.price используем как trigger.
-		m["type"] = "market"
+		// reduceOnly/closeOrder:
+		// - если size задан -> reduceOnly=true (частичное закрытие)
+		// - если size НЕ задан -> closeOrder=true (закрыть всё)
+		if s.size != nil && strings.TrimSpace(*s.size) != "" {
+			m["size"] = *s.size
+			m["reduceOnly"] = true
+		} else {
+			m["closeOrder"] = true
+			m["reduceOnly"] = true
+		}
 
-		// stopPriceType: "TP" (обычно trade/last price) — как в примере доки :contentReference[oaicite:2]{index=2}
+		// stopPriceType: TP=trade/last price (обычно подходит)
 		m["stopPriceType"] = "TP"
 
-		// trigger price:
-		// KuCoin ожидает triggerStopUpPrice и/или triggerStopDownPrice. В примере присутствуют оба. :contentReference[oaicite:3]{index=3}
-		// Мы ставим один (по направлению), чтобы было однозначно.
-		if s.price != nil {
-			// Логика направления, если side указан:
-			// SELL (обычно закрытие LONG): TP вверх, SL вниз
-			// BUY  (обычно закрытие SHORT): TP вниз, SL вверх
-			if s.side != nil {
-				if *s.side == entity.SideTypeSell {
-					if isTP {
-						m["triggerStopUpPrice"] = *s.price
-					} else {
-						m["triggerStopDownPrice"] = *s.price
-					}
-				} else if *s.side == entity.SideTypeBuy {
-					if isTP {
-						m["triggerStopDownPrice"] = *s.price
-					} else {
-						m["triggerStopUpPrice"] = *s.price
-					}
-				}
+		// stop / stopPrice:
+		// SELL (обычно закрываем LONG): TP => up, SL => down
+		// BUY  (обычно закрываем SHORT): TP => down, SL => up
+		if s.price == nil || strings.TrimSpace(*s.price) == "" {
+			return res, errors.New("kucoin futures_placeOrder: price (trigger) is required for tp/sl")
+		}
+		m["stopPrice"] = *s.price
+
+		if *s.side == entity.SideTypeSell {
+			if isTP {
+				m["stop"] = "up"
 			} else {
-				// если side не задан — пусть биржа вернёт ошибку/объяснение;
-				// но чтобы запрос был “какой-то”, ставим TP вверх, SL вниз
-				if isTP {
-					m["triggerStopUpPrice"] = *s.price
-				} else {
-					m["triggerStopDownPrice"] = *s.price
-				}
+				m["stop"] = "down"
+			}
+		} else { // BUY
+			if isTP {
+				m["stop"] = "down"
+			} else {
+				m["stop"] = "up"
 			}
 		}
 
-		// reduceOnly: для TP/SL логично true (чтобы не открывать), но без жёсткой валидации:
-		if s.reduce != nil && *s.reduce == true {
-			m["reduceOnly"] = true
-		} else {
-			m["reduceOnly"] = true
-		}
+		// защита: для TP/SL всегда true (чтобы не открыть позицию случайно)
+		m["reduceOnly"] = true
 
 		r.SetFormParams(m)
 
@@ -196,9 +200,7 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		var answ struct {
 			Result placeOrder_Response `json:"data"`
 		}
-
-		err = json.Unmarshal(data, &answ)
-		if err != nil {
+		if err := json.Unmarshal(data, &answ); err != nil {
 			return res, err
 		}
 
