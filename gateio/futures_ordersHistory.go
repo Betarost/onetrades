@@ -91,6 +91,8 @@ type futures_ordersHistory_Response struct {
 	Left        int64   `json:"left"`
 	Is_close    bool    `json:"is_close"`
 	Text        string  `json:"text"`
+	Mkfr        string  `json:"mkfr"`
+	Tkfr        string  `json:"tkfr"`
 	Price       string  `json:"price"`
 	Fill_price  string  `json:"fill_price"`
 	Create_time float64 `json:"create_time"`

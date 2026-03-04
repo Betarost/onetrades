@@ -94,6 +94,7 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 			ExecutedSize:  item.Filled_amount,
 			ExecutedPrice: item.Avg_deal_price,
 			Fee:           item.Fee,
+			FeeAsset:      item.Fee_currency,
 			Type:          strings.ToUpper(item.Type),
 			Status:        strings.ToUpper(item.Finish_as),
 			CreateTime:    item.Create_time,
@@ -173,8 +174,9 @@ func (c *futures_converts) convertInstrumentsInfo(in []futures_instrumentsInfo) 
 			MaxLeverage:    item.Leverage_max,
 			State:          item.Status,
 			IsSizeContract: true,
-			Multiplier:     item.Quanto_multiplier,
-			ContractSize:   item.Quanto_multiplier,
+			Multiplier:     "1",
+			// Multiplier:     item.Quanto_multiplier,
+			ContractSize: item.Quanto_multiplier,
 		}
 		out = append(out, rec)
 	}
@@ -352,6 +354,7 @@ func (c *futures_converts) convertOrdersHistory(answ []futures_ordersHistory_Res
 			PositionSize: fmt.Sprintf("%d", item.Size),
 			ExecutedSize: utils.Int64ToString(item.Size),
 			Price:        item.Price,
+			Fee:          utils.FloatToStringAll(utils.StringToFloat(item.Mkfr) + utils.StringToFloat(item.Tkfr)),
 			// Leverage:      item.Lever,
 			// Type:       "LIMIT",
 			Status:     strings.ToUpper(item.Status),

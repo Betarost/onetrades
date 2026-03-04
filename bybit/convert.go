@@ -101,6 +101,9 @@ func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (ou
 		return out
 	}
 	for _, item := range in.List {
+
+		coin, _, _ := firstFeeCoin(item.CumFeeDetail)
+
 		out = append(out, entity.Spot_OrdersHistory{
 			Symbol:        item.Symbol,
 			OrderID:       item.OrderId,
@@ -111,6 +114,7 @@ func (c *spot_converts) convertOrdersHistory(in spot_ordersHistory_Response) (ou
 			ExecutedSize:  item.CumExecQty,
 			ExecutedPrice: item.AvgPrice,
 			Fee:           item.CumExecFee,
+			FeeAsset:      coin,
 			Type:          strings.ToUpper(item.OrderType),
 			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),
@@ -402,6 +406,8 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 			positionSide = "SHORT"
 		}
 
+		coin, _, _ := firstFeeCoin(item.CumFeeDetail)
+
 		out = append(out, entity.Futures_OrdersHistory{
 			Symbol:        item.Symbol,
 			OrderID:       item.OrderId,
@@ -413,6 +419,7 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 			ExecutedSize:  item.CumExecQty,
 			ExecutedPrice: item.AvgPrice,
 			Fee:           fmt.Sprintf("-%s", item.CumExecFee),
+			FeeAsset:      coin,
 			Type:          strings.ToUpper(item.OrderType),
 			Status:        strings.ToUpper(item.OrderStatus),
 			CreateTime:    utils.StringToInt64(item.CreatedTime),
@@ -421,6 +428,13 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 		})
 	}
 	return out
+}
+
+func firstFeeCoin(m map[string]string) (coin, fee string, ok bool) {
+	for k, v := range m {
+		return k, v, true
+	}
+	return "", "", false
 }
 
 func (c *futures_converts) convertExecutionsHistory(in futures_executionsHistory_Response) (out []entity.Futures_ExecutionsHistory) {

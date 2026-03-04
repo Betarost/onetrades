@@ -100,6 +100,7 @@ type spot_ordersHistory_Response struct {
 	Size           string `json:"size"`
 	Funds          string `json:"funds"`
 	Fee            string `json:"fee"`
+	FeeCurrency    string `json:"feeCurrency"`
 	TradeType      string `json:"tradeType"`
 	Liquidity      string `json:"liquidity"`
 	Type           string `json:"type"`

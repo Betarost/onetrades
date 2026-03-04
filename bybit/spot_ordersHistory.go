@@ -99,19 +99,20 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 
 type spot_ordersHistory_Response struct {
 	List []struct {
-		Symbol      string `json:"symbol"`
-		OrderId     string `json:"orderId"`
-		OrderLinkId string `json:"orderLinkId"`
-		Side        string `json:"side"`
-		Qty         string `json:"qty"`
-		CumExecQty  string `json:"cumExecQty"`
-		Price       string `json:"price"`
-		AvgPrice    string `json:"avgPrice"`
-		CumExecFee  string `json:"cumExecFee"`
-		OrderType   string `json:"orderType"`
-		OrderStatus string `json:"orderStatus"`
-		CreatedTime string `json:"createdTime"`
-		UpdatedTime string `json:"updatedTime"`
+		Symbol       string            `json:"symbol"`
+		OrderId      string            `json:"orderId"`
+		OrderLinkId  string            `json:"orderLinkId"`
+		Side         string            `json:"side"`
+		Qty          string            `json:"qty"`
+		CumExecQty   string            `json:"cumExecQty"`
+		Price        string            `json:"price"`
+		AvgPrice     string            `json:"avgPrice"`
+		CumExecFee   string            `json:"cumExecFee"`
+		CumFeeDetail map[string]string `json:"cumFeeDetail"`
+		OrderType    string            `json:"orderType"`
+		OrderStatus  string            `json:"orderStatus"`
+		CreatedTime  string            `json:"createdTime"`
+		UpdatedTime  string            `json:"updatedTime"`
 	} `json:"list"`
 	NextPageCursor string `json:"nextPageCursor"`
 }

@@ -69,6 +69,8 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
+	// log.Println("=029fc1=", string(data))
+
 	if err != nil {
 		return res, err
 	}

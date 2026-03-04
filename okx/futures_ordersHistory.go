@@ -88,6 +88,7 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
+	// log.Println("=029fc1=", string(data))
 	if err != nil {
 		return res, err
 	}
@@ -117,6 +118,7 @@ type futures_ordersHistory_Response struct {
 	Px        string `json:"px"`
 	AvgPx     string `json:"avgPx"`
 	Fee       string `json:"fee"`
+	FeeCcy    string `json:"feeCcy"`
 	Pnl       string `json:"pnl"`
 	Lever     string `json:"felevere"`
 	OrdType   string `json:"ordType"`

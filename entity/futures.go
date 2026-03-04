@@ -82,6 +82,7 @@ type Futures_OrdersHistory struct {
 	ExecutedPrice  string `json:"executedPrice" bson:"executedPrice"`
 	RealisedProfit string `json:"realisedProfit" bson:"realisedProfit"`
 	Fee            string `json:"fee" bson:"fee"`
+	FeeAsset       string `json:"feeAsset" bson:"feeAsset"`
 	Leverage       string `json:"leverage"  bson:"leverage"`
 	Type           string `json:"type" bson:"type"`
 	Status         string `json:"status" bson:"status"`

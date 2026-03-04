@@ -102,6 +102,7 @@ type spot_ordersHistory_Response struct {
 	Px        string `json:"px"`
 	AvgPx     string `json:"avgPx"`
 	Fee       string `json:"fee"`
+	FeeCcy    string `json:"feeCcy"`
 	OrdType   string `json:"ordType"`
 	State     string `json:"state"`
 	CTime     string `json:"cTime"`

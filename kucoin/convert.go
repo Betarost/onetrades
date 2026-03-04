@@ -138,6 +138,7 @@ func (c *spot_converts) convertOrdersHistory(in []spot_ordersHistory_Response) (
 			ExecutedSize:  item.Size,
 			ExecutedPrice: item.Price,
 			Fee:           item.Fee,
+			FeeAsset:      item.FeeCurrency,
 			Type:          strings.ToUpper(item.Type),
 			// Status:        strings.ToUpper(item.TradeType),
 			Status:     "FILLED",

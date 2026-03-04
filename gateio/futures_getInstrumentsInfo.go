@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -50,6 +51,7 @@ func (s *futures_getInstrumentsInfo) Do(ctx context.Context, opts ...utils.Reque
 	}
 
 	data, _, err := s.callAPI(ctx, r, opts...)
+	log.Println("=c2e5b8=", string(data))
 	if err != nil {
 		return res, err
 	}

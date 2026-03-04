@@ -527,8 +527,8 @@ func (c *spot_converts) convertOrdersHistory(in []spot_tradeHistoryWB) (out []en
 			Price:         t.Price,
 			ExecutedPrice: t.Price,
 
-			Fee: t.Fee,
-
+			Fee:      t.Fee,
+			FeeAsset: t.FeeAsset,
 			// Эндпоинт не отдаёт тип явно (market/limit), оставляем пустым
 			Type:   "",
 			Status: "FILLED",

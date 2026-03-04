@@ -55,6 +55,7 @@ type Spot_OrdersHistory struct {
 	Price         string `json:"price" bson:"price"`
 	ExecutedPrice string `json:"executedPrice" bson:"executedPrice"`
 	Fee           string `json:"fee" bson:"fee"`
+	FeeAsset      string `json:"feeAsset" bson:"feeAsset"`
 	Type          string `json:"type" bson:"type"`
 	Status        string `json:"status" bson:"status"`
 	// Cursor        string `json:"cursor,omitempty" bson:"cursor,omitempty"`

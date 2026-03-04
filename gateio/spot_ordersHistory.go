@@ -95,6 +95,7 @@ type spot_ordersHistory_Response struct {
 	Fill_price     string `json:"fill_price"`
 	Avg_deal_price string `json:"avg_deal_price"`
 	Fee            string `json:"fee"`
+	Fee_currency   string `json:"fee_currency"`
 	Type           string `json:"type"`
 	Status         string `json:"status"`
 	Finish_as      string `json:"finish_as"`
