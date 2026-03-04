@@ -316,25 +316,34 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 			// }
 		}
 
+		t := "LIMIT"
+		if item.Liquidity == "taker" {
+			t = "MARKET"
+		}
+
 		out = append(out, entity.Futures_OrdersHistory{
 			Symbol:        item.Symbol,
-			OrderID:       item.ID,
+			OrderID:       item.OrderId,
 			ClientOrderID: item.ClientOid,
 			Side:          strings.ToUpper(item.Side),
 			PositionSide:  positionSide,
 			PositionSize:  utils.FloatToStringAll(item.Size),
-			ExecutedSize:  utils.FloatToStringAll(item.FilledSize),
+			ExecutedSize:  utils.FloatToStringAll(item.Size),
 			Price:         item.Price,
-			ExecutedPrice: item.AvgDealPrice,
+			ExecutedPrice: item.Price,
 			// 		RealisedProfit: item.Pnl,
-			// 		Fee:            item.Fee,
+			Fee:        item.Fee,
+			FeeAsset:   item.FeeCurrency,
 			Leverage:   item.Leverage,
 			HedgeMode:  hedgeMode,
 			MarginMode: strings.ToUpper(item.MarginMode),
-			Type:       strings.ToUpper(item.Type),
-			Status:     strings.ToUpper(item.Status),
+			// Type:       strings.ToUpper(item.Type),
+			Type: strings.ToUpper(t),
+			// Status:     strings.ToUpper(item.Status),
+			Status:     "FILLED",
 			CreateTime: item.CreatedAt,
-			UpdateTime: item.UpdatedAt,
+			UpdateTime: time.Now().UnixMilli(),
+			// UpdateTime: item.UpdatedAt,
 		})
 	}
 	return out
