@@ -240,6 +240,9 @@ func convertGateioPriceOrdersToStd(in []gateio_priceOrderList) (out []entity.Fut
 			status = "OPEN"
 		}
 
+		if po.Initial.Size < 0 {
+			po.Initial.Size = 0 - po.Initial.Size
+		}
 		out = append(out, entity.Futures_OrdersList{
 			Symbol:        symbol,
 			OrderID:       orderID,
@@ -250,7 +253,7 @@ func convertGateioPriceOrdersToStd(in []gateio_priceOrderList) (out []entity.Fut
 
 			// тут у Gate trigger-ордеров нет “executed size” как у лимитки;
 			// оставляем 0/пусто — безопаснее.
-			PositionSize: "0",
+			PositionSize: utils.Int64ToString(po.Initial.Size),
 			ExecutedSize: "0",
 
 			Price:  price,

@@ -377,7 +377,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(bybitFutures.NewGetOrderList().Category("inverse").Do(ctx))
 	// printAnswers(bybitFutures.NewGetOrderList().Do(ctx))
-	// printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
+	printAnswers(gateioFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(mexcSpot.NewGetOrderList().Symbol("MXUSDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(okxFutures.NewGetOrderList().Do(ctx))
@@ -414,7 +414,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewOrdersHistory().Limit(50).StartTime(1758362413105).EndTime(1758382413105).Do(ctx))
 	// printAnswers(kucoinFutures.NewOrdersHistory().Limit(1).Do(ctx))
 	// printAnswers(blofinFutures.NewOrdersHistory().Do(ctx))
-	printAnswers(whitebitFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(whitebitFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================ExecutionsHistory
 	n = "ExecutionsHistory"

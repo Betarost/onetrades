@@ -31,6 +31,14 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 	if c.Proxy != "" {
 		r.Proxy = c.Proxy
 	}
+	if c.BrokerID != "" {
+		header := http.Header{}
+		if r.Header != nil {
+			header = r.Header.Clone()
+		}
+		header.Set("X-CHANNEL-API-CODE", c.BrokerID)
+		r.Header = header
+	}
 	r.BaseURL = c.BaseURL
 	r.TimeOffset = c.TimeOffset
 	r.TmpApi = c.apiKey
@@ -97,6 +105,14 @@ func (c *SpotClient) callAPI(ctx context.Context, r *utils.Request, opts ...util
 func (c *FuturesClient) callAPI(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error) {
 	if c.Proxy != "" {
 		r.Proxy = c.Proxy
+	}
+	if c.BrokerID != "" {
+		header := http.Header{}
+		if r.Header != nil {
+			header = r.Header.Clone()
+		}
+		header.Set("X-CHANNEL-API-CODE", c.BrokerID)
+		r.Header = header
 	}
 	r.BaseURL = c.BaseURL
 	r.TimeOffset = c.TimeOffset
