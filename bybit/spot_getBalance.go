@@ -51,6 +51,7 @@ type spot_Balance struct {
 		Coin            string `json:"coin"`
 		WalletBalance   string `json:"walletBalance"`
 		Locked          string `json:"locked"`
+		Equity          string `json:"equity"`
 		TotalPositionMM string `json:"totalPositionMM"`
 		TotalPositionIM string `json:"totalPositionIM"`
 		UnrealisedPnl   string `json:"unrealisedPnl"`

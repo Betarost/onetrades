@@ -28,7 +28,7 @@ func (s *futures_getBalance) Do(ctx context.Context, opts ...utils.RequestOption
 	r.SetParams(m)
 
 	data, _, err := s.callAPI(ctx, r, opts...)
-
+	// log.Println("=Futures=", string(data))
 	if err != nil {
 		return res, err
 	}

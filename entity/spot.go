@@ -3,9 +3,13 @@ package entity
 // New SPOT
 
 type AssetsBalance struct {
-	Asset   string `json:"asset" bson:"asset"`
-	Balance string `json:"balance" bson:"balance"`
-	Locked  string `json:"locked" bson:"locked"`
+	Asset           string `json:"asset" bson:"asset"`
+	Balance         string `json:"balance" bson:"balance"`
+	Equity          string `json:"equity,omitempty" bson:"equity,omitempty"`
+	TotalPositionMM string `json:"totalPositionMM,omitempty" bson:"totalPositionMM,omitempty"`
+	TotalPositionIM string `json:"totalPositionIM,omitempty" bson:"totalPositionIM,omitempty"`
+	UnrealisedPnl   string `json:"unrealisedPnl,omitempty" bson:"unrealisedPnl,omitempty"`
+	Locked          string `json:"locked" bson:"locked"`
 }
 
 type Spot_InstrumentsInfo struct {

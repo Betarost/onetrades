@@ -58,11 +58,15 @@ func (c *spot_converts) convertBalance(in []spot_Balance) (out []entity.AssetsBa
 	for _, i := range in {
 		for _, item := range i.Coin {
 			out = append(out, entity.AssetsBalance{
-				Asset:   item.Coin,
-				Balance: item.WalletBalance,
-				// Locked:  item.Locked,
+				Asset:           item.Coin,
+				Balance:         item.WalletBalance,
+				Equity:          item.Equity,
+				Locked:          item.Locked,
+				TotalPositionMM: item.TotalPositionMM,
+				TotalPositionIM: item.TotalPositionIM,
+				UnrealisedPnl:   item.UnrealisedPnl,
 				// Locked: utils.FloatToStringAll(utils.StringToFloat(item.TotalPositionIM) + utils.StringToFloat(item.Locked) + utils.StringToFloat(item.UnrealisedPnl)),
-				Locked: utils.FloatToStringAll(utils.StringToFloat(item.TotalPositionIM) - utils.StringToFloat(item.TotalPositionMM) + utils.StringToFloat(item.UnrealisedPnl)),
+				// Locked: utils.FloatToStringAll(utils.StringToFloat(item.TotalPositionIM) - utils.StringToFloat(item.TotalPositionMM) + utils.StringToFloat(item.UnrealisedPnl)),
 			})
 		}
 	}
