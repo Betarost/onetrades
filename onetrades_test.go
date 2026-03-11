@@ -13,6 +13,7 @@ import (
 	"github.com/Betarost/onetrades/bybit"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
+	"github.com/Betarost/onetrades/hyperliquid"
 	"github.com/Betarost/onetrades/kucoin"
 	"github.com/Betarost/onetrades/mexc"
 	"github.com/Betarost/onetrades/okx"
@@ -62,9 +63,8 @@ func TestOnetrades(t *testing.T) {
 	blofinMemo := viper.GetString("BLOFIN_MEMO")
 	whitebitKey := viper.GetString("WHITEBIT_API")
 	whitebitSecret := viper.GetString("WHITEBIT_SECRET")
-
-	// hyperliquidKey := viper.GetString("HYPERLIQUID_API")
-	// hyperliquidSecret := viper.GetString("HYPERLIQUID_SECRET")
+	hyperliquidKey := viper.GetString("HYPERLIQUID_API")
+	hyperliquidSecret := viper.GetString("HYPERLIQUID_SECRET")
 	//==========================CLIENTS==========================
 
 	binanceSpot := binance.NewSpotClient(binanceKey, binanceSecret)
@@ -94,7 +94,7 @@ func TestOnetrades(t *testing.T) {
 	blofinFutures := blofin.NewFuturesClient(blofinKey, blofinSecret, blofinMemo)
 	whitebitSpot := whitebit.NewSpotClient(whitebitKey, whitebitSecret)
 	whitebitFutures := whitebit.NewFuturesClient(whitebitKey, whitebitSecret)
-	// hyperliquidSpot := hyperliquid.NewSpotClient(hyperliquidKey, hyperliquidSecret)
+	hyperliquidSpot := hyperliquid.NewSpotClient(hyperliquidKey, hyperliquidSecret)
 	// hyperliquidFutures := hyperliquid.NewFuturesClient(hyperliquidKey, hyperliquidSecret)
 
 	binanceSpot.Debug = false
@@ -118,7 +118,7 @@ func TestOnetrades(t *testing.T) {
 	blofinFutures.Debug = false
 	whitebitSpot.Debug = false
 	whitebitFutures.Debug = false
-	// hyperliquidSpot.Debug = true
+	hyperliquidSpot.Debug = false
 	// hyperliquidFutures.Debug = true
 	bullishFutures.Proxy = "http://localhost:1080"
 	bitgetFutures.Proxy = "http://localhost:1080"
@@ -170,7 +170,7 @@ func TestOnetrades(t *testing.T) {
 	//SPOT
 	// printAnswers(binanceSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bingxSpot.NewGetBalance().Do(ctx))
-	printAnswers(bybitSpot.NewGetBalance().Do(ctx))
+	// printAnswers(bybitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(gateioSpot.NewGetBalance().Do(ctx))
 	// printAnswers(mexcSpot.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetSpot.NewGetBalance().Do(ctx))
@@ -184,7 +184,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bingxFutures.NewGetBalance().Do(ctx))
-	printAnswers(bybitFutures.NewGetBalance().Do(ctx))
+	// printAnswers(bybitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(gateioFutures.NewGetBalance().Do(ctx))
 	// printAnswers(bitgetFutures.NewGetBalance().Do(ctx))
 	// printAnswers(okxFutures.NewGetBalance().Do(ctx))
@@ -247,7 +247,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewPlaceOrder().Symbol("DOGEUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("56").Price("0.20899").UID("69069265").Do(ctx))
 	// printAnswers(kucoinSpot.NewPlaceOrder().Symbol("BTC-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Price("116910.5").Size("0.00001").ClientOrderID("3").Do(ctx))
 	// printAnswers(whitebitSpot.NewPlaceOrder().Symbol("BTC_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.00006").Price("92100.5").Do(ctx))
-	// printAnswers(hyperliquidSpot.NewPlaceOrder().Symbol("10156").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("0.2").Do(ctx))
+	// printAnswers(hyperliquidSpot.NewPlaceOrder().Symbol("10156").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("0.15").Price("91").ClientOrderID("123").Do(ctx))
 
 	//FUTURES
 	//TEST MARKET
@@ -325,6 +325,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewCancelOrder().OrderID("1371171052466066").Do(ctx))
 	// printAnswers(kucoinSpot.NewCancelOrder().OrderID("68cc0554a4aad100075896a5").Do(ctx))
 	// printAnswers(whitebitSpot.NewCancelOrder().Symbol("BTC_USDT").OrderID("1981703663512").Do(ctx))
+	// printAnswers(hyperliquidSpot.NewCancelOrder().Symbol("10156").OrderID("345212875305").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewCancelOrder().Symbol("BTCUSDT").OrderID("934062304663").Do(ctx))
@@ -348,6 +349,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(gateioSpot.NewAmendOrder().Symbol("TRX_USDT").OrderID("186336434877910305").NewSize("3").NewPrice("0.2314").Do(ctx))
 	// printAnswers(okxSpot.NewAmendOrder().Symbol("DOGE-USDT").OrderID("2669952276160045056").NewPrice("0.17101").NewSize("11.11").Do(ctx))
 	// printAnswers(whitebitSpot.NewAmendOrder().Symbol("BTC_USDT").OrderID("1981688045654").NewPrice("91910.7").NewSize("0.00006").Do(ctx))
+	// printAnswers(hyperliquidSpot.NewAmendOrder().Symbol("10156").OrderID("345210167974").Side(entity.SideTypeSell).NewPrice("90.05").NewSize("0.17").ClientOrderID("test1").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewAmendOrder().Symbol("DOGEUSDT").OrderID("76780426418").NewSize("39").NewPrice("0.23522").Side(entity.SideTypeBuy).Do(ctx))
@@ -371,6 +373,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(kucoinSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(whitebitSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(hyperliquidSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
@@ -400,6 +403,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(kucoinSpot.NewOrdersHistory().Limit(10).Do(ctx))
 	// printAnswers(whitebitSpot.NewOrdersHistory().Do(ctx))
+	printAnswers(hyperliquidSpot.NewOrdersHistory().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
