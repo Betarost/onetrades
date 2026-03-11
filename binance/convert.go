@@ -430,48 +430,6 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 		})
 	}
 	return out
-
-	// if len(in) == 0 {
-	// 	return out
-	// }
-
-	// for _, item := range in {
-	// 	marginMode := "isolated"
-	// 	hedgeMode := false
-
-	// 	if !item.OnlyOnePosition {
-	// 		hedgeMode = true
-	// 	}
-
-	// 	// if !item.Isolated {
-	// 	// 	marginMode = "cross"
-	// 	// }
-
-	// 	marginMode = ""
-
-	// 	out = append(out, entity.Futures_OrdersHistory{
-	// 		Symbol:         item.Symbol,
-	// 		OrderID:        utils.Int64ToString(item.OrderId),
-	// 		ClientOrderID:  item.ClientOrderId,
-	// 		PositionID:     utils.Int64ToString(item.PositionID),
-	// 		Side:           strings.ToUpper(item.Side),
-	// 		PositionSide:   strings.ToUpper(item.PositionSide),
-	// 		PositionSize:   item.OrigQty,
-	// 		ExecutedSize:   item.ExecutedQty,
-	// 		Price:          item.Price,
-	// 		ExecutedPrice:  item.AvgPrice,
-	// 		RealisedProfit: item.Profit,
-	// 		Fee:            item.Commission,
-	// 		Type:           strings.ToUpper(item.Type),
-	// 		Leverage:       strings.Replace(item.Leverage, "X", "", 1),
-	// 		Status:         strings.ToUpper(item.Status),
-	// 		HedgeMode:      hedgeMode,
-	// 		MarginMode:     marginMode,
-	// 		CreateTime:     item.Time,
-	// 		UpdateTime:     item.UpdateTime,
-	// 	})
-	// }
-	// return out
 }
 
 func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {

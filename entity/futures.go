@@ -31,6 +31,7 @@ type Futures_InstrumentsInfo struct {
 	Multiplier     string `json:"multiplier" bson:"multiplier"`
 	ContractSize   string `json:"contractSize" bson:"contractSize"`
 	IsSizeContract bool   `json:"isSizeContract" bson:"isSizeContract"`
+	TokenId        string `json:"tokenId,omitempty" bson:"tokenId,omitempty"`
 }
 
 type Futures_PositionsMode struct {

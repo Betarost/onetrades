@@ -126,3 +126,68 @@ func NewFuturesClient(apiKey, secretKey string) *FuturesClient {
 func (c *FuturesClient) NewGetAccountInfo() *getAccountInfo {
 	return &getAccountInfo{callAPI: c.callAPI}
 }
+
+func (c *FuturesClient) NewGetInstrumentsInfo() *futures_getInstrumentsInfo {
+	return &futures_getInstrumentsInfo{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetBalance() *futures_getBalance {
+	return &futures_getBalance{
+		callAPI: c.callAPI,
+		user:    c.apiKey,
+	}
+}
+
+func (c *FuturesClient) NewGetLeverage() *futures_getLeverage {
+	return &futures_getLeverage{
+		callAPI: c.callAPI,
+		user:    c.apiKey,
+	}
+}
+
+func (c *FuturesClient) NewGetPositions() *futures_getPositions {
+	return &futures_getPositions{
+		callAPI: c.callAPI,
+		user:    c.apiKey,
+	}
+}
+
+func (c *FuturesClient) NewSetMarginMode() *futures_setMarginMode {
+	return &futures_setMarginMode{
+		callAPI: c.callAPI,
+		user:    c.apiKey,
+	}
+}
+
+func (c *FuturesClient) NewOrdersHistory() *futures_ordersHistory {
+	return &futures_ordersHistory{
+		callAPI: c.callAPI,
+		user:    c.apiKey,
+	}
+}
+
+func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
+	return &futures_positionsHistory{
+		callAPI: c.callAPI,
+		user:    c.apiKey,
+	}
+}
+
+func (c *FuturesClient) NewPlaceOrder() *futures_placeOrder {
+	return &futures_placeOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewAmendOrder() *futures_amendOrder {
+	return &futures_amendOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewCancelOrder() *futures_cancelOrder {
+	return &futures_cancelOrder{callAPI: c.callAPI}
+}
+
+func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
+	return &futures_getOrderList{
+		callAPI: c.callAPI,
+		user:    c.apiKey,
+	}
+}
