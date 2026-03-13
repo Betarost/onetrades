@@ -156,13 +156,16 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 				return nil, fmt.Errorf("hyperliquid futures placeOrder: empty l2Book for %s", coin)
 			}
 
-			slipBps := int64(100)
+			slipBps := int64(10)
+
 			pxRef := bestAsk
+			bps := slipBps
 			if !isBuy {
 				pxRef = bestBid
+				bps = -slipBps
 			}
 
-			px, err := mulPxBps(pxRef, map[bool]int64{true: slipBps, false: -slipBps}[isBuy])
+			px, err := mulPxBps(pxRef, bps)
 			if err != nil {
 				return nil, err
 			}
