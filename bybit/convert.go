@@ -313,10 +313,10 @@ func (c *futures_converts) convertOrderList(in []futures_orderList) (out []entit
 
 		istp := false
 		issl := false
-		if item.StopOrderType != "" && strings.ToLower(item.StopOrderType) == "stoploss" {
+		if item.StopOrderType != "" && (strings.ToLower(item.StopOrderType) == "stoploss" || strings.ToLower(item.StopOrderType) == "partialstoploss") {
 			issl = true
 		}
-		if item.StopOrderType != "" && strings.ToLower(item.StopOrderType) == "takeprofit" {
+		if item.StopOrderType != "" && (strings.ToLower(item.StopOrderType) == "takeprofit" || strings.ToLower(item.StopOrderType) == "partialtakeprofit") {
 			istp = true
 		}
 		out = append(out, entity.Futures_OrdersList{

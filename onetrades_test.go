@@ -11,7 +11,6 @@ import (
 	"github.com/Betarost/onetrades/blofin"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
-	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/hyperliquid"
@@ -255,7 +254,7 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	//TEST MARKET
 	// printAnswers(binanceFutures.NewPlaceOrder().Symbol("BTCUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Price("69950").PositionSide(entity.PositionSideTypeLong).Size("0.002").Do(ctx))
-	printAnswers(bybitFutures.NewPlaceOrder().Symbol("SOLUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeShort).Size("0.1").Price("82.82").HedgeMode(true).TpOrder(true).Do(ctx))
+	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("SOLUSDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeShort).Size("0.1").Price("82.82").HedgeMode(true).TpOrder(true).Do(ctx))
 
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("SOLUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeShort).Size("0.1").HedgeMode(true).Do(ctx))
 	// printAnswers(bybitFutures.NewPlaceOrder().Symbol("BTCUSD").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("100").HedgeMode(false).Category("inverse").Do(ctx))
