@@ -154,6 +154,11 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 			} else {
 				m["slSize"] = *s.size
 			}
+			m["tpslMode"] = "Partial"
+
+		} else {
+			m["tpslMode"] = "Full"
+
 		}
 
 		r.SetFormParams(m)
