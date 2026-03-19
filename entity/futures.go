@@ -43,6 +43,7 @@ type Futures_Leverage struct {
 	Leverage      string `json:"leverage" bson:"leverage"`
 	LongLeverage  string `json:"longLeverage" bson:"longLeverage"`
 	ShortLeverage string `json:"shortLeverage" bson:"shortLeverage"`
+	MarginMode    string `json:"marginMode,omitempty" bson:"marginMode,omitempty"`
 }
 
 type Futures_MarginMode struct {

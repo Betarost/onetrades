@@ -11,7 +11,6 @@ import (
 	"github.com/Betarost/onetrades/blofin"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
-	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/hyperliquid"
@@ -295,7 +294,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewPlaceOrder().Symbol("DOGEUSDTM").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).Price("0.085").Size("2").MarginMode(entity.MarginModeTypeCross).MarginMode(entity.MarginModeTypeCross).Leverage("75").ClientOrderID("tt14").SlOrder(true).Do(ctx))
 	// printAnswers(kucoinFutures.NewPlaceOrder().Symbol("ETHUSDTM").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).Size("1").MarginMode(entity.MarginModeTypeCross).ClientOrderID("4").MarginMode(entity.MarginModeTypeCross).Leverage("75").Do(ctx))
 
-	printAnswers(hyperliquidFutures.NewPlaceOrder().Symbol("5").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("0.2").Do(ctx))
+	// printAnswers(hyperliquidFutures.NewPlaceOrder().Symbol("5").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).Size("0.2").Do(ctx))
 	// printAnswers(hyperliquidFutures.NewPlaceOrder().Symbol("5").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("0.2").Do(ctx))
 
 	//=======================PlaceOrderTpSl
@@ -319,7 +318,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(blofinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetPositions().Do(ctx))
-	printAnswers(hyperliquidFutures.NewGetPositions().Do(ctx))
+	// printAnswers(hyperliquidFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
@@ -413,7 +412,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(huobiSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(kucoinSpot.NewOrdersHistory().Limit(10).Do(ctx))
 	// printAnswers(whitebitSpot.NewOrdersHistory().Do(ctx))
-	// printAnswers(hyperliquidSpot.NewOrdersHistory().Limit(1).Do(ctx))
+	// printAnswers(hyperliquidSpot.NewOrdersHistory().Limit(5).Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))

@@ -315,15 +315,16 @@ func (c *futures_converts) convertLeverage(in futures_clearinghouseState, symbol
 		}
 
 		mode := strings.ToUpper(strings.TrimSpace(item.Position.Leverage.Type))
-		if marginMode != nil {
-			wantMode := strings.ToUpper(strings.TrimSpace(string(*marginMode)))
-			if wantMode != "" && mode != wantMode {
-				continue
-			}
-		}
+		// if marginMode != nil {
+		// 	wantMode := strings.ToUpper(strings.TrimSpace(string(*marginMode)))
+		// 	if wantMode != "" && mode != wantMode {
+		// 		continue
+		// 	}
+		// }
 
 		out.Symbol = coin + "/USDC"
 		out.Leverage = utils.Int64ToString(item.Position.Leverage.Value)
+		out.MarginMode = mode
 		return out
 	}
 
