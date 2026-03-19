@@ -16,34 +16,23 @@ import (
 type futures_setLeverage struct {
 	callAPI func(ctx context.Context, r *utils.Request, opts ...utils.RequestOption) (data []byte, header *http.Header, err error)
 
-	// для совместимости с унифицированным интерфейсом:
-	symbol       *string
-	leverage     *string
-	positionSide *entity.PositionSideType
-	marginMode   *entity.MarginModeType
+	symbol     *string
+	leverage   *string
+	marginMode *entity.MarginModeType
 }
 
-// Symbol — для совместимости, на WhiteBIT игнорируется (плечо аккаунт-уровня).
 func (s *futures_setLeverage) Symbol(symbol string) *futures_setLeverage {
 	s.symbol = &symbol
 	return s
 }
 
-// Leverage — целевое плечо (в строке), мы его конвертим в int.
 func (s *futures_setLeverage) Leverage(leverage string) *futures_setLeverage {
 	s.leverage = &leverage
 	return s
 }
 
-// MarginMode — для совместимости, на WhiteBIT игнорируется.
 func (s *futures_setLeverage) MarginMode(marginMode entity.MarginModeType) *futures_setLeverage {
 	s.marginMode = &marginMode
-	return s
-}
-
-// PositionSide — для совместимости, на WhiteBIT игнорируется.
-func (s *futures_setLeverage) PositionSide(positionSide entity.PositionSideType) *futures_setLeverage {
-	s.positionSide = &positionSide
 	return s
 }
 

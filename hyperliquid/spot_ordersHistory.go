@@ -71,7 +71,6 @@ func (s *spot_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return nil, err
 	}
-
 	var answ []hlHistoricalOrder
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return nil, err

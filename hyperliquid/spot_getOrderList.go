@@ -52,7 +52,6 @@ func (s *spot_getOrderList) Do(ctx context.Context, opts ...utils.RequestOption)
 	if err != nil {
 		return nil, err
 	}
-
 	var answ []hlFrontendOpenOrder
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return nil, err

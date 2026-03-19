@@ -89,7 +89,7 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 	if err != nil {
 		return nil, err
 	}
-
+	// log.Println("=d3a8a8=", string(data))
 	var answ []hlUserFill
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return nil, err

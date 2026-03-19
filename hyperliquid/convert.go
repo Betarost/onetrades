@@ -563,6 +563,12 @@ func (c *futures_converts) convertFuturesOrderList(in []hlFrontendOpenOrder) (ou
 	return out
 }
 
+func (c *futures_converts) convertSetLeverage(symbol string, leverage int64) (out entity.Futures_Leverage) {
+	out.Symbol = symbol
+	out.Leverage = utils.Int64ToString(leverage)
+	return out
+}
+
 type perpMetaResponse struct {
 	Universe []perpMetaUniverse `json:"universe"`
 }

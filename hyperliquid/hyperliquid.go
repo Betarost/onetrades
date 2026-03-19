@@ -191,3 +191,7 @@ func (c *FuturesClient) NewGetOrderList() *futures_getOrderList {
 		user:    c.apiKey,
 	}
 }
+
+func (c *FuturesClient) NewSetLeverage() *futures_setLeverage {
+	return &futures_setLeverage{callAPI: c.callAPI}
+}

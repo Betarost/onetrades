@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/Betarost/onetrades/entity"
@@ -70,7 +69,7 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-	log.Println("=5c4e98=", string(data))
+	// log.Println("=5c4e98=", string(data))
 	var answ struct {
 		Result bool `json:"data"`
 	}

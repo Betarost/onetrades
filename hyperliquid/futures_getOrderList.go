@@ -57,7 +57,6 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return nil, err
 	}
-
 	var answ []hlFrontendOpenOrder
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return nil, err
