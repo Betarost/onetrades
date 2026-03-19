@@ -16,23 +16,10 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 
 	out.UID = fmt.Sprintf("%d", in.User_id)
 	out.IP = strings.Join(in.Ip_whitelist, ",")
-	// out.PermSpot = true
-
-	// if strings.Contains(in.Perm, "read") {
-	// 	out.CanRead = true
-	// }
-
-	// if strings.Contains(in.Perm, "trade") {
-	// 	out.CanTrade = true
-	// }
-
-	// if in.PosMode == "long_short_mode" {
-	// 	out.HedgeMode = true
-	// }
-
-	// if in.AcctLv != "1" {
-	// 	out.PermFutures = true
-	// }
+	out.PermSpot = true
+	out.PermFutures = true
+	out.CanRead = true
+	out.CanTrade = true
 	return out
 }
 

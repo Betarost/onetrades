@@ -86,7 +86,6 @@ func (s *futures_setLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
-	// log.Println("=c4dc9c=", string(data))
 	var answ struct {
 		Status   string `json:"status"`
 		Response struct {

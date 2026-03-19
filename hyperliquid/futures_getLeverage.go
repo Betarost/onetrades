@@ -55,6 +55,7 @@ func (s *futures_getLeverage) Do(ctx context.Context, opts ...utils.RequestOptio
 	if err != nil {
 		return res, err
 	}
+	// log.Println("=b8e07d=", string(data))
 	answ := futures_clearinghouseState{}
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return res, err
