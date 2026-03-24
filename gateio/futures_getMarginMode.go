@@ -45,7 +45,7 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return res, err
 	}
-	var answ futures_leverage
+	var answ []futures_margin
 
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
@@ -53,9 +53,26 @@ func (s *futures_getMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 	}
 
 	res.MarginMode = string(entity.MarginModeTypeCross)
-	if utils.StringToInt(answ.Leverage) != 0 {
-		res.MarginMode = string(entity.MarginModeTypeIsolated)
+	sym := ""
+	if s.symbol != nil {
+		sym = *s.symbol
 	}
-	// return entity.Futures_MarginMode{MarginMode: string(*s.marginMode)}, nil
+	for _, item := range answ {
+		if item.Сontract == sym {
+			if strings.ToUpper(item.Pos_margin_mode) == "ISOLATED" {
+				res.MarginMode = string(entity.MarginModeTypeIsolated)
+			}
+			break
+		}
+	}
+
 	return res, nil
+}
+
+type futures_margin struct {
+	Currency_pair        string `json:"currency_pair"`
+	Сontract             string `json:"contract"`
+	Leverage             string `json:"leverage"`
+	Cross_leverage_limit string `json:"cross_leverage_limit"`
+	Pos_margin_mode      string `json:"pos_margin_mode"`
 }

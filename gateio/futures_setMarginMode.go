@@ -3,7 +3,6 @@ package gateio
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 
@@ -74,19 +73,27 @@ func (s *futures_setMarginMode) Do(ctx context.Context, opts ...utils.RequestOpt
 		return res, err
 	}
 
-	answ := futures_marginMode{}
+	var answ []futures_margin
+
 	err = json.Unmarshal(data, &answ)
 	if err != nil {
-		// return res, err
-		log.Println("=futures_setMarginMode ERR=", err)
-		return entity.Futures_MarginMode{MarginMode: string(*s.marginMode)}, nil
+		return res, err
 	}
 
 	res.MarginMode = string(entity.MarginModeTypeCross)
-	if utils.StringToInt(answ.Leverage) != 0 {
-		res.MarginMode = string(entity.MarginModeTypeIsolated)
+	sym := ""
+	if s.symbol != nil {
+		sym = *s.symbol
 	}
-	// return entity.Futures_MarginMode{MarginMode: string(*s.marginMode)}, nil
+	for _, item := range answ {
+		if item.Сontract == sym {
+			if strings.ToUpper(item.Pos_margin_mode) == "ISOLATED" {
+				res.MarginMode = string(entity.MarginModeTypeIsolated)
+			}
+			break
+		}
+	}
+
 	return res, nil
 }
 

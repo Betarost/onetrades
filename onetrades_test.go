@@ -11,6 +11,7 @@ import (
 	"github.com/Betarost/onetrades/blofin"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
+	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/hyperliquid"
@@ -126,8 +127,8 @@ func TestOnetrades(t *testing.T) {
 	whitebitFutures.Debug = false
 	hyperliquidSpot.Debug = false
 	hyperliquidFutures.Debug = false
-	weexSpot.Debug = true
-	weexFutures.Debug = false
+	weexSpot.Debug = false
+	weexFutures.Debug = true
 	bullishFutures.Proxy = "http://localhost:1080"
 	bitgetFutures.Proxy = "http://localhost:1080"
 	okxSpot.Proxy = "http://localhost:1080"
@@ -241,6 +242,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(whitebitFutures.NewGetInstrumentsInfo().Symbol("BTC_PERP").Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetInstrumentsInfo().Symbol("SOL").Do(ctx))
+	// printAnswers(weexFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 
 	//=======================MarketCandle
 	//FUTURES
@@ -479,6 +481,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewSetPositionMode().Mode(entity.PositionModeTypeOneWay).Do(ctx))
 	// printAnswers(blofinFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
 	// printAnswers(whitebitFutures.NewSetPositionMode().Mode(entity.PositionModeTypeHedge).Do(ctx))
+	// printAnswers(weexFutures.NewSetPositionMode().Symbol("BTCUSDT").MarginMode(entity.MarginModeTypeCross).Mode(entity.PositionModeTypeOneWay).Do(ctx))
 
 	//=======================GetPositionMode
 	n = "GetPositionMode"
@@ -494,6 +497,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(blofinFutures.NewGetPositionMode().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetPositionMode().Do(ctx))
+	// printAnswers(weexFutures.NewGetPositionMode().Symbol("BTCUSDT").Do(ctx))
 
 	//=======================SetLeverage
 	n = "SetLeverage"
@@ -533,10 +537,11 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(binanceFutures.NewSetMarginMode().Symbol("BTCUSDT").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(bingxFutures.NewSetMarginMode().Symbol("ATOM-USDT").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(bybitFutures.NewSetMarginMode().MarginMode(entity.MarginModeTypeCross).Do(ctx))
-	// printAnswers(gateioFutures.NewSetMarginMode().Symbol("DOGE_USDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
+	printAnswers(gateioFutures.NewSetMarginMode().Symbol("DOGE_USDT").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(bitgetFutures.NewSetMarginMode().Symbol("DOGEUSDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 	// printAnswers(kucoinFutures.NewSetMarginMode().Symbol("DOGEUSDTM").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(blofinFutures.NewSetMarginMode().MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	// printAnswers(weexFutures.NewSetMarginMode().Symbol("BTCUSDT").MarginMode(entity.MarginModeTypeIsolated).Do(ctx))
 
 	//=======================GetMarginMode
 	n = "GetMarginMode"
@@ -544,10 +549,11 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(binanceFutures.NewGetMarginMode().Symbol("BTCUSDT").Do(ctx))
 	// printAnswers(bingxFutures.NewGetMarginMode().Symbol("ATOM-USDT").Do(ctx))
 	// printAnswers(bybitFutures.NewGetMarginMode().Do(ctx))
-	// printAnswers(gateioFutures.NewGetMarginMode().Symbol("DOGE_USDT").Do(ctx))
+	printAnswers(gateioFutures.NewGetMarginMode().Symbol("DOGE_USDT").Do(ctx))
 	// printAnswers(bitgetFutures.NewGetMarginMode().Symbol("ATOMUSDT").Do(ctx))
 	// printAnswers(kucoinFutures.NewGetMarginMode().Symbol("DOGEUSDTM").Do(ctx))
 	// printAnswers(blofinFutures.NewGetMarginMode().Do(ctx))
+	// printAnswers(weexFutures.NewGetMarginMode().Symbol("SOLUSDT").Do(ctx))
 
 	//=======================GetListenKey
 	n = "GetListenKey"
@@ -578,7 +584,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
 	// printAnswers(okxSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
 	// printAnswers(blofinFutures.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
-	printAnswers(weexSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
+	// printAnswers(weexSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
 
 	//=======================GenerateJWT
 	n = "GenerateJWT"
