@@ -28,6 +28,8 @@ var (
 	Whitebit_futures      = "https://whitebit.com"
 	Hyperliquid_spot      = "https://api.hyperliquid.xyz"
 	Hyperliquid_futures   = "https://api.hyperliquid.xyz"
+	Weex_spot             = "https://api-spot.weex.com"
+	Weex_futures          = "https://api-contract.weex.com"
 	//================
 	BinanceFutureApiMainUrl = "https://fapi.binance.com"
 	BybitFutureApiMainUrl   = "https://api.bybit.com"
@@ -98,6 +100,10 @@ func GetEndpoint(trade string) string {
 		return Hyperliquid_spot
 	case "HYPERLIQUID_FUTURES":
 		return Hyperliquid_futures
+	case "WEEX_SPOT":
+		return Weex_spot
+	case "WEEX_FUTURES":
+		return Weex_futures
 	default:
 		return ""
 	}

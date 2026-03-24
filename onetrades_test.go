@@ -17,6 +17,7 @@ import (
 	"github.com/Betarost/onetrades/kucoin"
 	"github.com/Betarost/onetrades/mexc"
 	"github.com/Betarost/onetrades/okx"
+	"github.com/Betarost/onetrades/weex"
 	"github.com/Betarost/onetrades/whitebit"
 	"github.com/spf13/viper"
 )
@@ -65,6 +66,9 @@ func TestOnetrades(t *testing.T) {
 	whitebitSecret := viper.GetString("WHITEBIT_SECRET")
 	hyperliquidKey := viper.GetString("HYPERLIQUID_API")
 	hyperliquidSecret := viper.GetString("HYPERLIQUID_SECRET")
+	weexKey := viper.GetString("WEEX_API")
+	weexSecret := viper.GetString("WEEX_SECRET")
+	weexMemo := viper.GetString("WEEX_MEMO")
 	//==========================CLIENTS==========================
 
 	binanceSpot := binance.NewSpotClient(binanceKey, binanceSecret)
@@ -96,6 +100,8 @@ func TestOnetrades(t *testing.T) {
 	whitebitFutures := whitebit.NewFuturesClient(whitebitKey, whitebitSecret)
 	hyperliquidSpot := hyperliquid.NewSpotClient(hyperliquidKey, hyperliquidSecret)
 	hyperliquidFutures := hyperliquid.NewFuturesClient(hyperliquidKey, hyperliquidSecret)
+	weexSpot := weex.NewSpotClient(weexKey, weexSecret, weexMemo)
+	weexFutures := weex.NewFuturesClient(weexKey, weexSecret, weexMemo)
 
 	binanceSpot.Debug = false
 	binanceFutures.Debug = false
@@ -120,6 +126,8 @@ func TestOnetrades(t *testing.T) {
 	whitebitFutures.Debug = false
 	hyperliquidSpot.Debug = false
 	hyperliquidFutures.Debug = false
+	weexSpot.Debug = true
+	weexFutures.Debug = false
 	bullishFutures.Proxy = "http://localhost:1080"
 	bitgetFutures.Proxy = "http://localhost:1080"
 	okxSpot.Proxy = "http://localhost:1080"
@@ -138,13 +146,16 @@ func TestOnetrades(t *testing.T) {
 	kucoinFutures.Proxy = "http://localhost:1080"
 	// binanceFutures.IsCOINM(true)
 	binanceFutures.GateWay = ""
+	weexSpot.Proxy = "http://localhost:1080"
+	weexFutures.Proxy = "http://localhost:1080"
+
 	// =======================AccountInfo
 	n = "AccountInfo"
 	//SPOT
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
-	printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bitgetSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(okxSpot.NewGetAccountInfo().Do(ctx))
@@ -152,6 +163,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(whitebitSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(hyperliquidSpot.NewGetAccountInfo().Do(ctx))
+	// printAnswers(weexSpot.NewGetAccountInfo().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetAccountInfo().Do(ctx))
@@ -180,6 +192,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetBalance().Do(ctx))
 	// printAnswers(whitebitSpot.NewGetBalance().Do(ctx))
 	// printAnswers(hyperliquidSpot.NewGetBalance().Do(ctx))
+	printAnswers(weexSpot.NewGetBalance().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetBalance().Do(ctx))
@@ -210,6 +223,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(whitebitSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(hyperliquidSpot.NewGetInstrumentsInfo().Symbol("USOL").Do(ctx))
+	// printAnswers(weexSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -250,6 +264,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewPlaceOrder().Symbol("BTC-USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Price("116910.5").Size("0.00001").ClientOrderID("3").Do(ctx))
 	// printAnswers(whitebitSpot.NewPlaceOrder().Symbol("BTC_USDT").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeLimit).Size("0.00006").Price("92100.5").Do(ctx))
 	// printAnswers(hyperliquidSpot.NewPlaceOrder().Symbol("10156").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("0.15").Price("91").ClientOrderID("123").Do(ctx))
+	// printAnswers(weexSpot.NewPlaceOrder().Symbol("SOLUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).Size("0.12").Price("91.55").Do(ctx))
 
 	//FUTURES
 	//TEST MARKET
@@ -334,6 +349,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewCancelOrder().OrderID("68cc0554a4aad100075896a5").Do(ctx))
 	// printAnswers(whitebitSpot.NewCancelOrder().Symbol("BTC_USDT").OrderID("1981703663512").Do(ctx))
 	// printAnswers(hyperliquidSpot.NewCancelOrder().Symbol("10156").OrderID("345212875305").Do(ctx))
+	// printAnswers(weexSpot.NewCancelOrder().OrderID("731217364401521319").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewCancelOrder().Symbol("BTCUSDT").OrderID("934062304663").Do(ctx))
@@ -382,6 +398,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(whitebitSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(hyperliquidSpot.NewGetOrderList().Limit(5).Do(ctx))
+	printAnswers(weexSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
@@ -413,6 +430,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewOrdersHistory().Limit(10).Do(ctx))
 	// printAnswers(whitebitSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(hyperliquidSpot.NewOrdersHistory().Limit(5).Do(ctx))
+	printAnswers(weexSpot.NewOrdersHistory().Symbol("SOLUSDT").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
