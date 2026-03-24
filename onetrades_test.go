@@ -398,7 +398,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(whitebitSpot.NewGetOrderList().Do(ctx))
 	// printAnswers(hyperliquidSpot.NewGetOrderList().Limit(5).Do(ctx))
-	printAnswers(weexSpot.NewGetOrderList().Do(ctx))
+	// printAnswers(weexSpot.NewGetOrderList().Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetOrderList().Do(ctx))
@@ -430,7 +430,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewOrdersHistory().Limit(10).Do(ctx))
 	// printAnswers(whitebitSpot.NewOrdersHistory().Do(ctx))
 	// printAnswers(hyperliquidSpot.NewOrdersHistory().Limit(5).Do(ctx))
-	printAnswers(weexSpot.NewOrdersHistory().Symbol("SOLUSDT").Do(ctx))
+	// printAnswers(weexSpot.NewOrdersHistory().Symbol("SOLUSDT").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
@@ -578,6 +578,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bitgetSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
 	// printAnswers(okxSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
 	// printAnswers(blofinFutures.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
+	printAnswers(weexSpot.NewSignAuthStream().TimeStamp(1753356762807).Do(ctx))
 
 	//=======================GenerateJWT
 	n = "GenerateJWT"

@@ -81,6 +81,10 @@ func (c *SpotClient) NewOrdersHistory() *spot_ordersHistory {
 	return &spot_ordersHistory{callAPI: c.callAPI}
 }
 
+func (c *SpotClient) NewSignAuthStream() *signAuthStream {
+	return &signAuthStream{sec: c.secretKey}
+}
+
 // ===============FUTURES=================
 
 type FuturesClient struct {
