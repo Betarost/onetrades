@@ -41,36 +41,69 @@ func (s *futures_getOrderList) Limit(limit int) *futures_getOrderList {
 }
 
 func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_OrdersList, err error) {
-	r := &utils.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/capi/v3/openOrders",
-		SecType:  utils.SecTypeSigned,
+	{
+		r := &utils.Request{
+			Method:   http.MethodGet,
+			Endpoint: "/capi/v3/openOrders",
+			SecType:  utils.SecTypeSigned,
+		}
+
+		m := utils.Params{}
+
+		if s.symbol != nil && *s.symbol != "" {
+			m["symbol"] = *s.symbol
+		}
+
+		if s.limit != nil && *s.limit > 0 {
+			m["limit"] = *s.limit
+		}
+
+		r.SetParams(m)
+
+		data, _, e := s.callAPI(ctx, r, opts...)
+		if e != nil {
+			return res, e
+		}
+
+		var answ []futures_orderList
+		if e := json.Unmarshal(data, &answ); e != nil {
+			return res, e
+		}
+
+		res = append(res, s.convert.convertOrderList(answ)...)
 	}
 
-	m := utils.Params{}
+	{
+		r := &utils.Request{
+			Method:   http.MethodGet,
+			Endpoint: "/capi/v3/openAlgoOrders",
+			SecType:  utils.SecTypeSigned,
+		}
 
-	if s.symbol != nil && *s.symbol != "" {
-		m["symbol"] = *s.symbol
+		m := utils.Params{}
+
+		if s.symbol != nil && *s.symbol != "" {
+			m["symbol"] = *s.symbol
+		}
+
+		if s.limit != nil && *s.limit > 0 {
+			m["limit"] = *s.limit
+		}
+
+		r.SetParams(m)
+
+		data, _, e := s.callAPI(ctx, r, opts...)
+		if e != nil {
+			return res, e
+		}
+
+		var answ []futures_algoOrder
+		if e := json.Unmarshal(data, &answ); e != nil {
+			return res, e
+		}
+
+		res = append(res, s.convert.convertAlgoOrderList(answ)...)
 	}
-
-	if s.limit != nil && *s.limit > 0 {
-		m["limit"] = *s.limit
-	}
-
-	r.SetParams(m)
-
-	data, _, err := s.callAPI(ctx, r, opts...)
-	if err != nil {
-		return res, err
-	}
-
-	var answ []futures_orderList
-	err = json.Unmarshal(data, &answ)
-	if err != nil {
-		return res, err
-	}
-
-	res = s.convert.convertOrderList(answ)
 
 	if s.orderType != nil {
 		want := strings.ToUpper(string(*s.orderType))
@@ -109,4 +142,32 @@ type futures_orderList struct {
 	PriceMatch              string `json:"priceMatch"`
 	SelfTradePreventionMode string `json:"selfTradePreventionMode"`
 	GoodTillDate            int64  `json:"goodTillDate"`
+}
+
+type futures_algoOrder struct {
+	AlgoId         int64  `json:"algoId"`
+	ClientAlgoId   string `json:"clientAlgoId"`
+	AlgoType       string `json:"algoType"`
+	OrderType      string `json:"orderType"`
+	Symbol         string `json:"symbol"`
+	Side           string `json:"side"`
+	PositionSide   string `json:"positionSide"`
+	TimeInForce    string `json:"timeInForce"`
+	Quantity       string `json:"quantity"`
+	AlgoStatus     string `json:"algoStatus"`
+	ActualOrderId  *int64 `json:"actualOrderId"`
+	ActualPrice    string `json:"actualPrice"`
+	TriggerPrice   string `json:"triggerPrice"`
+	Price          string `json:"price"`
+	TpTriggerPrice string `json:"tpTriggerPrice"`
+	TpPrice        string `json:"tpPrice"`
+	SlTriggerPrice string `json:"slTriggerPrice"`
+	SlPrice        string `json:"slPrice"`
+	TpOrderType    string `json:"tpOrderType"`
+	WorkingType    string `json:"workingType"`
+	ClosePosition  bool   `json:"closePosition"`
+	ReduceOnly     bool   `json:"reduceOnly"`
+	CreateTime     int64  `json:"createTime"`
+	UpdateTime     int64  `json:"updateTime"`
+	TriggerTime    int64  `json:"triggerTime"`
 }

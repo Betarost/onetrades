@@ -52,9 +52,11 @@ func (s *futures_cancelOrder) Do(ctx context.Context, opts ...utils.RequestOptio
 
 	if isAlgo {
 		r.Endpoint = "/capi/v3/algoOrder"
+
 		if s.orderID == nil || *s.orderID == "" {
 			return res, errors.New("orderId required")
 		}
+
 		m["orderId"] = *s.orderID
 	} else {
 		r.Endpoint = "/capi/v3/order"
@@ -62,9 +64,11 @@ func (s *futures_cancelOrder) Do(ctx context.Context, opts ...utils.RequestOptio
 		if s.orderID != nil && *s.orderID != "" {
 			m["orderId"] = *s.orderID
 		}
+
 		if s.clientOrderID != nil && *s.clientOrderID != "" {
 			m["origClientOrderId"] = *s.clientOrderID
 		}
+
 		if len(m) == 0 {
 			return res, errors.New("orderId or clientOrderId required")
 		}

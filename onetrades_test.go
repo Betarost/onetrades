@@ -11,7 +11,6 @@ import (
 	"github.com/Betarost/onetrades/blofin"
 	"github.com/Betarost/onetrades/bullish"
 	"github.com/Betarost/onetrades/bybit"
-	"github.com/Betarost/onetrades/entity"
 	"github.com/Betarost/onetrades/gateio"
 	"github.com/Betarost/onetrades/huobi"
 	"github.com/Betarost/onetrades/hyperliquid"
@@ -317,13 +316,8 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(hyperliquidFutures.NewPlaceOrder().Symbol("5").Side(entity.SideTypeBuy).OrderType(entity.OrderTypeMarket).Size("0.2").Do(ctx))
 
 	// printAnswers(weexFutures.NewPlaceOrder().Symbol("SOLUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeShort).ClientOrderID("test1").Size("0.1").Do(ctx))
+	// printAnswers(weexFutures.NewPlaceOrder().Symbol("SOLUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeMarket).PositionSide(entity.PositionSideTypeLong).ClientOrderID("test1").Size("0.1").Price("86.7").TpOrder(true).Do(ctx))
 	// printAnswers(weexFutures.NewPlaceOrder().Symbol("SOLUSDT").Side(entity.SideTypeSell).OrderType(entity.OrderTypeLimit).PositionSide(entity.PositionSideTypeLong).ClientOrderID("test2").Size("0.1").Price("84.84").Do(ctx))
-
-	//=======================PlaceOrderTpSl
-	n = "PlaceOrderTpSl"
-	//SPOT
-
-	//FUTURES
 
 	//=======================GetPositions
 	n = "GetPositions"
@@ -341,7 +335,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetPositions().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetPositions().Do(ctx))
-	// printAnswers(weexFutures.NewGetPositions().Do(ctx))
+	printAnswers(weexFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
@@ -373,6 +367,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewCancelOrder().OrderID("5000054382203").Do(ctx))
 	// printAnswers(whitebitFutures.NewCancelOrder().Symbol("BTC_PERP").OrderID("1979248560459").Do(ctx))
 	// printAnswers(weexFutures.NewCancelOrder().OrderID("733404581681168807").Do(ctx))
+	// printAnswers(weexFutures.NewCancelOrder().OrderID("733475053085131175").IsTpSl(true).Do(ctx))
 
 	//=======================AmendOrder
 	n = "AmendOrder"
@@ -424,7 +419,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetOrderList().Limit(5).Do(ctx))
-	// printAnswers(weexFutures.NewGetOrderList().Do(ctx))
+	printAnswers(weexFutures.NewGetOrderList().Do(ctx))
 
 	//=======================OrdersHistory
 	n = "OrdersHistory"
@@ -477,6 +472,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(whitebitFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(weexFutures.NewPositionsHistory().Do(ctx))
 
 	//=======================SetPositionMode
 	n = "SetPositionMode"
@@ -524,7 +520,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewSetLeverage().Symbol("BTC-USDT").Leverage("10").PositionSide(entity.PositionSideTypeBoth).MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(whitebitFutures.NewSetLeverage().Leverage("50").Do(ctx))
 	// printAnswers(hyperliquidFutures.NewSetLeverage().Leverage("5").MarginMode(entity.MarginModeTypeIsolated).Symbol("10").Do(ctx))
-	printAnswers(weexFutures.NewSetLeverage().Leverage("25").MarginMode(entity.MarginModeTypeCross).Symbol("DOGEUSDT").Do(ctx))
+	// printAnswers(weexFutures.NewSetLeverage().Leverage("25").MarginMode(entity.MarginModeTypeCross).Symbol("DOGEUSDT").Do(ctx))
 
 	//=======================GetLeverage
 	n = "GetLeverage"
@@ -540,7 +536,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetLeverage().Symbol("BTC-USDT").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 	// printAnswers(whitebitFutures.NewGetLeverage().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetLeverage().Symbol("SOL/USDC").Do(ctx))
-	printAnswers(weexFutures.NewGetLeverage().Symbol("DOGEUSDT").MarginMode(entity.MarginModeTypeCross).Do(ctx))
+	// printAnswers(weexFutures.NewGetLeverage().Symbol("DOGEUSDT").MarginMode(entity.MarginModeTypeCross).Do(ctx))
 
 	//=======================SetMarginMode
 	n = "SetMarginMode"

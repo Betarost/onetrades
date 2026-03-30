@@ -187,10 +187,10 @@ func (c *futures_converts) convertPlaceOrder(in futures_placeOrder_Response) (ou
 
 func (c *futures_converts) convertPositions(answ []futures_Position) (res []entity.Futures_Positions) {
 	for _, item := range answ {
-		hedgeMode := false
-		if item.SeparatedMode == "SEPARATED" {
-			hedgeMode = true
-		}
+		// hedgeMode := false
+		// if item.SeparatedMode == "SEPARATED" {
+		// 	hedgeMode = true
+		// }
 
 		res = append(res, entity.Futures_Positions{
 			Symbol:           item.Symbol,
@@ -203,10 +203,11 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			UnRealizedProfit: item.UnrealizePnl,
 			RealizedProfit:   "",
 			Notional:         item.OpenValue,
-			HedgeMode:        hedgeMode,
-			MarginMode:       strings.ToUpper(item.MarginType),
-			CreateTime:       item.CreatedTime,
-			UpdateTime:       item.UpdatedTime,
+			// HedgeMode:        hedgeMode,
+			HedgeMode:  true,
+			MarginMode: strings.ToUpper(item.MarginType),
+			CreateTime: item.CreatedTime,
+			UpdateTime: item.UpdatedTime,
 		})
 	}
 	return res
@@ -232,12 +233,110 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 	return res
 }
 
+func (c *futures_converts) convertAlgoOrderList(in []futures_algoOrder) (out []entity.Futures_OrdersList) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		typ := strings.ToUpper(item.OrderType)
+		tpOrder := typ == "TAKE_PROFIT" || typ == "TAKE_PROFIT_MARKET"
+		slOrder := typ == "STOP" || typ == "STOP_MARKET"
+
+		price := item.Price
+		if price == "" || price == "0" {
+			price = item.TriggerPrice
+		}
+
+		out = append(out, entity.Futures_OrdersList{
+			Symbol:        item.Symbol,
+			OrderID:       strconv.FormatInt(item.AlgoId, 10),
+			ClientOrderID: item.ClientAlgoId,
+			PositionSide:  strings.ToUpper(item.PositionSide),
+			Side:          strings.ToUpper(item.Side),
+			PositionSize:  item.Quantity,
+			ExecutedSize:  "0",
+			Price:         price,
+			Type:          typ,
+			Status:        strings.ToUpper(item.AlgoStatus),
+			CreateTime:    item.CreateTime,
+			UpdateTime:    item.UpdateTime,
+			TpOrder:       tpOrder,
+			SlOrder:       slOrder,
+		})
+	}
+
+	return out
+}
+
 func (c *futures_converts) convertCancelOrder(in futures_cancelOrder_Response) (out []entity.PlaceOrder) {
 	out = append(out, entity.PlaceOrder{
 		OrderID:       in.OrderId,
 		ClientOrderID: in.OrigClientOrderId,
 		Ts:            utils.CurrentTimestamp(),
 	})
+	return out
+}
+
+func (c *futures_converts) convertAlgoOrdersHistory(in []futures_algoOrdersHistoryItem) (out []entity.Futures_OrdersHistory) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		if item.Status != "2" {
+			continue
+		}
+
+		symbol := strings.ToUpper(item.Symbol)
+		symbol = strings.TrimPrefix(symbol, "CMT_")
+
+		positionSide := ""
+		side := ""
+
+		switch item.Type {
+		case "1":
+			positionSide = "LONG"
+			side = "BUY"
+		case "2":
+			positionSide = "SHORT"
+			side = "SELL"
+		case "3", "5", "7", "9":
+			positionSide = "LONG"
+			side = "SELL"
+		case "4", "6", "8", "10":
+			positionSide = "SHORT"
+			side = "BUY"
+		}
+
+		updateTime := utils.StringToInt64(item.TriggerTime)
+		if updateTime == 0 {
+			updateTime = utils.StringToInt64(item.CreateTime)
+		}
+
+		out = append(out, entity.Futures_OrdersHistory{
+			Symbol:         symbol,
+			OrderID:        item.OrderID,
+			ClientOrderID:  item.ClientOID,
+			Side:           side,
+			PositionSide:   positionSide,
+			PositionSize:   item.Size,
+			ExecutedSize:   item.FilledQty,
+			Price:          item.Price,
+			ExecutedPrice:  item.PriceAvg,
+			RealisedProfit: item.TotalProfits,
+			Fee:            item.Fee,
+			FeeAsset:       "",
+			Leverage:       "",
+			HedgeMode:      false,
+			MarginMode:     "",
+			Type:           "CONDITIONAL",
+			Status:         "FILLED",
+			CreateTime:     utils.StringToInt64(item.CreateTime),
+			UpdateTime:     updateTime,
+		})
+	}
+
 	return out
 }
 

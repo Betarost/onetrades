@@ -170,36 +170,38 @@ func (s *futures_placeOrder) doNormalOrder(ctx context.Context, opts ...utils.Re
 }
 
 func (s *futures_placeOrder) doAlgoOrder(ctx context.Context, opts ...utils.RequestOption) (res []entity.PlaceOrder, err error) {
+	if s.symbol == nil || *s.symbol == "" {
+		return res, errors.New("symbol is required")
+	}
+	if s.side == nil {
+		return res, errors.New("side is required")
+	}
+	if s.positionSide == nil {
+		return res, errors.New("position side is required")
+	}
+	if s.size == nil || *s.size == "" {
+		return res, errors.New("size is required")
+	}
+	if s.price == nil || *s.price == "" {
+		return res, errors.New("trigger price is required")
+	}
+	if s.clientOrderID == nil || *s.clientOrderID == "" {
+		return res, errors.New("client order id is required")
+	}
+
 	r := &utils.Request{
 		Method:   http.MethodPost,
 		Endpoint: "/capi/v3/algoOrder",
 		SecType:  utils.SecTypeSigned,
 	}
 
-	m := utils.Params{}
-
-	if s.symbol != nil {
-		m["symbol"] = *s.symbol
-	}
-
-	if s.side != nil {
-		m["side"] = strings.ToUpper(string(*s.side))
-	}
-
-	if s.positionSide != nil {
-		m["positionSide"] = strings.ToUpper(string(*s.positionSide))
-	}
-
-	if s.size != nil {
-		m["quantity"] = *s.size
-	}
-
-	if s.clientOrderID != nil {
-		m["clientAlgoId"] = *s.clientOrderID
-	}
-
-	if s.price != nil {
-		m["triggerPrice"] = *s.price
+	m := utils.Params{
+		"symbol":       *s.symbol,
+		"side":         strings.ToUpper(string(*s.side)),
+		"positionSide": strings.ToUpper(string(*s.positionSide)),
+		"quantity":     *s.size,
+		"triggerPrice": *s.price,
+		"clientAlgoId": *s.clientOrderID,
 	}
 
 	if s.tpOrder != nil && *s.tpOrder {
