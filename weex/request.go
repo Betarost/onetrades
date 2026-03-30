@@ -24,9 +24,9 @@ func (e aPIError) Error() string {
 func (e aPIError) IsValid() bool {
 	switch v := e.Code.(type) {
 	case float64:
-		return v == 0
+		return v == 0 || v == 200
 	case string:
-		return v == "0" || v == "00000" || v == ""
+		return v == "0" || v == "00000" || v == "200" || v == ""
 	case nil:
 		return e.Message == ""
 	default:

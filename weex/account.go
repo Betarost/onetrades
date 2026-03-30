@@ -79,6 +79,7 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 
 	// Это spot endpoint, значит спот-доступ у аккаунта есть.
 	out.PermSpot = true
+	out.PermFutures = true
 
 	out.CanTrade = in.CanTrade
 
