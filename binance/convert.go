@@ -388,7 +388,6 @@ func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []ent
 }
 
 func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
-
 	if len(in) == 0 {
 		return out
 	}
@@ -397,6 +396,9 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 		if strings.ToUpper(item.Status) != "FILLED" {
 			continue
 		}
+
+		orderType := strings.ToUpper(item.Type)
+
 		hedgeMode := false
 		positionSide := "LONG"
 		if item.PositionSide == "BOTH" {
@@ -406,6 +408,16 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 		} else {
 			positionSide = strings.ToUpper(item.PositionSide)
 			hedgeMode = true
+		}
+
+		tpOrder := false
+		slOrder := false
+
+		switch orderType {
+		case "TAKE_PROFIT", "TAKE_PROFIT_MARKET":
+			tpOrder = true
+		case "STOP", "STOP_MARKET":
+			slOrder = true
 		}
 
 		out = append(out, entity.Futures_OrdersHistory{
@@ -423,12 +435,15 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 			// Leverage:       item.Lever,
 			HedgeMode: hedgeMode,
 			// MarginMode:     strings.ToLower(item.TdMode),
-			Type:       strings.ToUpper(item.Type),
+			Type:       orderType,
 			Status:     strings.ToUpper(item.Status),
 			CreateTime: item.Time,
 			UpdateTime: item.UpdateTime,
+			TpOrder:    tpOrder,
+			SlOrder:    slOrder,
 		})
 	}
+
 	return out
 }
 

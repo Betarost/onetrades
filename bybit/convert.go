@@ -390,11 +390,15 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 }
 
 func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
-
 	if len(in.List) == 0 {
 		return out
 	}
+
 	for _, item := range in.List {
+		status := strings.ToUpper(item.OrderStatus)
+		if status != "FILLED" {
+			continue
+		}
 
 		positionSide := ""
 		switch item.PositionIdx {
@@ -410,6 +414,33 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 			positionSide = "SHORT"
 		}
 
+		price := item.Price
+		if price == "" || price == "0" {
+			price = item.TriggerPrice
+		}
+
+		stopOrderType := strings.ToLower(item.StopOrderType)
+		createType := strings.ToLower(item.CreateType)
+
+		istp := false
+		issl := false
+
+		switch stopOrderType {
+		case "takeprofit", "partialtakeprofit":
+			istp = true
+		case "stoploss", "partialstoploss":
+			issl = true
+		}
+
+		if !istp && !issl {
+			switch createType {
+			case "createbytakeprofit", "createbypartialtakeprofit":
+				istp = true
+			case "createbystoploss", "createbypartialstoploss":
+				issl = true
+			}
+		}
+
 		coin, _, _ := firstFeeCoin(item.CumFeeDetail)
 
 		out = append(out, entity.Futures_OrdersHistory{
@@ -419,18 +450,21 @@ func (c *futures_converts) convertOrdersHistory(in futures_ordersHistory_Respons
 			Side:          strings.ToUpper(item.Side),
 			PositionSide:  positionSide,
 			PositionSize:  item.Qty,
-			Price:         item.Price,
+			Price:         price,
 			ExecutedSize:  item.CumExecQty,
 			ExecutedPrice: item.AvgPrice,
 			Fee:           fmt.Sprintf("-%s", item.CumExecFee),
 			FeeAsset:      coin,
 			Type:          strings.ToUpper(item.OrderType),
-			Status:        strings.ToUpper(item.OrderStatus),
+			Status:        status,
 			CreateTime:    utils.StringToInt64(item.CreatedTime),
 			UpdateTime:    utils.StringToInt64(item.UpdatedTime),
-			// Cursor:        in.NextPageCursor,
+			TpOrder:       istp,
+			SlOrder:       issl,
+			// Cursor:      in.NextPageCursor,
 		})
 	}
+
 	return out
 }
 

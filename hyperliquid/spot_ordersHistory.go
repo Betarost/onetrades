@@ -151,6 +151,12 @@ type hlHistoricalOrder struct {
 		ReduceOnly bool   `json:"reduceOnly"`
 		Cloid      string `json:"cloid"`
 		C          string `json:"c"`
+
+		TriggerCondition string        `json:"triggerCondition"`
+		IsTrigger        bool          `json:"isTrigger"`
+		TriggerPx        string        `json:"triggerPx"`
+		IsPositionTpsl   bool          `json:"isPositionTpsl"`
+		Children         []interface{} `json:"children"`
 	} `json:"order"`
 
 	Status          string `json:"status"`

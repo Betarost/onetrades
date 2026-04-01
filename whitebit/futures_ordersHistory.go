@@ -90,7 +90,6 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return res, err
 	}
-
 	var answ []futures_positionsHistoryWB
 	if err = json.Unmarshal(data, &answ); err != nil {
 		return res, err

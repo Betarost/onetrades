@@ -93,6 +93,8 @@ type Futures_OrdersHistory struct {
 	// Cursor         string `json:"cursor,omitempty" bson:"cursor,omitempty"`
 	CreateTime int64 `json:"createTime" bson:"createTime"`
 	UpdateTime int64 `json:"updateTime" bson:"updateTime"`
+	TpOrder    bool  `json:"tpOrder" bson:"tpOrder"`
+	SlOrder    bool  `json:"slOrder" bson:"slOrder"`
 }
 
 type Futures_ExecutionsHistory struct {

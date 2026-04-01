@@ -293,60 +293,163 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 	return res
 }
 
-func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
+// func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
 
+// 	if len(in) == 0 {
+// 		return out
+// 	}
+
+// 	for _, item := range in {
+// 		positionSide := "LONG"
+// 		hedgeMode := false
+
+// 		if item.Status == "done" {
+// 			item.Status = "FILLED"
+// 		}
+// 		if item.PositionSide != "BOTH" {
+// 			hedgeMode = true
+// 			positionSide = strings.ToUpper(item.PositionSide)
+// 		} else {
+// 			// if item.CurrentQty < 0 {
+// 			// 	positionSide = "SHORT"
+// 			// 	item.CurrentQty = 0 - item.CurrentQty
+// 			// }
+// 		}
+
+// 		t := "LIMIT"
+// 		if item.Liquidity == "taker" {
+// 			t = "MARKET"
+// 		}
+
+// 		out = append(out, entity.Futures_OrdersHistory{
+// 			Symbol:        item.Symbol,
+// 			OrderID:       item.OrderId,
+// 			ClientOrderID: item.ClientOid,
+// 			Side:          strings.ToUpper(item.Side),
+// 			PositionSide:  positionSide,
+// 			PositionSize:  utils.FloatToStringAll(item.Size),
+// 			ExecutedSize:  utils.FloatToStringAll(item.Size),
+// 			Price:         item.Price,
+// 			ExecutedPrice: item.Price,
+// 			// 		RealisedProfit: item.Pnl,
+// 			Fee:        item.Fee,
+// 			FeeAsset:   item.FeeCurrency,
+// 			Leverage:   item.Leverage,
+// 			HedgeMode:  hedgeMode,
+// 			MarginMode: strings.ToUpper(item.MarginMode),
+// 			// Type:       strings.ToUpper(item.Type),
+// 			Type: strings.ToUpper(t),
+// 			// Status:     strings.ToUpper(item.Status),
+// 			Status:     "FILLED",
+// 			CreateTime: item.CreatedAt,
+// 			UpdateTime: time.Now().UnixMilli(),
+// 			// UpdateTime: item.UpdatedAt,
+// 		})
+// 	}
+// 	return out
+// }
+
+func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Response) (out []entity.Futures_OrdersHistory) {
 	if len(in) == 0 {
 		return out
 	}
 
 	for _, item := range in {
+		// history возвращаем только по реально исполненным ордерам
+		filledSize := item.FilledSize
+		if filledSize == 0 {
+			filledSize = item.DealSize
+		}
+		if filledSize <= 0 {
+			continue
+		}
+
 		positionSide := "LONG"
 		hedgeMode := false
 
-		if item.Status == "done" {
-			item.Status = "FILLED"
-		}
-		if item.PositionSide != "BOTH" {
+		if strings.ToUpper(item.PositionSide) != "BOTH" && item.PositionSide != "" {
 			hedgeMode = true
 			positionSide = strings.ToUpper(item.PositionSide)
 		} else {
-			// if item.CurrentQty < 0 {
-			// 	positionSide = "SHORT"
-			// 	item.CurrentQty = 0 - item.CurrentQty
-			// }
+			if strings.ToUpper(item.Side) == "SELL" {
+				positionSide = "SHORT"
+			}
 		}
 
-		t := "LIMIT"
-		if item.Liquidity == "taker" {
-			t = "MARKET"
+		orderType := strings.ToUpper(item.Type)
+		if orderType == "" {
+			orderType = "LIMIT"
+			if strings.ToLower(item.Liquidity) == "taker" {
+				orderType = "MARKET"
+			}
 		}
+
+		execPrice := item.AvgDealPrice
+		if execPrice == "" || execPrice == "0" {
+			execPrice = item.Price
+		}
+
+		price := item.Price
+		if (price == "" || price == "0") && item.StopPrice != "" && item.StopPrice != "0" {
+			price = item.StopPrice
+		}
+
+		isTP, isSL := kucoinStopFlags(item.Side, item.Stop)
 
 		out = append(out, entity.Futures_OrdersHistory{
 			Symbol:        item.Symbol,
-			OrderID:       item.OrderId,
+			OrderID:       item.ID,
 			ClientOrderID: item.ClientOid,
 			Side:          strings.ToUpper(item.Side),
 			PositionSide:  positionSide,
 			PositionSize:  utils.FloatToStringAll(item.Size),
-			ExecutedSize:  utils.FloatToStringAll(item.Size),
-			Price:         item.Price,
-			ExecutedPrice: item.Price,
-			// 		RealisedProfit: item.Pnl,
-			Fee:        item.Fee,
-			FeeAsset:   item.FeeCurrency,
-			Leverage:   item.Leverage,
-			HedgeMode:  hedgeMode,
-			MarginMode: strings.ToUpper(item.MarginMode),
-			// Type:       strings.ToUpper(item.Type),
-			Type: strings.ToUpper(t),
-			// Status:     strings.ToUpper(item.Status),
-			Status:     "FILLED",
-			CreateTime: item.CreatedAt,
-			UpdateTime: time.Now().UnixMilli(),
-			// UpdateTime: item.UpdatedAt,
+			ExecutedSize:  utils.FloatToStringAll(filledSize),
+			Price:         price,
+			ExecutedPrice: execPrice,
+			Fee:           item.Fee,
+			FeeAsset:      item.FeeCurrency,
+			Leverage:      item.Leverage,
+			HedgeMode:     hedgeMode,
+			MarginMode:    strings.ToUpper(item.MarginMode),
+			Type:          orderType,
+			Status:        "FILLED",
+			CreateTime:    item.CreatedAt,
+			UpdateTime:    item.UpdatedAt,
+			TpOrder:       isTP,
+			SlOrder:       isSL,
 		})
 	}
+
 	return out
+}
+
+func kucoinStopFlags(side string, stop string) (isTP bool, isSL bool) {
+	s := strings.ToLower(strings.TrimSpace(side))
+	st := strings.ToLower(strings.TrimSpace(stop))
+
+	// Логика такая же, как у вас в active stop orders:
+	// sell + up   => TP
+	// sell + down => SL
+	// buy  + up   => SL
+	// buy  + down => TP
+	switch s {
+	case "sell":
+		if st == "up" {
+			return true, false
+		}
+		if st == "down" {
+			return false, true
+		}
+	case "buy":
+		if st == "up" {
+			return false, true
+		}
+		if st == "down" {
+			return true, false
+		}
+	}
+
+	return false, false
 }
 
 func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory_Response) (out []entity.Futures_PositionsHistory) {

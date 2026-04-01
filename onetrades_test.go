@@ -335,7 +335,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetPositions().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetPositions().Do(ctx))
-	printAnswers(weexFutures.NewGetPositions().Do(ctx))
+	// printAnswers(weexFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
@@ -419,7 +419,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetOrderList().Limit(5).Do(ctx))
-	printAnswers(weexFutures.NewGetOrderList().Do(ctx))
+	// printAnswers(weexFutures.NewGetOrderList().Do(ctx))
 
 	//=======================OrdersHistory
 	n = "OrdersHistory"
@@ -440,18 +440,18 @@ func TestOnetrades(t *testing.T) {
 	//FUTURES
 	// printAnswers(binanceFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(binanceFutures.NewOrdersHistory().OrderID("8389765814458701896").Limit(2).Do(ctx))
-	// printAnswers(bingxFutures.NewOrdersHistory().Limit(1).Do(ctx))
+	// printAnswers(bingxFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bybitFutures.NewOrdersHistory().OrderID("fddec6d3-a8e7-4f52-a732-0832c034be36").Limit(2).Do(ctx))
-	// printAnswers(gateioFutures.NewOrdersHistory().Limit(10).Do(ctx))
+	// printAnswers(gateioFutures.NewOrdersHistory().Limit(3).Do(ctx))
 	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(okxFutures.NewOrdersHistory().OrderID("2896365455043928064").Limit(2).Do(ctx))
-	// printAnswers(okxFutures.NewOrdersHistory().Limit(1).Do(ctx))
+	// printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(kucoinFutures.NewOrdersHistory().Limit(50).StartTime(1758362413105).EndTime(1758382413105).Do(ctx))
-	// printAnswers(kucoinFutures.NewOrdersHistory().Limit(2).Do(ctx))
+	// printAnswers(kucoinFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(blofinFutures.NewOrdersHistory().Do(ctx))
-	// printAnswers(whitebitFutures.NewOrdersHistory().Limit(1).Do(ctx))
-	// printAnswers(hyperliquidFutures.NewOrdersHistory().Limit(1).Do(ctx))
+	// printAnswers(whitebitFutures.NewOrdersHistory().Do(ctx))
+	printAnswers(hyperliquidFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(weexFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================ExecutionsHistory

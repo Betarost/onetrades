@@ -284,11 +284,13 @@ func (c *futures_converts) convertAlgoOrdersHistory(in []futures_algoOrdersHisto
 	}
 
 	for _, item := range in {
+		// по вашему правилу history = только исполненные
+		// здесь status == "2" уже считается исполненным/сработавшим
 		if item.Status != "2" {
 			continue
 		}
 
-		symbol := strings.ToUpper(item.Symbol)
+		symbol := strings.ToUpper(strings.TrimSpace(item.Symbol))
 		symbol = strings.TrimPrefix(symbol, "CMT_")
 
 		positionSide := ""
@@ -309,6 +311,24 @@ func (c *futures_converts) convertAlgoOrdersHistory(in []futures_algoOrdersHisto
 			side = "BUY"
 		}
 
+		orderType := strings.ToUpper(strings.TrimSpace(item.OrderType))
+		tpOrder := strings.Contains(orderType, "TAKE_PROFIT")
+		slOrder := orderType == "STOP" || orderType == "STOP_MARKET" || strings.Contains(orderType, "STOP_LOSS")
+
+		if orderType == "" {
+			orderType = "CONDITIONAL"
+		}
+
+		price := strings.TrimSpace(item.Price)
+		if price == "" || price == "0" {
+			price = strings.TrimSpace(item.TriggerPrice)
+		}
+
+		executedPrice := strings.TrimSpace(item.PriceAvg)
+		if executedPrice == "" || executedPrice == "0" {
+			executedPrice = price
+		}
+
 		updateTime := utils.StringToInt64(item.TriggerTime)
 		if updateTime == 0 {
 			updateTime = utils.StringToInt64(item.CreateTime)
@@ -322,18 +342,20 @@ func (c *futures_converts) convertAlgoOrdersHistory(in []futures_algoOrdersHisto
 			PositionSide:   positionSide,
 			PositionSize:   item.Size,
 			ExecutedSize:   item.FilledQty,
-			Price:          item.Price,
-			ExecutedPrice:  item.PriceAvg,
+			Price:          price,
+			ExecutedPrice:  executedPrice,
 			RealisedProfit: item.TotalProfits,
 			Fee:            item.Fee,
 			FeeAsset:       "",
 			Leverage:       "",
 			HedgeMode:      false,
 			MarginMode:     "",
-			Type:           "CONDITIONAL",
+			Type:           orderType,
 			Status:         "FILLED",
 			CreateTime:     utils.StringToInt64(item.CreateTime),
 			UpdateTime:     updateTime,
+			TpOrder:        tpOrder,
+			SlOrder:        slOrder,
 		})
 	}
 

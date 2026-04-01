@@ -372,7 +372,6 @@ func (c *futures_converts) convertPositions(in futures_clearinghouseState) (out 
 	}
 	return out
 }
-
 func (c *futures_converts) convertFuturesOrdersHistory(in []hlHistoricalOrder) (out []entity.Futures_OrdersHistory) {
 	if len(in) == 0 {
 		return out
@@ -417,6 +416,30 @@ func (c *futures_converts) convertFuturesOrdersHistory(in []hlHistoricalOrder) (
 			updateTime = createTime
 		}
 
+		tpOrder := false
+		slOrder := false
+
+		if item.Order.IsTrigger {
+			tc := strings.ToLower(strings.TrimSpace(item.Order.TriggerCondition))
+
+			// Когда появится живой trigger JSON, эту часть можно будет уточнить.
+			// Пока хотя бы базовая заготовка:
+			if item.Order.IsPositionTpsl {
+				if tc == "tp" || strings.Contains(tc, "take") {
+					tpOrder = true
+				}
+				if tc == "sl" || strings.Contains(tc, "stop") {
+					slOrder = true
+				}
+			}
+		}
+
+		price := strings.TrimSpace(item.Order.LimitPx)
+		executedPrice := price
+		if item.Order.IsTrigger && strings.TrimSpace(item.Order.TriggerPx) != "" && strings.TrimSpace(item.Order.TriggerPx) != "0.0" {
+			price = strings.TrimSpace(item.Order.TriggerPx)
+		}
+
 		out = append(out, entity.Futures_OrdersHistory{
 			Symbol:        coin + "/USDC",
 			OrderID:       strconv.FormatInt(item.Order.Oid, 10),
@@ -425,13 +448,15 @@ func (c *futures_converts) convertFuturesOrdersHistory(in []hlHistoricalOrder) (
 			PositionSide:  positionSide,
 			PositionSize:  size,
 			ExecutedSize:  size,
-			Price:         strings.TrimSpace(item.Order.LimitPx),
-			ExecutedPrice: strings.TrimSpace(item.Order.LimitPx),
+			Price:         price,
+			ExecutedPrice: executedPrice,
 			HedgeMode:     false,
 			Type:          orderType,
 			Status:        status,
 			CreateTime:    createTime,
 			UpdateTime:    updateTime,
+			TpOrder:       tpOrder,
+			SlOrder:       slOrder,
 		})
 	}
 

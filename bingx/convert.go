@@ -321,18 +321,24 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 	}
 
 	for _, item := range in {
-		marginMode := string(entity.MarginModeTypeIsolated)
+		marginMode := ""
 		hedgeMode := false
 
 		if !item.OnlyOnePosition {
 			hedgeMode = true
 		}
 
-		// if !item.Isolated {
-		// 	marginMode = "cross"
-		// }
+		orderType := strings.ToUpper(item.Type)
 
-		marginMode = ""
+		tpOrder := false
+		slOrder := false
+
+		switch orderType {
+		case "TAKE_PROFIT", "TAKE_PROFIT_MARKET":
+			tpOrder = true
+		case "STOP", "STOP_MARKET":
+			slOrder = true
+		}
 
 		out = append(out, entity.Futures_OrdersHistory{
 			Symbol:         item.Symbol,
@@ -347,15 +353,18 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 			ExecutedPrice:  item.AvgPrice,
 			RealisedProfit: item.Profit,
 			Fee:            item.Commission,
-			Type:           strings.ToUpper(item.Type),
+			Type:           orderType,
 			Leverage:       strings.Replace(item.Leverage, "X", "", 1),
 			Status:         strings.ToUpper(item.Status),
 			HedgeMode:      hedgeMode,
 			MarginMode:     marginMode,
 			CreateTime:     item.Time,
 			UpdateTime:     item.UpdateTime,
+			TpOrder:        tpOrder,
+			SlOrder:        slOrder,
 		})
 	}
+
 	return out
 }
 
