@@ -537,7 +537,7 @@ func (c *futures_converts) convertCancelOrderSpot(_ spot_placeOrderResponse, oid
 	return out
 }
 
-func (c *futures_converts) convertFuturesOrderList(in []hlFrontendOpenOrder) (out []entity.Futures_OrdersList) {
+func (c *futures_converts) convertFuturesOrderList(in []hlFrontendOpenOrderFutures) (out []entity.Futures_OrdersList) {
 	out = make([]entity.Futures_OrdersList, 0, len(in))
 
 	for _, o := range in {
@@ -547,15 +547,56 @@ func (c *futures_converts) convertFuturesOrderList(in []hlFrontendOpenOrder) (ou
 		}
 
 		side := "BUY"
-		positionSide := "LONG"
 		if strings.EqualFold(strings.TrimSpace(o.Side), "A") {
 			side = "SELL"
-			positionSide = "SHORT"
 		}
 
 		typ := strings.ToUpper(strings.TrimSpace(o.OrderType))
 		if typ == "" {
 			typ = "LIMIT"
+		}
+
+		tpOrder := false
+		slOrder := false
+
+		if o.IsTrigger {
+			rawType := strings.ToUpper(strings.TrimSpace(o.OrderType))
+			cond := strings.ToUpper(strings.TrimSpace(o.TriggerCondition))
+
+			switch {
+			case strings.Contains(rawType, "TAKE PROFIT"),
+				strings.Contains(cond, "PRICE ABOVE"),
+				strings.Contains(cond, "TP"),
+				strings.Contains(cond, "TAKE"):
+				typ = string(entity.OrderTypeTakeProfit)
+				tpOrder = true
+
+			case strings.Contains(rawType, "STOP"),
+				strings.Contains(cond, "PRICE BELOW"),
+				strings.Contains(cond, "SL"):
+				typ = string(entity.OrderTypeStop)
+				slOrder = true
+			}
+		}
+
+		positionSide := ""
+		switch {
+		case tpOrder || slOrder:
+			// TP/SL закрывает существующую позицию, поэтому side ордера
+			// противоположна стороне позиции
+			if side == "SELL" {
+				positionSide = "LONG"
+			} else {
+				positionSide = "SHORT"
+			}
+
+		default:
+			// обычная текущая логика для не-trigger/opening order
+			if side == "SELL" {
+				positionSide = "SHORT"
+			} else {
+				positionSide = "LONG"
+			}
 		}
 
 		size := strings.TrimSpace(o.OrigSz)
@@ -570,19 +611,29 @@ func (c *futures_converts) convertFuturesOrderList(in []hlFrontendOpenOrder) (ou
 			}
 		}
 
+		price := strings.TrimSpace(o.LimitPx)
+		if o.IsTrigger && strings.TrimSpace(o.TriggerPx) != "" {
+			price = strings.TrimSpace(o.TriggerPx)
+		}
+
 		out = append(out, entity.Futures_OrdersList{
 			Symbol:        coin + "/USDC",
 			OrderID:       strconv.FormatInt(o.Oid, 10),
-			ClientOrderID: o.clientOrderID(),
-			PositionSide:  positionSide,
+			ClientOrderID: o.Cloid,
+			PositionID:    "",
 			Side:          side,
+			PositionSide:  positionSide,
 			PositionSize:  size,
 			ExecutedSize:  executed,
-			Price:         strings.TrimSpace(o.LimitPx),
+			Price:         price,
+			Leverage:      "",
 			Type:          typ,
 			Status:        "NEW",
 			CreateTime:    o.Timestamp,
 			UpdateTime:    o.Timestamp,
+			MarginMode:    "",
+			TpOrder:       tpOrder,
+			SlOrder:       slOrder,
 		})
 	}
 

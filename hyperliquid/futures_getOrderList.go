@@ -57,7 +57,8 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return nil, err
 	}
-	var answ []hlFrontendOpenOrder
+
+	var answ []hlFrontendOpenOrderFutures
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return nil, err
 	}
@@ -91,4 +92,25 @@ func (s *futures_getOrderList) Do(ctx context.Context, opts ...utils.RequestOpti
 	}
 
 	return out, nil
+}
+
+type hlFrontendOpenOrderFutures struct {
+	Coin       string `json:"coin"`
+	Side       string `json:"side"`
+	LimitPx    string `json:"limitPx"`
+	Sz         string `json:"sz"`
+	OrigSz     string `json:"origSz"`
+	Oid        int64  `json:"oid"`
+	Timestamp  int64  `json:"timestamp"`
+	OrderType  string `json:"orderType"`
+	Tif        string `json:"tif"`
+	ReduceOnly bool   `json:"reduceOnly"`
+	Cloid      string `json:"cloid"`
+	C          string `json:"c"`
+
+	// важно для TP/SL
+	IsTrigger        bool   `json:"isTrigger"`
+	TriggerCondition string `json:"triggerCondition"`
+	TriggerPx        string `json:"triggerPx"`
+	IsPositionTpsl   bool   `json:"isPositionTpsl"`
 }

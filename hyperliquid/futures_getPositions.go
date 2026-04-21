@@ -32,7 +32,6 @@ func (s *futures_getPositions) Do(ctx context.Context, opts ...utils.RequestOpti
 	if err != nil {
 		return res, err
 	}
-
 	answ := futures_clearinghouseState{}
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return res, err

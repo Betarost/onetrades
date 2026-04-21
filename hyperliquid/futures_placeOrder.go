@@ -131,12 +131,45 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 		if s.price == nil || strings.TrimSpace(*s.price) == "" {
 			return nil, fmt.Errorf("hyperliquid futures placeOrder: price is required for tp/sl order")
 		}
-		order.P = "0"
+
+		triggerPx := normalizeDecimalString(strings.TrimSpace(*s.price))
+
+		// Hyperliquid требует валидный p даже для trigger isMarket=true.
+		// Для SELL p должен быть <= triggerPx, для BUY p должен быть >= triggerPx.
+		_, _, book, err := s.getPerpL2Book(ctx, coin, opts...)
+		if err != nil {
+			return nil, err
+		}
+
+		tick := inferTickFromBook(book)
+		if tick == "" {
+			tick = tickFromDecimals(triggerPx)
+		}
+
+		// Небольшой "защитный" отступ от triggerPx.
+		// SELL -> чуть ниже trigger
+		// BUY  -> чуть выше trigger
+		bps := int64(10)
+		if !isBuy {
+			bps = -10
+		}
+
+		px, err := mulPxBps(triggerPx, bps)
+		if err != nil {
+			return nil, err
+		}
+
+		px, err = quantizeToTick(px, tick, isBuy)
+		if err != nil {
+			return nil, err
+		}
+
+		order.P = px
 		order.R = true
 		order.T = spotOrderT{
 			Trigger: &spotOrderTrigger{
 				IsMarket:  true,
-				TriggerPx: normalizeDecimalString(strings.TrimSpace(*s.price)),
+				TriggerPx: triggerPx,
 				Tpsl:      map[bool]string{true: "tp", false: "sl"}[isTP],
 			},
 		}
@@ -187,11 +220,39 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 			if s.price == nil || strings.TrimSpace(*s.price) == "" {
 				return nil, fmt.Errorf("hyperliquid futures placeOrder: price is required for stop order")
 			}
-			order.P = "0"
+
+			triggerPx := normalizeDecimalString(strings.TrimSpace(*s.price))
+
+			_, _, book, err := s.getPerpL2Book(ctx, coin, opts...)
+			if err != nil {
+				return nil, err
+			}
+
+			tick := inferTickFromBook(book)
+			if tick == "" {
+				tick = tickFromDecimals(triggerPx)
+			}
+
+			bps := int64(10)
+			if !isBuy {
+				bps = -10
+			}
+
+			px, err := mulPxBps(triggerPx, bps)
+			if err != nil {
+				return nil, err
+			}
+
+			px, err = quantizeToTick(px, tick, isBuy)
+			if err != nil {
+				return nil, err
+			}
+
+			order.P = px
 			order.T = spotOrderT{
 				Trigger: &spotOrderTrigger{
 					IsMarket:  true,
-					TriggerPx: normalizeDecimalString(strings.TrimSpace(*s.price)),
+					TriggerPx: triggerPx,
 					Tpsl:      "sl",
 				},
 			}
@@ -200,11 +261,39 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 			if s.price == nil || strings.TrimSpace(*s.price) == "" {
 				return nil, fmt.Errorf("hyperliquid futures placeOrder: price is required for take profit order")
 			}
-			order.P = "0"
+
+			triggerPx := normalizeDecimalString(strings.TrimSpace(*s.price))
+
+			_, _, book, err := s.getPerpL2Book(ctx, coin, opts...)
+			if err != nil {
+				return nil, err
+			}
+
+			tick := inferTickFromBook(book)
+			if tick == "" {
+				tick = tickFromDecimals(triggerPx)
+			}
+
+			bps := int64(10)
+			if !isBuy {
+				bps = -10
+			}
+
+			px, err := mulPxBps(triggerPx, bps)
+			if err != nil {
+				return nil, err
+			}
+
+			px, err = quantizeToTick(px, tick, isBuy)
+			if err != nil {
+				return nil, err
+			}
+
+			order.P = px
 			order.T = spotOrderT{
 				Trigger: &spotOrderTrigger{
 					IsMarket:  true,
-					TriggerPx: normalizeDecimalString(strings.TrimSpace(*s.price)),
+					TriggerPx: triggerPx,
 					Tpsl:      "tp",
 				},
 			}
@@ -237,7 +326,6 @@ func (s *futures_placeOrder) Do(ctx context.Context, opts ...utils.RequestOption
 	if err != nil {
 		return nil, err
 	}
-
 	answ := spot_placeOrderResponse{}
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return nil, err
