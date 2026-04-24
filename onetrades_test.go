@@ -207,7 +207,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(blofinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetBalance().Do(ctx))
-	// printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
+	printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
 	// printAnswers(weexFutures.NewGetBalance().Do(ctx))
 
 	//=======================InstrumentsInfo
