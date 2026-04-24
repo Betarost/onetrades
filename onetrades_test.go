@@ -134,7 +134,7 @@ func TestOnetrades(t *testing.T) {
 	okxSpot.Proxy = "http://localhost:1080"
 	// bingxFutures.Proxy = "http://localhost:1080"
 	okxFutures.Proxy = "http://localhost:1080"
-	bybitSpot.Proxy = "http://localhost:1080"
+	// bybitSpot.Proxy = "http://localhost:1080"
 	// bybitFutures.Proxy = "http://localhost:1080"
 	binanceSpot.Proxy = "http://localhost:1080"
 	// bitgetFutures.Proxy = "http://localhost:1080"
@@ -155,7 +155,7 @@ func TestOnetrades(t *testing.T) {
 	//SPOT
 	// printAnswers(binanceSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bingxSpot.NewGetAccountInfo().Do(ctx))
-	// printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
+	printAnswers(bybitSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(gateioSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(mexcSpot.NewGetAccountInfo().Do(ctx))
 	// printAnswers(bitgetSpot.NewGetAccountInfo().Do(ctx))
@@ -207,7 +207,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(blofinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetBalance().Do(ctx))
-	printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
+	// printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
 	// printAnswers(weexFutures.NewGetBalance().Do(ctx))
 
 	//=======================InstrumentsInfo
@@ -334,7 +334,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(blofinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetPositions().Do(ctx))
-	printAnswers(hyperliquidFutures.NewGetPositions().Do(ctx))
+	// printAnswers(hyperliquidFutures.NewGetPositions().Do(ctx))
 	// printAnswers(weexFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
@@ -418,7 +418,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(blofinFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetOrderList().Do(ctx))
-	printAnswers(hyperliquidFutures.NewGetOrderList().Do(ctx))
+	// printAnswers(hyperliquidFutures.NewGetOrderList().Do(ctx))
 	// printAnswers(weexFutures.NewGetOrderList().Do(ctx))
 
 	//=======================OrdersHistory

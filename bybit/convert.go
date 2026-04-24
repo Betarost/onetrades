@@ -26,6 +26,7 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 	for _, item := range in.Permissions.Spot {
 		if item == "SpotTrade" {
 			out.PermSpot = true
+			out.CanTrade = true
 			break
 		}
 	}
@@ -33,6 +34,7 @@ func (c *account_converts) convertAccountInfo(in accountInfo) (out entity.Accoun
 	for _, item := range in.Permissions.Derivatives {
 		if item == "DerivativesTrade" {
 			out.PermFutures = true
+			out.CanTrade = true
 			break
 		}
 	}
