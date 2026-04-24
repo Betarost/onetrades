@@ -420,26 +420,29 @@ func (c *futures_converts) convertFuturesOrdersHistory(in []hlHistoricalOrder) (
 		tpOrder := false
 		slOrder := false
 
-		if item.Order.IsTrigger {
-			rawType := strings.ToUpper(strings.TrimSpace(item.Order.OrderType))
-			tc := strings.ToUpper(strings.TrimSpace(item.Order.TriggerCondition))
+		rawType := strings.ToUpper(strings.TrimSpace(item.Order.OrderType))
+		tc := strings.ToUpper(strings.TrimSpace(item.Order.TriggerCondition))
 
-			switch {
-			case strings.Contains(rawType, "TAKE PROFIT"),
-				strings.Contains(rawType, "TAKE"),
-				strings.Contains(tc, "PRICE ABOVE"),
-				strings.Contains(tc, "TP"):
-				tpOrder = true
-				orderType = string(entity.OrderTypeTakeProfit)
+		switch {
+		case strings.Contains(rawType, "TAKE PROFIT"),
+			strings.Contains(rawType, "TAKE"):
+			tpOrder = true
+			orderType = string(entity.OrderTypeTakeProfit)
 
-			case strings.Contains(rawType, "STOP"),
-				strings.Contains(tc, "PRICE BELOW"),
-				strings.Contains(tc, "SL"):
-				slOrder = true
-				orderType = string(entity.OrderTypeStop)
-			}
+		case strings.Contains(rawType, "STOP"):
+			slOrder = true
+			orderType = string(entity.OrderTypeStop)
+
+		case item.Order.IsTrigger && (strings.Contains(tc, "PRICE ABOVE") ||
+			strings.Contains(tc, "TP")):
+			tpOrder = true
+			orderType = string(entity.OrderTypeTakeProfit)
+
+		case item.Order.IsTrigger && (strings.Contains(tc, "PRICE BELOW") ||
+			strings.Contains(tc, "SL")):
+			slOrder = true
+			orderType = string(entity.OrderTypeStop)
 		}
-
 		if tpOrder || slOrder {
 			if side == "SELL" {
 				positionSide = "LONG"
@@ -450,7 +453,10 @@ func (c *futures_converts) convertFuturesOrdersHistory(in []hlHistoricalOrder) (
 
 		price := strings.TrimSpace(item.Order.LimitPx)
 		executedPrice := price
-		if item.Order.IsTrigger && strings.TrimSpace(item.Order.TriggerPx) != "" && strings.TrimSpace(item.Order.TriggerPx) != "0.0" {
+
+		if item.Order.IsTrigger &&
+			strings.TrimSpace(item.Order.TriggerPx) != "" &&
+			strings.TrimSpace(item.Order.TriggerPx) != "0.0" {
 			price = strings.TrimSpace(item.Order.TriggerPx)
 		}
 

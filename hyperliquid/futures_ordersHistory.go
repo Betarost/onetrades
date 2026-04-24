@@ -76,7 +76,6 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	if err != nil {
 		return nil, err
 	}
-
 	var answ []hlHistoricalOrder
 	if err := json.Unmarshal(data, &answ); err != nil {
 		return nil, err
