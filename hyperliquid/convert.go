@@ -372,6 +372,7 @@ func (c *futures_converts) convertPositions(in futures_clearinghouseState) (out 
 	}
 	return out
 }
+
 func (c *futures_converts) convertFuturesOrdersHistory(in []hlHistoricalOrder) (out []entity.Futures_OrdersHistory) {
 	if len(in) == 0 {
 		return out
@@ -420,17 +421,30 @@ func (c *futures_converts) convertFuturesOrdersHistory(in []hlHistoricalOrder) (
 		slOrder := false
 
 		if item.Order.IsTrigger {
-			tc := strings.ToLower(strings.TrimSpace(item.Order.TriggerCondition))
+			rawType := strings.ToUpper(strings.TrimSpace(item.Order.OrderType))
+			tc := strings.ToUpper(strings.TrimSpace(item.Order.TriggerCondition))
 
-			// Когда появится живой trigger JSON, эту часть можно будет уточнить.
-			// Пока хотя бы базовая заготовка:
-			if item.Order.IsPositionTpsl {
-				if tc == "tp" || strings.Contains(tc, "take") {
-					tpOrder = true
-				}
-				if tc == "sl" || strings.Contains(tc, "stop") {
-					slOrder = true
-				}
+			switch {
+			case strings.Contains(rawType, "TAKE PROFIT"),
+				strings.Contains(rawType, "TAKE"),
+				strings.Contains(tc, "PRICE ABOVE"),
+				strings.Contains(tc, "TP"):
+				tpOrder = true
+				orderType = string(entity.OrderTypeTakeProfit)
+
+			case strings.Contains(rawType, "STOP"),
+				strings.Contains(tc, "PRICE BELOW"),
+				strings.Contains(tc, "SL"):
+				slOrder = true
+				orderType = string(entity.OrderTypeStop)
+			}
+		}
+
+		if tpOrder || slOrder {
+			if side == "SELL" {
+				positionSide = "LONG"
+			} else {
+				positionSide = "SHORT"
 			}
 		}
 
