@@ -140,7 +140,7 @@ func TestOnetrades(t *testing.T) {
 	// bitgetFutures.Proxy = "http://localhost:1080"
 	binanceFutures.Proxy = "http://localhost:1080"
 	blofinSpot.Proxy = "http://localhost:1080"
-	blofinFutures.Proxy = "http://localhost:1080"
+	blofinFutures.Proxy = "http://localhost:8080"
 	whitebitSpot.Proxy = "http://localhost:1080"
 	whitebitFutures.Proxy = "http://localhost:1080"
 	kucoinSpot.Proxy = "http://localhost:1080"
@@ -207,7 +207,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(blofinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetBalance().Do(ctx))
-	printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
+	// printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
 	// printAnswers(weexFutures.NewGetBalance().Do(ctx))
 
 	//=======================InstrumentsInfo
@@ -451,7 +451,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(blofinFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(whitebitFutures.NewOrdersHistory().Do(ctx))
-	printAnswers(hyperliquidFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(hyperliquidFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(weexFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================ExecutionsHistory
@@ -469,7 +469,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(okxFutures.NewPositionsHistory().Symbol("BNB-USDT-SWAP").Do(ctx))
 	// printAnswers(okxFutures.NewPositionsHistory().StartTime(1757883600000).Limit(50).Do(ctx))
 	// printAnswers(kucoinFutures.NewPositionsHistory().Do(ctx))
-	// printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
+	printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(whitebitFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(weexFutures.NewPositionsHistory().Do(ctx))

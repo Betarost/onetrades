@@ -337,21 +337,44 @@ func (c *futures_converts) convertPositionsHistory(in []futures_PositionsHistory
 	}
 
 	for _, item := range in {
+		marginMode := strings.ToUpper(item.MarginMode)
+		switch strings.ToLower(item.MarginMode) {
+		case "cross":
+			marginMode = string(entity.MarginModeTypeCross)
+		case "isolated":
+			marginMode = string(entity.MarginModeTypeIsolated)
+		}
+
+		positionSide := strings.ToUpper(item.PositionSide)
+
+		// В one-way/net режиме Blofin отдаёт positionSide = net.
+		// Для единого формата приводим к LONG/SHORT через side:
+		// buy  -> LONG
+		// sell -> SHORT
+		if strings.ToLower(item.PositionSide) == "net" {
+			switch strings.ToLower(item.Side) {
+			case "buy":
+				positionSide = "LONG"
+			case "sell":
+				positionSide = "SHORT"
+			}
+		}
+
 		out = append(out, entity.Futures_PositionsHistory{
 			Symbol:              item.InstId,
-			PositionID:          "", // Blofin здесь positionId не отдаёт
-			PositionSide:        strings.ToUpper(item.PositionSide),
-			PositionAmt:         item.FillSize,  // объём позиции в этом трейде
-			ExecutedPositionAmt: item.FillSize,  // исполненный объём = fillSize
-			AvgPrice:            item.FillPrice, // цена исполнения
-			ExecutedAvgPrice:    item.FillPrice, // здесь тоже можно поставить fillPrice
-			RealisedProfit:      item.FillPnl,
+			PositionID:          item.PositionId,
+			PositionSide:        positionSide,
+			PositionAmt:         item.MaxPositions,
+			ExecutedPositionAmt: item.ClosePositions,
+			AvgPrice:            item.OpenAveragePrice,
+			ExecutedAvgPrice:    item.CloseAveragePrice,
+			RealisedProfit:      item.RealizedPnl,
 			Fee:                 item.Fee,
-			Leverage:            "", // биржа в этом методе не отдаёт
-			Funding:             "", // нет в ответе
-			MarginMode:          "", // тоже нет, не придумываем
-			CreateTime:          utils.StringToInt64(item.Ts),
-			UpdateTime:          utils.StringToInt64(item.Ts),
+			Leverage:            item.Leverage,
+			Funding:             "", // Blofin positions-history funding не отдаёт
+			MarginMode:          marginMode,
+			CreateTime:          utils.StringToInt64(item.CreateTime),
+			UpdateTime:          utils.StringToInt64(item.UpdateTime),
 		})
 	}
 

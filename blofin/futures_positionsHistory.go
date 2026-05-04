@@ -17,6 +17,13 @@ type futures_positionsHistory struct {
 	startTime *int64
 	endTime   *int64
 	limit     *int64
+	page      *int64
+
+	orderID *string
+
+	state  *string
+	after  *string
+	before *string
 }
 
 func (s *futures_positionsHistory) Symbol(symbol string) *futures_positionsHistory {
@@ -39,23 +46,63 @@ func (s *futures_positionsHistory) Limit(limit int64) *futures_positionsHistory 
 	return s
 }
 
+// Page оставляем для совместимости с общим интерфейсом.
+// У Blofin в этом endpoint нет page/pageIndex, там cursor-пагинация через after/before.
+func (s *futures_positionsHistory) Page(page int64) *futures_positionsHistory {
+	s.page = &page
+	return s
+}
+
+// В общем интерфейсе это OrderID, но для Blofin positions-history это positionId.
+func (s *futures_positionsHistory) OrderID(orderID string) *futures_positionsHistory {
+	s.orderID = &orderID
+	return s
+}
+
+func (s *futures_positionsHistory) State(state string) *futures_positionsHistory {
+	s.state = &state
+	return s
+}
+
+func (s *futures_positionsHistory) After(after string) *futures_positionsHistory {
+	s.after = &after
+	return s
+}
+
+func (s *futures_positionsHistory) Before(before string) *futures_positionsHistory {
+	s.before = &before
+	return s
+}
+
 func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.RequestOption) (res []entity.Futures_PositionsHistory, err error) {
 	r := &utils.Request{
 		Method:   http.MethodGet,
-		Endpoint: "/api/v1/trade/fills-history", // маршрут из блока Get Trade History
+		Endpoint: "/api/v1/account/positions-history",
 		SecType:  utils.SecTypeSigned,
 	}
 
 	m := utils.Params{}
 
+	if s.orderID != nil {
+		m["positionId"] = *s.orderID
+	}
 	if s.symbol != nil {
 		m["instId"] = *s.symbol
 	}
+	if s.state != nil {
+		m["state"] = *s.state
+	}
+	if s.after != nil {
+		m["after"] = *s.after
+	}
+	if s.before != nil {
+		m["before"] = *s.before
+	}
 	if s.startTime != nil {
-		m["startTime"] = *s.startTime
+		m["begin"] = *s.startTime
 	}
 	if s.endTime != nil {
-		m["endTime"] = *s.endTime
+		m["end"] = *s.endTime
 	}
 	if s.limit != nil && *s.limit > 0 {
 		m["limit"] = *s.limit
@@ -80,15 +127,22 @@ func (s *futures_positionsHistory) Do(ctx context.Context, opts ...utils.Request
 }
 
 type futures_PositionsHistory_Response struct {
-	InstId       string `json:"instId"`
-	TradeId      string `json:"tradeId"`
-	OrderId      string `json:"orderId"`
-	FillPrice    string `json:"fillPrice"`
-	FillSize     string `json:"fillSize"`
-	FillPnl      string `json:"fillPnl"`
-	Side         string `json:"side"`
-	PositionSide string `json:"positionSide"`
-	Fee          string `json:"fee"`
-	Ts           string `json:"ts"`
-	// brokerId есть в JSON, но нам он не нужен — можно не добавлять
+	HistoryId            string `json:"historyId"`
+	PositionId           string `json:"positionId"`
+	InstId               string `json:"instId"`
+	InstType             string `json:"instType"`
+	Side                 string `json:"side"`
+	MarginMode           string `json:"marginMode"`
+	PositionSide         string `json:"positionSide"`
+	ClosePositions       string `json:"closePositions"`
+	MaxPositions         string `json:"maxPositions"`
+	LiquidationPositions string `json:"liquidationPositions"`
+	OpenAveragePrice     string `json:"openAveragePrice"`
+	CloseAveragePrice    string `json:"closeAveragePrice"`
+	CreateTime           string `json:"createTime"`
+	UpdateTime           string `json:"updateTime"`
+	Leverage             string `json:"leverage"`
+	RealizedPnl          string `json:"realizedPnl"`
+	RealizedPnlRatio     string `json:"realizedPnlRatio"`
+	Fee                  string `json:"fee"`
 }
