@@ -77,6 +77,7 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	r1.SetParams(m1)
 
 	data1, _, err := s.callAPI(ctx, r1, opts...)
+
 	if err != nil {
 		return res, err
 	}
@@ -93,103 +94,107 @@ func (s *futures_ordersHistory) Do(ctx context.Context, opts ...utils.RequestOpt
 	}
 
 	out := convertOrdersHistoryBitget(answ1.Result.Orders)
-
-	// ------------------------------------------------
-	// 2) История TP/SL plan orders
-	// ------------------------------------------------
-	r2 := &utils.Request{
-		Method:   http.MethodGet,
-		Endpoint: "/api/v2/mix/order/orders-plan-history",
-		SecType:  utils.SecTypeSigned,
-	}
-
-	m2 := utils.Params{
-		"productType": "USDT-FUTURES",
-		"marginCoin":  "USDT",
-		"planType":    "profit_loss",
-	}
-
-	if s.symbol != nil {
-		m2["symbol"] = *s.symbol
-	}
-	if s.limit != nil && *s.limit > 0 {
-		m2["limit"] = *s.limit
-	}
-	if s.startTime != nil {
-		m2["startTime"] = *s.startTime
-	}
-	if s.endTime != nil {
-		m2["endTime"] = *s.endTime
-	}
-
-	r2.SetParams(m2)
-
-	data2, _, err := s.callAPI(ctx, r2, opts...)
-	if err != nil {
-		return res, err
-	}
-
-	var answ2 struct {
-		Result struct {
-			Orders []futures_planOrdersHistory_Response `json:"entrustedList"`
-		} `json:"data"`
-	}
-
-	err = json.Unmarshal(data2, &answ2)
-	if err != nil {
-		return res, err
-	}
-
-	planOut := convertPlanOrdersHistoryBitget(answ2.Result.Orders)
-
-	// ------------------------------------------------
-	// 3) Merge без дублей:
-	//    если trigger order уже породил обычный ордер и он есть
-	//    в orders-history, то просто проставляем ему TpOrder/SlOrder.
-	// ------------------------------------------------
-	indexByOrderID := make(map[string]int, len(out))
-	for i := range out {
-		if out[i].OrderID != "" {
-			indexByOrderID[out[i].OrderID] = i
-		}
-	}
-
-	for _, p := range planOut {
-		if idx, ok := indexByOrderID[p.OrderID]; ok {
-			if p.TpOrder {
-				out[idx].TpOrder = true
-			}
-			if p.SlOrder {
-				out[idx].SlOrder = true
-			}
-
-			// На случай если в обычной истории чего-то нет, а в plan history есть
-			if out[idx].ClientOrderID == "" {
-				out[idx].ClientOrderID = p.ClientOrderID
-			}
-			if out[idx].PositionSide == "" {
-				out[idx].PositionSide = p.PositionSide
-			}
-			if out[idx].Side == "" {
-				out[idx].Side = p.Side
-			}
-			if out[idx].MarginMode == "" {
-				out[idx].MarginMode = p.MarginMode
-			}
-			if out[idx].CreateTime == 0 {
-				out[idx].CreateTime = p.CreateTime
-			}
-			if out[idx].UpdateTime == 0 {
-				out[idx].UpdateTime = p.UpdateTime
-			}
-			continue
-		}
-
-		indexByOrderID[p.OrderID] = len(out)
-		out = append(out, p)
-	}
-
 	return out, nil
+
+	/*
+		// ------------------------------------------------
+		// 2) История TP/SL plan orders
+		// ------------------------------------------------
+		r2 := &utils.Request{
+			Method:   http.MethodGet,
+			Endpoint: "/api/v2/mix/order/orders-plan-history",
+			SecType:  utils.SecTypeSigned,
+		}
+
+		m2 := utils.Params{
+			"productType": "USDT-FUTURES",
+			"marginCoin":  "USDT",
+			"planType":    "profit_loss",
+		}
+
+		if s.symbol != nil {
+			m2["symbol"] = *s.symbol
+		}
+		if s.limit != nil && *s.limit > 0 {
+			m2["limit"] = *s.limit
+		}
+		if s.startTime != nil {
+			m2["startTime"] = *s.startTime
+		}
+		if s.endTime != nil {
+			m2["endTime"] = *s.endTime
+		}
+
+		r2.SetParams(m2)
+
+		data2, _, err := s.callAPI(ctx, r2, opts...)
+
+		if err != nil {
+			return res, err
+		}
+
+		var answ2 struct {
+			Result struct {
+				Orders []futures_planOrdersHistory_Response `json:"entrustedList"`
+			} `json:"data"`
+		}
+
+		err = json.Unmarshal(data2, &answ2)
+		if err != nil {
+			return res, err
+		}
+
+		planOut := convertPlanOrdersHistoryBitget(answ2.Result.Orders)
+
+		// ------------------------------------------------
+		// 3) Merge без дублей:
+		//    если trigger order уже породил обычный ордер и он есть
+		//    в orders-history, то просто проставляем ему TpOrder/SlOrder.
+		// ------------------------------------------------
+		indexByOrderID := make(map[string]int, len(out))
+		for i := range out {
+			if out[i].OrderID != "" {
+				indexByOrderID[out[i].OrderID] = i
+			}
+		}
+
+		for _, p := range planOut {
+			if idx, ok := indexByOrderID[p.OrderID]; ok {
+				if p.TpOrder {
+					out[idx].TpOrder = true
+				}
+				if p.SlOrder {
+					out[idx].SlOrder = true
+				}
+
+				// На случай если в обычной истории чего-то нет, а в plan history есть
+				if out[idx].ClientOrderID == "" {
+					out[idx].ClientOrderID = p.ClientOrderID
+				}
+				if out[idx].PositionSide == "" {
+					out[idx].PositionSide = p.PositionSide
+				}
+				if out[idx].Side == "" {
+					out[idx].Side = p.Side
+				}
+				if out[idx].MarginMode == "" {
+					out[idx].MarginMode = p.MarginMode
+				}
+				if out[idx].CreateTime == 0 {
+					out[idx].CreateTime = p.CreateTime
+				}
+				if out[idx].UpdateTime == 0 {
+					out[idx].UpdateTime = p.UpdateTime
+				}
+				continue
+			}
+
+			indexByOrderID[p.OrderID] = len(out)
+			out = append(out, p)
+		}
+
+		return out, nil
+	*/
 }
 
 type futures_ordersHistory_Response struct {
@@ -203,12 +208,15 @@ type futures_ordersHistory_Response struct {
 	PriceAvg     string `json:"priceAvg"`
 	Status       string `json:"status"`
 	Side         string `json:"side"`
+	OrderSource  string `json:"orderSource"`
 	TotalProfits string `json:"totalProfits"`
 	PosSide      string `json:"posSide"`
+	TradeSide    string `json:"tradeSide"`
 	Leverage     string `json:"leverage"`
 	MarginMode   string `json:"marginMode"`
 	PosMode      string `json:"posMode"`
 	OrderType    string `json:"orderType"`
+	ReduceOnly   string `json:"reduceOnly"`
 	CTime        string `json:"cTime"`
 	UTime        string `json:"uTime"`
 }
@@ -258,21 +266,15 @@ func convertOrdersHistoryBitget(in []futures_ordersHistory_Response) (out []enti
 			marginMode = string(entity.MarginModeTypeCross)
 		}
 
-		positionSide := "LONG"
-		if item.PosSide == "net" {
-			if strings.ToUpper(item.Side) == "SELL" {
-				positionSide = "SHORT"
-			}
-		} else {
-			positionSide = strings.ToUpper(item.PosSide)
-		}
+		tpOrder, slOrder := bitgetHistoryTpSlFlags(item.OrderSource)
+		side, positionSide := bitgetHistorySide(item.Side, item.PosSide, item.PosMode, item.TradeSide, item.ReduceOnly, item.TotalProfits, tpOrder || slOrder)
 
 		out = append(out, entity.Futures_OrdersHistory{
 			Symbol:         item.Symbol,
 			OrderID:        item.OrderId,
 			ClientOrderID:  item.ClientOid,
-			Side:           strings.ToUpper(item.Side),
-			PositionSide:   strings.ToUpper(positionSide),
+			Side:           side,
+			PositionSide:   positionSide,
 			PositionSize:   item.Size,
 			ExecutedSize:   item.BaseVolume,
 			Price:          item.Price,
@@ -286,10 +288,70 @@ func convertOrdersHistoryBitget(in []futures_ordersHistory_Response) (out []enti
 			MarginMode:     marginMode,
 			CreateTime:     utils.StringToInt64(item.CTime),
 			UpdateTime:     utils.StringToInt64(item.UTime),
+			TpOrder:        tpOrder,
+			SlOrder:        slOrder,
 		})
 	}
 
 	return out
+}
+
+func bitgetHistoryTpSlFlags(orderSource string) (tpOrder bool, slOrder bool) {
+	source := strings.ToLower(orderSource)
+
+	switch {
+	case source == "profit_market" || source == "pos_profit_market":
+		return true, false
+	case source == "loss_market" || source == "pos_loss_market":
+		return false, true
+	case strings.HasPrefix(source, "profit_") || strings.HasPrefix(source, "pos_profit_"):
+		return true, false
+	case strings.HasPrefix(source, "loss_") || strings.HasPrefix(source, "pos_loss_"):
+		return false, true
+	default:
+		return false, false
+	}
+}
+
+func bitgetHistorySide(side, posSide, posMode, tradeSide, reduceOnly, totalProfits string, isTpSl bool) (orderSide string, positionSide string) {
+	orderSide = strings.ToUpper(side)
+	positionSide = "LONG"
+
+	pos := strings.ToUpper(posSide)
+	mode := strings.ToLower(posMode)
+	trade := strings.ToUpper(tradeSide)
+
+	if strings.EqualFold(posSide, "net") || mode == "one_way_mode" {
+		isClose := trade == "CLOSE" ||
+			strings.EqualFold(reduceOnly, "YES") ||
+			isTpSl ||
+			utils.StringToFloat(totalProfits) != 0
+		if orderSide == "SELL" && !isClose {
+			positionSide = "SHORT"
+		} else if orderSide == "SELL" && isClose {
+			positionSide = "LONG"
+		} else if orderSide == "BUY" && isClose {
+			positionSide = "SHORT"
+		}
+		return orderSide, positionSide
+	}
+
+	if pos != "" {
+		positionSide = pos
+	}
+
+	switch {
+	case pos == "LONG" && trade == "OPEN":
+		return "BUY", positionSide
+	case pos == "LONG" && trade == "CLOSE":
+		return "SELL", positionSide
+	case pos == "SHORT" && trade == "OPEN":
+		return "SELL", positionSide
+	case pos == "SHORT" && trade == "CLOSE":
+		return "BUY", positionSide
+	default:
+		return orderSide, positionSide
+	}
 }
 
 func convertPlanOrdersHistoryBitget(in []futures_planOrdersHistory_Response) (out []entity.Futures_OrdersHistory) {

@@ -130,7 +130,7 @@ func TestOnetrades(t *testing.T) {
 	weexFutures.Debug = false
 	bullishFutures.Proxy = "http://localhost:1080"
 	bitgetSpot.Proxy = "http://localhost:1080"
-	bitgetFutures.Proxy = "http://localhost:1080"
+	bitgetFutures.Proxy = "http://localhost:8080"
 	okxSpot.Proxy = "http://localhost:1080"
 	// bingxFutures.Proxy = "http://localhost:1080"
 	okxFutures.Proxy = "http://localhost:1080"
@@ -147,8 +147,8 @@ func TestOnetrades(t *testing.T) {
 	kucoinFutures.Proxy = "http://localhost:1080"
 	// binanceFutures.IsCOINM(true)
 	binanceFutures.GateWay = ""
-	weexSpot.Proxy = "http://localhost:1080"
-	weexFutures.Proxy = "http://localhost:1080"
+	weexSpot.Proxy = "http://localhost:8080"
+	weexFutures.Proxy = "http://localhost:8080"
 
 	// =======================AccountInfo
 	n = "AccountInfo"
@@ -225,7 +225,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(kucoinSpot.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(whitebitSpot.NewGetInstrumentsInfo().Symbol("BTC_USDT").Do(ctx))
 	// printAnswers(hyperliquidSpot.NewGetInstrumentsInfo().Symbol("USOL").Do(ctx))
-	// printAnswers(weexSpot.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(weexSpot.NewGetInstrumentsInfo().Symbol("ATOMUSDT").Do(ctx))
 
 	//FUTURES
 	// printAnswers(binanceFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
@@ -243,7 +243,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(whitebitFutures.NewGetInstrumentsInfo().Symbol("BTC_PERP").Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetInstrumentsInfo().Symbol("SOL").Do(ctx))
-	// printAnswers(weexFutures.NewGetInstrumentsInfo().Symbol("BTCUSDT").Do(ctx))
+	// printAnswers(weexFutures.NewGetInstrumentsInfo().Symbol("ATOMUSDT").Do(ctx))
 
 	//=======================MarketCandle
 	//FUTURES
@@ -444,7 +444,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bybitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(bybitFutures.NewOrdersHistory().OrderID("fddec6d3-a8e7-4f52-a732-0832c034be36").Limit(2).Do(ctx))
 	// printAnswers(gateioFutures.NewOrdersHistory().Limit(3).Do(ctx))
-	// printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
+	printAnswers(bitgetFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(okxFutures.NewOrdersHistory().OrderID("2896365455043928064").Limit(2).Do(ctx))
 	// printAnswers(okxFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(kucoinFutures.NewOrdersHistory().Limit(50).StartTime(1758362413105).EndTime(1758382413105).Do(ctx))
@@ -465,11 +465,11 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(bingxFutures.NewPositionsHistory().Symbol("TRX-USDT").StartTime(time.Now().UnixMilli() - (60 * 60 * 24 * 1000)).EndTime(time.Now().UnixMilli()).Do(ctx))
 	// printAnswers(bybitFutures.NewPositionsHistory().Limit(1).Do(ctx))
 	// printAnswers(gateioFutures.NewPositionsHistory().Do(ctx))
-	// printAnswers(bitgetFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(bitgetFutures.NewPositionsHistory().Symbol("RAVEUSDT").Do(ctx))
 	// printAnswers(okxFutures.NewPositionsHistory().Symbol("BNB-USDT-SWAP").Do(ctx))
 	// printAnswers(okxFutures.NewPositionsHistory().StartTime(1757883600000).Limit(50).Do(ctx))
 	// printAnswers(kucoinFutures.NewPositionsHistory().Do(ctx))
-	printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(whitebitFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(weexFutures.NewPositionsHistory().Do(ctx))
