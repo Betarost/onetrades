@@ -113,6 +113,23 @@ type Futures_ExecutionsHistory struct {
 	UpdateTime    int64  `json:"updateTime" bson:"updateTime"`
 }
 
+type Futures_UserTrades struct {
+	TradeID         string `json:"tradeId" bson:"tradeId"`
+	OrderID         string `json:"orderId" bson:"orderId"`
+	Symbol          string `json:"symbol" bson:"symbol"`
+	Side            string `json:"side" bson:"side"`
+	PositionSide    string `json:"positionSide" bson:"positionSide"`
+	Price           string `json:"price" bson:"price"`
+	Qty             string `json:"qty" bson:"qty"`
+	QuoteQty        string `json:"quoteQty" bson:"quoteQty"`
+	Commission      string `json:"commission" bson:"commission"`
+	CommissionAsset string `json:"commissionAsset" bson:"commissionAsset"`
+	RealisedProfit  string `json:"realisedProfit" bson:"realisedProfit"`
+	Buyer           bool   `json:"buyer" bson:"buyer"`
+	Maker           bool   `json:"maker" bson:"maker"`
+	Time            int64  `json:"time" bson:"time"`
+}
+
 type Futures_Positions struct {
 	Symbol           string `json:"symbol" bson:"symbol"`
 	PositionSide     string `json:"positionSide" bson:"positionSide"`

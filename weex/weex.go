@@ -173,6 +173,10 @@ func (c *FuturesClient) NewPositionsHistory() *futures_positionsHistory {
 	return &futures_positionsHistory{callAPI: c.callAPI}
 }
 
+func (c *FuturesClient) NewUserTrades() *futures_userTrades {
+	return &futures_userTrades{callAPI: c.callAPI}
+}
+
 func (c *FuturesClient) NewGetLeverage() *futures_getLeverage {
 	return &futures_getLeverage{callAPI: c.callAPI}
 }

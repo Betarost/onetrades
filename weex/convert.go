@@ -192,6 +192,12 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		// 	hedgeMode = true
 		// }
 
+		if strings.ToUpper(item.MarginType) == "CROSSED" {
+			item.MarginType = string(entity.MarginModeTypeCross)
+		} else {
+			item.MarginType = string(entity.MarginModeTypeIsolated)
+
+		}
 		res = append(res, entity.Futures_Positions{
 			Symbol:           item.Symbol,
 			PositionSide:     strings.ToUpper(item.Side),
@@ -399,6 +405,33 @@ func (c *futures_converts) convertOrdersHistory(in []futures_ordersHistory_Respo
 			UpdateTime:     item.UpdateTime,
 		})
 	}
+	return out
+}
+
+func (c *futures_converts) convertUserTrades(in []futures_userTrade) (out []entity.Futures_UserTrades) {
+	if len(in) == 0 {
+		return out
+	}
+
+	for _, item := range in {
+		out = append(out, entity.Futures_UserTrades{
+			TradeID:         utils.Int64ToString(item.ID),
+			OrderID:         utils.Int64ToString(item.OrderID),
+			Symbol:          item.Symbol,
+			Side:            strings.ToUpper(item.Side),
+			PositionSide:    strings.ToUpper(item.PositionSide),
+			Price:           item.Price,
+			Qty:             item.Qty,
+			QuoteQty:        item.QuoteQty,
+			Commission:      item.Commission,
+			CommissionAsset: item.CommissionAsset,
+			RealisedProfit:  item.RealizedPnl,
+			Buyer:           item.Buyer,
+			Maker:           item.Maker,
+			Time:            item.Time,
+		})
+	}
+
 	return out
 }
 
