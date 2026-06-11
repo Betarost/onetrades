@@ -269,7 +269,7 @@ func (c *futures_converts) convertAlgoOrderList(in []futures_algoOrder) (out []e
 		slOrder := typ == "STOP" || typ == "STOP_MARKET"
 
 		price := item.Price
-		if price == "" || price == "0" {
+		if price == "" || price == "0" || price == "0.0" {
 			price = item.TriggerPrice
 		}
 

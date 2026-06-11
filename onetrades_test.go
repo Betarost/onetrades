@@ -243,7 +243,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetInstrumentsInfo().Symbol("BTC-USDT").Do(ctx))
 	// printAnswers(whitebitFutures.NewGetInstrumentsInfo().Symbol("BTC_PERP").Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetInstrumentsInfo().Symbol("SOL").Do(ctx))
-	// printAnswers(weexFutures.NewGetInstrumentsInfo().Symbol("ATOMUSDT").Do(ctx))
+	printAnswers(weexFutures.NewGetInstrumentsInfo().Symbol("ATOMUSDT").Do(ctx))
 
 	//=======================MarketCandle
 	//FUTURES
