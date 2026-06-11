@@ -332,14 +332,18 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			marginMode = entity.MarginModeTypeIsolated
 		}
 
+		positionSize := utils.FloatToStringAll(absFloat(utils.StringToFloat(item.PositionAmt)))
+
 		notional := item.Notional
 		if utils.StringToFloat(item.Notional) == 0 && utils.StringToFloat(item.NotionalValue) != 0 {
 			notional = utils.FloatToStringAll(utils.StringToFloat(item.EntryPrice) * utils.StringToFloat(item.NotionalValue))
 		}
+		notional = utils.FloatToStringAll(absFloat(utils.StringToFloat(notional)))
+
 		res = append(res, entity.Futures_Positions{
 			Symbol:       item.Symbol,
 			PositionSide: positionSide,
-			PositionSize: item.PositionAmt,
+			PositionSize: positionSize,
 			Leverage:     item.Leverage,
 			// PositionID:       item.PosID,
 			EntryPrice:       item.EntryPrice,
@@ -354,6 +358,13 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		})
 	}
 	return res
+}
+
+func absFloat(v float64) float64 {
+	if v < 0 {
+		return -v
+	}
+	return v
 }
 
 func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {

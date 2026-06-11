@@ -138,7 +138,7 @@ func TestOnetrades(t *testing.T) {
 	// bybitFutures.Proxy = "http://localhost:1080"
 	binanceSpot.Proxy = "http://localhost:1080"
 	// bitgetFutures.Proxy = "http://localhost:1080"
-	binanceFutures.Proxy = "http://localhost:1080"
+	binanceFutures.Proxy = "http://localhost:8080"
 	blofinSpot.Proxy = "http://localhost:1080"
 	blofinFutures.Proxy = "http://localhost:8080"
 	whitebitSpot.Proxy = "http://localhost:1080"
@@ -208,7 +208,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
-	printAnswers(weexFutures.NewGetBalance().Do(ctx))
+	// printAnswers(weexFutures.NewGetBalance().Do(ctx))
 
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
@@ -322,7 +322,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetPositions
 	n = "GetPositions"
 	//FUTURES
-	// printAnswers(binanceFutures.NewGetPositions().Do(ctx))
+	printAnswers(binanceFutures.NewGetPositions().Do(ctx))
 
 	// printAnswers(bingxFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bybitFutures.NewGetPositions().Do(ctx))
@@ -452,7 +452,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(whitebitFutures.NewOrdersHistory().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewOrdersHistory().StartTime(1773221695300).EndTime(1773221695500).Symbol("SOL").Do(ctx))
-	printAnswers(weexFutures.NewOrdersHistory().Do(ctx))
+	// printAnswers(weexFutures.NewOrdersHistory().Do(ctx))
 
 	//=======================ExecutionsHistory
 	n = "ExecutionsHistory"
@@ -473,12 +473,12 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(whitebitFutures.NewPositionsHistory().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewPositionsHistory().Do(ctx))
-	printAnswers(weexFutures.NewPositionsHistory().Do(ctx))
+	// printAnswers(weexFutures.NewPositionsHistory().Do(ctx))
 
 	//=======================UserTrades
 	n = "UserTrades"
 	//FUTURES
-	printAnswers(weexFutures.NewUserTrades().Do(ctx))
+	// printAnswers(weexFutures.NewUserTrades().Do(ctx))
 
 	//=======================SetPositionMode
 	n = "SetPositionMode"
