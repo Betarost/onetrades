@@ -198,13 +198,16 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 			item.MarginType = string(entity.MarginModeTypeIsolated)
 
 		}
+
+		entryPrice := calcWeexPositionEntryPrice(item)
+
 		res = append(res, entity.Futures_Positions{
 			Symbol:           item.Symbol,
 			PositionSide:     strings.ToUpper(item.Side),
 			PositionSize:     item.Size,
 			Leverage:         item.Leverage,
 			PositionID:       utils.Int64ToString(item.ID),
-			EntryPrice:       "",
+			EntryPrice:       entryPrice,
 			MarkPrice:        "",
 			UnRealizedProfit: item.UnrealizePnl,
 			RealizedProfit:   "",
@@ -217,6 +220,22 @@ func (c *futures_converts) convertPositions(answ []futures_Position) (res []enti
 		})
 	}
 	return res
+}
+
+func calcWeexPositionEntryPrice(item futures_Position) string {
+	cumOpenSize := utils.StringToFloat(item.CumOpenSize)
+	cumOpenValue := utils.StringToFloat(item.CumOpenValue)
+	if cumOpenSize != 0 && cumOpenValue != 0 {
+		return utils.FloatToStringAll(cumOpenValue / cumOpenSize)
+	}
+
+	size := utils.StringToFloat(item.Size)
+	openValue := utils.StringToFloat(item.OpenValue)
+	if size != 0 && openValue != 0 {
+		return utils.FloatToStringAll(openValue / size)
+	}
+
+	return ""
 }
 
 func (c *futures_converts) convertOrderList(answ []futures_orderList) (res []entity.Futures_OrdersList) {

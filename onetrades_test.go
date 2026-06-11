@@ -208,7 +208,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetBalance().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetBalance().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetBalance().Do(ctx))
-	// printAnswers(weexFutures.NewGetBalance().Do(ctx))
+	printAnswers(weexFutures.NewGetBalance().Do(ctx))
 
 	//=======================InstrumentsInfo
 	n = "InstrumentsInfo"
@@ -322,7 +322,7 @@ func TestOnetrades(t *testing.T) {
 	//=======================GetPositions
 	n = "GetPositions"
 	//FUTURES
-	printAnswers(binanceFutures.NewGetPositions().Do(ctx))
+	// printAnswers(binanceFutures.NewGetPositions().Do(ctx))
 
 	// printAnswers(bingxFutures.NewGetPositions().Do(ctx))
 	// printAnswers(bybitFutures.NewGetPositions().Do(ctx))
@@ -335,7 +335,7 @@ func TestOnetrades(t *testing.T) {
 	// printAnswers(blofinFutures.NewGetPositions().Do(ctx))
 	// printAnswers(whitebitFutures.NewGetPositions().Do(ctx))
 	// printAnswers(hyperliquidFutures.NewGetPositions().Do(ctx))
-	// printAnswers(weexFutures.NewGetPositions().Do(ctx))
+	printAnswers(weexFutures.NewGetPositions().Do(ctx))
 
 	//=======================CancelOrder
 	n = "CancelOrder"
